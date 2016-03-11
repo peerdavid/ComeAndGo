@@ -1,12 +1,13 @@
 package controllers;
 
 import com.google.inject.Inject;
+
 import play.mvc.Controller;
 import play.mvc.Result;
 import views.html.index;
 
 /**
- * Created by david on 11.03.16.
+ * Test controller -> to be removed.
  */
 public class Application extends Controller {
 
@@ -14,12 +15,12 @@ public class Application extends Controller {
    private Test _test;
 
    @Inject
-   public Application(Test test){
+   public Application(Test test) {
       _test = test;
    }
 
 
-   public Result index(){
+   public Result index() {
       String textFromDpendencyInjection = _test.getText();
       return ok(index.render(textFromDpendencyInjection));
    }

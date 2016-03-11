@@ -1,11 +1,12 @@
 package modules;
 
 import com.google.inject.AbstractModule;
+
 import controllers.Test;
 import controllers.TestImpl;
 
 /**
- * Created by david on 11.03.16.
+ * Dependency injection module.
  */
 public class Module extends AbstractModule {
    @Override
