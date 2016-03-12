@@ -1,9 +1,9 @@
 package modules;
 
+import backend.ExampleInterface;
 import com.google.inject.AbstractModule;
 
-import controllers.Test;
-import controllers.TestImpl;
+import backend.ExampleImpl;
 
 /**
  * Dependency injection module.
@@ -11,6 +11,6 @@ import controllers.TestImpl;
 public class Module extends AbstractModule {
    @Override
    protected void configure() {
-      bind(Test.class).to(TestImpl.class);
+      bind(ExampleInterface.class).to(ExampleImpl.class);
    }
 }
