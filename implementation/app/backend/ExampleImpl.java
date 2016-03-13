@@ -1,7 +1,7 @@
 package backend;
 
 /**
- * Created by david on 11.03.16.
+ * Example implementation, which will be injected.
  */
 public class ExampleImpl implements ExampleInterface {
 
@@ -11,6 +11,10 @@ public class ExampleImpl implements ExampleInterface {
    }
 
    public int add(int a, int b){
-      return a + b;
+      if(a > 0 && b > 0) {
+         return a + b;
+      } else {
+         return a - b;
+      }
    }
 }
