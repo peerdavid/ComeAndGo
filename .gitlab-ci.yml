@@ -17,7 +17,7 @@ build_image:
    #- curl -fsSL https://get.docker.com/ | sh
    #- usermod -aG docker gitlab-runner
    #- -u gitlab-runner -H docker info
-    -echo $USER
+    - echo $USER
 
 stages:
  # - build
