@@ -1,9 +1,16 @@
 package backend;
 
+import com.google.inject.Inject;
+
 /**
  * Example implementation, which will be injected.
  */
 public class ExampleImpl implements ExampleInterface {
+
+
+   @Inject
+   public ExampleImpl(){
+   }
 
    @Override
    public String getText() {
@@ -11,10 +18,6 @@ public class ExampleImpl implements ExampleInterface {
    }
 
    public int add(int a, int b){
-      if(a > 0 && b > 0) {
-         return a + b;
-      } else {
-         return a - b;
-      }
+      return a + b;
    }
 }

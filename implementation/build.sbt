@@ -10,4 +10,10 @@ libraryDependencies ++= Seq( jdbc , cache , ws , specs2 % Test )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
-resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"  
+resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
+
+// setting a maintainer which is used for all packaging types
+maintainer := "Come & Go"
+
+// exposing the play ports
+dockerExposedPorts in Docker := Seq(9000, 9443)

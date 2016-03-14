@@ -1,5 +1,7 @@
 package controllers;
 
+import backend.Configuration;
+import backend.ConfigurationImpl;
 import com.google.inject.Inject;
 
 import backend.ExampleInterface;
