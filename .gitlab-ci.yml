@@ -1,4 +1,4 @@
-image:  gitlab/dind:latest #java:8
+image:  java:8
 
 # Will be called before each state
 # before_script:
@@ -7,13 +7,11 @@ image:  gitlab/dind:latest #java:8
 build_image:
   script:
    # Install and config docker
+   - apt-get install curl -y 
+   - curl -fsSL https://get.docker.com/ | sh
+   - usermod -aG docker root
    - service docker start
    - docker info
-   #- apt-get install curl -y 
-   #- curl -fsSL https://get.docker.com/ | sh
-   #- usermod -aG docker root
-   #- service docker start
-   #- docker info
    # Install SBT
    - echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
