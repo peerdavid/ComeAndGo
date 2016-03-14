@@ -12,3 +12,10 @@ test:
   script:
     - cd implementation
     - sbt clean test
+
+build:
+  script:
+    - ls
+    - cd implementation
+    - sbt docker:publishLocal
+    - ls
