@@ -6,18 +6,16 @@ image: java:8
 # Will be called one time (creates our image for all states)
 build_image:
   script:
-   # Install SBT
-   #- echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
-   #- apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
-   #- apt-get update -y
-   #- apt-get install sbt -y
-   #- sbt sbt-version
    # Install and config docker
-   #- apt-get install curl -y 
-   #- curl -fsSL https://get.docker.com/ | sh
-   #- usermod -aG docker gitlab-runner
-   #- -u gitlab-runner -H docker info
-    - echo $USER
+   - apt-get install curl -y 
+   - curl -fsSL https://get.docker.com/ | sh
+   - docker info
+   # Install SBT
+   - echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
+   - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
+   - apt-get update -y
+   - apt-get install sbt -y
+   - sbt sbt-version
 
 stages:
  # - build
