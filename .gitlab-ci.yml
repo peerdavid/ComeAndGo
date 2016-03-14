@@ -7,14 +7,10 @@ image: java:8
 build_image:
   script:
    # Install and config docker
-   - whoami
-   - echo $USER
-   #- apt-get install curl -y 
-   #- curl -fsSL https://get.docker.com/ | sh
-   #- docker-machine start default
-   #- docker-machine regenerate-certs default
-   #- eval "$(docker-machine env default)"
-   #- docker info
+   - apt-get install curl -y 
+   - curl -fsSL https://get.docker.com/ | sh
+   - usermod -aG docker root
+   - docker info
    # Install SBT
    #- echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
    #- apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
