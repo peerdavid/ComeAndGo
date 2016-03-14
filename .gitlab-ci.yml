@@ -6,24 +6,13 @@ before_script:
   - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
   - apt-get update -y
   - apt-get install sbt -y
+  - apt-get -y install docker.io
   - sbt sbt-version
-
 
 stages:
  # - build
   - test
   - deploy
-
-
-#job1:
-#  stage: build
-#  script:
-#    - execute-script-for-job1
-#  only:
-#    - master
-#  tags:
-#    - docker
-
 
 test:
   stage: test
