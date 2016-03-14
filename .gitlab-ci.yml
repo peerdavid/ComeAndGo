@@ -10,7 +10,7 @@ build_image:
    - apt-get install curl -y 
    - curl -fsSL https://get.docker.com/ | sh
    - usermod -aG docker root
-   - service docker restart
+   - service docker start
    - docker info
    # Install SBT
    #- echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
