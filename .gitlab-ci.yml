@@ -7,6 +7,7 @@ image:  gitlab/dind:latest #java:8
 build_image:
   script:
    # Install and config docker
+   - service docker start
    - docker info
    #- apt-get install curl -y 
    #- curl -fsSL https://get.docker.com/ | sh
