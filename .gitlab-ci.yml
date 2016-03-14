@@ -8,14 +8,38 @@ before_script:
   - apt-get install sbt -y
   - sbt sbt-version
 
+
+stages:
+ # - build
+  - test
+  - deploy
+
+
+#job1:
+#  stage: build
+#  script:
+#    - execute-script-for-job1
+#  only:
+#    - master
+#  tags:
+#    - docker
+
+
 test:
+  stage: test
   script:
     - cd implementation
     - sbt clean test
+  only:
+    - master
 
-build:
+deploy:
+  stage: deploy
   script:
     - ls
     - cd implementation
     - sbt docker:publishLocal
     - ls
+  only:
+    - master
+
