@@ -8,7 +8,7 @@ build_image:
   script:
    # Install and config docker
    - apt-get install curl -y 
-   - curl -fsSL https://get.docker.com/ | sh
+   - curl -fsSL https://get.docker.com/gpg | apt-key add -
    - usermod -aG docker root
    - eval "$(docker-machine env default)"
    - service docker start
