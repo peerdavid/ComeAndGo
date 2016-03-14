@@ -13,10 +13,11 @@ build_image:
    #- apt-get install sbt -y
    #- sbt sbt-version
    # Install and config docker
-   - apt-get install curl -y 
-   - curl -fsSL https://get.docker.com/ | sh
-   - usermod -aG docker gitlab-runner
-   - -u gitlab-runner -H docker info
+   #- apt-get install curl -y 
+   #- curl -fsSL https://get.docker.com/ | sh
+   #- usermod -aG docker gitlab-runner
+   #- -u gitlab-runner -H docker info
+    -echo $USER
 
 stages:
  # - build
