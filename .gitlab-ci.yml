@@ -9,6 +9,7 @@ build_image:
    # Install and config docker
    - apt-get install curl -y 
    - curl -fsSL https://get.docker.com/gpg | apt-key add -
+   - curl -fsSL https://get.docker.com/ | sh
    - usermod -aG docker root
    - eval "$(docker-machine env default)"
    - service docker start
