@@ -1,14 +1,19 @@
+#
+# Base image
+#
 image:  java:8
 
+#
+# Link those containers for testing
+#
 services:
-    - docker
+   # - docker
+   # - mysql
 
+#
 # Will be called before each state
-# before_script:
-
-# Will be called one time (creates our image for all states)
-build_image:
-  script:
+#
+before_script:
    # Install and config docker
    # Needs to start runner as  --docker-privileged
    #- apt-get install curl -y 
@@ -17,7 +22,7 @@ build_image:
    #- usermod -aG docker root
    #- eval "$(docker-machine env default)"
    #- service docker start
-   - docker info
+   #- docker info
    # Install SBT
    - echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
@@ -25,10 +30,20 @@ build_image:
    - apt-get install sbt -y
    - sbt sbt-version
 
+#
+# Will be called one time (creates our image for all states)
+#
+#build_image:
+#  script:
+
+
+#
+# Our stages are starting here
+#
 stages:
  # - build
   - test
-  - deploy
+ # - deploy
 
 test:
   stage: test
@@ -38,13 +53,13 @@ test:
   only:
     - master
 
-deploy:
-  stage: deploy
-  script:
-    - ls
-    - cd implementation
-    - sbt docker:publishLocal
-    - ls
-  only:
-    - master
+#deploy:
+#  stage: deploy
+#  script:
+#    - ls
+#    - cd implementation
+#    - sbt docker:publishLocal
+#    - ls
+#  only:
+#    - master
 
