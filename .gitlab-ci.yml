@@ -1,5 +1,8 @@
 image:  java:8
 
+services:
+    - docker
+
 # Will be called before each state
 # before_script:
 
@@ -14,7 +17,7 @@ build_image:
    #- usermod -aG docker root
    #- eval "$(docker-machine env default)"
    #- service docker start
-   #- docker info
+   - docker info
    # Install SBT
    - echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list
    - apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823
