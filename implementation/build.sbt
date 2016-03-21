@@ -13,7 +13,7 @@ unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
 // setting a maintainer which is used for all packaging types
-maintainer := "Come & Go"
+maintainer := "ComeAndGo"
 
 // exposing the play ports
 dockerExposedPorts in Docker := Seq(9000, 9443)
