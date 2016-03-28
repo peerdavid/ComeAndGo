@@ -2,11 +2,24 @@ name := "ComeAndGo"
 
 version := "1.0"
 
-lazy val `comeandgo` = (project in file(".")).enablePlugins(PlayJava)
+lazy val `comeandgo` = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 scalaVersion := "2.11.7"
 
-libraryDependencies ++= Seq( jdbc , cache , ws , specs2 % Test )
+// for authentication & authorization
+def pac4j = "org.pac4j" % "play-pac4j" % "2.1.0"
+def pac4j_http = "org.pac4j" % "pac4j-http" % "1.8.6"
+// for password encryption
+def bcrypt = "org.mindrot" % "jbcrypt" % "0.3m"
+
+libraryDependencies ++= Seq(
+  jdbc,
+  cache,
+  ws,
+  pac4j,
+  pac4j_http,
+  bcrypt,
+  specs2 % Test )
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
