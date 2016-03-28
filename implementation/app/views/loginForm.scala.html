@@ -1,0 +1,13 @@
+@import domain.UserLogin
+
+@(url: String, form : Form[UserLogin])
+
+<form action="@(url)?client_name=default" method="POST">
+
+    @helper.inputText(form("username"))
+
+    @helper.inputPassword(form("password"))
+
+    <input type="submit" name="submit" value="login" />
+
+</form>

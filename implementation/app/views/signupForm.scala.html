@@ -1,0 +1,13 @@
+@import domain.UserLogin
+
+@(form: Form[UserLogin])
+
+@helper.form(action = routes.SecurityController.doSignUp) {
+
+    @helper.inputText(form("username"))
+
+    @helper.inputPassword(form("password"))
+
+    <button type="submit" class="btn btn-default">@Messages("signup")</button>
+
+}

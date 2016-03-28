@@ -3,7 +3,16 @@
 # ~~~~
 
 # Home page
-GET     /                           @controllers.TimeTrackController.index
+GET     /                           controllers.TimeTrackController.index
+GET     /home                       @controllers.TimeTrackController.home
+
+# Login
+GET     /login                      @controllers.SecurityController.loginForm
+POST    /login                      @org.pac4j.play.CallbackController.callback
+GET     /logout                     @org.pac4j.play.ApplicationLogoutController.logout
+POST    /logout                     @org.pac4j.play.ApplicationLogoutController.logout
+GET     /signup                     @controllers.SecurityController.signUp
+POST    /dosignup                   @controllers.SecurityController.doSignUp
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

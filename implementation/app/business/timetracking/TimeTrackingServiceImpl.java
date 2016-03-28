@@ -41,8 +41,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService{
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
 
-        User current = new User(7);
-        User boss = new User(4);
+        User current = User.findById(7);
+        User boss = User.findById(4);
         Notification notification = new Notification("Go home", current, boss, false);
         _notificationSender.sendNotification(notification);
     }
