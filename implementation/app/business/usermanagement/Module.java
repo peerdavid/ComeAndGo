@@ -1,4 +1,4 @@
-package security;
+package business.usermanagement;
 
 import com.google.inject.AbstractModule;
 import org.pac4j.core.authorization.RequireAnyRoleAuthorizer;
@@ -8,13 +8,13 @@ import org.pac4j.play.ApplicationLogoutController;
 import org.pac4j.play.CallbackController;
 import org.pac4j.play.http.DefaultHttpActionAdapter;
 import org.pac4j.play.store.PlayCacheStore;
-import security.authentication.CustomUsernamePasswordAuthenticator;
-import security.authorization.SecurityRole;
+import business.usermanagement.authentication.CustomUsernamePasswordAuthenticator;
+import business.usermanagement.authorization.SecurityRole;
 
 /**
  * Created by sebastian on 3/28/16.
  */
-public class SecurityModule extends AbstractModule {
+public class Module extends AbstractModule {
    @Override
    protected void configure() {
       final FormClient client = new FormClient("/login", new CustomUsernamePasswordAuthenticator());

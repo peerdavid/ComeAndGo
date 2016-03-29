@@ -15,12 +15,12 @@ public class Module extends AbstractModule {
     @Override
     protected void configure() {
         bindInterceptor(
-                subclassesOf(Facade.class),
+                subclassesOf(UseCases.class),
                 any(),
                 new LoggingInterceptor());
 
         bindInterceptor(
-                subclassesOf(Facade.class),
+                subclassesOf(UseCases.class),
                 any(),
                 new TransactionInterceptor());
     }

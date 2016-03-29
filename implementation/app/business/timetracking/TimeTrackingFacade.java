@@ -1,6 +1,5 @@
 package business.timetracking;
 
-import business.Facade;
 import com.google.inject.Inject;
 import domain.TimeTrack;
 import domain.User;
@@ -11,7 +10,7 @@ import java.util.List;
 /**
  * Created by david on 21.03.16.
  */
-class TimeTrackingFacade implements Facade, TimeTracking {
+class TimeTrackingFacade implements TimeTracking {
 
 
     private TimeTrackingService _timeTrackingService;

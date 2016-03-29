@@ -2,7 +2,7 @@
 
 @(form: Form[UserLogin])
 
-@helper.form(action = routes.SecurityController.doSignUp) {
+@helper.form(action = routes.AuthenticationController.doSignUp) {
 
     @helper.inputText(form("username"))
 

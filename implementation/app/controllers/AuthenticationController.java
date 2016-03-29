@@ -1,6 +1,5 @@
 package controllers;
 
-import domain.User;
 import domain.UserLogin;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
@@ -13,7 +12,7 @@ import play.mvc.Result;
 /**
  * Created by sebastian on 3/28/16.
  */
-public class SecurityController extends UserProfileController<CommonProfile> {
+public class AuthenticationController extends UserProfileController<CommonProfile> {
    public Result loginForm() throws TechnicalException {
       final FormClient formClient = (FormClient) config.getClients().findClient("default");
       return ok(views.html.loginForm.render(formClient.getCallbackUrl(), UserLogin.FORM));

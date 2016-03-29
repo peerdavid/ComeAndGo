@@ -1,4 +1,4 @@
-package security.authorization;
+package business.usermanagement.authorization;
 
 /**
  * Created by sebastian on 3/28/16.

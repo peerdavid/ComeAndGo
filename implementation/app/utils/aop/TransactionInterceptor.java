@@ -5,7 +5,7 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 /**
- * This class creates db transactions around our use cases (See interface "Facade")
+ * This class creates db transactions around our use cases (See interface "UseCases")
  */
 public class TransactionInterceptor implements MethodInterceptor {
     @Override

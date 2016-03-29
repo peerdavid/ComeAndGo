@@ -1,4 +1,4 @@
-package security.authentication;
+package business.usermanagement.authentication;
 
 import domain.UserLogin;
 import org.pac4j.core.exception.CredentialsException;
@@ -6,7 +6,7 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
 import org.pac4j.http.profile.HttpProfile;
 import play.data.Form;
-import security.authorization.SecurityRole;
+import business.usermanagement.authorization.SecurityRole;
 
 /**
  * Created by sebastian on 3/18/16.

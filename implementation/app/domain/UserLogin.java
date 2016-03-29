@@ -4,10 +4,9 @@ import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.Form;
 import play.data.validation.Constraints;
-import security.authorization.SecurityRole;
+import business.usermanagement.authorization.SecurityRole;
 
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
