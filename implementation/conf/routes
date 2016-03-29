@@ -3,7 +3,7 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.TimeTrackController.index
+GET     /                           @controllers.TimeTrackController.index
 GET     /home                       @controllers.TimeTrackController.home
 
 # Login

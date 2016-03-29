@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.Facade;
 import com.google.inject.Inject;
 import domain.TimeTrack;
 import domain.User;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * Created by david on 21.03.16.
  */
-class TimeTrackingFacade implements TimeTracking {
+class TimeTrackingFacade implements Facade, TimeTracking {
 
 
     private TimeTrackingService _timeTrackingService;
@@ -24,7 +25,7 @@ class TimeTrackingFacade implements TimeTracking {
      * ToDo: Annotate with logging and transaction = true
      */
     @Override
-    public void come() {
+    public void come() throws Exception {
         _timeTrackingService.come();
     }
 

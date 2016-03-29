@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.Facade;
 import com.google.inject.AbstractModule;
 
 /**

@@ -9,7 +9,6 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.mvc.Result;
-import views.html.index;
 
 import java.util.List;
 
@@ -27,7 +26,9 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
       _timeTracking = timeTracking;
    }
 
-   public static Result index() {
+
+   public Result index() {
+      _timeTracking.come();
       return ok(views.html.index.render());
    }
 

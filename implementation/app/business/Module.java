@@ -1,7 +1,12 @@
 package business;
 
 
+import utils.aop.LoggingInterceptor;
+import utils.aop.TransactionInterceptor;
 import com.google.inject.AbstractModule;
+
+import static com.google.inject.matcher.Matchers.any;
+import static com.google.inject.matcher.Matchers.subclassesOf;
 
 /**
  * Created by david on 21.03.16.
@@ -9,5 +14,14 @@ import com.google.inject.AbstractModule;
 public class Module extends AbstractModule {
     @Override
     protected void configure() {
+        bindInterceptor(
+                subclassesOf(Facade.class),
+                any(),
+                new LoggingInterceptor());
+
+        bindInterceptor(
+                subclassesOf(Facade.class),
+                any(),
+                new TransactionInterceptor());
     }
 }
