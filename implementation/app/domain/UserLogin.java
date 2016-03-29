@@ -7,6 +7,7 @@ import play.data.validation.Constraints;
 import business.usermanagement.authorization.SecurityRole;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -17,6 +18,7 @@ public class UserLogin extends Model {
    public static final Form<UserLogin> FORM = Form.form(UserLogin.class);
    public static final Model.Finder<Integer, UserLogin> FIND = new Model.Finder<>(UserLogin.class);
 
+   @Id
    private int userId;
 
    @Constraints.MinLength(4)

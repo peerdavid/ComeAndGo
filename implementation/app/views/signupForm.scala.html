@@ -2,6 +2,8 @@
 
 @(form: Form[UserLogin])
 
+<h1>sign up new user</h1>
+
 @helper.form(action = routes.AuthenticationController.doSignUp) {
 
     @helper.inputText(form("username"))

@@ -2,6 +2,8 @@
 
 @(url: String, form : Form[UserLogin])
 
+<h1>log in</h1>
+
 <form action="@(url)?client_name=default" method="POST">
 
     @helper.inputText(form("username"))

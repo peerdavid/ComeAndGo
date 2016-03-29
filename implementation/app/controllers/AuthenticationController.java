@@ -6,6 +6,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
+import play.Configuration;
 import play.data.Form;
 import play.mvc.Result;
 
@@ -29,7 +30,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
       Form form = UserLogin.FORM.bindFromRequest();
 
       if(UserLogin.addNewUser(form))
-         return ok(views.html.index.render());
+         return ok(views.html.index.render(getUserProfile()));
       else
          return internalServerError();
    }
