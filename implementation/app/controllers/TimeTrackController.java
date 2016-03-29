@@ -17,24 +17,24 @@ import java.util.List;
 public class TimeTrackController extends UserProfileController<CommonProfile> {
 
 
-   private TimeTracking _timeTracking;
+    private TimeTracking _timeTracking;
 
 
-   @Inject
-   public TimeTrackController(TimeTracking timeTracking) {
-      _timeTracking = timeTracking;
-   }
+    @Inject
+    public TimeTrackController(TimeTracking timeTracking) {
+        _timeTracking = timeTracking;
+    }
 
 
-   public Result index() throws Exception {
-      _timeTracking.come();
-      return ok(views.html.index.render(getUserProfile()));
-   }
+    public Result index() throws Exception {
+        _timeTracking.come();
+        return ok(views.html.index.render(getUserProfile()));
+    }
 
-   @RequiresAuthentication(clientName = "default", authorizerName = "user")
-   public Result home() {
-      User user = User.findById(Integer.parseInt(getUserProfile().getId()));
-      List<TimeTrack> tracks = _timeTracking.readTimeTracks(user);
-      return ok(views.html.home.render(String.valueOf(tracks.size())));
-   }
+    @RequiresAuthentication(clientName = "default", authorizerName = "user")
+    public Result home() {
+        User user = User.findById(Integer.parseInt(getUserProfile().getId()));
+        List<TimeTrack> tracks = _timeTracking.readTimeTracks(user);
+        return ok(views.html.home.render(String.valueOf(tracks.size())));
+    }
 }

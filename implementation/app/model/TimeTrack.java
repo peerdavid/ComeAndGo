@@ -10,10 +10,10 @@ import java.util.List;
  */
 public class TimeTrack {
 
-    private int id;
-    private DateTime from;
-    private DateTime to;
-    private List<Break> breaks;
+    private int _id;
+    private DateTime _from;
+    private DateTime _to;
+    private List<Break> _breaks;
 
 
     /**
@@ -23,52 +23,52 @@ public class TimeTrack {
     public TimeTrack(){}
 
     public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) {
-        this.id = id;
-        this.from = from;
-        this.to = to;
-        this.breaks = breaks;
+        this._id = id;
+        this._from = from;
+        this._to = to;
+        this._breaks = breaks;
     }
 
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
 
-    public DateTime getFrom() {
-        return from;
+    public DateTime get_from() {
+        return _from;
     }
 
 
-    public void setFrom(DateTime from){
-        if(from.isAfter(to)){
+    public void set_from(DateTime _from){
+        if(_from.isAfter(_to)){
             throw new InvalidParameterException("From time is after to time");
         }
 
-        this.from = from;
+        this._from = _from;
     }
 
 
-    public DateTime getTo() {
-        return to;
+    public DateTime get_to() {
+        return _to;
     }
 
 
-    public void setTo(DateTime to){
-        if(to.isBefore(from)){
+    public void set_to(DateTime _to){
+        if(_to.isBefore(_from)){
             throw new InvalidParameterException("To time is before from time");
         }
 
-        this.to = to;
+        this._to = _to;
     }
 
 
-    public List<Break> getBreaks() {
-        return breaks;
+    public List<Break> get_breaks() {
+        return _breaks;
     }
 
 
     public void addBreak(Break timeBreak){
-        this.breaks.add(timeBreak);
+        this._breaks.add(timeBreak);
     }
 }

@@ -25,7 +25,7 @@ public class TimeTrackTest {
     @Test
     public void setFromTime_InEmptyObject_ShouldSucceed(){
         TimeTrack testee = new TimeTrack();
-        testee.setTo(_testFromTime);
+        testee.set_to(_testFromTime);
     }
 
 
@@ -34,8 +34,8 @@ public class TimeTrackTest {
         TimeTrack testee = new TimeTrack();
         DateTime invalidTo = new DateTime(2016, 5, 17, 7, 0);
 
-        testee.setFrom(_testFromTime);
-        testee.setTo(invalidTo);
+        testee.set_from(_testFromTime);
+        testee.set_to(invalidTo);
     }
 
 
@@ -44,8 +44,8 @@ public class TimeTrackTest {
         TimeTrack testee = new TimeTrack();
         DateTime invalidFrom = new DateTime(2016, 5, 17, 10, 0);
 
-        testee.setFrom(_testFromTime);
-        testee.setTo(_testToTime);
-        testee.setFrom(invalidFrom);
+        testee.set_from(_testFromTime);
+        testee.set_to(_testToTime);
+        testee.set_from(invalidFrom);
     }
 }

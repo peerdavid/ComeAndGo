@@ -32,9 +32,9 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public TimeTrack readTimeTrack(int id) throws NotFoundException {
-        if(_timeTracks.stream().anyMatch(timeTrack -> timeTrack.getId() == id)){
+        if(_timeTracks.stream().anyMatch(timeTrack -> timeTrack.get_id() == id)){
             return (TimeTrack) _timeTracks.stream()
-                    .filter(timeTrack -> timeTrack.getId() == id)
+                    .filter(timeTrack -> timeTrack.get_id() == id)
                     .limit(1)
                     .toArray()[0];
         }

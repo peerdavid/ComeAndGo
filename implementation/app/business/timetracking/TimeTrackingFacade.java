@@ -31,10 +31,11 @@ class TimeTrackingFacade implements TimeTracking {
 
     /*
      * ToDo: Annotate with logging and transaction = true
-     * Note: Our facade is responsible for exception handling, use case logging and transaction handling
-     * In this case we know exactly the right use case -> so we could react with (for instance): start
-     * a new subusecase, were we create a new timetrack with the same from and to time and send the report
-     * to our admin... or something like this
+     * Note: Our facade is responsible for exception handling, use case
+     * logging and transaction handling. In this case we know exactly
+     * the right use case -> so we could react with (for instance): start
+     * a new subusecase, were we create a new timetrack with the same
+     * from and to time and send the report to our admin... or something like this
      */
     @Override
     public void go() {

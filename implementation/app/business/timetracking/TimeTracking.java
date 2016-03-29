@@ -11,6 +11,8 @@ import java.util.List;
  */
 public interface TimeTracking extends UseCases {
     void come() throws Exception;
+
     void go();
+
     List<TimeTrack> readTimeTracks(User user);
 }

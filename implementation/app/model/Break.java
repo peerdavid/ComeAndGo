@@ -7,39 +7,42 @@ import org.joda.time.DateTime;
  */
 public class Break {
 
-    private int id;
-    private DateTime from;
-    private DateTime to;
+    private int _id;
+    private DateTime _from;
+    private DateTime _to;
 
 
+    /**
+     * Default ctor for break.
+     */
     public Break(int id, DateTime from, DateTime to) {
-        this.id = id;
-        this.from = from;
-        this.to = to;
+        _id = id;
+        _from = from;
+        _to = to;
     }
 
 
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
 
     public DateTime getFrom() {
-        return from;
+        return _from;
     }
 
 
     public void setFrom(DateTime from) {
-        this.from = from;
+        this._from = from;
     }
 
 
     public DateTime getTo() {
-        return to;
+        return _to;
     }
 
 
     public void setTo(DateTime to) {
-        this.to = to;
+        this._to = to;
     }
 }

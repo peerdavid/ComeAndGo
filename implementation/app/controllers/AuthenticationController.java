@@ -13,25 +13,24 @@ import play.mvc.Result;
  * Created by sebastian on 3/28/16.
  */
 public class AuthenticationController extends UserProfileController<CommonProfile> {
-   public Result loginForm() throws TechnicalException {
-      final FormClient formClient = (FormClient) config.getClients().findClient("default");
-      return ok(views.html.loginForm.render(formClient.getCallbackUrl(), UserLogin.FORM));
-   }
+    public Result loginForm() throws TechnicalException {
+        final FormClient formClient = (FormClient) config.getClients().findClient("default");
+        return ok(views.html.loginForm.render(formClient.getCallbackUrl(), UserLogin.FORM));
+    }
 
-   @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-   public Result signUp() {
-      Form<UserLogin> form = UserLogin.FORM;
-      return ok(views.html.signupForm.render(form));
-   }
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result signUp() {
+        Form<UserLogin> form = UserLogin.FORM;
+        return ok(views.html.signupForm.render(form));
+    }
 
-   @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-   public Result doSignUp() {
-      Form form = UserLogin.FORM.bindFromRequest();
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result doSignUp() {
+        Form form = UserLogin.FORM.bindFromRequest();
 
-      if(UserLogin.addNewUser(form))
-         return ok(views.html.index.render(getUserProfile()));
-      else
-         return internalServerError();
-   }
-
+        if (UserLogin.addNewUser(form))
+            return ok(views.html.index.render(getUserProfile()));
+        else
+            return internalServerError();
+    }
 }

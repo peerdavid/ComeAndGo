@@ -7,7 +7,7 @@ import play.Logger;
 import java.util.Arrays;
 
 /**
- * This class creates log entries, if a use case starts, succeeds or fails
+ * This class creates log entries, if a use case starts, succeeds or fails.
  */
 public class LoggingInterceptor implements MethodInterceptor {
 
@@ -27,7 +27,8 @@ public class LoggingInterceptor implements MethodInterceptor {
         try {
             Object result = invocation.proceed();
 
-            // The successful execution of an usecase should be logged for the support and is always @loglevel info
+            // The successful execution of an usecase should be logged for the support
+            // and is always @loglevel info
             Logger.info(
                     String.format("Invocation of method %s() with parameters %s took %.1f ms.",
                             invocation.getMethod().getName(),
@@ -36,15 +37,16 @@ public class LoggingInterceptor implements MethodInterceptor {
 
             return result;
 
-        } catch (Exception e) {
+        } catch (Exception ex) {
             // At this case, we don't know the "strength" of this error, so it's a warning
             Logger.warn(
-                    String.format("Invoking method %s() with parameters %s has thrown an error after %.1f ms..",
+                    String.format("Invoking method %s() with parameters %s has " +
+                                  "thrown an error after %.1f ms..",
                             invocation.getMethod().getName(),
                             Arrays.toString(invocation.getArguments()),
                             (System.nanoTime() - start) / 1000000.0),
-                    e);
-            throw e;
+                    ex);
+            throw ex;
         }
     }
 }

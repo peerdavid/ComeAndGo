@@ -1,15 +1,16 @@
 package business.timetracking;
 
+
 import business.notification.NotificationSender;
-import com.google.inject.Inject;
+import infrastructure.TimeTrackingRepository;
+import javassist.NotFoundException;
 import model.Notification;
 import model.TimeTrack;
 import model.User;
-import infrastructure.TimeTrackingRepository;
-import javassist.NotFoundException;
 import org.joda.time.DateTime;
-
 import java.util.List;
+import com.google.inject.Inject;
+
 
 /**
  * Created by david on 21.03.16.
@@ -29,16 +30,16 @@ class TimeTrackingServiceImpl implements TimeTrackingService{
     @Override
     public int come() {
         TimeTrack newTimeTrack = new TimeTrack();
-        newTimeTrack.setFrom(DateTime.now());
+        newTimeTrack.set_from(DateTime.now());
         _repository.createTimeTrack(newTimeTrack);
-        return newTimeTrack.getId();
+        return newTimeTrack.get_id();
     }
 
 
     @Override
     public void go(int id) throws NotFoundException {
         TimeTrack timeTrack = _repository.readTimeTrack(id);
-        timeTrack.setTo(DateTime.now());
+        timeTrack.set_to(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
 
         User current = User.findById(7);
