@@ -1,7 +1,7 @@
 package business.timetracking;
 
-import domain.TimeTrack;
-import domain.User;
+import model.TimeTrack;
+import model.User;
 import javassist.NotFoundException;
 
 import java.util.List;

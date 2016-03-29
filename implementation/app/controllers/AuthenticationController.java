@@ -1,12 +1,11 @@
 package controllers;
 
-import domain.UserLogin;
+import model.UserLogin;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
-import play.Configuration;
 import play.data.Form;
 import play.mvc.Result;
 

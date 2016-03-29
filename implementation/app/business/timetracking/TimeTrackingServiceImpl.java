@@ -2,9 +2,9 @@ package business.timetracking;
 
 import business.notification.NotificationSender;
 import com.google.inject.Inject;
-import domain.Notification;
-import domain.TimeTrack;
-import domain.User;
+import model.Notification;
+import model.TimeTrack;
+import model.User;
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;

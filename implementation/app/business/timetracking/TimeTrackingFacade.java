@@ -1,8 +1,8 @@
 package business.timetracking;
 
 import com.google.inject.Inject;
-import domain.TimeTrack;
-import domain.User;
+import model.TimeTrack;
+import model.User;
 import javassist.NotFoundException;
 
 import java.util.List;

@@ -1,8 +1,8 @@
 package business.timetracking;
 
 import business.UseCases;
-import domain.TimeTrack;
-import domain.User;
+import model.TimeTrack;
+import model.User;
 
 import java.util.List;
 

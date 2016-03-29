@@ -1,4 +1,4 @@
-package domain;
+package model;
 
 import com.avaje.ebean.Model;
 import play.data.Form;

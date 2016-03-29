@@ -1,6 +1,6 @@
 package infrastructure;
 
-import domain.User;
+import model.User;
 
 /**
  * Created by david on 29.03.16.

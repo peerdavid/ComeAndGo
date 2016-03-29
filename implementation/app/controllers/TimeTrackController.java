@@ -2,9 +2,8 @@ package controllers;
 
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
-import com.sun.org.apache.regexp.internal.RE;
-import domain.TimeTrack;
-import domain.User;
+import model.TimeTrack;
+import model.User;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;

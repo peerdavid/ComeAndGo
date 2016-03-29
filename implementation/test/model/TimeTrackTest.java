@@ -1,9 +1,8 @@
-package domain;
+package model;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import play.api.data.validation.Invalid;
 
 import java.security.InvalidParameterException;
 

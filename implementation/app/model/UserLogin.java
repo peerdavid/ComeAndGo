@@ -1,4 +1,4 @@
-package domain;
+package model;
 
 import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;

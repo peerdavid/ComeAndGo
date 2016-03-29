@@ -1,6 +1,6 @@
 package business.notification;
 
-import domain.Notification;
+import model.Notification;
 
 /**
  * Created by david on 22.03.16.

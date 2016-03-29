@@ -1,6 +1,6 @@
 package business.usermanagement.authentication;
 
-import domain.UserLogin;
+import model.UserLogin;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
