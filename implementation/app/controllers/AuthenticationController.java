@@ -28,9 +28,10 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     public Result doSignUp() {
         Form form = UserLogin.FORM.bindFromRequest();
 
-        if (UserLogin.addNewUser(form))
+        if (UserLogin.addNewUser(form)){
             return ok(views.html.index.render(getUserProfile()));
-        else
+        } else {
             return internalServerError();
+        }
     }
 }
