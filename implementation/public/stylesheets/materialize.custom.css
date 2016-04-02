@@ -1,0 +1,15 @@
+nav{
+    background-color: #4DAF50;
+}
+
+nav.top-nav {
+    height: 122px;
+    box-shadow: none;
+}
+
+nav.top-nav .page-title {
+    top:50%;
+    line-height: 122px;
+    font-size: 48px;
+    margin-top: 0px;
+}
