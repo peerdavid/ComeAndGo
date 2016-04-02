@@ -55,7 +55,8 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public void createTimeTrack(TimeTrack timeTrack) {
+    public int createTimeTrack(TimeTrack timeTrack) {
         _timeTracks.add(timeTrack);
+        return -1; // ToDo: Return id of time track
     }
 }

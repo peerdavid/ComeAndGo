@@ -31,8 +31,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService{
     public int come() {
         TimeTrack newTimeTrack = new TimeTrack();
         newTimeTrack.set_from(DateTime.now());
-        _repository.createTimeTrack(newTimeTrack);
-        return newTimeTrack.get_id();
+        int newId = _repository.createTimeTrack(newTimeTrack);
+        return newId;
     }
 
 

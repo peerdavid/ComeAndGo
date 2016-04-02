@@ -17,7 +17,7 @@ public class LoggingInterceptor implements MethodInterceptor {
 
         // Log entry of method -> happy path is always debug
         Logger.debug(
-                String.format("Invoking method %s() with parameters %s.",
+                String.format("%s() with parameters %s.",
                         invocation.getMethod().getName(),
                         Arrays.toString(invocation.getArguments())));
 
@@ -30,7 +30,7 @@ public class LoggingInterceptor implements MethodInterceptor {
             // The successful execution of an usecase should be logged for the support
             // and is always @loglevel info
             Logger.info(
-                    String.format("Invocation of method %s() with parameters %s took %.1f ms.",
+                    String.format("%s() with parameters %s took %.1f ms.",
                             invocation.getMethod().getName(),
                             Arrays.toString(invocation.getArguments()),
                             (System.nanoTime() - start) / 1000000.0));
@@ -40,7 +40,7 @@ public class LoggingInterceptor implements MethodInterceptor {
         } catch (Exception ex) {
             // At this case, we don't know the "strength" of this error, so it's a warning
             Logger.warn(
-                    String.format("Invoking method %s() with parameters %s has " +
+                    String.format("%s() with parameters %s has " +
                                   "thrown an error after %.1f ms..",
                             invocation.getMethod().getName(),
                             Arrays.toString(invocation.getArguments()),

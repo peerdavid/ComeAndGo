@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface TimeTrackingRepository {
 
-    void createTimeTrack(TimeTrack timeTrack);
+    int createTimeTrack(TimeTrack timeTrack);
     TimeTrack readTimeTrack(int id) throws NotFoundException;
     List<TimeTrack> readTimeTracks(User user);
     void updateTimeTrack(TimeTrack timeTrack);
