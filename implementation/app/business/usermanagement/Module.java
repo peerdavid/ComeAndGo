@@ -1,6 +1,5 @@
 package business.usermanagement;
 
-import business.usermanagement.authorization.SecurityRole;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
