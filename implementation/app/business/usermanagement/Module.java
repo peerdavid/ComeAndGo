@@ -1,6 +1,10 @@
 package business.usermanagement;
 
+import business.usermanagement.authorization.SecurityRole;
 import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import infrastructure.UserRepository;
 import org.pac4j.core.authorization.RequireAnyRoleAuthorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.http.client.indirect.FormClient;
@@ -8,8 +12,6 @@ import org.pac4j.play.ApplicationLogoutController;
 import org.pac4j.play.CallbackController;
 import org.pac4j.play.http.DefaultHttpActionAdapter;
 import org.pac4j.play.store.PlayCacheStore;
-import business.usermanagement.authentication.CustomUsernamePasswordAuthenticator;
-import business.usermanagement.authorization.SecurityRole;
 
 /**
  * Created by sebastian on 3/28/16.
@@ -17,7 +19,14 @@ import business.usermanagement.authorization.SecurityRole;
 public class Module extends AbstractModule {
     @Override
     protected void configure() {
-        final FormClient client = new FormClient("/login", new CustomUsernamePasswordAuthenticator());
+        bind(AuthenticatorService.class).to(AuthenticatorServiceImpl.class);
+        bind(UserManagement.class).to(UserManagementFacade.class);
+
+        Injector injector = Guice.createInjector(new infrastructure.Module());
+        UserRepository userRepository = injector.getInstance(UserRepository.class);
+
+        AuthenticatorService authenticatorService = new AuthenticatorServiceImpl(userRepository);
+        final FormClient client = new FormClient("/login", authenticatorService);
         client.setName("default");
 
         final Config config = new Config(client);
@@ -35,9 +44,11 @@ public class Module extends AbstractModule {
         callbackController.setDefaultUrl("/");
         bind(CallbackController.class).toInstance(callbackController);
 
+
         // logout
         final ApplicationLogoutController logoutController = new ApplicationLogoutController();
         logoutController.setDefaultUrl("/");
         bind(ApplicationLogoutController.class).toInstance(logoutController);
+
     }
 }

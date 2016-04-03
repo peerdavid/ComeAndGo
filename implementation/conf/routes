@@ -4,7 +4,6 @@
 
 # Home page
 GET     /                           @controllers.TimeTrackController.index
-GET     /home                       @controllers.TimeTrackController.home
 
 # Login
 GET     /login                      @controllers.AuthenticationController.loginForm

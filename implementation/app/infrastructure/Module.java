@@ -10,5 +10,6 @@ public class Module extends AbstractModule {
     @Override
     protected void configure() {
         bind(TimeTrackingRepository.class).to(TimeTrackingRepositoryImpl.class);
+        bind(UserRepository.class).to(UserRepositoryImpl.class);
     }
 }

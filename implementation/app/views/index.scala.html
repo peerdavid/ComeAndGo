@@ -1,25 +1,15 @@
 @import org.pac4j.core.profile.CommonProfile
-
 @import model.User
+
 @(profile : CommonProfile)
 
-@main("Index") {
+@main(Messages("views.index.title")) {
+    <h4>Hello @profile.getUsername</h4>
 
-    @if(profile != null) {
-        <h1>you are logged in as @(User.findById(Integer.parseInt(profile.getId)).getLogin.getUsername)</h1>
-        <a href="/logout?url=/">logout</a>
-        <br/>
-    }
-
-    <h4>Sign up</h4>
-    <p>
-        To sign up new users you need _to be admin! (username: admin, password: admin)
-    </p>
-
-    <h4>Tu es</h4>
-    <a href="/signup">sign up new user</a>
-    <p></p>
-    <p>you need _to be user (not admin)!</p>
-    <a href="/home">come & go homescreen</a>
-    <p></p>
+    <br/>
+    <a class="waves-effect waves-light btn" href="/signup">@Messages("views.index.come")</a>
+    <a class="waves-effect waves-light btn" href="/signup">@Messages("views.index.startbreak")</a>
+    <br />
+    <br />
+    <a href="/logout?url=/">logout</a>
 }

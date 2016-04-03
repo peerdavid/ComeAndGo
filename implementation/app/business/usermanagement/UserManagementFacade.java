@@ -8,14 +8,19 @@ import com.google.inject.Inject;
 public class UserManagementFacade implements UserManagement {
 
 
-    @Inject
-    public UserManagementFacade(){
+    private AuthenticatorService _authenticatorService;
 
+    @Inject
+    public UserManagementFacade(AuthenticatorService authenticatorService){
+
+        _authenticatorService = authenticatorService;
     }
 
 
     @Override
-    public void registerUser(String userName, String password, String role) {
+    public void registerUser(String userName, String password, String role,
+                             String firstName, String lastName) throws Exception {
 
+        _authenticatorService.registerNewUser(userName, password, role, firstName, lastName);
     }
 }

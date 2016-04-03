@@ -1,0 +1,18 @@
+
+
+views.login.title = Login
+
+
+views.index.title = Come & Go
+views.index.come = Come
+views.index.go = Go
+views.index.startbreak = Start break
+views.index.stopbreak = Stop break
+
+views.admin.title = Admin
+
+views.holiday.title = Holiday
+
+views.personal.title = Personal
+
+views.report.title = Calculation

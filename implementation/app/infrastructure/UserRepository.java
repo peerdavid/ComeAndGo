@@ -7,4 +7,6 @@ import model.User;
  */
 public interface UserRepository {
     void createUser(User user);
+
+    User readUser(String userName);
 }

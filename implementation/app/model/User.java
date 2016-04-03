@@ -1,12 +1,11 @@
 package model;
 
 import com.avaje.ebean.Model;
-import play.data.Form;
 import play.data.format.Formats;
+import play.data.validation.Constraints;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -14,35 +13,51 @@ import java.util.Date;
  */
 @Entity
 public class User extends Model {
-    public static final Form<User> FORM = Form.form(User.class);
-    public static final Model.Finder<Integer, User> FIND = new Model.Finder<>(User.class);
 
     @Id
     private int id;
 
+    @Constraints.MinLength(4)
+    private String userName;
+
+    @Constraints.MinLength(8)
+    private String password;
+
+    private String role;
+
     private boolean active;
 
-    private String firstname;
+    private String firstName;
 
-    private String lastname;
+    private String lastName;
 
-    @Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date lastLogin;
+
+    public User(String username, String password, String role, String firstname, String lastname, boolean active) {
+        this.userName = username;
+        this.password = password;
+        this.active = active;
+        this.firstName = firstname;
+        this.lastName = lastname;
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
     public int getId() {
         return id;
     }
 
-    public UserLogin getLogin() {
-        return UserLogin.findByUserId(id);
+    public String getUserName() {
+        return userName;
     }
 
-    public static User findById(int id) {
-        return FIND.byId(id);
-    }
-
-    public static User findByUsername(@NotNull String username) {
-        UserLogin login = UserLogin.findByUsername(username);
-        return FIND.byId(login.getUserId());
+    public String getRole() {
+        return role;
     }
 }

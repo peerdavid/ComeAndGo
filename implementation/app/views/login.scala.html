@@ -1,0 +1,16 @@
+@import model.User
+
+@(url: String, form : Form[User])
+
+@main(Messages("views.login.title")) {
+
+    <form action="@(url)?client_name=default" method="POST">
+
+        @helper.inputText(form("username"))
+
+        @helper.inputPassword(form("password"))
+
+        <input type="submit" name="submit" value="login" />
+
+    </form>
+}
