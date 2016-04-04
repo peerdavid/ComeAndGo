@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 /**
  * Created by david on 29.03.16.
  */
-public class UserManagementFacade implements UserManagement {
+class UserManagementFacade implements UserManagement {
 
 
     private AuthenticatorService _authenticatorService;

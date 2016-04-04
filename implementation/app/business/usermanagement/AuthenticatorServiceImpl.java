@@ -5,9 +5,7 @@ import infrastructure.UserRepository;
 import model.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
-import org.pac4j.core.profile.UserProfile;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
-import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
 import org.pac4j.http.profile.HttpProfile;
 
 /**
@@ -71,13 +69,13 @@ class AuthenticatorServiceImpl implements AuthenticatorService{
             throwsException("Invalid credentials");
         }
 
-        HttpProfile userProfile = getCookieForUser(possibleUser);
+        HttpProfile userProfile = getProfileForUser(possibleUser);
         credentials.setUserProfile(userProfile);
     }
 
 
     @NotNull
-    private HttpProfile getCookieForUser(User possibleUser) {
+    private HttpProfile getProfileForUser(User possibleUser) {
         HttpProfile userProfile = new HttpProfile();
         userProfile.setId(possibleUser.getId());
         userProfile.addRole(possibleUser.getRole());
