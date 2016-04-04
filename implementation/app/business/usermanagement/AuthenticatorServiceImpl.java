@@ -34,13 +34,13 @@ class AuthenticatorServiceImpl implements AuthenticatorService{
 
     @Override
     public void registerNewUser(String userName, String password, String role,
-                                String firstName, String lastName) throws Exception {
+                                String firstName, String email, String lastName) throws Exception {
 
         if(userAlreadyExists(userName)){
             throw new Exception("User already exist.");
         }
 
-        User newUser = new User(userName, password, role, firstName, lastName, true);
+        User newUser = new User(userName, password, role, firstName, lastName, email, true);
         _userRepository.createUser(newUser);
 
     }

@@ -11,7 +11,7 @@ class UserManagementFacade implements UserManagement {
     private AuthenticatorService _authenticatorService;
 
     @Inject
-    public UserManagementFacade(AuthenticatorService authenticatorService){
+    public UserManagementFacade(AuthenticatorService authenticatorService) {
 
         _authenticatorService = authenticatorService;
     }
@@ -19,8 +19,8 @@ class UserManagementFacade implements UserManagement {
 
     @Override
     public void registerUser(String userName, String password, String role,
-                             String firstName, String lastName) throws Exception {
+                             String firstName, String lastName, String email) throws Exception {
 
-        _authenticatorService.registerNewUser(userName, password, role, firstName, lastName);
+        _authenticatorService.registerNewUser(userName, password, role, firstName, lastName, email);
     }
 }
