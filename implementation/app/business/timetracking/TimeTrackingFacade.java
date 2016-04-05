@@ -30,7 +30,6 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     /*
-     * ToDo: Annotate with logging and transaction = true
      * Note: Our facade is responsible for exception handling, use case
      * logging and transaction handling. In this case we know exactly
      * the right use case -> so we could react with (for instance): start
