@@ -2,42 +2,47 @@ package business.usermanagement;
 
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
+import javassist.tools.rmi.ObjectNotFoundException;
 import model.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
+import play.i18n.Messages;
+
+import java.util.NoSuchElementException;
 
 /**
  * Created by david on 03.04.16.
  */
-class AuthenticatorServiceImpl implements AuthenticatorService{
+class AuthenticatorServiceImpl implements AuthenticatorService {
 
 
     private UserRepository _userRepository;
 
     @Inject
-    public AuthenticatorServiceImpl(UserRepository userRepository){
-
+    public AuthenticatorServiceImpl(UserRepository userRepository) {
         _userRepository = userRepository;
     }
 
     @Override
-    public User readUser(String userName) {
+    public User readUser(String userName) throws NoSuchElementException {
         return _userRepository.readUser(userName);
     }
 
     @Override
-    public boolean checkUserCredentials(User user, String password) {
-        return user != null && user.getPassword() == password;
+    public boolean checkUserCredentials(String userName, String passwordCandidate) {
+        User userToCheck = readUser(userName);
+        String hashedPassword = userToCheck.getPassword();
+        return userToCheck.checkPassword(passwordCandidate, hashedPassword);
     }
 
     @Override
     public void registerNewUser(String userName, String password, String role,
-                                String firstName, String email, String lastName) throws Exception {
+                                String firstName, String lastName, String email) throws Exception {
 
-        if(userAlreadyExists(userName)){
-            throw new Exception("User already exist.");
+        if (userAlreadyExists(userName)) {
+            throw new Exception(Messages.get("exceptions.usermanagement.user_already_exists"));
         }
 
         User newUser = new User(userName, password, role, firstName, lastName, email, true);
@@ -45,7 +50,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService{
 
     }
 
-    private boolean userAlreadyExists(String userName){
+    private boolean userAlreadyExists(String userName) {
         User aleadyExistingUser = _userRepository.readUser(userName);
         return aleadyExistingUser != null;
     }
@@ -58,15 +63,15 @@ class AuthenticatorServiceImpl implements AuthenticatorService{
     @Override
     public void validate(UsernamePasswordCredentials credentials) {
         if (credentials == null) {
-            throwsException("No credentials.");
+            throwsException(Messages.get("exceptions.usermanagement.no_credentials"));
         }
 
         String enteredUserName = credentials.getUsername();
         String enteredPassword = credentials.getPassword();
         User possibleUser = readUser(enteredUserName);
 
-        if(checkUserCredentials(possibleUser, enteredPassword)){
-            throwsException("Invalid credentials");
+        if (checkUserCredentials(enteredUserName, enteredPassword)) {
+            throwsException(Messages.get("exceptions.usermanagement.invalid_credentials"));
         }
 
         HttpProfile userProfile = getProfileForUser(possibleUser);

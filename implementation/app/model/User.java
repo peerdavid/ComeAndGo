@@ -1,6 +1,7 @@
 package model;
 
 import com.avaje.ebean.Model;
+import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
 import javax.persistence.Entity;
@@ -34,7 +35,7 @@ public class User extends Model {
 
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active) {
         this._userName = username;
-        this._password = password;
+        this._password = generatePwd(password);
         this._active = active;
         this._firstName = firstname;
         this._lastName = lastname;
@@ -47,7 +48,7 @@ public class User extends Model {
     }
 
     public void setPassword(String password) {
-        this._password = password;
+        this._password = generatePwd(password);
     }
 
     public int getId() {
@@ -60,5 +61,13 @@ public class User extends Model {
 
     public String getRole() {
         return _role;
+    }
+
+    private String generatePwd(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    public boolean checkPassword(String candidate, String hashed) {
+        return BCrypt.checkpw(candidate, hashed);
     }
 }

@@ -16,3 +16,7 @@ views.holiday.title = Holiday
 views.personal.title = Personal
 
 views.report.title = Calculation
+
+exceptions.usermanagement.invalid_credentials = Invalid Credentials
+exceptions.usermanagement.no_credentials = Invalid Credentials
+exceptions.usermanagement.user_already_exists = User already exists

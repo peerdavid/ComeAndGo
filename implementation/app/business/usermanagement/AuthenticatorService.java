@@ -8,6 +8,6 @@ import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
  */
 public interface AuthenticatorService extends UsernamePasswordAuthenticator {
     User readUser(String userName);
-    boolean checkUserCredentials(User user, String password);
+    boolean checkUserCredentials(String userName, String password);
     void registerNewUser(String userName, String password, String role, String firstName, String lastName, String email) throws Exception;
 }
