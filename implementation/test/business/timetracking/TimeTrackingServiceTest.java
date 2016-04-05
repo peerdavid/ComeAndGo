@@ -27,7 +27,7 @@ public class TimeTrackingServiceTest {
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("", "", "", "", "", true);
+        _testUser = new User("", "", "", "", "", "user@paz.at", true);
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
