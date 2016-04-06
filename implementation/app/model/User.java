@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -16,6 +17,7 @@ public class User extends Model {
     @Id
     private int _id;
 
+    @Column(name="username")
     @Constraints.MinLength(4)
     private String _userName;
 

@@ -5,7 +5,7 @@
 
 create table user (
   _id                           integer not null,
-  _user_name                    varchar(255),
+  username                      varchar(255),
   _password                     varchar(255),
   _role                         varchar(255),
   _active                       boolean,

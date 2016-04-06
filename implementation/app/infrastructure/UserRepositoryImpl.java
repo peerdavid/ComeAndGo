@@ -20,11 +20,11 @@ class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User readUser(String userName) {
-        List<User> result = Ebean.find(User.class)
-                .where().eq("userName", userName)
-                .findList();
+        User result = Ebean.find(User.class)
+                .where().eq("username", userName)
+                .findUnique();
 
-        return result.get(0);
+        return result;
     }
 
 

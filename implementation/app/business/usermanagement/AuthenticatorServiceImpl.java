@@ -70,7 +70,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
         String enteredPassword = credentials.getPassword();
         User possibleUser = readUser(enteredUserName);
 
-        if (checkUserCredentials(enteredUserName, enteredPassword)) {
+        if (!checkUserCredentials(enteredUserName, enteredPassword)) {
             throwsException(Messages.get("exceptions.usermanagement.invalid_credentials"));
         }
 
