@@ -1,18 +1,33 @@
 package model;
 
+import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
+import play.data.format.Formats;
 
+import javax.persistence.*;
 import java.security.InvalidParameterException;
 import java.util.List;
 
 /**
- * Created by david on 21.03.16.
+ * Created by stefan on 07.04.16.
  */
-public class TimeTrack {
+@Entity
+public class TimeTrack extends Model {
 
+    @Id
+    @Column(name = "id")
     private int _id;
+
+    @Formats.DateTime(pattern="dd/MM/yyyy")
+    @Column(name = "from")
     private DateTime _from;
+
+    @Formats.DateTime(pattern="dd/MM/yyyy")
+    @Column(name = "to")
     private DateTime _to;
+
+    @OneToMany(cascade= CascadeType.ALL)
+    @Column(name = "breaks")
     private List<Break> _breaks;
 
 
@@ -55,7 +70,7 @@ public class TimeTrack {
 
 
     public void set_to(DateTime _to){
-        if(_to.isBefore(_from)){
+        if(_to.isBefore(_from)) {
             throw new InvalidParameterException("To time is before from time");
         }
 
