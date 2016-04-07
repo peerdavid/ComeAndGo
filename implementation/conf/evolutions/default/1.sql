@@ -4,15 +4,15 @@
 # --- !Ups
 
 create table user (
-  _id                           integer not null,
+  id                            integer not null,
   username                      varchar(255),
-  _password                     varchar(255),
-  _role                         varchar(255),
-  _active                       boolean,
-  _first_name                   varchar(255),
-  _last_name                    varchar(255),
-  _email                        varchar(255),
-  constraint pk_user primary key (_id)
+  password                      varchar(255),
+  role                          varchar(255),
+  active                        boolean,
+  firstname                     varchar(255),
+  lastname                      varchar(255),
+  email                         varchar(255),
+  constraint pk_user primary key (id)
 );
 create sequence user_seq;
 

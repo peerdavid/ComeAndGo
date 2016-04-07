@@ -51,4 +51,5 @@ public class AuthenticationServiceTest {
         Mockito.verify(_userRepository, times(1)).createUser(any()); // Check if the function really called our repository
     }
 
+
 }

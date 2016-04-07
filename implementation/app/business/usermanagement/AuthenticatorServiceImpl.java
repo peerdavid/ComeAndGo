@@ -29,7 +29,11 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
 
     @Override
     public User readUser(String userName) throws UserException {
-        return _userRepository.readUser(userName);
+        User usertoRead = _userRepository.readUser(userName);
+        if (usertoRead == null) {
+            throw new UserException(Messages.get("exceptions.usermanagement.no_such_user"));
+        }
+        return usertoRead;
     }
 
     @Override

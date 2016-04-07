@@ -15,23 +15,30 @@ import javax.persistence.Id;
 public class User extends Model {
 
     @Id
+    @Column(name = "id")
     private int _id;
 
-    @Column(name="username")
+    @Column(name = "username")
     @Constraints.MinLength(4)
     private String _userName;
 
+    @Column(name = "password")
     @Constraints.MinLength(8)
     private String _password;
 
+    @Column(name = "role")
     private String _role;
 
+    @Column(name = "active")
     private boolean _active;
 
+    @Column(name = "firstname")
     private String _firstName;
 
+    @Column(name = "lastname")
     private String _lastName;
 
+    @Column(name = "email")
     private String _email;
 
 
