@@ -19,30 +19,29 @@ class UserManagementFacade implements UserManagement {
 
 
     @Override
-    public void registerUser(String userName, String password, String role,
-                             String firstName, String lastName, String email) throws Exception {
+    public void registerUser(User userToRegister) throws UserException {
 
-        _authenticatorService.registerNewUser(userName, password, role, firstName, lastName, email);
+        _authenticatorService.registerNewUser(userToRegister);
     }
 
 
     @Override
-    public void changeUserData(String userName, User newUserData) throws Exception {
+    public void changeUserData(String userName, User newUserData) throws UserException {
 
     }
 
     @Override
-    public void deleteUser(String userName) throws Exception {
+    public void deleteUser(String userName) throws UserException {
 
     }
 
     @Override
-    public User getUserData(String userName) {
-        return null;
+    public User getUserData(String userName) throws UserException {
+        return _authenticatorService.readUser(userName);
     }
 
     @Override
-    public boolean checkUserCredentials(String userName, String password) {
+    public boolean checkUserCredentials(String userName, String password) throws UserException {
         return _authenticatorService.checkUserCredentials(userName, password);
     }
 }

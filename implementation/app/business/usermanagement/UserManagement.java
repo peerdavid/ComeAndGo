@@ -8,15 +8,15 @@ import model.User;
  */
 public interface UserManagement extends UseCases {
 
-    void registerUser(String userName, String password, String role, String firstName, String lastName, String email) throws Exception;
+    void registerUser(User userToRegister) throws UserException;
 
-    void changeUserData(String userName, User newUserData) throws Exception;
+    void changeUserData(String userName, User newUserData) throws UserException;
 
-    void deleteUser(String userName) throws Exception;
+    void deleteUser(String userName) throws UserException;
 
-    User getUserData(String userName);
+    User getUserData(String userName) throws UserException;
 
-    boolean checkUserCredentials(String userName, String password);
+    boolean checkUserCredentials(String userName, String password) throws UserException;
 
 
 

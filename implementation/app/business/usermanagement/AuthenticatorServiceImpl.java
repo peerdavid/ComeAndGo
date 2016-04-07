@@ -4,10 +4,12 @@ import com.google.inject.Inject;
 import infrastructure.UserRepository;
 import javassist.tools.rmi.ObjectNotFoundException;
 import model.User;
+import org.hibernate.validator.internal.util.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
+import play.data.validation.Constraints;
 import play.i18n.Messages;
 
 import java.util.NoSuchElementException;
@@ -26,26 +28,25 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
-    public User readUser(String userName) throws NoSuchElementException {
+    public User readUser(String userName) throws UserException {
         return _userRepository.readUser(userName);
     }
 
     @Override
-    public boolean checkUserCredentials(String userName, String passwordCandidate) {
+    public boolean checkUserCredentials(String userName, String passwordCandidate) throws UserException {
         User userToCheck = readUser(userName);
         String hashedPassword = userToCheck.getPassword();
         return userToCheck.checkPassword(passwordCandidate, hashedPassword);
     }
 
     @Override
-    public void registerNewUser(String userName, String password, String role,
-                                String firstName, String lastName, String email) throws Exception {
+    public void registerNewUser(User newUser) throws UserException {
 
-        if (userAlreadyExists(userName)) {
-            throw new Exception(Messages.get("exceptions.usermanagement.user_already_exists"));
+        // Input validation
+        if (userAlreadyExists(newUser.getUserName())) {
+            throw new UserException(Messages.get("exceptions.usermanagement.user_already_exists"));
         }
 
-        User newUser = new User(userName, password, role, firstName, lastName, email, true);
         _userRepository.createUser(newUser);
 
     }
@@ -68,14 +69,21 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
 
         String enteredUserName = credentials.getUsername();
         String enteredPassword = credentials.getPassword();
-        User possibleUser = readUser(enteredUserName);
 
-        if (!checkUserCredentials(enteredUserName, enteredPassword)) {
-            throwsException(Messages.get("exceptions.usermanagement.invalid_credentials"));
+        try {
+            User possibleUser = readUser(enteredUserName);
+
+            if (!checkUserCredentials(enteredUserName, enteredPassword)) {
+                throwsException(Messages.get("exceptions.usermanagement.invalid_credentials"));
+            }
+
+            HttpProfile userProfile = getProfileForUser(possibleUser);
+            credentials.setUserProfile(userProfile);
+        } catch (UserException e) {
+            // ToDo: what to do with UserException?
+            e.printStackTrace();
         }
 
-        HttpProfile userProfile = getProfileForUser(possibleUser);
-        credentials.setUserProfile(userProfile);
     }
 
 

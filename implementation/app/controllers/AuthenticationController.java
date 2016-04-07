@@ -46,7 +46,9 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
 
-        _userManagement.registerUser(userName, password, role, firstName, lastName, email);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true);
+
+        _userManagement.registerUser(userToRegister);
 
         return ok(views.html.index.render(getUserProfile()));
     }
