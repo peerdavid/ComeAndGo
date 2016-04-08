@@ -68,8 +68,8 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_from(DateTime from){
-        if(_from.isAfter(_to)){
+    public void set_from(DateTime from) {
+        if (_to != null && from.isAfter(_to)) {
             throw new InvalidParameterException("From time is after to time");
         }
 
@@ -82,8 +82,8 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_to(DateTime to){
-        if(_to.isBefore(_from)) {
+    public void set_to(DateTime to) {
+        if (to.isBefore(_from)) {
             throw new InvalidParameterException("To time is before from time");
         }
 
