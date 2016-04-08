@@ -27,5 +27,14 @@ class UserRepositoryImpl implements UserRepository {
         return result;
     }
 
+    @Override
+    public User readUser(int userId) {
+        User result = Ebean.find(User.class)
+            .where().eq("id", userId)
+            .findUnique();
+
+        return result;
+    }
+
 
 }
