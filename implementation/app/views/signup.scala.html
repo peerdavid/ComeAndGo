@@ -8,7 +8,15 @@
 
     @helper.inputText(form("username"))
 
+    @helper.inputText(form("firstname"))
+
+    @helper.inputText(form("lastname"))
+
+    @helper.inputText(form("email"))
+
     @helper.inputPassword(form("password"))
+
+    @helper.inputPassword(form("repeat password"))
 
     <button type="submit" class="btn btn-default">@Messages("signup")</button>
 

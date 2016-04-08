@@ -27,4 +27,24 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         _timeTracking.come();
         return ok(views.html.index.render(getUserProfile()));
     }
+
+    @RequiresAuthentication(clientName = "default")
+    public Result come() throws Exception{
+        _timeTracking.come();
+        return ok(views.html.index.render(getUserProfile()));
+    }
+
+    /*
+    @RequiresAuthentication(clientName = "default")
+    public Result pauseStart(){
+
+        return ok(views.html.index.render(getUserProfile()));
+    }
+    */
+
+    @RequiresAuthentication(clientName = "default")
+    public Result go() throws Exception{
+        _timeTracking.go();
+        return ok("Go");
+    }
 }
