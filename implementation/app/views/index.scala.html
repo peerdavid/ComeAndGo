@@ -1,14 +1,20 @@
 @import org.pac4j.core.profile.CommonProfile
 @import model.User
 
-@(profile : CommonProfile)
+@(profile: CommonProfile)
 
 @main(Messages("views.index.title")) {
+
+
     <h4>Hello @profile.getUsername</h4>
 
     <br/>
-    <a class="waves-effect waves-light btn" href="/signup">@Messages("views.index.come")</a>
-    <a class="waves-effect waves-light btn" href="/signup">@Messages("views.index.startbreak")</a>
+    <div id="time-track-buttons">
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()">@Messages("views.index.come")</a>
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.index()">@Messages("views.index.startbreak")</a>
+        <a class="waves-effect waves-light btn" href="/signup">@Messages("views.index.stopbreak")</a>
+        <a class="waves-effect waves-light btn" href="/index">@Messages("views.index.go")</a>
+    </div>
     <br />
     <br />
     <a href="/logout?url=/">logout</a>

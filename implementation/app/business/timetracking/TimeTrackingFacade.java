@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import com.google.inject.Inject;
+import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
@@ -14,18 +15,20 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     private TimeTrackingService _timeTrackingService;
+    private UserRepository _userRepository;
 
     @Inject
-    public TimeTrackingFacade(TimeTrackingService timeTrackingService){
+    public TimeTrackingFacade(TimeTrackingService timeTrackingService, UserRepository userRepository){
         _timeTrackingService = timeTrackingService;
+        _userRepository = userRepository;
     }
 
     /*
      * ToDo: Annotate with logging and transaction = true
      */
     @Override
-    public void come() throws Exception {
-        _timeTrackingService.come();
+    public void come(int userId) throws Exception {
+        _timeTrackingService.come(userId);
     }
 
 
@@ -37,17 +40,27 @@ class TimeTrackingFacade implements TimeTracking {
      * from and to time and send the report to our admin... or something like this
      */
     @Override
-    public void go() {
+    public void go(int userId) {
         try {
-            _timeTrackingService.go(0);
+            _timeTrackingService.go(userId);
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
+    public void startBreak(int userId) {
+
+    }
 
     @Override
-    public List<TimeTrack> readTimeTracks(User user) {
-        return _timeTrackingService.readTimeTracks(user);
+    public void endBreak(int userId) {
+
+    }
+
+
+    @Override
+    public List<TimeTrack> readTimeTracks(int userId) {
+        return _timeTrackingService.readTimeTracks(userId);
     }
 }

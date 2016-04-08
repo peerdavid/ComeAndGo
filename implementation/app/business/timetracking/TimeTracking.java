@@ -10,9 +10,13 @@ import java.util.List;
  * Created by david on 21.03.16.
  */
 public interface TimeTracking extends UseCases {
-    void come() throws Exception;
+    void come(int userId) throws Exception;
 
-    void go();
+    void go(int userId);
 
-    List<TimeTrack> readTimeTracks(User user);
+    void startBreak(int userId);
+
+    void endBreak(int userId);
+
+    List<TimeTrack> readTimeTracks(int userId);
 }
