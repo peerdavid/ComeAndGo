@@ -15,12 +15,10 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     private TimeTrackingService _timeTrackingService;
-    private UserRepository _userRepository;
 
     @Inject
-    public TimeTrackingFacade(TimeTrackingService timeTrackingService, UserRepository userRepository){
+    public TimeTrackingFacade(TimeTrackingService timeTrackingService) {
         _timeTrackingService = timeTrackingService;
-        _userRepository = userRepository;
     }
 
     /*
