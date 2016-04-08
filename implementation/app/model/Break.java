@@ -4,9 +4,7 @@ import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by stefan on 07.04.16.
@@ -16,6 +14,7 @@ public class Break extends Model {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int _id;
 
    @Formats.DateTime(pattern="dd/MM/yyyy")

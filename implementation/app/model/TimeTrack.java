@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import play.data.format.Formats;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -16,7 +17,13 @@ public class TimeTrack extends Model {
 
     @Id
     @Column(name = "id")
-    private int _id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer _id;
+
+    @Column(name = "user_id")
+    @NotNull
+    @ManyToOne()
+    private User user;
 
     @Formats.DateTime(pattern="dd/MM/yyyy")
     @Column(name = "from")
@@ -55,12 +62,12 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_from(DateTime _from){
+    public void set_from(DateTime from){
         if(_from.isAfter(_to)){
             throw new InvalidParameterException("From time is after to time");
         }
 
-        this._from = _from;
+        _from = from;
     }
 
 
@@ -69,12 +76,12 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_to(DateTime _to){
+    public void set_to(DateTime to){
         if(_to.isBefore(_from)) {
             throw new InvalidParameterException("To time is before from time");
         }
 
-        this._to = _to;
+        _to = to;
     }
 
 
