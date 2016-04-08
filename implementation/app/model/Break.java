@@ -17,12 +17,12 @@ public class Break extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int _id;
 
-   @Formats.DateTime(pattern="dd/MM/yyyy")
-   @Column(name = "from")
+   @Formats.DateTime(pattern="yyyy-MM-dd")
+   @Column(name = "start", columnDefinition = "datetime")
    private DateTime _from;
 
-   @Formats.DateTime(pattern="dd/MM/yyyy")
-   @Column(name = "to")
+   @Formats.DateTime(pattern="yyyy-MM-dd")
+   @Column(name = "end", columnDefinition = "datetime")
    private DateTime _to;
 
 

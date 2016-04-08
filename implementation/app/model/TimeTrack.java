@@ -1,6 +1,7 @@
 package model;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
@@ -22,15 +23,16 @@ public class TimeTrack extends Model {
 
     @Column(name = "user_id")
     @NotNull
+    @Index
     @ManyToOne()
-    private User user;
+    private User _user;
 
-    @Formats.DateTime(pattern="dd/MM/yyyy")
-    @Column(name = "from")
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Column(name = "start", columnDefinition = "datetime")
     private DateTime _from;
 
-    @Formats.DateTime(pattern="dd/MM/yyyy")
-    @Column(name = "to")
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Column(name = "end", columnDefinition = "datetime")
     private DateTime _to;
 
     @OneToMany(cascade= CascadeType.ALL)
@@ -43,6 +45,10 @@ public class TimeTrack extends Model {
      * This will be filled by our repository (primary auto key)
      */
     public TimeTrack(){}
+
+   public TimeTrack(User user) {
+      _user = user;
+   }
 
     public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) {
         this._id = id;
