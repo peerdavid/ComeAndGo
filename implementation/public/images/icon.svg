@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
@@ -42,7 +43,7 @@
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
-     inkscape:current-layer="g4378" /><g
+     inkscape:current-layer="Layer_1" /><g
      id="Layer_1_copy"
      display="none"><g
        display="inline"
@@ -170,12 +171,12 @@
        width="512"
        height="256"
        id="rect4348"
-       style="fill:#00bcd4;fill-opacity:1" /><rect
+       style="fill:#4caf50;fill-opacity:1" /><rect
        fill="#4DAF50"
        width="512"
        height="256"
        id="rect4350"
-       style="fill:#4caf50;fill-opacity:1" /><g
+       style="fill:#00bcd4;fill-opacity:1" /><g
        id="g4352"><path
          fill="#B6B6B6"
          d="M410.227,207.571c-4.342,0-8.678-1.653-11.988-4.965c-6.623-6.621-6.623-17.355,0-23.978l50.631-50.627    l-50.631-50.63c-6.623-6.62-6.623-17.355,0-23.976c6.619-6.621,17.354-6.623,23.975,0l62.621,62.616    c3.176,3.179,4.965,7.492,4.965,11.989c0,4.496-1.789,8.81-4.965,11.987l-62.621,62.618    C418.902,205.917,414.563,207.571,410.227,207.571z"
