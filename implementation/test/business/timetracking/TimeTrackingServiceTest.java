@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
@@ -40,16 +41,16 @@ public class TimeTrackingServiceTest {
 
 
     @Test
-    public void come_ForExistingUser_ShouldReturnIdAndCallRepository(){
+    public void come_ForExistingUser_ShouldReturnIdAndCallRepository() throws UserException {
         // Prepare
-        when(_timeTrackingRepository.createTimeTrack(any(TimeTrack.class))).thenReturn(7); // If the tested function calls our repository mock, we always return 7
+        when(_timeTrackingRepository.createTimeTrack(any(TimeTrack.class), any(User.class))).thenReturn(7); // If the tested function calls our repository mock, we always return 7
         int expected = 7;
 
         // Call
         int actual = _testee.come(_testUser.getId());    // Call the function, which should also call the repository
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(any()); // Check if the function really called our repository
+        Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(any(TimeTrack.class), any(User.class)); // Check if the function really called our repository
         Assert.assertEquals(expected, actual);
     }
 }
