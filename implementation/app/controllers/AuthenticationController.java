@@ -39,10 +39,10 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     public Result doSignUp() throws Exception {
 
         Form<User> form = FORM.bindFromRequest();
-        String userName = form.data().get("userName");
+        String userName = form.data().get("username");
         String password = form.data().get("password");
-        String firstName = form.data().get("firstName");
-        String lastName = form.data().get("lastName");
+        String firstName = form.data().get("firstname");
+        String lastName = form.data().get("lastname");
         String role = form.data().get("role");
         String email = form.data().get("email");
 
