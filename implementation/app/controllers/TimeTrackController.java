@@ -24,14 +24,18 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default")
     public Result index() throws Exception {
-        _timeTracking.come();
-        return ok(views.html.index.render(getUserProfile()));
+        CommonProfile profile = getUserProfile();
+
+        _timeTracking.come(Integer.parseInt(profile.getId()));
+
+        return ok(views.html.index.render(profile));
     }
 
     @RequiresAuthentication(clientName = "default")
     public Result come() throws Exception{
-        _timeTracking.come();
-        return ok(views.html.index.render(getUserProfile()));
+        CommonProfile profile = getUserProfile();
+        _timeTracking.come(Integer.parseInt(profile.getId()));
+        return ok(views.html.index.render(profile));
     }
 
     /*
@@ -44,7 +48,8 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default")
     public Result go() throws Exception{
-        _timeTracking.go();
+        CommonProfile profile = getUserProfile();
+        _timeTracking.go(Integer.parseInt(profile.getId()));
         return ok("Go");
     }
 }
