@@ -16,24 +16,17 @@ import java.util.List;
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     private List<TimeTrack> _timeTracks = new ArrayList();
-    private TimeTrack _timeTrack1 = new TimeTrack();
-    private TimeTrack _timeTrack2 = new TimeTrack();
 
-    public TimeTrackingRepositoryImpl(){
-        _timeTracks.add(_timeTrack1);
-        _timeTracks.add(_timeTrack2);
-    }
+    public TimeTrackingRepositoryImpl(){ }
 
 
     @Override
-    public List<TimeTrack> readTimeTracks(User user) throws NotFoundException {
+    public List<TimeTrack> readTimeTracks(User user) {
        int id = user.getId();
        _timeTracks =
            Ebean.find(TimeTrack.class)
                .where().eq("user_id", id)
                .findList();
-
-       if(_timeTracks == null) throw new NotFoundException("Not found timetracks from user");
 
        return _timeTracks;
     }
@@ -63,7 +56,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public int createTimeTrack(TimeTrack timeTrack, User user) throws NotFoundException {
+    public int createTimeTrack(TimeTrack timeTrack, User user)  {
        TimeTrack newTimeTrack = new TimeTrack(user);
 
        Ebean.save(newTimeTrack);
