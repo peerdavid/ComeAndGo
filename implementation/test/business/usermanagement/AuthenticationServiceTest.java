@@ -3,20 +3,15 @@ package business.usermanagement;
 
 import infrastructure.UserRepository;
 
-import model.TimeTrack;
 import model.User;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
-import org.omg.CORBA.UserException;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by david on 02.04.16.
@@ -42,7 +37,7 @@ public class AuthenticationServiceTest {
 
         try {
             _testee.registerNewUser(_testUser);
-        } catch (business.usermanagement.UserException e) {
+        } catch (business.UserException e) {
             e.printStackTrace();
         }
 

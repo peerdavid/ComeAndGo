@@ -1,18 +1,14 @@
 package business.usermanagement;
 
+import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
-import javassist.tools.rmi.ObjectNotFoundException;
 import model.User;
-import org.hibernate.validator.internal.util.logging.Log;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
-import play.data.validation.Constraints;
 import play.i18n.Messages;
-
-import java.util.NoSuchElementException;
 
 /**
  * Created by david on 03.04.16.

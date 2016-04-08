@@ -1,6 +1,7 @@
 package business.usermanagement;
 
 import business.UseCases;
+import business.UserException;
 import model.User;
 
 /**
