@@ -69,7 +69,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         User user = _userRepository.readUser(userId);
 
         if (user == null) {
-            throw new UserException(Messages.get("exceptions.usermanagement.no_such_user"));
+            throw new UserException("exceptions.usermanagement.no_such_user");
         }
 
         return user;
