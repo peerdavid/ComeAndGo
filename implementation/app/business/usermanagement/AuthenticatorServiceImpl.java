@@ -27,7 +27,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     public User readUser(String userName) throws UserException {
         User usertoRead = _userRepository.readUser(userName);
         if (usertoRead == null) {
-            throw new UserException(Messages.get("exceptions.usermanagement.no_such_user"));
+            throw new UserException("exceptions.usermanagement.no_such_user");
         }
         return usertoRead;
     }
@@ -44,7 +44,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
 
         // Input validation
         if (userAlreadyExists(newUser.getUserName())) {
-            throw new UserException(Messages.get("exceptions.usermanagement.user_already_exists"));
+            throw new UserException("exceptions.usermanagement.user_already_exists");
         }
 
         _userRepository.createUser(newUser);
@@ -64,7 +64,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     @Override
     public void validate(UsernamePasswordCredentials credentials) {
         if (credentials == null) {
-            throwsException(Messages.get("exceptions.usermanagement.no_credentials"));
+            throwsException("exceptions.usermanagement.no_credentials");
         }
 
         String enteredUserName = credentials.getUsername();
@@ -74,7 +74,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
             User possibleUser = readUser(enteredUserName);
 
             if (!checkUserCredentials(enteredUserName, enteredPassword)) {
-                throwsException(Messages.get("exceptions.usermanagement.invalid_credentials"));
+                throwsException("exceptions.usermanagement.invalid_credentials");
             }
 
             HttpProfile userProfile = getProfileForUser(possibleUser);
