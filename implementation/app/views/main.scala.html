@@ -7,21 +7,21 @@
         <title>@title</title>
         <link rel="favicon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 
-        <!--Import Google Icon Font-->
+            <!--Import Google Icon Font-->
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-        <!-- Import all stylesheets-->
+            <!-- Import all stylesheets-->
         <link rel="stylesheet" media="screen,projection" href="@routes.Assets.at("stylesheets/materialize.css")">
         <link rel="stylesheet" media="screen,projection" href="@routes.Assets.at("stylesheets/comeandgo.css")">
 
-        <!--Let browser know website is optimized for mobile-->
+            <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     </head>
 
     <body>
 
-        <!-- Sidebar, headers etc. -->
+            <!-- Sidebar, headers etc. -->
         <header>
             <nav class="top-nav">
                 <div class="container">
@@ -32,30 +32,31 @@
                 </div>
             </nav>
 
-            <!-- Sidebar -->
+                <!-- Sidebar -->
             <ul id="slide-out" class="side-nav fixed">
                 <img src="@routes.Assets.at("images/icon.svg")" width="240px" alt="Icon">
-                <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.title")</a></li>
+                <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
                 <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
-                <li><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
                 <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
+                <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
+                <li id="nav_admn_sidebar_button"><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.title")</a></li>
 
             </ul>
         </header>
 
 
-        <!-- Main content -->
+            <!-- Main content -->
         <div class="container">
         @content
         </div>
 
 
-        <!-- Include all scripts before end of body to render faster -->
+            <!-- Include all scripts before end of body to render faster -->
         <script src="@routes.Assets.at("javascripts/jquery-2.2.2.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
 
         <script>
-                $(function(){
+                $(function () {
                     $(".button-collapse").sideNav();
                 });
         </script>

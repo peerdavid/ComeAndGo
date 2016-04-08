@@ -5,13 +5,27 @@
 @main(Messages("views.login.title")) {
 
 
-    <form action="@(url)?client_name=default" method="POST">
+    <div id="login_container">
 
-        @helper.inputText(form("username"))
+        <!---
+            <form action="@(url)?client_name=default" method="POST">
 
-        @helper.inputPassword(form("password"))
+            @helper.inputText(form("username"))
 
-        <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
+            @helper.inputPassword(form("password"))
 
-    </form>
+            <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
+        -->
+
+        <form action="@(url)?client_name=default" method="POST">
+            @Messages("views.login.username")
+            <input type="text" name="username"><br>
+            @Messages("views.login.password")
+            <input type= "password" name="password"><br>
+            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")>
+
+        </form>
+    </div>
+
+
 }

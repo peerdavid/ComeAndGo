@@ -1,8 +1,11 @@
 
 
 views.login.title = Login
+views.login.username = Username
+views.login.password = Password
 
 
+views.index.home = Home
 views.index.title = Come & Go
 views.index.come = Come
 views.index.go = Go
@@ -13,7 +16,7 @@ views.admin.title = Admin
 
 views.holiday.title = Holiday
 
-views.personal.title = Personal
+views.personal.title = Personal - Management
 
 views.report.title = Calculation
 

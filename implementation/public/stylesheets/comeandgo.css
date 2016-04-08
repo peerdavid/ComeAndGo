@@ -8,8 +8,20 @@ nav.top-nav {
 }
 
 nav.top-nav .page-title {
-    top:50%;
+    top: 50%;
     line-height: 122px;
     font-size: 48px;
     margin-top: 0px;
+}
+
+
+#login_container{
+    margin: auto;
+    padding-bottom: 20px;
+    padding-right: 40px;
+    text-align: center;
+    max-width: 400px;
+    font-weight: bold;
+
+    border: 2px solid #F6F6F6;
 }
