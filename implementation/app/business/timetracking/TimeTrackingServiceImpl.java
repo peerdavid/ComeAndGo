@@ -12,7 +12,6 @@ import model.User;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.google.inject.Inject;
-import play.i18n.Messages;
 
 
 /**
@@ -46,7 +45,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void go(int userId) throws NotFoundException, UserException {
         User user = loadUserById(userId);
 
-        TimeTrack timeTrack = _repository.readTimeTrack(user.getId());
+        TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
         timeTrack.set_to(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
 

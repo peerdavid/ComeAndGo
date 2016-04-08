@@ -4,8 +4,10 @@ import business.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
+import javassist.NotFoundException;
 import model.TimeTrack;
 import model.User;
+import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -55,5 +57,68 @@ public class TimeTrackingServiceTest {
         Mockito.verify(_userRepository, times(1)).readUser(userId); // Check if the function really called our repository
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(any(TimeTrack.class), any(User.class)); // Check if the function really called our repository
         Assert.assertEquals(expected, actual);
+    }
+
+    @Test(expected = UserException.class)
+    public void come_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(null);
+        int userId = 8;
+
+        // Call
+        _testee.come(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId); // Check if the function really called our repository
+    }
+
+    @Test
+    public void go_WithComeCalledBefore_ShouldSetToInTimeTrackAndCallRepository() throws NotFoundException, UserException {
+        // prepare
+        TimeTrack timeTrack = new TimeTrack(_testUser);
+
+        timeTrack.set_from(new DateTime(2016, 4, 7, 8, 0));
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        int userId = 8;
+
+        // Call
+        _testee.go(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Assert.assertNotEquals(timeTrack.get_to(), null);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void go_WithoutComeCalledBefore_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        int userId = 8;
+
+        // Call
+        _testee.go(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+    }
+
+    @Test(expected = UserException.class)
+    public void go_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(null);
+
+        int userId = 8;
+
+        // Call
+        _testee.go(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
     }
 }

@@ -6,6 +6,7 @@ import model.User;
 import javassist.NotFoundException;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -42,6 +43,12 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
         // We should never return null
         throw new NotFoundException("Entity does not exist.");
+    }
+
+    @Override
+    public TimeTrack getActiveTimeTrack(User user) {
+
+        return null;
     }
 
 

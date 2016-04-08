@@ -15,6 +15,8 @@ public interface TimeTrackingRepository {
 
     TimeTrack readTimeTrack(int id) throws NotFoundException;
 
+    TimeTrack getActiveTimeTrack(User user) throws NotFoundException;
+
     List<TimeTrack> readTimeTracks(User user) throws NotFoundException;
 
     void updateTimeTrack(TimeTrack timeTrack);
