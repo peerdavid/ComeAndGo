@@ -1,11 +1,13 @@
 package business.timetracking;
 
+import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,6 +45,8 @@ class TimeTrackingFacade implements TimeTracking {
             _timeTrackingService.go(userId);
         } catch (NotFoundException e) {
             e.printStackTrace();
+        } catch (UserException e) {
+            e.printStackTrace();
         }
     }
 
@@ -56,9 +60,19 @@ class TimeTrackingFacade implements TimeTracking {
 
     }
 
+    @Override
+    public boolean isActive(int userId) {
+        return false;
+    }
+
 
     @Override
     public List<TimeTrack> readTimeTracks(int userId) {
-        return _timeTrackingService.readTimeTracks(userId);
+        try {
+            return _timeTrackingService.readTimeTracks(userId);
+        } catch (UserException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 }

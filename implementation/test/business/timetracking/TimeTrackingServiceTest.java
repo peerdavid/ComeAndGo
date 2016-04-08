@@ -2,6 +2,7 @@ package business.timetracking;
 
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
+import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
 import org.junit.Assert;
@@ -21,6 +22,7 @@ public class TimeTrackingServiceTest {
 
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
+    UserRepository _userRepository;
     TimeTrackingService _testee;
     User _testUser;
 
@@ -31,7 +33,9 @@ public class TimeTrackingServiceTest {
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
-        _testee = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock);
+        _userRepository = mock(UserRepository.class);
+
+        _testee = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
     }
 
 
@@ -42,7 +46,7 @@ public class TimeTrackingServiceTest {
         int expected = 7;
 
         // Call
-        int actual = _testee.come();    // Call the function, which should also call the repository
+        int actual = _testee.come(_testUser.getId());    // Call the function, which should also call the repository
 
         // Validate
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(any()); // Check if the function really called our repository

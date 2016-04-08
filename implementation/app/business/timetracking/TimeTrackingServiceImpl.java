@@ -1,6 +1,7 @@
 package business.timetracking;
 
 
+import business.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
@@ -11,6 +12,7 @@ import model.User;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.google.inject.Inject;
+import play.i18n.Messages;
 
 
 /**
@@ -30,8 +32,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public int come(int userId) {
-        User user = _userRepository.readUser(userId);
+    public int come(int userId) throws UserException {
+        User user = loadUserById(userId);
 
         TimeTrack newTimeTrack = new TimeTrack();
         newTimeTrack.set_from(DateTime.now());
@@ -41,8 +43,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void go(int userId) throws NotFoundException {
-        User user = _userRepository.readUser(userId);
+    public void go(int userId) throws NotFoundException, UserException {
+        User user = loadUserById(userId);
 
         TimeTrack timeTrack = _repository.readTimeTrack(user.getId());
         timeTrack.set_to(DateTime.now());
@@ -55,11 +57,21 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) {
-        User user = _userRepository.readUser(userId);
+    public List<TimeTrack> readTimeTracks(int userId) throws UserException {
+        User user = loadUserById(userId);
 
         // TODO: exception handling in following line
         // return _repository.readTimeTracks(userId);
         return null;
+    }
+
+    private User loadUserById(int userId) throws UserException {
+        User user = _userRepository.readUser(userId);
+
+        if (user == null) {
+            throw new UserException(Messages.get("exceptions.usermanagement.no_such_user"));
+        }
+
+        return user;
     }
 }

@@ -18,5 +18,7 @@ public interface TimeTracking extends UseCases {
 
     void endBreak(int userId);
 
+    boolean isActive(int userId);
+
     List<TimeTrack> readTimeTracks(int userId);
 }
