@@ -44,12 +44,15 @@ public class TimeTrackingServiceTest {
     public void come_ForExistingUser_ShouldReturnIdAndCallRepository() throws UserException {
         // Prepare
         when(_timeTrackingRepository.createTimeTrack(any(TimeTrack.class), any(User.class))).thenReturn(7); // If the tested function calls our repository mock, we always return 7
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
         int expected = 7;
+        int userId = 8;
 
         // Call
-        int actual = _testee.come(_testUser.getId());    // Call the function, which should also call the repository
+        int actual = _testee.come(userId);    // Call the function, which should also call the repository
 
         // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId); // Check if the function really called our repository
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(any(TimeTrack.class), any(User.class)); // Check if the function really called our repository
         Assert.assertEquals(expected, actual);
     }
