@@ -1,5 +1,6 @@
 package infrastructure;
 
+import com.avaje.ebean.Ebean;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
@@ -15,29 +16,29 @@ import java.util.List;
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     private List<TimeTrack> _timeTracks = new ArrayList();
-    private TimeTrack _timeTrack1 = new TimeTrack();
-    private TimeTrack _timeTrack2 = new TimeTrack();
 
-    public TimeTrackingRepositoryImpl(){
-        _timeTracks.add(_timeTrack1);
-        _timeTracks.add(_timeTrack2);
-    }
+    public TimeTrackingRepositoryImpl(){ }
 
 
     @Override
     public List<TimeTrack> readTimeTracks(User user) {
-        return _timeTracks;
+       int id = user.getId();
+       _timeTracks =
+           Ebean.find(TimeTrack.class)
+               .where().eq("user_id", id)
+               .findList();
+
+       return _timeTracks;
     }
 
 
     @Override
     public TimeTrack readTimeTrack(int id) throws NotFoundException {
-        if(_timeTracks.stream().anyMatch(timeTrack -> timeTrack.get_id() == id)){
-            return (TimeTrack) _timeTracks.stream()
-                    .filter(timeTrack -> timeTrack.get_id() == id)
-                    .limit(1)
-                    .toArray()[0];
-        }
+        TimeTrack wantedTimeTrack =
+            Ebean.find(TimeTrack.class)
+                .where().eq("id", id).findUnique();
+
+       if(wantedTimeTrack != null)  return wantedTimeTrack;
 
         // We should never return null
         throw new NotFoundException("Entity does not exist.");
@@ -46,17 +47,22 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
-
+       Ebean.update(timeTrack);
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-
+       Ebean.delete(TimeTrack.class, timeTrack);
     }
 
     @Override
-    public int createTimeTrack(TimeTrack timeTrack) {
-        _timeTracks.add(timeTrack);
-        return -1; // ToDo: Return id of time track
+    public int createTimeTrack(TimeTrack timeTrack, User user)  {
+       TimeTrack newTimeTrack = new TimeTrack(user);
+
+       Ebean.save(newTimeTrack);
+       // refresh to get the auto_incremented id inside newTimeTrack
+       Ebean.refresh(newTimeTrack);
+
+       return newTimeTrack.get_id();
     }
 }

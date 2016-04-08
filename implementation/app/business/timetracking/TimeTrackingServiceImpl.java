@@ -35,7 +35,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         TimeTrack newTimeTrack = new TimeTrack();
         newTimeTrack.set_from(DateTime.now());
-        int newId = _repository.createTimeTrack(newTimeTrack);
+        int newId = _repository.createTimeTrack(newTimeTrack, user);
         return newId;
     }
 
@@ -58,6 +58,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public List<TimeTrack> readTimeTracks(int userId) {
         User user = _userRepository.readUser(userId);
 
-        return _repository.readTimeTracks(user);
+        // TODO: exception handling in following line
+        // return _repository.readTimeTracks(userId);
+        return null;
     }
 }

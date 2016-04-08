@@ -1,18 +1,42 @@
 package model;
 
+import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;
+import play.data.format.Formats;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.security.InvalidParameterException;
 import java.util.List;
 
 /**
- * Created by david on 21.03.16.
+ * Created by stefan on 07.04.16.
  */
-public class TimeTrack {
+@Entity
+public class TimeTrack extends Model {
 
-    private int _id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer _id;
+
+    @Column(name = "user_id")
+    @NotNull
+    @Index
+    @ManyToOne()
+    private User _user;
+
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Column(name = "start", columnDefinition = "datetime")
     private DateTime _from;
+
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Column(name = "end", columnDefinition = "datetime")
     private DateTime _to;
+
+    @OneToMany(cascade= CascadeType.ALL)
+    @Column(name = "breaks")
     private List<Break> _breaks;
 
 
@@ -21,6 +45,10 @@ public class TimeTrack {
      * This will be filled by our repository (primary auto key)
      */
     public TimeTrack(){}
+
+   public TimeTrack(User user) {
+      _user = user;
+   }
 
     public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) {
         this._id = id;
@@ -40,12 +68,12 @@ public class TimeTrack {
     }
 
 
-    public void set_from(DateTime _from){
+    public void set_from(DateTime from){
         if(_from.isAfter(_to)){
             throw new InvalidParameterException("From time is after to time");
         }
 
-        this._from = _from;
+        _from = from;
     }
 
 
@@ -54,12 +82,12 @@ public class TimeTrack {
     }
 
 
-    public void set_to(DateTime _to){
-        if(_to.isBefore(_from)){
+    public void set_to(DateTime to){
+        if(_to.isBefore(_from)) {
             throw new InvalidParameterException("To time is before from time");
         }
 
-        this._to = _to;
+        _to = to;
     }
 
 

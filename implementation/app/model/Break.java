@@ -1,15 +1,29 @@
 package model;
 
+import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
+import play.data.format.Formats;
+
+import javax.persistence.*;
 
 /**
- * Created by david on 21.03.16.
+ * Created by stefan on 07.04.16.
  */
-public class Break {
+@Entity
+public class Break extends Model {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int _id;
-    private DateTime _from;
-    private DateTime _to;
+
+   @Formats.DateTime(pattern="yyyy-MM-dd")
+   @Column(name = "start", columnDefinition = "datetime")
+   private DateTime _from;
+
+   @Formats.DateTime(pattern="yyyy-MM-dd")
+   @Column(name = "end", columnDefinition = "datetime")
+   private DateTime _to;
 
 
     /**
