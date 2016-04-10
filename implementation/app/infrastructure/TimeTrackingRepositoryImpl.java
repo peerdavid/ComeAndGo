@@ -6,7 +6,6 @@ import model.User;
 import javassist.NotFoundException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,9 +45,15 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public TimeTrack getActiveTimeTrack(User user) {
+    public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
+       TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
+           .where().eq("user_id", user.getId())
+           .where().isNull("end")
+           .findUnique();
+       if(actualTimeTrack != null)
+          return actualTimeTrack;
 
-        return null;
+       throw new NotFoundException("not found");
     }
 
 
