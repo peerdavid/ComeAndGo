@@ -62,7 +62,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public Break getActiveBreak() {
+    public Break getActiveBreak(User user) {
         return null;
     }
 

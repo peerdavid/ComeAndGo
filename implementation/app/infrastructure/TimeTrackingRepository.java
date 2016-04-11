@@ -24,5 +24,5 @@ public interface TimeTrackingRepository {
 
     void deleteTimeTrack(TimeTrack timeTrack);
 
-    Break getActiveBreak();
+    Break getActiveBreak(User user);
 }
