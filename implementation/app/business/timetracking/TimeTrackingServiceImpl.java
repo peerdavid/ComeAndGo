@@ -3,6 +3,7 @@ package business.timetracking;
 
 import business.UserException;
 import business.notification.NotificationSender;
+import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
@@ -31,7 +32,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public int come(int userId) throws UserException {
+    public int come(int userId) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
 
         TimeTrack newTimeTrack = new TimeTrack();
@@ -49,19 +50,18 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         timeTrack.set_to(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
 
-        User current = null;
+/*        User current = null;
         User boss = null;
         Notification notification = new Notification("Go home", current, boss, false);
-        _notificationSender.sendNotification(notification);
+        _notificationSender.sendNotification(notification);*/
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) throws UserException {
+    public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
         // TODO: exception handling in following line
-        // return _repository.readTimeTracks(userId);
-        return null;
+        return _repository.readTimeTracks(user);
     }
 
     private User loadUserById(int userId) throws UserException {

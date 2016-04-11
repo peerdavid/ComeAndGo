@@ -72,6 +72,8 @@ class TimeTrackingFacade implements TimeTracking {
             return _timeTrackingService.readTimeTracks(userId);
         } catch (UserException e) {
             e.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
         }
         return Collections.emptyList();
     }

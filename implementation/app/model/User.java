@@ -72,6 +72,14 @@ public class User extends Model {
         return _role;
     }
 
+    public String getFirstName() {
+        return _firstName;
+    }
+
+    public String getLastName() {
+        return _lastName;
+    }
+
     private String generatePwd(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }

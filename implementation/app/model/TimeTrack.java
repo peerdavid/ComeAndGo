@@ -46,8 +46,13 @@ public class TimeTrack extends Model {
      */
     public TimeTrack(){}
 
+   /**
+    * sets userId and from_time to the current date and time
+    * @param user
+    */
    public TimeTrack(User user) {
       _user = user;
+      _from = DateTime.now();
    }
 
     public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) {
