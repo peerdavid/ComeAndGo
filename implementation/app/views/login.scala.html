@@ -2,7 +2,7 @@
 
 @(url: String, form : Form[User])
 
-@main(Messages("views.login.title")) {
+@mainLogin(Messages("views.login.title")) {
 
 
     <div id="login_container">
@@ -22,9 +22,11 @@
             <input type="text" name="username"><br>
             @Messages("views.login.password")
             <input type= "password" name="password"><br>
-            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")>
+            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")><br><br>
+
 
         </form>
+        <a href="/">@Messages("views.login.forgotPassword")</a>
     </div>
 
 

@@ -3,7 +3,7 @@
 views.login.title = Login
 views.login.username = Username
 views.login.password = Password
-
+views.login.forgotPassword = Forgot Password?
 
 views.index.home = Home
 views.index.title = Come & Go
