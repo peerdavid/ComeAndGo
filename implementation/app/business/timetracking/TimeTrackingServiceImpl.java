@@ -64,7 +64,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         TimeTrack activeTimeTrack = _repository.getActiveTimeTrack(user);
 
-        return activeTimeTrack.get_to() == null;
+        return activeTimeTrack != null && activeTimeTrack.get_to() == null;
     }
 
     @Override
