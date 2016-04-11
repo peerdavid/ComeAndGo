@@ -26,11 +26,13 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     @RequiresAuthentication(clientName = "default")
     public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
-        return ok(views.html.index.render(profile, TimeTrackState.ACTIVE));
+        int userId = Integer.parseInt(profile.getId());
+
+        return ok(views.html.index.render(profile, _timeTracking.getState(userId)));
     }
 
     @RequiresAuthentication(clientName = "default")
-    public Result come() throws Exception{
+    public Result come() throws Exception {
         CommonProfile profile = getUserProfile();
         _timeTracking.come(Integer.parseInt(profile.getId()));
         // return ok(views.html.index.render(profile));
@@ -44,7 +46,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
 
-        /*
         switch (_timeTracking.getState(profileId)) {
             case ACTIVE:
                 _timeTracking.startBreak(profileId);
@@ -53,8 +54,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
                 _timeTracking.endBreak(profileId);
                 break;
             default:
-                break;
-        }*/
+        }
 
         return redirect(routes.TimeTrackController.index());
     }
