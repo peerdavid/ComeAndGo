@@ -38,3 +38,12 @@ nav.top-nav .page-title {
     height: 100%;
 }
 
+#time-track-buttons{
+    text-align: center;
+}
+
+.progress{
+    height: 32px;
+    background-color: #c8e6c9;
+}
+
