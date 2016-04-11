@@ -1,5 +1,6 @@
 package model;
 
+import business.UserException;
 import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
@@ -7,6 +8,7 @@ import play.data.validation.Constraints;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * Created by david on 21.03.16.
@@ -41,15 +43,28 @@ public class User extends Model {
     @Column(name = "email")
     private String _email;
 
+    @Column(name = "user_name_boss")
+    private String _userNameBoss;
 
-    public User(String username, String password, String role, String firstname, String lastname, String email, boolean active) {
+    public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, String bossUserName) throws UserException {
+
+
         this._userName = username;
         this._password = generatePwd(password);
         this._active = active;
         this._firstName = firstname;
         this._lastName = lastname;
         this._role = role;
-        this._email = email;
+
+        // Check format of Email-adress
+        if (new Constraints.EmailValidator().isValid(email)) {
+            this._email = email;
+        } else {
+            throw new UserException("exceptions.usermanagement.email_format");
+        }
+
+        this._userNameBoss = bossUserName;
+
     }
 
     public String getPassword() {
@@ -87,4 +102,12 @@ public class User extends Model {
     public boolean checkPassword(String candidate, String hashed) {
         return BCrypt.checkpw(candidate, hashed);
     }
+
+   public void setUserNameBoss(String name) {
+        _userNameBoss = name;
+   }
+
+   public String getUserNameBoss() {
+        return _userNameBoss;
+   }
 }

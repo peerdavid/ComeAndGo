@@ -40,6 +40,9 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
+    /*
+    ToDo: Check if a boss is set!
+     */
     public void registerNewUser(User newUser) throws UserException {
 
         // Input validation
@@ -96,11 +99,33 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
         userProfile.addPermission(possibleUser.getRole());
 
         userProfile.addAttribute("first_name", possibleUser.getFirstName());
-        userProfile.addAttribute("last_name", possibleUser.getLastName());
+        userProfile.addAttribute("family_name", possibleUser.getLastName());
 
         return userProfile;
     }
 
+    @Override
+    public void changeUser(String userName, User newUserData) throws UserException {
+        User userToChange = _userRepository.readUser(userName);
+
+        if (userToChange == null) {
+            throw new UserException("exceptions.usermanagement.no_such_user");
+        }
+        if (userToChange.getId() != newUserData.getId()) {
+            throw new UserException("exceptions.usermanagement.different_ids");
+        }
+
+        _userRepository.updateUser(newUserData);
+
+    }
+
+    @Override
+    public void deleteUser(String userToDelete) throws UserException {
+        if (_userRepository.readUser(userToDelete) == null) {
+            throw new UserException("exceptions.usermanagement.no_such_user");
+        }
+        _userRepository.deleteUser(userToDelete);
+    }
 
     protected void throwsException(final String message) {
         throw new CredentialsException(message);

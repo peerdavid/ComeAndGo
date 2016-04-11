@@ -13,6 +13,7 @@ views.index.startbreak = Start break
 views.index.stopbreak = Stop break
 
 views.admin.title = Admin
+views.admin.signup = Sign up new user
 
 views.holiday.title = Holiday
 
@@ -26,3 +27,4 @@ exceptions.usermanagement.user_already_exists = User already exists
 exceptions.usermanagement.short_password = Password must have at least length 8
 exceptions.usermanagement.email_format = Wrong Email Format
 exceptions.usermanagement.no_such_user = No such user found
+exceptions.usermanagement.different_ids = User to change has different ID to existing user

@@ -7,6 +7,7 @@ import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
+import model.Break;
 import model.Notification;
 import model.TimeTrack;
 import model.User;
@@ -57,10 +58,27 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
+    public boolean isActive(int userId) throws UserException, NotFoundException {
+        User user = loadUserById(userId);
+
+        TimeTrack activeTimeTrack = _repository.getActiveTimeTrack(user);
+
+        return activeTimeTrack.get_to() == null;
+    }
+
+    @Override
+    public boolean takesBreak(int userId) throws UserException, NotFoundException {
+        User user = loadUserById(userId);
+
+        Break activeBreak = _repository.getActiveBreak(user);
+
+        return activeBreak.getTo() == null;
+    }
+
+    @Override
     public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        // TODO: exception handling in following line
         return _repository.readTimeTracks(user);
     }
 

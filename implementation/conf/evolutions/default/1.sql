@@ -28,6 +28,7 @@ create table user (
   firstname                     varchar(255),
   lastname                      varchar(255),
   email                         varchar(255),
+  user_name_boss                varchar(255),
   constraint pk_user primary key (id)
 );
 create sequence user_seq;

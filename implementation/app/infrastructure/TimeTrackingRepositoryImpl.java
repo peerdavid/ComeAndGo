@@ -1,6 +1,7 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
+import model.Break;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
@@ -61,14 +62,29 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
+    public Break getActiveBreak(User user) throws NotFoundException {
+       TimeTrack activeTimeTrack = getActiveTimeTrack(user);
+
+       Break activeBreak =
+           Ebean.find(Break.class)
+           .where().eq("time_track_id", activeTimeTrack.get_id())
+           .where().isNull("end").findUnique();
+
+       if(activeBreak == null) {
+          throw new NotFoundException("break was not found");
+       }
+       return activeBreak;
+    }
+
+    @Override
     public int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException {
        // first ensure that there is no TimeTrack already created for this user
-/*       int rowCount = Ebean.find(TimeTrack.class)
+       int rowCount = Ebean.find(TimeTrack.class)
            .where().eq("_user_id", user.getId())
            .where().isNull("end").findRowCount();
        if(rowCount != 0) {
           throw new TimeTrackException("user already started work");
-       }*/
+       }
 
        Ebean.save(timeTrack);
        // refresh to get the auto_incremented id inside newTimeTrack

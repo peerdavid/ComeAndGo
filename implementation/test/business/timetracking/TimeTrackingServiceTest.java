@@ -122,4 +122,35 @@ public class TimeTrackingServiceTest {
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
     }
+
+    public void isActive_ForInactiveUser_ShouldCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        int userId = 8;
+        boolean expected = false;
+
+        // Call
+        boolean result = _testee.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test(expected = UserException.class)
+    public void isActive_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(null);
+
+        int userId = 8;
+        boolean expected = false;
+
+        // Call
+        boolean result = _testee.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Assert.assertEquals(result, expected);
+    }
 }
