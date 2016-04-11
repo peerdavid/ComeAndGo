@@ -13,4 +13,6 @@ public interface AuthenticatorService extends UsernamePasswordAuthenticator {
     boolean checkUserCredentials(String userName, String password) throws UserException;
 
     void registerNewUser(User userToRegister) throws UserException;
+
+    void deleteUser(String userToDelete);
 }

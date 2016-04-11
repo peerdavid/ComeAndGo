@@ -12,7 +12,7 @@ public interface UserRepository {
 
     User readUser(int userId);
 
-    void deleteUser(User user);
+    void deleteUser(String userName);
 
     void updateUser(User user);
 

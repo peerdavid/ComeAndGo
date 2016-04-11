@@ -32,8 +32,8 @@ class UserManagementFacade implements UserManagement {
     }
 
     @Override
-    public void deleteUser(String userName) throws UserException {
-
+    public void deleteUser(String userToDelete) throws UserException {
+        _authenticatorService.deleteUser(userToDelete);
     }
 
     @Override
