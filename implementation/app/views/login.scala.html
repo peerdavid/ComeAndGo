@@ -7,17 +7,6 @@
 
 
     <div id="login_container">
-
-        <!---
-            <form action="@(url)?client_name=default" method="POST">
-
-            @helper.inputText(form("username"))
-
-            @helper.inputPassword(form("password"))
-
-            <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
-        -->
-
         <form action="@(url)?client_name=default" method="POST">
             @Messages("views.login.username")
             <input type="text" name="username"><br>

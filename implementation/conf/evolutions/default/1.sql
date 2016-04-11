@@ -21,6 +21,7 @@ create table time_track (
 
 create table user (
   id                            integer not null,
+  user_name_boss                varchar(255),
   username                      varchar(255),
   password                      varchar(255),
   role                          varchar(255),
