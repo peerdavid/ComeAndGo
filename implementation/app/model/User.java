@@ -7,6 +7,7 @@ import play.data.validation.Constraints;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  * Created by david on 21.03.16.
@@ -17,6 +18,9 @@ public class User extends Model {
     @Id
     @Column(name = "id")
     private int _id;
+
+    @Column(name = "user_name_boss")
+    private String _userNameBoss = null;
 
     @Column(name = "username")
     @Constraints.MinLength(4)
@@ -40,7 +44,6 @@ public class User extends Model {
 
     @Column(name = "email")
     private String _email;
-
 
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active) {
         this._userName = username;
@@ -87,4 +90,12 @@ public class User extends Model {
     public boolean checkPassword(String candidate, String hashed) {
         return BCrypt.checkpw(candidate, hashed);
     }
+
+   public void setUserNameBoss(String name) {
+      _userNameBoss = name;
+   }
+
+   public String getUserNameBoss() {
+      return _userNameBoss;
+   }
 }

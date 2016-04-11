@@ -14,5 +14,7 @@ public interface AuthenticatorService extends UsernamePasswordAuthenticator {
 
     void registerNewUser(User userToRegister) throws UserException;
 
-    void deleteUser(String userToDelete);
+    void deleteUser(String userToDelete) throws UserException;
+
+    void changeUser(String userName, User newUserData) throws UserException;
 }
