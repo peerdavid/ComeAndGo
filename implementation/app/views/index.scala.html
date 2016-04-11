@@ -1,7 +1,8 @@
 @import org.pac4j.core.profile.CommonProfile
 @import model.User
 
-@(profile: CommonProfile)
+@import business.timetracking.TimeTrackState
+@(profile: CommonProfile,userState: TimeTrackState)
 
 @main(Messages("views.index.title"), profile) {
 

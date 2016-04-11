@@ -1,5 +1,6 @@
 package controllers;
 
+import business.timetracking.TimeTrackState;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import org.pac4j.core.profile.CommonProfile;
@@ -25,7 +26,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     @RequiresAuthentication(clientName = "default")
     public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
-        return ok(views.html.index.render(profile));
+        return ok(views.html.index.render(profile, TimeTrackState.ACTIVE));
     }
 
     @RequiresAuthentication(clientName = "default")
