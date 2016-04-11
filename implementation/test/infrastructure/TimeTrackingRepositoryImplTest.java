@@ -1,6 +1,8 @@
 package infrastructure;
 
+import business.UserException;
 import business.notification.NotificationSender;
+import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Ebean;
 import junit.framework.Assert;
 import model.Break;
@@ -28,8 +30,8 @@ public class TimeTrackingRepositoryImplTest {
    private TimeTrack _timetrack;
 
    @Before
-   public void setUp() {
-      _testuser = new User("abc", "mypw", "", "abc", "def", "asdf@jkli.at", false);
+   public void setUp() throws UserException {
+      _testuser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, "testBoss");
       _timetrack = new TimeTrack(_testuser);
       _timeTrackRepository = mock(TimeTrackingRepository.class);
    }

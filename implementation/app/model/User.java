@@ -73,7 +73,7 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.short_password");
         }
 
-        if (!role.equals(SecurityRole.ROLE_ADMIN) || !role.equals(SecurityRole.ROLE_USER) || !role.equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+        if (!role.equals(SecurityRole.ROLE_ADMIN) && !role.equals(SecurityRole.ROLE_USER) && !role.equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
             throw new UserException("exceptions.usermanagement.invalid_role");
         }
 
