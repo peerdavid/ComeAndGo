@@ -19,7 +19,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public List<TimeTrack> readTimeTracks(User user) {
        _timeTracks =
            Ebean.find(TimeTrack.class)
-               .where().eq("user_id", user.getId())
+               .where().eq("_user_id", user.getId())
                .findList();
 
        return _timeTracks;
@@ -41,7 +41,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     @Override
     public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
        TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
-           .where().eq("user_id", user.getId())
+           .where().eq("_user_id", user.getId())
            .where().isNull("end")
            .findUnique();
        if(actualTimeTrack != null)
@@ -64,7 +64,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException {
        // first ensure that there is no TimeTrack already created for this user
 /*       int rowCount = Ebean.find(TimeTrack.class)
-           .where().eq("user_id", user.getId())
+           .where().eq("_user_id", user.getId())
            .where().isNull("end").findRowCount();
        if(rowCount != 0) {
           throw new TimeTrackException("user already started work");

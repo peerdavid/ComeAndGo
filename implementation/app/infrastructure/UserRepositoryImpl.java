@@ -36,5 +36,13 @@ class UserRepositoryImpl implements UserRepository {
         return result;
     }
 
+    @Override
+    public void deleteUser(User user) {
+        Ebean.delete(User.class, user);
+    }
 
+    @Override
+    public void updateUser(User user) {
+      Ebean.update(user);
+    }
 }
