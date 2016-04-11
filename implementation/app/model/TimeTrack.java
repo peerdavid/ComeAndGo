@@ -39,13 +39,6 @@ public class TimeTrack extends Model {
     @Column(name = "breaks")
     private List<Break> _breaks;
 
-
-    /**
-     * If the Time track gets initially created, we don't need an id or anything else.
-     * This will be filled by our repository (primary auto key)
-     */
-    public TimeTrack(){}
-
    /**
     * sets userId and from_time to the current date and time
     * @param user

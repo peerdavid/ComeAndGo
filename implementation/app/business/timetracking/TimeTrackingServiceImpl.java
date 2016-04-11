@@ -35,7 +35,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public int come(int userId) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
 
-        TimeTrack newTimeTrack = new TimeTrack();
+        TimeTrack newTimeTrack = new TimeTrack(user);
         newTimeTrack.set_from(DateTime.now());
         int newId = _repository.createTimeTrack(newTimeTrack, user);
         return newId;

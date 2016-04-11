@@ -52,7 +52,6 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void startBreak(int userId) {
-
     }
 
     @Override
