@@ -12,7 +12,11 @@ GET     /logout                     @org.pac4j.play.ApplicationLogoutController.
 POST    /logout                     @org.pac4j.play.ApplicationLogoutController.logout
 GET     /signup                     @controllers.AuthenticationController.signUp
 POST    /dosignup                   @controllers.AuthenticationController.doSignUp
-GET     /index                      @controllers.TimeTrackController.come
+
+# Come & Go
+GET     /come                       @controllers.TimeTrackController.come
+GET     /go                         @controllers.TimeTrackController.go
+GET     /pause                      @controllers.TimeTrackController.pause
 
 # Map static resources _from the /public folder _to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
