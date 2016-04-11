@@ -29,14 +29,12 @@ public class Break extends Model {
     /**
      * Default ctor for break.
      */
-    public Break(int id, DateTime from, DateTime to) {
-        _id = id;
+    public Break(DateTime from, DateTime to) {
         _from = from;
         _to = to;
     }
 
-    public Break(int id, DateTime from) {
-        _id = id;
+    public Break(DateTime from) {
         _from = from;
         _to = null;
     }
