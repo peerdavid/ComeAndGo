@@ -32,7 +32,9 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result signUp() {
         Form<User> form = FORM;
-        return ok(views.html.signup.render(form));
+        CommonProfile profile = getUserProfile();
+
+        return ok(views.html.signup.render(form, profile));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -46,7 +48,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "testboss");
 
         _userManagement.registerUser(userToRegister);
 
