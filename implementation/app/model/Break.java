@@ -35,6 +35,12 @@ public class Break extends Model {
         _to = to;
     }
 
+    public Break(int id, DateTime from) {
+        _id = id;
+        _from = from;
+        _to = null;
+    }
+
 
     public int get_id() {
         return _id;
