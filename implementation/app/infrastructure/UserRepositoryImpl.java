@@ -37,7 +37,10 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteUser(User user) {
+    public void deleteUser(String userName) {
+        User user = Ebean.find(User.class)
+                .where().eq("username", userName)
+                .findUnique();
         Ebean.delete(User.class, user);
     }
 

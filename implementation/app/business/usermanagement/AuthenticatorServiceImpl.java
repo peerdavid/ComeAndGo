@@ -102,6 +102,11 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
 
+    @Override
+    public void deleteUser(String userToDelete) {
+        _userRepository.deleteUser(userToDelete);
+    }
+
     protected void throwsException(final String message) {
         throw new CredentialsException(message);
     }
