@@ -13,6 +13,7 @@ views.index.startbreak = Start break
 views.index.stopbreak = Stop break
 
 views.admin.title = Admin
+views.admin.signup = Sign up new user
 
 views.holiday.title = Holiday
 
