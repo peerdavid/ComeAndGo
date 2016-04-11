@@ -11,6 +11,7 @@ views.index.come = Come
 views.index.go = Go
 views.index.startbreak = Start break
 views.index.stopbreak = Stop break
+views.index.logout = Logout
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
@@ -26,5 +27,10 @@ exceptions.usermanagement.no_credentials = Invalid Credentials
 exceptions.usermanagement.user_already_exists = User already exists
 exceptions.usermanagement.short_password = Password must have at least length 8
 exceptions.usermanagement.email_format = Wrong Email Format
+exceptions.usermanagement.username_format = Wrong Username Format
 exceptions.usermanagement.no_such_user = No such user found
 exceptions.usermanagement.different_ids = User to change has different ID to existing user
+exceptions.usermanagement.invalid_role = Invalid User role
+exceptions.usermanagement.boss_username_format = Wrong Boss Username Format
+exceptions.usermanagement.invalid_boss = Invalid boss user name
+

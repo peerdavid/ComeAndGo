@@ -1,5 +1,6 @@
 package controllers;
 
+import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
 import model.User;
@@ -48,7 +49,9 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "testboss");
+        if(role == null) role = SecurityRole.ROLE_USER;
+
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "admin");
 
         _userManagement.registerUser(userToRegister);
 

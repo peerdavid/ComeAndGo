@@ -11,7 +11,7 @@ POST    /login                      @org.pac4j.play.CallbackController.callback
 GET     /logout                     @org.pac4j.play.ApplicationLogoutController.logout
 POST    /logout                     @org.pac4j.play.ApplicationLogoutController.logout
 GET     /signup                     @controllers.AuthenticationController.signUp
-POST    /dosignup                   @controllers.AuthenticationController.doSignUp
+POST    /signup                     @controllers.AuthenticationController.doSignUp
 
 # Come & Go
 GET     /come                       @controllers.TimeTrackController.come

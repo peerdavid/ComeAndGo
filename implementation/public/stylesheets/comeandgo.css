@@ -15,7 +15,7 @@ nav.top-nav .page-title {
 }
 
 
-#login_container{
+#login_container {
     margin: auto;
     padding: 16px;
     text-align: center;
@@ -24,3 +24,26 @@ nav.top-nav .page-title {
 
     border: 2px solid #F6F6F6;
 }
+
+
+#userProfile_container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #fff;
+}
+
+#admin_dropdown > ul > li > a {
+    display: inline;
+    height: 100%;
+}
+
+#time-track-buttons{
+    text-align: center;
+}
+
+.progress{
+    height: 32px;
+    background-color: #c8e6c9;
+}
+

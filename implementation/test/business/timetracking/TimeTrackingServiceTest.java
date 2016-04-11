@@ -2,10 +2,12 @@ package business.timetracking;
 
 import business.UserException;
 import business.notification.NotificationSender;
+import business.usermanagement.SecurityRole;
 import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
+import model.Break;
 import model.TimeTrack;
 import model.User;
 import org.joda.time.DateTime;
@@ -33,7 +35,7 @@ public class TimeTrackingServiceTest {
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("", "", "", "", "", "user@paz.at", true);
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
@@ -123,9 +125,28 @@ public class TimeTrackingServiceTest {
         Mockito.verify(_userRepository, times(1)).readUser(userId);
     }
 
+    @Test
     public void isActive_ForInactiveUser_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        int userId = 8;
+        boolean expected = false;
+
+        // Call
+        boolean result = _testee.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test
+    public void isActive_ForInactiveUserButWasActiveBefore_ShouldCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+        Break testBreak = new Break(DateTime.now());
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(testBreak);
 
         int userId = 8;
         boolean expected = false;
