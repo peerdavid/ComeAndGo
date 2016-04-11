@@ -4,7 +4,7 @@
 @import business.timetracking.TimeTrackState
 @(profile: CommonProfile, userState: TimeTrackState)
 
-@main(Messages("views.index.title")) {
+@main(Messages("views.index.title"), profile) {
 
 
     <h4>Hello @profile.getUsername</h4>
