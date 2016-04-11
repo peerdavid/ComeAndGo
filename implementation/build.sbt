@@ -6,6 +6,9 @@ lazy val `comeandgo` = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
 scalaVersion := "2.11.7"
 
+// Docker Config
+dockerRepository := Some("docker.io/comeandgo")
+
 // for authentication & authorization
 def pac4j = "org.pac4j" % "play-pac4j" % "2.1.0"
 def pac4j_http = "org.pac4j" % "pac4j-http" % "1.8.6"
