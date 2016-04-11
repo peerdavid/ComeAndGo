@@ -67,7 +67,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public boolean takesBreak(int userId) throws UserException {
+    public boolean takesBreak(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
         Break activeBreak = _repository.getActiveBreak(user);
@@ -79,7 +79,6 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        // TODO: exception handling in following line
         return _repository.readTimeTracks(user);
     }
 
