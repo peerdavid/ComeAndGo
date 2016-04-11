@@ -29,6 +29,8 @@ class TimeTrackingFacade implements TimeTracking {
     @Override
     public void come(int userId) throws Exception {
         _timeTrackingService.come(userId);
+       // TODO: delete the following line (just for test)
+       _timeTrackingService.createBreak(userId);
     }
 
 
@@ -43,6 +45,9 @@ class TimeTrackingFacade implements TimeTracking {
     public void go(int userId) {
         try {
             _timeTrackingService.go(userId);
+            //TODO: delete the following line (just for test)
+           _timeTrackingService.endBreak(userId);
+
         } catch (NotFoundException e) {
             e.printStackTrace();
         } catch (UserException e) {

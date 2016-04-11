@@ -97,8 +97,5 @@ public class TimeTrack extends Model {
 
     public void addBreak(Break breakToAdd){
         this._breaks.add(breakToAdd);
-       // TODO: check the following line if necessary
-       Ebean.save(breakToAdd);
-       Ebean.save(this);
     }
 }

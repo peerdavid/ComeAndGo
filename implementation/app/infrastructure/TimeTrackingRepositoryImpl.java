@@ -108,6 +108,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
    public void startBreak(User user) throws NotFoundException {
       TimeTrack actualTimeTrack = getActiveTimeTrack(user);
       actualTimeTrack.addBreak(new Break(DateTime.now()));
+      updateTimeTrack(actualTimeTrack);
    }
 
    @Override
