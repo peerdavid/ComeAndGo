@@ -1,5 +1,6 @@
 package infrastructure;
 
+import model.Break;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
@@ -22,4 +23,6 @@ public interface TimeTrackingRepository {
     void updateTimeTrack(TimeTrack timeTrack);
 
     void deleteTimeTrack(TimeTrack timeTrack);
+
+    Break getActiveBreak(User user);
 }
