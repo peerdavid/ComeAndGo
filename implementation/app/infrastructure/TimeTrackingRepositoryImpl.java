@@ -1,6 +1,7 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
+import model.Break;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
@@ -58,6 +59,11 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
        Ebean.delete(TimeTrack.class, timeTrack);
+    }
+
+    @Override
+    public Break getActiveBreak(User user) {
+        return null;
     }
 
     @Override
