@@ -2,6 +2,7 @@ package business.timetracking;
 
 import business.UserException;
 import business.notification.NotificationSender;
+import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
@@ -43,7 +44,7 @@ public class TimeTrackingServiceTest {
 
 
     @Test
-    public void come_ForExistingUser_ShouldReturnIdAndCallRepository() throws UserException {
+    public void come_ForExistingUser_ShouldReturnIdAndCallRepository() throws UserException, TimeTrackException {
         // Prepare
         when(_timeTrackingRepository.createTimeTrack(any(TimeTrack.class), any(User.class))).thenReturn(7); // If the tested function calls our repository mock, we always return 7
         when(_userRepository.readUser(8)).thenReturn(_testUser);
@@ -60,7 +61,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void come_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws UserException {
+    public void come_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws UserException, TimeTrackException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(null);
         int userId = 8;

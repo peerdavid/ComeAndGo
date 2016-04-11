@@ -8,11 +8,6 @@ import javassist.NotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by david on 21.03.16.
- * Note: We don't write unit tests for a repository. This should not be necessary
- * If we need it, we have made a design error.
- */
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     private List<TimeTrack> _timeTracks = new ArrayList();
@@ -22,10 +17,9 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public List<TimeTrack> readTimeTracks(User user) {
-       int id = user.getId();
        _timeTracks =
            Ebean.find(TimeTrack.class)
-               .where().eq("user_id", id)
+               .where().eq("user_id", user.getId())
                .findList();
 
        return _timeTracks;
@@ -56,7 +50,6 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
        throw new NotFoundException("not found");
     }
 
-
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
        Ebean.update(timeTrack);
@@ -68,13 +61,19 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public int createTimeTrack(TimeTrack timeTrack, User user)  {
-       TimeTrack newTimeTrack = new TimeTrack(user);
+    public int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException {
+       // first ensure that there is no TimeTrack already created for this user
+/*       int rowCount = Ebean.find(TimeTrack.class)
+           .where().eq("user_id", user.getId())
+           .where().isNull("end").findRowCount();
+       if(rowCount != 0) {
+          throw new TimeTrackException("user already started work");
+       }*/
 
-       Ebean.save(newTimeTrack);
+       Ebean.save(timeTrack);
        // refresh to get the auto_incremented id inside newTimeTrack
-       Ebean.refresh(newTimeTrack);
+       Ebean.refresh(timeTrack);
 
-       return newTimeTrack.get_id();
+       return timeTrack.get_id();
     }
 }
