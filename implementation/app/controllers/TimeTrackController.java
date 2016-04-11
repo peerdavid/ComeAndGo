@@ -40,6 +40,21 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     @RequiresAuthentication(clientName = "default")
     public Result pause(){
 
+        CommonProfile profile = getUserProfile();
+        int profileId = Integer.parseInt(profile.getId());
+
+        /*
+        switch (_timeTracking.getState(profileId)) {
+            case ACTIVE:
+                _timeTracking.startBreak(profileId);
+                break;
+            case PAUSE:
+                _timeTracking.endBreak(profileId);
+                break;
+            default:
+                break;
+        }*/
+
         return redirect(routes.TimeTrackController.index());
     }
 
