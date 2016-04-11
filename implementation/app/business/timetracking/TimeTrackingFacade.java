@@ -60,8 +60,24 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
-    public boolean isActive(int userId) {
-        return false;
+    public TimeTrackState getState(int userId) {
+        TimeTrackState result = TimeTrackState.INACTIVE;
+
+        try {
+            if(_timeTrackingService.isActive(userId)) {
+                result = TimeTrackState.ACTIVE;
+            }
+
+            if(_timeTrackingService.takesBreak(userId)) {
+                result = TimeTrackState.PAUSE;
+            }
+        } catch (UserException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            result = TimeTrackState.INACTIVE;
+        }
+
+        return result;
     }
 
 
