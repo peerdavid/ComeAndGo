@@ -2,7 +2,7 @@
 @import model.User
 
 @import business.timetracking.TimeTrackState
-@(profile: CommonProfile, userState: TimeTrackState)
+@(profile: CommonProfile,userState: TimeTrackState)
 
 @main(Messages("views.index.title"), profile) {
 
@@ -16,11 +16,11 @@
 
 
     <div id="time-track-buttons">
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left ;">@Messages("views.index.come")</a>
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float:left"> @Messages("views.index.come")</a>
         <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float: right">@Messages("views.index.go")</a>
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float:right">@Messages("views.index.go")</a>
     </div>
     <br />
     <br />
-    <a href="/logout?url=/">logout</a>
+    <a href="/logout?url=/">@Messages("views.index.logout")</a>
 }
