@@ -28,6 +28,7 @@ class UserManagementFacade implements UserManagement {
 
     @Override
     public void changeUserData(String userName, User newUserData) throws UserException {
+        _authenticatorService.changeUser(userName, newUserData);
 
     }
 
