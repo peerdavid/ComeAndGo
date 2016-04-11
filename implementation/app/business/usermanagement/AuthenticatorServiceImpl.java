@@ -96,7 +96,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
         userProfile.addPermission(possibleUser.getRole());
 
         userProfile.addAttribute("first_name", possibleUser.getFirstName());
-        userProfile.addAttribute("last_name", possibleUser.getLastName());
+        userProfile.addAttribute("family_name", possibleUser.getLastName());
 
         return userProfile;
     }
