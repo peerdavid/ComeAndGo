@@ -47,6 +47,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result pause(){
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
+        /*
         switch (_timeTracking.getState(profileId)) {
             case ACTIVE:
                 _timeTracking.startBreak(profileId);
@@ -56,7 +57,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
                 break;
             default:
                 break;
-        }
+        }*/
 
         return redirect(routes.TimeTrackController.index());
     }
