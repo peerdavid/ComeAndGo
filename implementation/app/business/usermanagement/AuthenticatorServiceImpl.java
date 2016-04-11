@@ -50,6 +50,10 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
             throw new UserException("exceptions.usermanagement.user_already_exists");
         }
 
+        if (_userRepository.readUser(newUser.getUserNameBoss()) == null) {
+            throw new UserException("exceptions.usermanagement.invalid_boss");
+        }
+
         _userRepository.createUser(newUser);
 
     }

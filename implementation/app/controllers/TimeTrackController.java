@@ -28,8 +28,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
 
-        _timeTracking.come(profileId);
-
         // return ok(views.html.index.render(profile));
         return ok(views.html.index.render(profile, TimeTrackState.INACTIVE /*_timeTracking.getState(profileId)*/));
     }
