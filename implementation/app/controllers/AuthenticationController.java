@@ -52,6 +52,6 @@ public class AuthenticationController extends UserProfileController<CommonProfil
 
         _userManagement.registerUser(userToRegister);
 
-        return redirect(routes.TimeTrackController.index());
+        return ok(views.html.index.render(getUserProfile()));
     }
 }

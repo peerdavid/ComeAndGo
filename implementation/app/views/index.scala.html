@@ -1,10 +1,9 @@
 @import org.pac4j.core.profile.CommonProfile
 @import model.User
 
-@import business.timetracking.TimeTrackState
-@(profile: CommonProfile, userState: TimeTrackState)
+@(profile: CommonProfile)
 
-@main(Messages("views.index.title")) {
+@main(Messages("views.index.title"), profile) {
 
 
     <h4>Hello @profile.getUsername</h4>
@@ -16,9 +15,9 @@
 
 
     <div id="time-track-buttons">
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left ;">@Messages("views.index.come")</a>
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()">@Messages("views.index.come")</a>
         <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float: right">@Messages("views.index.go")</a>
+        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()">@Messages("views.index.go")</a>
     </div>
     <br />
     <br />
