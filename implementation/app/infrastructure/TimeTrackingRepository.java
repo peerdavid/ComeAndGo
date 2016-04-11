@@ -25,4 +25,14 @@ public interface TimeTrackingRepository {
     void deleteTimeTrack(TimeTrack timeTrack);
 
     Break getActiveBreak(User user) throws NotFoundException;
+
+    void deleteBreak(Break actualBreak);
+
+    void updateBreak(Break actualBreak);
+
+    void startBreak(User user) throws NotFoundException;
+
+    void endBreak(Break actualBreak);
+
+    void endBreak(User user) throws NotFoundException;
 }

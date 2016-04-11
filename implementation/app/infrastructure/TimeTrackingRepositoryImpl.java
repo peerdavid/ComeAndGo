@@ -5,6 +5,7 @@ import model.Break;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,4 +93,32 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
        return timeTrack.get_id();
     }
+
+   @Override
+   public void deleteBreak(Break actualBreak) {
+      Ebean.delete(Break.class, actualBreak);
+   }
+
+   @Override
+   public void updateBreak(Break actualBreak) {
+      Ebean.update(actualBreak);
+   }
+
+   @Override
+   public void startBreak(User user) throws NotFoundException {
+      TimeTrack actualTimeTrack = getActiveTimeTrack(user);
+      actualTimeTrack.addBreak(new Break(DateTime.now()));
+   }
+
+   @Override
+   public void endBreak(Break actualBreak) {
+      actualBreak.setTo(DateTime.now());
+      updateBreak(actualBreak);
+   }
+
+   @Override
+   public void endBreak(User user) throws NotFoundException {
+      Break actualBreak = getActiveBreak(user);
+      endBreak(actualBreak);
+   }
 }

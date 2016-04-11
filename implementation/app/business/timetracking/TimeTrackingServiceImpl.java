@@ -76,6 +76,18 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
+    public void createBreak(int userId) throws UserException, NotFoundException {
+        User user = loadUserById(userId);
+        _repository.startBreak(user);
+    }
+
+    @Override
+    public void endBreak(int userId) throws UserException, NotFoundException {
+        User user = loadUserById(userId);
+        _repository.endBreak(user);
+    }
+
+    @Override
     public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 

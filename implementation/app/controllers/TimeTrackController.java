@@ -28,7 +28,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
 
-        _timeTracking.come(profileId);
+        //_timeTracking.come(profileId);
 
         // return ok(views.html.index.render(profile));
         return ok(views.html.index.render(profile, TimeTrackState.INACTIVE /*_timeTracking.getState(profileId)*/));
@@ -39,6 +39,9 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
         _timeTracking.come(profileId);
+
+        pause();
+
         return redirect(routes.TimeTrackController.index());
     }
 
@@ -65,6 +68,9 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result go() throws Exception{
         CommonProfile profile = getUserProfile();
         _timeTracking.go(Integer.parseInt(profile.getId()));
+
+       pause();
+
         return redirect(routes.TimeTrackController.index());
     }
 }

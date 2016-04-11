@@ -1,5 +1,6 @@
 package model;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;
@@ -94,7 +95,10 @@ public class TimeTrack extends Model {
     }
 
 
-    public void addBreak(Break timeBreak){
-        this._breaks.add(timeBreak);
+    public void addBreak(Break breakToAdd){
+        this._breaks.add(breakToAdd);
+       // TODO: check the following line if necessary
+       Ebean.save(breakToAdd);
+       Ebean.save(this);
     }
 }
