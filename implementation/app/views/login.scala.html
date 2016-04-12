@@ -3,7 +3,7 @@
 @import org.pac4j.core.profile.CommonProfile
 @(url: String, form : Form[User], season: Int)
 
-@mainLogin(Messages("views.login.title")) {
+@main(Messages("views.login.title")) {
 
     @if(season == 0) {
         <div id="login_background" style="background : url('@routes.Assets.at("images/login_background_spring.png")') center center ;"></div>
@@ -42,6 +42,5 @@
 
         </form>
     </div>
-
 
 }
