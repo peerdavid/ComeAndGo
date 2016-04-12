@@ -128,6 +128,7 @@ public class TimeTrackingServiceTest {
     @Test
     public void isActive_ForInactiveUser_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(null);
         when(_userRepository.readUser(8)).thenReturn(_testUser);
 
         int userId = 8;
@@ -145,8 +146,10 @@ public class TimeTrackingServiceTest {
     public void isActive_ForInactiveUserButWasActiveBefore_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
-        Break testBreak = new Break(DateTime.now());
-        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(testBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser);
+        timeTrack.set_from(DateTime.now().minusHours(1));
+        timeTrack.set_to(DateTime.now());
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
 
         int userId = 8;
         boolean expected = false;
@@ -156,6 +159,27 @@ public class TimeTrackingServiceTest {
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(any(User.class));
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test
+    public void isActive_ForActiveUser_ShouldCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+        TimeTrack timeTrack = new TimeTrack(_testUser);
+        timeTrack.set_from(DateTime.now().minusHours(1));
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
+
+        int userId = 8;
+        boolean expected = true;
+
+        // Call
+        boolean result = _testee.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(any(User.class));
         Assert.assertEquals(result, expected);
     }
 
@@ -169,6 +193,59 @@ public class TimeTrackingServiceTest {
 
         // Call
         boolean result = _testee.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test
+    public void takesBreak_ForUserNotTakingABreak_ShouldCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(null);
+
+        int userId = 8;
+        boolean expected = false;
+
+        // Call
+        boolean result = _testee.takesBreak(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(any(User.class));
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test
+    public void takesBreak_ForUserInBreak_ShouldCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+        Break testBreak = new Break(DateTime.now());
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(testBreak);
+
+        int userId = 8;
+        boolean expected = true;
+
+        // Call
+        boolean result = _testee.takesBreak(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(any(User.class));
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test(expected = UserException.class)
+    public void takesBreak_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+        // Prepare
+        when(_userRepository.readUser(8)).thenReturn(null);
+
+        int userId = 8;
+        boolean expected = false;
+
+        // Call
+        boolean result = _testee.takesBreak(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
