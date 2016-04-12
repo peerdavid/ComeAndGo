@@ -73,7 +73,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         Break activeBreak = _repository.getActiveBreak(user);
 
-        return activeBreak.getTo() == null;
+        return activeBreak != null && activeBreak.getTo() == null;
     }
 
     @Override
