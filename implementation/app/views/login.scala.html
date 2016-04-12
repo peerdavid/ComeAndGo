@@ -1,46 +1,47 @@
 @import model.User
 
 @import org.pac4j.core.profile.CommonProfile
-@(url: String, form : Form[User], season: Int)
+@(url: String, form: Form[User], season: Int)
 
 @main(Messages("views.login.title")) {
 
     @if(season == 0) {
-        <div id="login_background" style="background : url('@routes.Assets.at("images/login_background_spring.png")') center center ;"></div>
+        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_spring.png") ') center center ;"></div>
     }
     @if(season == 1) {
-        <div id="login_background" style="background: url('@routes.Assets.at("images/login_background_summer.png")') center center;"></div>
+        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_summer.png") ') center center;"></div>
     }
     @if(season == 2) {
-        <div id="login_background" style="background: url('@routes.Assets.at("images/login_background_fall.png")') center center;"></div>
+        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_fall.png") ') center center;"></div>
     }
     @if(season == 3) {
-        <div id="login_background" style="background: url('@routes.Assets.at("images/login_background_winter.png")') center center;"></div>
+        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_winter.png") ') center center;"></div>
     }
 
     <div id="login_container">
 
-        <!---
+            <!---
             <form action="@(url)?client_name=default" method="POST">
 
-            @helper.inputText(form("username"))
+        @helper.inputText(form("username"))
 
-            @helper.inputPassword(form("password"))
+        @helper.inputPassword(form("password"))
 
-            <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
+        <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
         -->
 
         <h3>@Messages("views.login.title")</h3>
 
         <form action="@(url)?client_name=default" method="POST">
-            @Messages("views.login.username")
-            <input type="text" name="username"><br>
-            @Messages("views.login.password")
-            <input type= "password" name="password"><br>
-            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")><br><br>
 
+            @Messages("views.login.username")
+            <input type="text" name="username"> <br>
+            @Messages("views.login.password")
+            <input type= "password" name="password"> <br>
+            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")> <br> <br>
 
         </form>
+
     </div>
 
 }

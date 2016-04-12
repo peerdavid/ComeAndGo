@@ -2,29 +2,29 @@
 @import model.User
 
 @import business.timetracking.TimeTrackState
-@(profile: CommonProfile,userState: TimeTrackState)
+@(profile: CommonProfile, userState: TimeTrackState)
 
-@main(Messages("views.index.title")) {
+    @main(Messages("views.index.title")) {
 
-    @navigation(Messages("views.index.title"), profile) {
+        @navigation(Messages("views.index.title"), profile) {
 
-        <h4>Hello @profile.getUsername</h4>
+            <h4>Hello @profile.getUsername</h4>
 
-        <br/>
-        <div class="progress">
-            <div class="indeterminate"></div>
-        </div>
+            <br/>
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
 
 
-        <div id="time-track-buttons">
-            <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
-            <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-            <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
-        </div>
-        <br />
-        <br />
-        <a href="/logout?url=/">@Messages("views.index.logout")</a>
+            <div id="time-track-buttons">
+                <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+            </div>
+            <br />
+            <br />
+            <a href="/logout?url=/">@Messages("views.index.logout")</a>
+
+        }
 
     }
-
-}
