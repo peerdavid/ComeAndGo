@@ -10,6 +10,8 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
 import play.i18n.Messages;
 
+import java.util.List;
+
 /**
  * Created by david on 03.04.16.
  */
@@ -30,6 +32,11 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
             throw new UserException("exceptions.usermanagement.no_such_user");
         }
         return usertoRead;
+    }
+
+    @Override
+    public List<User> getListOfUsers() throws UserException {
+        return null;
     }
 
     @Override
