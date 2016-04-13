@@ -10,6 +10,7 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
 import play.i18n.Messages;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -124,6 +125,21 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
         }
         if (userToChange.getId() != newUserData.getId()) {
             throw new UserException("exceptions.usermanagement.different_ids");
+        }
+        // Check if there exists at least one user with role administrator
+        if (userToChange.getRole().equals(SecurityRole.ROLE_ADMIN) && !newUserData.getRole().equals(SecurityRole.ROLE_ADMIN)) {
+            List<User> userList = _userRepository.getAllUsers();
+            boolean foundAdmin = false;
+            for (User u : userList) {
+                if (u.getRole().equals(SecurityRole.ROLE_ADMIN)) {
+                    foundAdmin = true;
+                    break;
+                }
+            }
+
+            if (!foundAdmin) {
+                throw new UserException("exceptions.usermanagement.at_least_one_admin");
+            }
         }
 
         _userRepository.updateUser(newUserData);

@@ -37,4 +37,5 @@ exceptions.usermanagement.different_ids = User to change has different ID to exi
 exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.boss_username_format = Wrong Boss Username Format
 exceptions.usermanagement.invalid_boss = Invalid boss user name
+exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
 
