@@ -35,13 +35,24 @@ nav.top-nav .page-title {
     background-size: cover;
 }
 
+#logout-btn {
+    height: 36px;
+    line-height: 36px;
+    color: #FFF;
+}
 
-#userProfile_container {
-    position: absolute;
+.userProfile_container {
+    padding: 0 12px;
+    height: 138px;
     bottom: 0;
-    width: 100%;
+    top: auto;
     background: #fff;
     line-height: 32px;
+}
+
+.userProfile_container .chip {
+    width: 100%;
+    margin: 6px 0 16px;
 }
 
 #admin_dropdown > ul > li > a {
@@ -60,12 +71,6 @@ nav.top-nav .page-title {
 #active_progress {
     height: 32px;
     background: #ff5722;
-}
-
-#logout-btn {
-    height: 36px;
-    line-height: 36px;
-    color: #FFF;
 }
 
 /* change texterea colors */
