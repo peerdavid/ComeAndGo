@@ -48,7 +48,11 @@ nav.top-nav .page-title {
     height: 100%;
 }
 
-#time-track-buttons{
+#index-time-track-buttons{
+    text-align: center;
+}
+
+#index-welcome-status{
     text-align: center;
 }
 

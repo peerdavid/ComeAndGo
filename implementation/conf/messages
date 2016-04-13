@@ -12,6 +12,8 @@ views.index.go = Go
 views.index.startbreak = Start break
 views.index.stopbreak = Stop break
 views.index.logout = Logout
+views.index.state = State
+views.index.welcomeMessage = Hello
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
