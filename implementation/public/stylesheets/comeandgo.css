@@ -14,6 +14,14 @@ nav.top-nav .page-title {
     margin-bottom: 140px;
 }
 
+.content-wrap {
+    margin-left: 240px;
+}
+
+.fullwidth-container {
+    margin-left: 4em;
+}
+
 #login_container {
     position: absolute;
     right: 20%;
@@ -122,5 +130,13 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 
 /* tablets & phones */
 @media (max-width: 991px) {
+    .content-wrap {
+        margin: 0;
+    }
+
+    .fullwidth-container {
+        margin: auto;
+    }
+
 }
 
