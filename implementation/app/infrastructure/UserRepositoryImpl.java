@@ -48,4 +48,13 @@ class UserRepositoryImpl implements UserRepository {
     public void updateUser(User user) {
       Ebean.update(user);
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> userList =
+            Ebean.find(User.class)
+            .findList();
+
+        return userList;
+    }
 }
