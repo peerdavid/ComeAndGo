@@ -89,14 +89,14 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
+    public List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
 
         return _repository.readTimeTracks(user);
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, NotFoundException {
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
        return _repository.readTimeTracks(user, from, to);
     }

@@ -31,11 +31,13 @@ public class TimeTrackingServiceTest {
     UserRepository _userRepository;
     TimeTrackingService _timeTrackService;
     User _testUser;
+    Break _testBreak;
 
 
     @Before
     public void SetUp() throws Exception {
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
+        _testBreak = new Break(DateTime.now());
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
@@ -253,7 +255,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void creatingBreakForUserNotExistsShouldThrowUserException() throws TimeTrackException, UserException, NotFoundException {
+    public void creatingBreak_ForUserNotExists_ShouldThrowUserException() throws TimeTrackException, UserException, NotFoundException {
         //prepare
         when(_userRepository.readUser(7)).thenReturn(null);
 
@@ -265,7 +267,7 @@ public class TimeTrackingServiceTest {
 
 
     @Test(expected = UserException.class)
-    public void creatingBreakForUserNotCameBeforeShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+    public void creatingBreak_ForUserNotCameBefore_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
         //prepare
         when(_timeTrackService.isActive(7)).thenReturn(false);
 
@@ -277,7 +279,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void test2() throws UserException, NotFoundException, TimeTrackException {
+    public void creatingABreak_WhenUserAlreadyDidBefore_ShouldThrowUserException() throws UserException, NotFoundException, TimeTrackException {
         //prepare
         when(_timeTrackService.takesBreak(7)).thenReturn(true);
 
@@ -289,10 +291,17 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void test() throws UserException, NotFoundException {
+    public void endBreak_WhenUserDidNotStartBreak_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
         //prepare
-        when(_timeTrackService.takesBreak(7)).thenReturn(true);
+        when(_userRepository.readUser(7)).thenReturn(_testUser);
+        when(_timeTrackService.takesBreak(any(Integer.class))).thenReturn(false);
+        when(_timeTrackingRepository.getActiveBreak(_testUser)).thenReturn(null);
 
+        int userId = 7;
+        _timeTrackService.endBreak(userId);
 
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackService, times(1)).takesBreak(userId);
     }
+
 }

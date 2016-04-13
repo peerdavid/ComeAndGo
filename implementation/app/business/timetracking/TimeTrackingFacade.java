@@ -101,7 +101,7 @@ class TimeTrackingFacade implements TimeTracking {
             return _timeTrackingService.readTimeTracks(userId);
         } catch (UserException e) {
             e.printStackTrace();
-        } catch (NotFoundException e) {
+        } catch (TimeTrackException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
@@ -111,7 +111,7 @@ class TimeTrackingFacade implements TimeTracking {
     public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) {
         try {
             return _timeTrackingService.readTimeTracks(userId, from, to);
-        } catch (UserException | NotFoundException e) {
+        } catch (UserException | TimeTrackException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();

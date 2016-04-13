@@ -15,13 +15,13 @@ public interface TimeTrackingRepository {
 
     int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException;
 
-    TimeTrack readTimeTrack(int id) throws NotFoundException;
+    TimeTrack readTimeTrack(int id) throws TimeTrackException;
 
     TimeTrack getActiveTimeTrack(User user) throws NotFoundException;
 
-    List<TimeTrack> readTimeTracks(User user) throws NotFoundException;
+    List<TimeTrack> readTimeTracks(User user) throws TimeTrackException;
 
-    List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws NotFoundException;
+    List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException;
 
     void updateTimeTrack(TimeTrack timeTrack);
 

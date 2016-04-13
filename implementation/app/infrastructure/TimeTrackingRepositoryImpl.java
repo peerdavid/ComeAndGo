@@ -19,13 +19,13 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
 
     @Override
-    public List<TimeTrack> readTimeTracks(User user) throws NotFoundException{
+    public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
         _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
                 .findList();
 
-       if(_timeTracks == null) throw new NotFoundException("timetracks not found");
+       if(_timeTracks == null) throw new TimeTrackException("timetracks not found");
 
         return _timeTracks;
     }
@@ -40,21 +40,24 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     * @throws NotFoundException
     */
     @Override
-    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws NotFoundException {
-        _timeTracks =
+    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException {
+       if(from.isAfter(to))
+          throw new TimeTrackException("from is after to");
+
+       _timeTracks =
             Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())
             .where().ge("start", from)
             .where().le("end", to)
             .findList();
 
-       if(_timeTracks == null) throw new NotFoundException("list of timetracks not found");
+       if(_timeTracks == null) throw new TimeTrackException("list of timetracks not found");
 
        return _timeTracks;
     }
 
     @Override
-    public TimeTrack readTimeTrack(int id) throws NotFoundException {
+    public TimeTrack readTimeTrack(int id) throws TimeTrackException {
         TimeTrack wantedTimeTrack =
             Ebean.find(TimeTrack.class)
                 .where().eq("id", id).findUnique();
@@ -64,7 +67,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         }
 
         // We should never return null
-        throw new NotFoundException("Entity does not exist.");
+        throw new TimeTrackException("Entity does not exist.");
     }
 
     @Override
