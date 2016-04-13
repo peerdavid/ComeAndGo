@@ -4,6 +4,8 @@ import business.UserException;
 import com.google.inject.Inject;
 import model.User;
 
+import java.util.List;
+
 /**
  * Created by david on 29.03.16.
  */
@@ -40,6 +42,11 @@ class UserManagementFacade implements UserManagement {
     @Override
     public User getUserData(String userName) throws UserException {
         return _authenticatorService.readUser(userName);
+    }
+
+    @Override
+    public List<User> getAllUsers() throws UserException {
+        return _authenticatorService.getListOfUsers();
     }
 
     @Override
