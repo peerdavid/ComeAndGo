@@ -36,7 +36,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
 
     @Override
     public List<User> getListOfUsers() throws UserException {
-        return null;
+        return _userRepository.getAllUsers();
     }
 
     @Override
