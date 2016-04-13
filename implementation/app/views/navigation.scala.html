@@ -6,7 +6,7 @@
 
 <!-- Sidebar, headers etc. -->
 <header>
-    <nav class="top-nav">
+    <nav class="top-nav green">
         <div class="container">
             <div class="nav-wrapper">
                 <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
@@ -44,8 +44,15 @@
 
             <!-- User Profile -->
         <li id="userProfile_container">
-            <ban>Logged in as </ban><br>
-            <ban>@profile.getFirstName @profile.getFamilyName</ban>
+            <span>@Messages("views.navigation.loggedinas")</span><br>
+
+            <div class="chip">
+                <img src="@routes.Assets.at("images/icons_account.png")" alt="User">
+                    @(profile.getFirstName + " " + profile.getFamilyName)
+            </div><br>
+
+            <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
+
         </li>
     </ul>
 </header>

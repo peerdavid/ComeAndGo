@@ -27,8 +27,9 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
+        int progress = 70;
 
-        return ok(views.html.index.render(profile, _timeTracking.getState(userId)));
+        return ok(views.html.index.render(profile, _timeTracking.getState(userId), progress));
     }
 
     @RequiresAuthentication(clientName = "default")
