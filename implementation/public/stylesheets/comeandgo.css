@@ -22,6 +22,10 @@ nav.top-nav .page-title {
     border: 2px solid #F6F6F6;
 }
 
+#login_container .input-field > i {
+    padding-top: 9px;
+}
+
 #login_background {
     position: fixed;
     left: 0;
