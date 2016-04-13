@@ -52,11 +52,20 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void startBreak(int userId) {
+        try {
+            _timeTrackingService.createBreak(userId);
+        } catch (UserException | NotFoundException e) {
+            // TODO: add exception handling here
+        }
     }
 
     @Override
     public void endBreak(int userId) {
-
+        try {
+            _timeTrackingService.endBreak(userId);
+        } catch (UserException | NotFoundException e) {
+            // TODO: add exception handling here
+        }
     }
 
     @Override
@@ -74,7 +83,7 @@ class TimeTrackingFacade implements TimeTracking {
         } catch (UserException e) {
             e.printStackTrace();
         } catch (NotFoundException e) {
-            result = TimeTrackState.INACTIVE;
+            e.printStackTrace();
         }
 
         return result;

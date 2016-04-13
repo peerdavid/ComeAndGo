@@ -1,14 +1,21 @@
 package model;
 
 import business.UserException;
+import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
+import play.data.validation.ValidationError;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.ConstraintViolation;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by david on 21.03.16.
@@ -48,23 +55,40 @@ public class User extends Model {
 
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, String bossUserName) throws UserException {
 
+        // Data Validation
 
-        this._userName = username;
-        this._password = generatePwd(password);
-        this._active = active;
-        this._firstName = firstname;
-        this._lastName = lastname;
-        this._role = role;
+        if (username.length() < 4 || username.length() > 20) {
+            throw new UserException("exceptions.usermanagement.username_format");
+        }
 
-        // Check format of Email-adress
-        if (new Constraints.EmailValidator().isValid(email)) {
-            this._email = email;
-        } else {
+        if (password.length() < 8) {
+            throw new UserException("exceptions.usermanagement.short_password");
+        }
+
+        if (!(new Constraints.EmailValidator().isValid(email))) {
             throw new UserException("exceptions.usermanagement.email_format");
         }
 
-        this._userNameBoss = bossUserName;
+        if (firstname.length() < 2 || lastname.length() < 2 || firstname.length() > 50 || lastname.length() > 50) {
+            throw new UserException("exceptions.usermanagement.short_password");
+        }
 
+        if (!role.equals(SecurityRole.ROLE_ADMIN) && !role.equals(SecurityRole.ROLE_USER) && !role.equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            throw new UserException("exceptions.usermanagement.invalid_role");
+        }
+
+        if (bossUserName.length() < 4 || username.length() > 20) {
+            throw new UserException("exceptions.usermanagement.boss_username_format");
+        }
+
+        this._userName = username;
+        this._password = generatePwd(password);
+        this._email = email;
+        this._firstName = firstname;
+        this._lastName = lastname;
+        this._role = role;
+        this._userNameBoss = bossUserName;
+        this._active = active;
     }
 
     public String getPassword() {
@@ -110,4 +134,5 @@ public class User extends Model {
    public String getUserNameBoss() {
         return _userNameBoss;
    }
+
 }

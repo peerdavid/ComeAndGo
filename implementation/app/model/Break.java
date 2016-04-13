@@ -27,15 +27,19 @@ public class Break extends Model {
 
 
     /**
-     * Default ctor for break.
+     * @param from, to
      */
     public Break(DateTime from, DateTime to) {
-        _from = from;
-        _to = to;
+        setFrom(from);
+        setTo(to);
     }
 
+   /**
+    * start break at "from" and end is meanwhile set to null
+    * @param from
+    */
     public Break(DateTime from) {
-        _from = from;
+        setFrom(from);
         _to = null;
     }
 
@@ -61,6 +65,9 @@ public class Break extends Model {
 
 
     public void setTo(DateTime to) {
-        this._to = to;
+       if(to.isBefore(_from)) {
+          throw new IllegalArgumentException("to time is before from time");
+       }
+       _to = to;
     }
 }

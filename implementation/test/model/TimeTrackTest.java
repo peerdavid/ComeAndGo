@@ -1,5 +1,7 @@
 package model;
 
+import business.UserException;
+import business.usermanagement.SecurityRole;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +19,8 @@ public class TimeTrackTest {
     User _testUser;
 
     @Before
-    public void setUp(){
-        _testUser = new User("", "", "", "", "", "", false);
+    public void setUp() throws UserException {
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, "testBoss");
         _testFromTime = new DateTime(2016, 5, 17, 8, 0);
         _testToTime = new DateTime(2016, 5, 17, 9, 0);
     }

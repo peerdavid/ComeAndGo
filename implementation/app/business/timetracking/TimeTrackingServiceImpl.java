@@ -14,6 +14,7 @@ import model.User;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.google.inject.Inject;
+import play.Logger;
 
 
 /**
@@ -63,7 +64,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         TimeTrack activeTimeTrack = _repository.getActiveTimeTrack(user);
 
-        return activeTimeTrack.get_to() == null;
+        return activeTimeTrack != null && activeTimeTrack.get_to() == null;
     }
 
     @Override
@@ -72,7 +73,19 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         Break activeBreak = _repository.getActiveBreak(user);
 
-        return activeBreak.getTo() == null;
+        return activeBreak != null && activeBreak.getTo() == null;
+    }
+
+    @Override
+    public void createBreak(int userId) throws UserException, NotFoundException {
+       User user = loadUserById(userId);
+       _repository.startBreak(user);
+    }
+
+    @Override
+    public void endBreak(int userId) throws UserException, NotFoundException {
+        User user = loadUserById(userId);
+        _repository.endBreak(user);
     }
 
     @Override

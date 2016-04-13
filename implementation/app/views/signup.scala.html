@@ -3,39 +3,26 @@
 @import org.pac4j.core.profile.CommonProfile
 @(form: Form[User], profile: CommonProfile)
 
-@main(Messages("views.admin.title"), profile){
+    @main(Messages("views.admin.title")) {
 
-    @helper.form(action = routes.AuthenticationController.doSignUp) {
+        @navigation(Messages("views.admin.title"), profile) {
 
-        @helper.inputText(form("username"))
+            @helper.form(action = routes.AuthenticationController.doSignUp) {
 
-        @helper.inputText(form("firstname"))
+                @helper.inputText(form("username"))
 
-        @helper.inputText(form("lastname"))
+                @helper.inputText(form("firstname"))
 
-        @helper.inputText(form("email"))
+                @helper.inputText(form("lastname"))
 
-        @helper.inputPassword(form("password"))
+                @helper.inputText(form("email"))
 
-        @helper.inputPassword(form("repeat password"))
+                @helper.inputPassword(form("password"))
 
-        @helper.input(form("role")) {
-            <div class="input-field col s12">
-                <select>
-                    <option value="0" disabled selected>Choose your option</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
-                </select>
-                <label>Materialize Select</label>
-            </div>
+                @helper.inputPassword(form("repeat password"))
+
+                <button type="submit" class="btn btn-default">@Messages("signup")</button>
+            }
 
         }
-
-        <button type="submit" class="btn btn-default">@Messages("signup")</button>
-
     }
-
-
-
-}

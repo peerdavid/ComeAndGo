@@ -1,8 +1,4 @@
-@import org.pac4j.core.profile.CommonProfile
-@import model.User
-
-
-@(title: String, profile: CommonProfile)(content: Html)
+@(title: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -18,79 +14,24 @@
         <link rel="stylesheet" media="screen,projection" href="@routes.Assets.at("stylesheets/materialize.css")">
         <link rel="stylesheet" media="screen,projection" href="@routes.Assets.at("stylesheets/comeandgo.css")">
 
+            <!-- Set favicon -->
+        <link rel="icon" type="image/png" href="@routes.Assets.at("images/favicon.png")" />
+
             <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
     </head>
 
     <body>
-
-            <!-- Sidebar, headers etc. -->
-        <header>
-            <nav class="top-nav">
-                <div class="container">
-                    <div class="nav-wrapper">
-                        <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
-                        <h1 class="page-title">@title</h1>
-                    </div>
-                </div>
-            </nav>
-
-                <!-- Sidebar -->
-            <ul id="slide-out" class="side-nav fixed">
-                <img src="@routes.Assets.at("images/icon.svg")" width="240px" alt="Icon">
-                <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
-                <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
-                <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
-                <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
-                <li id="admin_dropdown" class="no-padding">
-                    <ul class="collapsible collapsible-accordion">
-                        <li>
-                            <a href="@routes.AuthenticationController.signUp()">
-                                @Messages("views.admin.title")
-                            </a>
-                            <a class="collapsible-header">
-                                <i class="mdi-navigation-arrow-drop-down"></i>
-                            </a>
-                            <div class="collapsible-body">
-                                <ul>
-                                    <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
-                                    <li><a href="#!">"Second Option"</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
-
-
-
-                <!-- User Profile -->
-                <li id="userProfile_container">
-                    <ban>Logged in as </ban><br>
-                    <ban>@profile.getFirstName @profile.getFamilyName</ban>
-                </li>
-            </ul>
-        </header>
-
-
             <!-- Main content -->
-        <div class="container">
         @content
-        </div>
 
 
             <!-- Include all scripts before end of body to render faster -->
         <script src="@routes.Assets.at("javascripts/jquery-2.2.2.min.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("javascripts/materialize.js")" type="text/javascript"></script>
-
         <script src="@routes.Assets.at("javascripts/comeandgo.js")" type="text/javascript"></script>
 
-        <script>
-                $(function () {
-                    $(".button-collapse").sideNav();
-                });
-        </script>
     </body>
 
 </html>

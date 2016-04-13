@@ -1,25 +1,52 @@
 @import org.pac4j.core.profile.CommonProfile
 @import model.User
 
-@(profile: CommonProfile)
+@import business.timetracking.TimeTrackState
+@(profile: CommonProfile, userState: TimeTrackState)
 
-@main(Messages("views.index.title"), profile) {
+    @main(Messages("views.index.title")) {
 
+        @navigation(Messages("views.index.title"), profile) {
 
-    <h4>Hello @profile.getUsername</h4>
+            <div id = "index-welcome-status">
+                <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
 
-    <br/>
-    <div class="progress">
-        <div class="indeterminate"></div>
-    </div>
+                <h4>@(Messages("views.index.state") + " : " + userState)</h4>
+            </div>
 
+            <br/>
+            <div class="progress">
+                <div class="indeterminate"></div>
+            </div>
 
-    <div id="time-track-buttons">
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()">@Messages("views.index.come")</a>
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-        <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()">@Messages("views.index.go")</a>
-    </div>
-    <br />
-    <br />
-    <a href="/logout?url=/">logout</a>
-}
+            @if(userState==TimeTrackState.INACTIVE){
+                <div id="index-time-track-buttons">
+                    <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                </div>
+            }
+
+            @if(userState==TimeTrackState.ACTIVE){
+                <div id="index-time-track-buttons">
+                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                    <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                    <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                </div>
+            }
+
+            @if(userState==TimeTrackState.PAUSE){
+                <div id="index-time-track-buttons">
+                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                    <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
+                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                </div>
+            }
+
+            <br />
+            <br />
+            <a href="/logout?url=/">@Messages("views.index.logout")</a>
+
+        }
+
+    }

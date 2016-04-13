@@ -16,13 +16,23 @@ nav.top-nav .page-title {
 
 
 #login_container {
-    margin: auto;
+    position: absolute;
+    right: 20%;
+    top: 30%;
+    background: #F6F6F6;
     padding: 16px;
-    text-align: center;
     max-width: 400px;
     font-weight: bold;
-
     border: 2px solid #F6F6F6;
+}
+
+#login_background {
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background-size: cover;
 }
 
 
@@ -36,5 +46,28 @@ nav.top-nav .page-title {
 #admin_dropdown > ul > li > a {
     display: inline;
     height: 100%;
+}
+
+#index-time-track-buttons{
+    text-align: center;
+}
+
+#index-welcome-status{
+    text-align: center;
+}
+
+.progress{
+    height: 32px;
+    background-color: #c8e6c9;
+}
+
+@media (max-width: 1200px) {
+    #login_container {
+        position: relative;
+        left: 0;
+        right: 0;
+        top: 0;
+        margin: auto;
+    }
 }
 

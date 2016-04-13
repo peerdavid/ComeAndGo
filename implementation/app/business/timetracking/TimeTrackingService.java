@@ -20,6 +20,10 @@ interface TimeTrackingService {
 
     boolean takesBreak(int userId) throws UserException, NotFoundException;
 
+    void createBreak(int userId) throws UserException, NotFoundException;
+
+    void endBreak(int userId) throws UserException, NotFoundException;
+
     // ToDo: We need a decision here: should the facade directly use the repository?
     List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException;
 }

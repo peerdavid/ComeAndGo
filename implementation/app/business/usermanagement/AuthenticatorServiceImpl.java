@@ -10,6 +10,8 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
 import play.i18n.Messages;
 
+import java.util.List;
+
 /**
  * Created by david on 03.04.16.
  */
@@ -33,6 +35,11 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
+    public List<User> getListOfUsers() throws UserException {
+        return null;
+    }
+
+    @Override
     public boolean checkUserCredentials(String userName, String passwordCandidate) throws UserException {
         User userToCheck = readUser(userName);
         String hashedPassword = userToCheck.getPassword();
@@ -48,6 +55,10 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
         // Input validation
         if (userAlreadyExists(newUser.getUserName())) {
             throw new UserException("exceptions.usermanagement.user_already_exists");
+        }
+
+        if (_userRepository.readUser(newUser.getUserNameBoss()) == null) {
+            throw new UserException("exceptions.usermanagement.invalid_boss");
         }
 
         _userRepository.createUser(newUser);

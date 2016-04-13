@@ -1,15 +1,20 @@
 package controllers;
 
+import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
 import model.User;
+import org.joda.time.DateTime;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
+import play.data.format.Formats;
 import play.mvc.Result;
+
+import java.util.Date;
 
 /**
  * Created by sebastian on 3/28/16.
@@ -26,7 +31,10 @@ public class AuthenticationController extends UserProfileController<CommonProfil
 
     public Result loginForm() throws TechnicalException {
         final FormClient formClient = (FormClient) config.getClients().findClient("default");
-        return ok(views.html.login.render(formClient.getCallbackUrl(), FORM));
+
+        int season = ((DateTime.now().getMonthOfYear() + 10) % 12) / 3;
+
+        return ok(views.html.login.render(formClient.getCallbackUrl(), FORM, season));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -48,10 +56,12 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "testboss");
+        if(role == null) role = SecurityRole.ROLE_USER;
+
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "admin");
 
         _userManagement.registerUser(userToRegister);
 
-        return ok(views.html.index.render(getUserProfile()));
+        return redirect(routes.TimeTrackController.index());
     }
 }
