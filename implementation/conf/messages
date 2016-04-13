@@ -19,6 +19,11 @@ views.index.welcomeMessage = Hello
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
+views.admin.edituser = Edit User
+views.admin.edituser.id = ID
+views.admin.edituser.firstname = Firstname
+views.admin.edituser.lastname = Lastname
+views.admin.edituser.password = Password
 
 views.holiday.title = Holiday
 

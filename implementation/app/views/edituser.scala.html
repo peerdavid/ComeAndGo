@@ -1,0 +1,26 @@
+@import org.pac4j.core.profile.CommonProfile
+@import java.util.List;
+@import model.User
+
+@(profile: CommonProfile, userlist: List[User])
+
+@main(Messages("views.admin.title")) {
+
+    @navigation(Messages("views.admin.edituser"), profile) {
+
+        <table style="width : 50%">
+            <tr>
+                <th>@Messages("views.admin.edituser.id")</th>
+                <th>@Messages("views.admin.edituser.firstname")</th>
+                <th>@Messages("views.admin.edituser.lastname")</th>
+            </tr>
+            @for(u <- userlist) {
+                <tr>
+                    <td>@u.getId</td>
+                    <td>@u.getFirstName</td>
+                    <td>@u.getLastName</td>
+                </tr>
+            }
+        </table>
+    }
+}
