@@ -1,5 +1,5 @@
 @import org.pac4j.core.profile.CommonProfile
-@import model.User
+@import business.usermanagement.SecurityRole
 
 
 @(title: String, profile: CommonProfile)(content: Html)
@@ -12,24 +12,27 @@
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
         <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
-        <li id="admin_dropdown" class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a href="@routes.AuthenticationController.signUp()">
-                    @Messages("views.admin.title")
-                    </a>
-                    <a class="collapsible-header">
-                        <i class="mdi-navigation-arrow-drop-down"></i>
-                    </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
-                            <li><a href="#!">"Second Option"</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
+        <!-- if user is admin -> add admin menu -->
+        @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
+            <li id="admin_dropdown" class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a href="@routes.AuthenticationController.signUp()">
+                        @Messages("views.admin.title")
+                        </a>
+                        <a class="collapsible-header">
+                            <i class="mdi-navigation-arrow-drop-down"></i>
+                        </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
+                                <li><a href="#!">"Second Option"</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        }
     </ul>
         <!-- user profile info -->
     <div class="userProfile_container grey lighten-4">
