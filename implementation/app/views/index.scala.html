@@ -22,14 +22,14 @@
             @if(userState==TimeTrackState.INACTIVE){
                 <div id="index-time-track-buttons">
                     <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
-                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                    <button class="waves-effect waves-light btn" disabled="disabled">@Messages("views.index.startbreak")</button>
+                    <button class="waves-effect waves-light btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
                 </div>
             }
 
             @if(userState==TimeTrackState.ACTIVE){
                 <div id="index-time-track-buttons">
-                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                    <button class="waves-effect waves-light btn"  disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
                     <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
                     <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
                 </div>
@@ -37,9 +37,9 @@
 
             @if(userState==TimeTrackState.PAUSE){
                 <div id="index-time-track-buttons">
-                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                    <button class="waves-effect waves-light btn" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
                     <a class="waves-effect waves-light btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
-                    <a class="waves-effect waves-light btn disabled" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                    <button class="waves-effect waves-light btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
                 </div>
             }
 
