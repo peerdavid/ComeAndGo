@@ -10,6 +10,9 @@ nav.top-nav .page-title {
     margin-top: 0px;
 }
 
+.side-nav ul {
+    margin-bottom: 140px;
+}
 
 #login_container {
     position: absolute;
@@ -42,9 +45,11 @@ nav.top-nav .page-title {
 }
 
 .userProfile_container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     padding: 0 12px;
     height: 138px;
-    bottom: 0;
     top: auto;
     background: #fff;
     line-height: 32px;

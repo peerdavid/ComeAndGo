@@ -16,42 +16,45 @@
     </nav>
 
         <!-- Sidebar -->
-    <ul id="slide-out" class="side-nav fixed">
+    <div id="slide-out" class="side-nav fixed">
         <img src="@routes.Assets.at("images/icon.svg")" width="240px" alt="Icon">
-        <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
-        <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
-        <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
-        <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
-        <li id="admin_dropdown" class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a href="@routes.AuthenticationController.signUp()">
-                    @Messages("views.admin.title")
-                    </a>
-                    <a class="collapsible-header">
-                        <i class="mdi-navigation-arrow-drop-down"></i>
-                    </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
-                            <li><a href="#!">"Second Option"</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
-    </ul>
-    <!-- user profile info -->
-    <div id="slide-out" class="userProfile_container side-nav fixed grey lighten-4">
-        <span>@Messages("views.navigation.loggedinas")</span><br>
+        <ul>
+            <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
+            <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
+            <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
+            <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
+            <li id="admin_dropdown" class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a href="@routes.AuthenticationController.signUp()">
+                        @Messages("views.admin.title")
+                        </a>
+                        <a class="collapsible-header">
+                            <i class="mdi-navigation-arrow-drop-down"></i>
+                        </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
+                                <li><a href="#!">"Second Option"</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <!-- user profile info -->
+        <div class="userProfile_container grey lighten-4">
+            <span>@Messages("views.navigation.loggedinas")</span><br>
 
-        <div class="chip">
-            <img src="@routes.Assets.at("images/icons_account.png")" alt="User">
-            @(profile.getFirstName + " " + profile.getFamilyName)
-        </div><br>
+            <div class="chip">
+                <img src="@routes.Assets.at("images/icons_account.png")" alt="User">
+                @(profile.getFirstName + " " + profile.getFamilyName)
+            </div><br>
 
-        <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
+            <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
+        </div>
     </div>
+
 </header>
 
 
@@ -59,11 +62,3 @@
 <div class="container">
 @content
 </div>
-
-
-    <!-- Include all scripts before end of body to render faster -->
-<script>
-        $(function () {
-            $(".button-collapse").sideNav();
-        });
-</script>
