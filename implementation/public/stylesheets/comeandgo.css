@@ -57,9 +57,9 @@ nav.top-nav .page-title {
     text-align: center;
 }
 
-.progress{
+#active_progress {
     height: 32px;
-    background-color: #c8e6c9;
+    background: #ff5722;
 }
 
 #logout-btn {

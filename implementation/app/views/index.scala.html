@@ -2,7 +2,7 @@
 @import model.User
 
 @import business.timetracking.TimeTrackState
-@(profile: CommonProfile, userState: TimeTrackState)
+@(profile: CommonProfile, userState: TimeTrackState, progress: Int)
 
     @main(Messages("views.index.title")) {
 
@@ -15,8 +15,8 @@
             </div>
 
             <br/>
-            <div class="progress gray lighten-4">
-                <div class="indeterminate green"></div>
+            <div id="active_progress" class="progress">
+                <div class="determinate green"  style="width: @(progress)%"></div>
             </div>
 
             @if(userState==TimeTrackState.INACTIVE){
