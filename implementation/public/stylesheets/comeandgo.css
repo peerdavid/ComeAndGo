@@ -72,6 +72,16 @@ textarea:focus {
     box-shadow: 0 1px 0 0 #00bcd4 !important;
 }
 
+input:focus:not([type]):not([readonly]), input[type="text"]:focus:not([readonly]),
+input[type="password"]:focus:not([readonly]), input[type="email"]:focus:not([readonly]),
+input[type="url"]:focus:not([readonly]), input[type="time"]:focus:not([readonly]),
+input[type="date"]:focus:not([readonly]), input[type="datetime-local"]:focus:not([readonly]),
+input[type="tel"]:focus:not([readonly]), input[type="number"]:focus:not([readonly]),
+input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #00bcd4;
+    box-shadow: 0px 1px 0px 0px #00bcd4;
+}
+
 .input-field .prefix.active {
     color: inherit;
 }
