@@ -6,6 +6,7 @@ import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
+import org.joda.time.DateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -97,6 +98,16 @@ class TimeTrackingFacade implements TimeTracking {
         } catch (UserException e) {
             e.printStackTrace();
         } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) {
+        try {
+            return _timeTrackingService.readTimeTracks(userId, from, to);
+        } catch (UserException | NotFoundException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();

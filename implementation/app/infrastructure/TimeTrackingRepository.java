@@ -4,6 +4,7 @@ import model.Break;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface TimeTrackingRepository {
     TimeTrack getActiveTimeTrack(User user) throws NotFoundException;
 
     List<TimeTrack> readTimeTracks(User user) throws NotFoundException;
+
+    List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws NotFoundException;
 
     void updateTimeTrack(TimeTrack timeTrack);
 
