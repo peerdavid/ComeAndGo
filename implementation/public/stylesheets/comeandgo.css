@@ -41,6 +41,7 @@ nav.top-nav .page-title {
     bottom: 0;
     width: 100%;
     background: #fff;
+    line-height: 32px;
 }
 
 #admin_dropdown > ul > li > a {
@@ -59,6 +60,12 @@ nav.top-nav .page-title {
 .progress{
     height: 32px;
     background-color: #c8e6c9;
+}
+
+#logout-btn {
+    height: 36px;
+    line-height: 36px;
+    color: #FFF;
 }
 
 @media (max-width: 1200px) {
