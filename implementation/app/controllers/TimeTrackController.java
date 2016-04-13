@@ -35,7 +35,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result come() throws Exception {
         CommonProfile profile = getUserProfile();
         _timeTracking.come(Integer.parseInt(profile.getId()));
-        // return ok(views.html.index.render(profile));
         return redirect(routes.TimeTrackController.index());
     }
 
