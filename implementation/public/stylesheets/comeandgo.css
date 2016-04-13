@@ -20,7 +20,9 @@ nav.top-nav .page-title {
     top: 30%;
     background: #F6F6F6;
     padding: 16px;
-    max-width: 400px;
+    max-width: 350px;
+    width: 20%;
+    min-width: 300px;
     font-weight: bold;
     border: 2px solid #F6F6F6;
 }
@@ -100,13 +102,25 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color: inherit;
 }
 
-@media (max-width: 1200px) {
+/* phones */
+@media (max-width: 599px) {
     #login_container {
-        position: relative;
-        left: 0;
-        right: 0;
-        top: 0;
+        max-width: 400px;
+        width: 80%;
+        min-width: 250px;
         margin: auto;
+        position: relative;
+        top: 10em;
+        height: 290px;
+        right: auto;
     }
+}
+
+/* tablets */
+@media (min-width: 600px) and (max-width: 991px) {
+}
+
+/* tablets & phones */
+@media (max-width: 991px) {
 }
 
