@@ -6,40 +6,39 @@
 @main(Messages("views.login.title")) {
 
     @if(season == 0) {
-        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_spring.png") ') center center ;"></div>
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_spring.png") ') center center ;"></div>
     }
     @if(season == 1) {
-        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_summer.png") ') center center;"></div>
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_summer.png") ') center center;"></div>
     }
     @if(season == 2) {
-        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_fall.png") ') center center;"></div>
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_fall.png") ') center center;"></div>
     }
     @if(season == 3) {
-        <div id="login_background" style="background : url(' @routes.Assets.at("images/login_background_winter.png") ') center center;"></div>
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_winter.png") ') center center;"></div>
     }
 
     <div id="login_container">
 
-            <!---
-            <form action="@(url)?client_name=default" method="POST">
-
-        @helper.inputText(form("username"))
-
-        @helper.inputPassword(form("password"))
-
-        <input class="waves-effect waves-light btn" type="submit" name="submit" value="login" />
-        -->
-
         <h3>@Messages("views.login.title")</h3>
 
         <form action="@(url)?client_name=default" method="POST">
+            <div class="col">
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input name="username" type="text" class="validate">
+                    <label for="username">@Messages("views.login.username")</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix">vpn_key</i>
+                    <input name="password" type="password" class="validate">
+                    <label for="password">@Messages("views.login.password")</label>
+                </div>
+            </div>
 
-            @Messages("views.login.username")
-            <input type="text" name="username"> <br>
-            @Messages("views.login.password")
-            <input type= "password" name="password"> <br>
-            <input class="waves-effect waves-light btn" type="submit" value=@Messages("views.login.title")> <br> <br>
-
+            <button class="btn waves-effect waves-light" type="submit" name="action" style="float: right">@Messages("views.login.title")
+                <i class="material-icons right">send</i>
+            </button>
         </form>
 
     </div>
