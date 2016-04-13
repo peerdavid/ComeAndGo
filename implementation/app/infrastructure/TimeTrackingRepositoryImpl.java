@@ -29,6 +29,26 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
 
+   /**
+    * returns all timetracks from user, which are between from and to
+    * @param user
+    * @param from
+    * @param to
+    * @return
+    * @throws NotFoundException
+    */
+    @Override
+    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws NotFoundException {
+        List<TimeTrack> timeTrackList =
+            Ebean.find(TimeTrack.class)
+            .where().eq("_user_id", user.getId())
+            .where().ge("start", from)
+            .where().le("end", to)
+            .findList();
+
+       return timeTrackList;
+    }
+
     @Override
     public TimeTrack readTimeTrack(int id) throws NotFoundException {
         TimeTrack wantedTimeTrack =

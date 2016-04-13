@@ -5,6 +5,7 @@ import infrastructure.TimeTrackException;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -26,4 +27,6 @@ interface TimeTrackingService {
 
     // ToDo: We need a decision here: should the facade directly use the repository?
     List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException;
+
+    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, NotFoundException;
 }
