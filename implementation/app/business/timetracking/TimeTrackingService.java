@@ -15,17 +15,16 @@ import java.util.List;
 interface TimeTrackingService {
     int come(int userId) throws UserException, TimeTrackException;
 
-    void go(int userId) throws NotFoundException, UserException;
+    void go(int userId) throws NotFoundException, UserException, TimeTrackException;
 
     boolean isActive(int userId) throws UserException, NotFoundException;
 
     boolean takesBreak(int userId) throws UserException, NotFoundException;
 
-    void createBreak(int userId) throws UserException, NotFoundException;
+    void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException;
 
-    void endBreak(int userId) throws UserException, NotFoundException;
+    void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException;
 
-    // ToDo: We need a decision here: should the facade directly use the repository?
     List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException;
 
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, NotFoundException;

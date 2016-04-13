@@ -45,7 +45,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void go(int userId) throws NotFoundException, UserException {
+    public void go(int userId) throws NotFoundException, UserException, TimeTrackException {
         User user = loadUserById(userId);
 
         TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
@@ -77,13 +77,13 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public void createBreak(int userId) throws UserException, NotFoundException {
+    public void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
        User user = loadUserById(userId);
        _repository.startBreak(user);
     }
 
     @Override
-    public void endBreak(int userId) throws UserException, NotFoundException {
+    public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
         User user = loadUserById(userId);
         _repository.endBreak(user);
     }

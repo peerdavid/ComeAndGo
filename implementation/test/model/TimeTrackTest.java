@@ -2,6 +2,7 @@ package model;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;
+import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +28,14 @@ public class TimeTrackTest {
 
 
     @Test
-    public void setFromTime_InEmptyObject_ShouldSucceed(){
+    public void setFromTime_InEmptyObject_ShouldSucceed() throws TimeTrackException {
         TimeTrack testee = new TimeTrack(_testUser);
         testee.set_to(_testFromTime);
     }
 
 
-    @Test(expected = InvalidParameterException.class)
-    public void setToTime_IsSmallerThanFromTime_ShouldFail(){
+    @Test(expected = TimeTrackException.class)
+    public void setToTime_IsSmallerThanFromTime_ShouldFail() throws TimeTrackException{
         TimeTrack testee = new TimeTrack(_testUser);
         DateTime invalidTo = new DateTime(2016, 5, 17, 7, 0);
 
@@ -43,8 +44,8 @@ public class TimeTrackTest {
     }
 
 
-    @Test(expected = InvalidParameterException.class)
-    public void setFromTime_IsBiggerThanToTime_ShouldFail(){
+    @Test(expected = TimeTrackException.class)
+    public void setFromTime_IsBiggerThanToTime_ShouldFail() throws TimeTrackException {
         TimeTrack testee = new TimeTrack(_testUser);
         DateTime invalidFrom = new DateTime(2016, 5, 17, 10, 0);
 

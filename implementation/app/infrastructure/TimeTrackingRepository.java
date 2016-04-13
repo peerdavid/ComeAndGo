@@ -33,9 +33,9 @@ public interface TimeTrackingRepository {
 
     void updateBreak(Break actualBreak);
 
-    void startBreak(User user) throws NotFoundException;
+    void startBreak(User user) throws TimeTrackException, NotFoundException;
 
-    void endBreak(Break actualBreak);
+    void endBreak(Break actualBreak) throws TimeTrackException;
 
-    void endBreak(User user) throws NotFoundException;
+    void endBreak(User user) throws TimeTrackException, NotFoundException;
 }

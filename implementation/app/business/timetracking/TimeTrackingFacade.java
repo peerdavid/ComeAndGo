@@ -2,6 +2,7 @@ package business.timetracking;
 
 import business.UserException;
 import com.google.inject.Inject;
+import infrastructure.TimeTrackException;
 import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
@@ -49,13 +50,16 @@ class TimeTrackingFacade implements TimeTracking {
         } catch (UserException e) {
             e.printStackTrace();
         }
+        catch (TimeTrackException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void startBreak(int userId) {
         try {
             _timeTrackingService.createBreak(userId);
-        } catch (UserException | NotFoundException e) {
+        } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
         }
     }
@@ -64,7 +68,7 @@ class TimeTrackingFacade implements TimeTracking {
     public void endBreak(int userId) {
         try {
             _timeTrackingService.endBreak(userId);
-        } catch (UserException | NotFoundException e) {
+        } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
         }
     }
