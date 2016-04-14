@@ -10,8 +10,17 @@ nav.top-nav .page-title {
     margin-top: 0px;
 }
 
-.side-nav ul {
-    margin-bottom: 140px;
+.side-nav {
+    overflow: hidden;
+    height: 100%;
+}
+
+.side-nav > ul {
+    overflow: auto;
+    position: absolute;
+    top: 240px;
+    bottom: 140px;
+    width: 100%;
 }
 
 .content-wrap {
