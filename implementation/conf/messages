@@ -25,6 +25,11 @@ views.admin.signup.form.username = Username
 views.admin.signup.form.email = EMail
 views.admin.signup.form.password = Password
 views.admin.signup.form.repeatpassword = Repeat Password
+views.admin.signup.form.selectrole = Select Role
+views.admin.signup.form.roles.user = User
+views.admin.signup.form.roles.admin = Admin
+views.admin.signup.form.roles.persman = Personnel Manager
+views.admin.signup.title = Sign Up
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
 

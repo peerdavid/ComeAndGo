@@ -11,7 +11,7 @@
         <ul class="collapsible" data-collapsible="accordion">
         @for(u <- userlist) {
             <li>
-                <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getUserName + ")")</div>
+                <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
                 <div class="collapsible-body">
                     <form action="@routes.UserManagementController.editUser()" method="POST">
                         <input name="id" type="String" value="@u.getId" style="visibility : hidden">

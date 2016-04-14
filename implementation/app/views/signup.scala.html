@@ -3,26 +3,30 @@
 @import org.pac4j.core.profile.CommonProfile
 @(form: Form[User], profile: CommonProfile)
 
-    @main(Messages("views.admin.title")) {
+@main(Messages("views.admin.title")) {
 
-        @navigation(Messages("views.admin.title"), profile) {
+    @navigation(Messages("views.admin.title"), profile) {
 
-            @helper.form(action = routes.AuthenticationController.doSignUp) {
 
-                @helper.inputText(form("username"))
+        <form action="@routes.AuthenticationController.doSignUp()" method="POST">
+            <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")">
+            <input name="firstname" type="text" placeholder="@Messages("views.admin.signup.form.firstname")">
+            <input name="lastname" type="text" placeholder="@Messages("views.admin.signup.form.lastname")">
+            <input name="email" type="email" placeholder="@Messages("views.admin.signup.form.email")">
+            <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
+            <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
 
-                @helper.inputText(form("firstname"))
-
-                @helper.inputText(form("lastname"))
-
-                @helper.inputText(form("email"))
-
-                @helper.inputPassword(form("password"))
-
-                @helper.inputPassword(form("repeat password"))
-
-                <button type="submit" class="btn btn-default cyan">@Messages("signup")</button>
-            }
-
-        }
+            <div class="input-field col s12">
+                <select name="role" type="text">
+                    <option value="" disabled selected>@Messages("views.admin.signup.form.selectrole")</option>
+                    <option value="ROLE_USER">@Messages("views.admin.signup.form.roles.user")</option>
+                    <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.signup.form.roles.persman")</option>
+                    <option value="ROLE_ADMIN">@Messages("views.admin.signup.form.roles.admin")</option>
+                </select>
+            </div>
+            <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
+                @Messages("views.admin.signup.title")
+            </button>
+        </form>
     }
+}
