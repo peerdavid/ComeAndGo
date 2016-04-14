@@ -119,6 +119,22 @@ public class User extends Model {
         return _lastName;
     }
 
+    public String getEmail() {
+        return _email;
+    }
+
+    public void setFirstName(String firstName) {
+        this._firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this._lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        this._email = email;
+    }
+
     private String generatePwd(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
@@ -127,12 +143,12 @@ public class User extends Model {
         return BCrypt.checkpw(candidate, hashed);
     }
 
-   public void setUserNameBoss(String name) {
+    public void setUserNameBoss(String name) {
         _userNameBoss = name;
-   }
+    }
 
-   public String getUserNameBoss() {
+    public String getUserNameBoss() {
         return _userNameBoss;
-   }
+    }
 
 }

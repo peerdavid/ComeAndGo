@@ -8,19 +8,27 @@
 
     @navigation(Messages("views.admin.edituser"), profile) {
 
-        <table style="width : 50%">
-            <tr>
-                <th>@Messages("views.admin.edituser.id")</th>
-                <th>@Messages("views.admin.edituser.firstname")</th>
-                <th>@Messages("views.admin.edituser.lastname")</th>
-            </tr>
-            @for(u <- userlist) {
-                <tr>
-                    <td>@u.getId</td>
-                    <td>@u.getFirstName</td>
-                    <td>@u.getLastName</td>
-                </tr>
-            }
-        </table>
+        <ul class="collapsible" data-collapsible="accordion">
+        @for(u <- userlist) {
+            <li>
+                <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getUserName + ")")</div>
+                <div class="collapsible-body">
+                    <form action="@routes.UserManagementController.editUser()" method="POST">
+                        <input name="id" type="String" value="@u.getId" style="visibility : hidden">
+                        <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")">
+                        <input name="firstname" type="text" placeholder="@Messages("views.admin.signup.form.firstname")">
+                        <input name="lastname" type="text" placeholder="@Messages("views.admin.signup.form.lastname")">
+                        <input name="email" type="email" placeholder="@Messages("views.admin.signup.form.email")">
+                        <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
+                        <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
+
+                        <button class="btn waves-effect waves-light green" type="submit" name="action" style="float: right">@Messages("views.admin.edituser.savechanges")
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </form>
+                </div>
+            </li>
+        }
+        </ul>
     }
 }
