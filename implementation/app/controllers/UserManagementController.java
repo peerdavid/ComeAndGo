@@ -13,6 +13,7 @@ import play.mvc.Result;
 
 import java.util.List;
 
+
 import static play.mvc.Results.ok;
 
 /**
@@ -48,6 +49,7 @@ public class UserManagementController extends UserProfileController{
         Form<User> form = FORM.bindFromRequest();
 
         int userId = Integer.parseInt(form.data().get("id"));
+        String userName = form.data().get("username");
         String firstName = form.data().get("firstname");
         String lastName = form.data().get("lastname");
         String email = form.data().get("email");
@@ -61,6 +63,9 @@ public class UserManagementController extends UserProfileController{
                 changingUser = u;
                 break;
             }
+        }
+        if(!firstName.equals("")){
+            changingUser.setUserName(userName);
         }
         if(!firstName.equals("")){
             changingUser.setFirstName(firstName);
