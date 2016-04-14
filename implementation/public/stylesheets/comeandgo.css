@@ -119,6 +119,22 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color: inherit;
 }
 
+/* changes input-field placeholder colour for multiple devices */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #727272;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #727272;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #727272;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #727272;
+}
+
 /* phones */
 @media (max-width: 599px) {
     #login_container {
