@@ -48,9 +48,6 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
-    /*
-    ToDo: Check if a boss is set!
-     */
     public void registerNewUser(User newUser) throws UserException {
 
         // Input validation
@@ -79,7 +76,7 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     @Override
     public void validate(UsernamePasswordCredentials credentials) {
         if (credentials == null) {
-            throwsException("exceptions.usermanagement.no_credentials");
+            throw new CredentialsException("exceptions.usermanagement.no_credentials");
         }
 
         String enteredUserName = credentials.getUsername();
@@ -89,14 +86,13 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
             User possibleUser = readUser(enteredUserName);
 
             if (!checkUserCredentials(enteredUserName, enteredPassword)) {
-                throwsException("exceptions.usermanagement.invalid_credentials");
+                throw new UserException("exceptions.usermanagement.invalid_credentials");
             }
 
             HttpProfile userProfile = getProfileForUser(possibleUser);
             credentials.setUserProfile(userProfile);
         } catch (UserException e) {
-            // ToDo: what to do with UserException?
-            e.printStackTrace();
+            throw new CredentialsException("exceptions.usermanagement.invalid_credentials");
         }
 
     }
@@ -147,14 +143,27 @@ class AuthenticatorServiceImpl implements AuthenticatorService {
     }
 
     @Override
-    public void deleteUser(String userToDelete) throws UserException {
-        if (_userRepository.readUser(userToDelete) == null) {
+    public void deleteUser(String userName) throws UserException {
+        User userToDelete = _userRepository.readUser(userName);
+
+        if (userToDelete == null) {
             throw new UserException("exceptions.usermanagement.no_such_user");
         }
-        _userRepository.deleteUser(userToDelete);
-    }
+        // Check if its not the last admin
+        if (userToDelete.getRole().equals(SecurityRole.ROLE_ADMIN)) {
+            List<User> userList = _userRepository.getAllUsers();
+            boolean foundAdmin = false;
+            for (User u : userList) {
+                if (u.getRole().equals(SecurityRole.ROLE_ADMIN) && !u.getUserName().equals(userToDelete.getUserName())) {
+                    foundAdmin = true;
+                    break;
+                }
+            }
 
-    protected void throwsException(final String message) {
-        throw new CredentialsException(message);
+            if (!foundAdmin) {
+                throw new UserException("exceptions.usermanagement.at_least_one_admin");
+            }
+        }
+        _userRepository.deleteUser(userToDelete.getUserName());
     }
 }

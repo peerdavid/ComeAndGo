@@ -41,7 +41,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result pause(){
+    public Result pause() {
 
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
