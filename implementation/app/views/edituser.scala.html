@@ -8,17 +8,17 @@
 
     @navigation(Messages("views.admin.edituser"), profile) {
 
-        <ul class="collapsible" data-collapsible="accordion">
-        @for(u <- userlist) {
+        <ul id="user-list" class="collapsible" data-collapsible="accordion">
+        @for(u : User <- userlist) {
             <li>
                 <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
                 <div class="collapsible-body">
                     <form action="@routes.UserManagementController.editUser()" method="POST">
-                        <input name="id" type="String" value="@u.getId" style="visibility : hidden">
-                        <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")">
-                        <input name="firstname" type="text" placeholder="@Messages("views.admin.signup.form.firstname")">
-                        <input name="lastname" type="text" placeholder="@Messages("views.admin.signup.form.lastname")">
-                        <input name="email" type="email" placeholder="@Messages("views.admin.signup.form.email")">
+                        <!-- <input name="id" type="String" value="@u.getId" style="visibility : hidden"> -->
+                        <!-- <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")"> -->
+                        <input name="firstname" type="text" value="@u.getFirstName" placeholder="@Messages("views.admin.signup.form.firstname")">
+                        <input name="lastname" type="text" value="@u.getLastName" placeholder="@Messages("views.admin.signup.form.lastname")">
+                        <input name="email" type="email" value="@u.getEmail" placeholder="@Messages("views.admin.signup.form.email")">
                         <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
                         <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
 
