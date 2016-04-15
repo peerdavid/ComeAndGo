@@ -1,0 +1,16 @@
+@import org.joda.time.DateTime
+
+@(season: Int = ((DateTime.now().getMonthOfYear() + 10) % 12) / 3)
+
+    @if(season == 0) {
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_spring.png") ') center center ;"></div>
+    }
+    @if(season == 1) {
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_summer.png") ') center center;"></div>
+    }
+    @if(season == 2) {
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_fall.png") ') center center;"></div>
+    }
+    @if(season == 3) {
+        <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_winter.png") ') center center;"></div>
+    }
