@@ -101,6 +101,11 @@ nav.top-nav .page-title {
     background: #ff5722;
 }
 
+/* edit users */
+#user-list li form {
+    padding: 1em;
+}
+
 /* change texterea colors */
 textarea:focus {
     border-bottom: 1px solid #00bcd4 !important;
