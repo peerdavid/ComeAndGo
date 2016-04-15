@@ -34,6 +34,7 @@ public class Global extends GlobalSettings {
 
     @Override
     public F.Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-        return F.Promise.<Result>pure(internalServerError(views.html.error.render(t)));
+        //return F.Promise.<Result>pure(internalServerError(views.html.error.render(t)));
+        return null;
     }
 }

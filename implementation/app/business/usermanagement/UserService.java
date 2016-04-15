@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by david on 03.04.16.
  */
-public interface AuthenticatorService extends UsernamePasswordAuthenticator {
+public interface UserService extends UsernamePasswordAuthenticator {
     User readUser(String userName) throws UserException;
 
     boolean checkUserCredentials(String userName, String password) throws UserException;

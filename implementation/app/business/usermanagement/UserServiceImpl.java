@@ -8,21 +8,19 @@ import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
-import play.i18n.Messages;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by david on 03.04.16.
  */
-class AuthenticatorServiceImpl implements AuthenticatorService {
+class UserServiceImpl implements UserService {
 
 
     private UserRepository _userRepository;
 
     @Inject
-    public AuthenticatorServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         _userRepository = userRepository;
     }
 
