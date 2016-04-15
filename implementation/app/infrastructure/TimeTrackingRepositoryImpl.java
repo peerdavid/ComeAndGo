@@ -80,7 +80,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             return actualTimeTrack;
         }
 
-        throw new NotFoundException("not found");
+        throw new NotFoundException("TimeTrack not found");
     }
 
     @Override
