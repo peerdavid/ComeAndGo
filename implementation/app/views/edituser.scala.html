@@ -30,11 +30,11 @@
                     </div>
                     <form action="@routes.UserManagementController.editUser()" method="POST">
                         <div class="row">
-                            <div class="input-field col s6">
+                            <div class="input-field col s12 m6">
                                 <input disabled="disabled" name="firstname" type="text" value="@u.getFirstName">
                                 <label for=firstname">@Messages("views.admin.signup.form.firstname")</label>
                             </div>
-                            <div class="input-field col s6">
+                            <div class="input-field col s12 m6">
                                 <input disabled="disabled" name="lastname" type="text" value="@u.getLastName">
                                 <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
                             </div>
