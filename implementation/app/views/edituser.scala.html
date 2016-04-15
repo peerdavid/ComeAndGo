@@ -16,11 +16,30 @@
                     <form action="@routes.UserManagementController.editUser()" method="POST">
                         <!-- <input name="id" type="String" value="@u.getId" style="visibility : hidden"> -->
                         <!-- <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")"> -->
-                        <input name="firstname" type="text" value="@u.getFirstName" placeholder="@Messages("views.admin.signup.form.firstname")">
-                        <input name="lastname" type="text" value="@u.getLastName" placeholder="@Messages("views.admin.signup.form.lastname")">
-                        <input name="email" type="email" value="@u.getEmail" placeholder="@Messages("views.admin.signup.form.email")">
-                        <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
-                        <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input name="firstname" type="text" value="@u.getFirstName" placeholder="@Messages("views.admin.signup.form.firstname")">
+                                <label for=firstname">@Messages("views.admin.signup.form.firstname")</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input name="lastname" type="text" value="@u.getLastName" placeholder="@Messages("views.admin.signup.form.lastname")">
+                                <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input name="email" type="email" value="@u.getEmail" placeholder="@Messages("views.admin.signup.form.email")">
+                                <label for="email">@Messages("views.admin.signup.form.email")</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
+                            </div>
+                            <div class="input-field col s6">
+                                <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
+                            </div>
+                        </div>
 
                         <button class="btn waves-effect waves-light green" type="submit" name="action" style="float: right">@Messages("views.admin.edituser.savechanges")
                             <i class="material-icons right">done</i>
