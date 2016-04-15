@@ -71,9 +71,12 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public boolean takesBreak(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        Break activeBreak = _repository.getActiveBreak(user);
-
-        return activeBreak != null && activeBreak.getTo() == null;
+        try {
+            _repository.getActiveBreak(user);
+        } catch(NotFoundException e) {
+            return false;
+        }
+        return true; //activeBreak != null && activeBreak.getTo() == null;
     }
 
     @Override

@@ -205,7 +205,7 @@ public class TimeTrackingServiceTest {
     public void takesBreak_ForUserNotTakingABreak_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(null);
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenThrow(NotFoundException.class);
 
         int userId = 8;
         boolean expected = false;
