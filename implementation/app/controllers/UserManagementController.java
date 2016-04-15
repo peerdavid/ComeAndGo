@@ -29,7 +29,7 @@ public class UserManagementController extends UserProfileController{
         _userManagement=userManagement;
     }
 
-    @RequiresAuthentication(clientName = "default")
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result indexEditUser() throws Exception{
         CommonProfile profile = getUserProfile();
 
