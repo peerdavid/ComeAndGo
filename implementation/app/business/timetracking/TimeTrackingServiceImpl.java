@@ -81,12 +81,20 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
-       User user = loadUserById(userId);
+       if(takesBreak(userId)) {
+           throw new UserException("You already take a break");
+       }
+
+        User user = loadUserById(userId);
        _repository.startBreak(user);
     }
 
     @Override
     public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
+        if(!takesBreak(userId)) {
+            throw new UserException("You cannot end your break before you start it.");
+        }
+
         User user = loadUserById(userId);
         _repository.endBreak(user);
     }
