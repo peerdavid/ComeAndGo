@@ -61,6 +61,19 @@ nav.top-nav .page-title {
     background-size: cover;
 }
 
+#error_container {
+    position: absolute;
+    right: 20%;
+    top: 30%;
+    background: #F6F6F6;
+    padding: 16px;
+    max-width: 500px;
+    width: 40%;
+    min-width: 380px;
+    font-weight: bold;
+    border: 2px solid #F6F6F6;
+}
+
 #logout-btn {
     height: 36px;
     line-height: 36px;
@@ -149,7 +162,7 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 
 /* phones */
 @media (max-width: 599px) {
-    #login_container {
+    #login_container, #error_container  {
         max-width: 400px;
         width: 80%;
         min-width: 250px;
