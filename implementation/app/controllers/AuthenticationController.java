@@ -25,7 +25,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     public static final Form<User> FORM = Form.form(User.class);
 
     @Inject
-    public AuthenticationController(UserManagement userManagement){
+    public AuthenticationController(UserManagement userManagement) {
         _userManagement = userManagement;
     }
 
@@ -56,7 +56,9 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
 
-        if(role == null) role = SecurityRole.ROLE_USER;
+        if (role.isEmpty()) {
+            role = SecurityRole.ROLE_USER;
+        }
 
         User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "admin");
 

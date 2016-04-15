@@ -5,6 +5,8 @@ views.login.username = Username
 views.login.password = Password
 views.login.forgotPassword = Forgot Password?
 
+views.navigation.loggedinas = Logged in as:
+
 views.index.home = Home
 views.index.title = Come & Go
 views.index.come = Come
@@ -17,6 +19,19 @@ views.index.welcomeMessage = Hello
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
+views.admin.signup.form.firstname = Firstname
+views.admin.signup.form.lastname = Lastname
+views.admin.signup.form.username = Username
+views.admin.signup.form.email = EMail
+views.admin.signup.form.password = Password
+views.admin.signup.form.repeatpassword = Repeat Password
+views.admin.signup.form.selectrole = Select Role
+views.admin.signup.form.roles.user = User
+views.admin.signup.form.roles.admin = Admin
+views.admin.signup.form.roles.persman = Personnel Manager
+views.admin.signup.title = Sign Up
+views.admin.edituser = Edit User
+views.admin.edituser.savechanges = Save Changes
 
 views.holiday.title = Holiday
 
@@ -24,6 +39,7 @@ views.personal.title = Personal - Management
 
 views.report.title = Calculation
 
+exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
 exceptions.usermanagement.no_credentials = Invalid Credentials
 exceptions.usermanagement.user_already_exists = User already exists
@@ -35,4 +51,5 @@ exceptions.usermanagement.different_ids = User to change has different ID to exi
 exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.boss_username_format = Wrong Boss Username Format
 exceptions.usermanagement.invalid_boss = Invalid boss user name
+exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
 

@@ -2,10 +2,12 @@ package business.timetracking;
 
 import business.UserException;
 import com.google.inject.Inject;
+import infrastructure.TimeTrackException;
 import infrastructure.UserRepository;
 import model.TimeTrack;
 import model.User;
 import javassist.NotFoundException;
+import org.joda.time.DateTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,13 +50,16 @@ class TimeTrackingFacade implements TimeTracking {
         } catch (UserException e) {
             e.printStackTrace();
         }
+        catch (TimeTrackException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void startBreak(int userId) {
         try {
             _timeTrackingService.createBreak(userId);
-        } catch (UserException | NotFoundException e) {
+        } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
         }
     }
@@ -63,7 +68,7 @@ class TimeTrackingFacade implements TimeTracking {
     public void endBreak(int userId) {
         try {
             _timeTrackingService.endBreak(userId);
-        } catch (UserException | NotFoundException e) {
+        } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
         }
     }
@@ -96,7 +101,17 @@ class TimeTrackingFacade implements TimeTracking {
             return _timeTrackingService.readTimeTracks(userId);
         } catch (UserException e) {
             e.printStackTrace();
-        } catch (NotFoundException e) {
+        } catch (TimeTrackException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) {
+        try {
+            return _timeTrackingService.readTimeTracks(userId, from, to);
+        } catch (UserException | TimeTrackException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();

@@ -45,7 +45,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void go(int userId) throws NotFoundException, UserException {
+    public void go(int userId) throws NotFoundException, UserException, TimeTrackException {
         User user = loadUserById(userId);
 
         TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
@@ -71,28 +71,37 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public boolean takesBreak(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        Break activeBreak = _repository.getActiveBreak(user);
-
-        return activeBreak != null && activeBreak.getTo() == null;
+        try {
+            _repository.getActiveBreak(user);
+        } catch(NotFoundException e) {
+            return false;
+        }
+        return true; //activeBreak != null && activeBreak.getTo() == null;
     }
 
     @Override
-    public void createBreak(int userId) throws UserException, NotFoundException {
+    public void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
        User user = loadUserById(userId);
        _repository.startBreak(user);
     }
 
     @Override
-    public void endBreak(int userId) throws UserException, NotFoundException {
+    public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
         User user = loadUserById(userId);
         _repository.endBreak(user);
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) throws UserException, NotFoundException {
+    public List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
 
         return _repository.readTimeTracks(user);
+    }
+
+    @Override
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, TimeTrackException {
+        User user = loadUserById(userId);
+       return _repository.readTimeTracks(user, from, to);
     }
 
     private User loadUserById(int userId) throws UserException {

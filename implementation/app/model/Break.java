@@ -1,6 +1,7 @@
 package model;
 
 import com.avaje.ebean.Model;
+import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
@@ -29,9 +30,9 @@ public class Break extends Model {
     /**
      * @param from, to
      */
-    public Break(DateTime from, DateTime to) {
-        setFrom(from);
-        setTo(to);
+    public Break(DateTime from, DateTime to) throws TimeTrackException {
+       setFrom(from);
+       setTo(to);
     }
 
    /**
@@ -39,7 +40,7 @@ public class Break extends Model {
     * @param from
     */
     public Break(DateTime from) {
-        setFrom(from);
+        _from = from;
         _to = null;
     }
 
@@ -54,8 +55,11 @@ public class Break extends Model {
     }
 
 
-    public void setFrom(DateTime from) {
-        this._from = from;
+    public void setFrom(DateTime from) throws TimeTrackException {
+       if (_to != null && from.isAfter(_to)) {
+          throw new TimeTrackException("from is after to time");
+       }
+       this._from = from;
     }
 
 
@@ -64,9 +68,9 @@ public class Break extends Model {
     }
 
 
-    public void setTo(DateTime to) {
+    public void setTo(DateTime to) throws TimeTrackException {
        if(to.isBefore(_from)) {
-          throw new IllegalArgumentException("to time is before from time");
+          throw new TimeTrackException("to time is before from time");
        }
        _to = to;
     }

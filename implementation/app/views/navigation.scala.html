@@ -1,65 +1,68 @@
 @import org.pac4j.core.profile.CommonProfile
-@import model.User
+@import business.usermanagement.SecurityRole
 
 
 @(title: String, profile: CommonProfile)(content: Html)
 
-<!-- Sidebar, headers etc. -->
-<header>
-    <nav class="top-nav">
-        <div class="container">
-            <div class="nav-wrapper">
-                <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
-                <h1 class="page-title">@title</h1>
-            </div>
-        </div>
-    </nav>
-
-        <!-- Sidebar -->
-    <ul id="slide-out" class="side-nav fixed">
-        <img src="@routes.Assets.at("images/icon.svg")" width="240px" alt="Icon">
+<!-- Sidebar -->
+<div id="slide-out" class="side-nav fixed">
+    <img src="@routes.Assets.at("images/icon.svg")" width="240px" alt="Icon">
+    <ul>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
         <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
-        <li id="admin_dropdown" class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a href="@routes.AuthenticationController.signUp()">
-                    @Messages("views.admin.title")
-                    </a>
-                    <a class="collapsible-header">
-                        <i class="mdi-navigation-arrow-drop-down"></i>
-                    </a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
-                            <li><a href="#!">"Second Option"</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
-
-
-            <!-- User Profile -->
-        <li id="userProfile_container">
-            <ban>Logged in as </ban><br>
-            <ban>@profile.getFirstName @profile.getFamilyName</ban>
-        </li>
+        <!-- if user is admin -> add admin menu -->
+        @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
+            <li id="admin_dropdown" class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a href="@routes.AuthenticationController.signUp()">
+                        @Messages("views.admin.title")
+                        </a>
+                        <a class="collapsible-header">
+                            <i class="mdi-navigation-arrow-drop-down"></i>
+                        </a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
+                                <li><a href="@routes.UserManagementController.editUser()">@Messages("views.admin.edituser")</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        }
     </ul>
-</header>
+        <!-- user profile info -->
+    <div class="userProfile_container grey lighten-4">
+        <span>@Messages("views.navigation.loggedinas")</span><br>
 
+        <div class="chip">
+            <img src="@routes.Assets.at("images/icons_account.png")" alt="User">
+            @(profile.getFirstName + " " + profile.getFamilyName)
+        </div><br>
 
-    <!-- Main content -->
-<div class="container">
-@content
+        <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
+    </div>
 </div>
 
+<div class="content-wrap">
+    <!-- headers -->
+    <header>
+        <nav class="top-nav green">
+            <div class="container fullwidth-container">
+                <div class="nav-wrapper">
+                    <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
+                    <h1 class="page-title">@title</h1>
+                </div>
+            </div>
+        </nav>
+    </header>
 
-    <!-- Include all scripts before end of body to render faster -->
-<script>
-        $(function () {
-            $(".button-collapse").sideNav();
-        });
-</script>
+
+        <!-- Main content -->
+    <div class="container fullwidth-container">
+    @content
+    </div>
+</div>

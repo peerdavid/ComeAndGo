@@ -19,18 +19,45 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
 
     @Override
-    public List<TimeTrack> readTimeTracks(User user) {
+    public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
         _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
                 .findList();
 
+       if(_timeTracks == null) throw new TimeTrackException("timetracks not found");
+
         return _timeTracks;
     }
 
 
+   /**
+    * returns all timetracks from user, which are between from and to
+    * @param user
+    * @param from
+    * @param to
+    * @return
+    * @throws NotFoundException
+    */
     @Override
-    public TimeTrack readTimeTrack(int id) throws NotFoundException {
+    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException {
+       if(from.isAfter(to))
+          throw new TimeTrackException("from is after to");
+
+       _timeTracks =
+            Ebean.find(TimeTrack.class)
+            .where().eq("_user_id", user.getId())
+            .where().ge("start", from)
+            .where().le("end", to)
+            .findList();
+
+       if(_timeTracks == null) throw new TimeTrackException("list of timetracks not found");
+
+       return _timeTracks;
+    }
+
+    @Override
+    public TimeTrack readTimeTrack(int id) throws TimeTrackException {
         TimeTrack wantedTimeTrack =
             Ebean.find(TimeTrack.class)
                 .where().eq("id", id).findUnique();
@@ -40,7 +67,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         }
 
         // We should never return null
-        throw new NotFoundException("Entity does not exist.");
+        throw new TimeTrackException("Entity does not exist.");
     }
 
     @Override
@@ -109,20 +136,20 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public void startBreak(User user) throws NotFoundException {
+    public void startBreak(User user) throws TimeTrackException, NotFoundException {
         TimeTrack actualTimeTrack = getActiveTimeTrack(user);
         actualTimeTrack.addBreak(new Break(DateTime.now()));
         updateTimeTrack(actualTimeTrack);
     }
 
     @Override
-    public void endBreak(Break actualBreak) {
+    public void endBreak(Break actualBreak) throws TimeTrackException {
         actualBreak.setTo(DateTime.now());
         updateBreak(actualBreak);
     }
 
     @Override
-    public void endBreak(User user) throws NotFoundException {
+    public void endBreak(User user) throws TimeTrackException, NotFoundException {
         Break actualBreak = getActiveBreak(user);
         endBreak(actualBreak);
     }

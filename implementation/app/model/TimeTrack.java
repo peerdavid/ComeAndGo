@@ -3,6 +3,7 @@ package model;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
+import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
@@ -67,9 +68,9 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_from(DateTime from) {
+    public void set_from(DateTime from) throws TimeTrackException {
         if (_to != null && from.isAfter(_to)) {
-            throw new InvalidParameterException("From time is after to time");
+            throw new TimeTrackException("From time is after to time");
         }
 
         _from = from;
@@ -81,9 +82,9 @@ public class TimeTrack extends Model {
     }
 
 
-    public void set_to(DateTime to) {
+    public void set_to(DateTime to) throws TimeTrackException {
         if (to.isBefore(_from)) {
-            throw new InvalidParameterException("To time is before from time");
+            throw new TimeTrackException("To time is before from time");
         }
 
         _to = to;

@@ -13,6 +13,9 @@ POST    /logout                     @org.pac4j.play.ApplicationLogoutController.
 GET     /signup                     @controllers.AuthenticationController.signUp
 POST    /signup                     @controllers.AuthenticationController.doSignUp
 
+GET     /edituser                   @controllers.UserManagementController.indexEditUser
+POST    /edituser                   @controllers.UserManagementController.editUser
+
 # Come & Go
 GET     /come                       @controllers.TimeTrackController.come
 GET     /go                         @controllers.TimeTrackController.go

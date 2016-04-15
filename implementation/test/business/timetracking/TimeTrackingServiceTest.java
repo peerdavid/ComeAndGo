@@ -29,19 +29,21 @@ public class TimeTrackingServiceTest {
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
     UserRepository _userRepository;
-    TimeTrackingService _testee;
+    TimeTrackingService _timeTrackService;
     User _testUser;
+    Break _testBreak;
 
 
     @Before
     public void SetUp() throws Exception {
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
+        _testBreak = new Break(DateTime.now());
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(UserRepository.class);
 
-        _testee = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
+        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
     }
 
 
@@ -54,7 +56,7 @@ public class TimeTrackingServiceTest {
         int userId = 8;
 
         // Call
-        int actual = _testee.come(userId);    // Call the function, which should also call the repository
+        int actual = _timeTrackService.come(userId);    // Call the function, which should also call the repository
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId); // Check if the function really called our repository
@@ -69,14 +71,14 @@ public class TimeTrackingServiceTest {
         int userId = 8;
 
         // Call
-        _testee.come(userId);
+        _timeTrackService.come(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId); // Check if the function really called our repository
     }
 
     @Test
-    public void go_WithComeCalledBefore_ShouldSetToInTimeTrackAndCallRepository() throws NotFoundException, UserException {
+    public void go_WithComeCalledBefore_ShouldSetToInTimeTrackAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // prepare
         TimeTrack timeTrack = new TimeTrack(_testUser);
 
@@ -87,7 +89,7 @@ public class TimeTrackingServiceTest {
         int userId = 8;
 
         // Call
-        _testee.go(userId);
+        _timeTrackService.go(userId);
 
         // Validate
         Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
@@ -96,7 +98,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = NotFoundException.class)
-    public void go_WithoutComeCalledBefore_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+    public void go_WithoutComeCalledBefore_ShouldThrowExceptionAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);
         when(_userRepository.readUser(8)).thenReturn(_testUser);
@@ -104,7 +106,7 @@ public class TimeTrackingServiceTest {
         int userId = 8;
 
         // Call
-        _testee.go(userId);
+        _timeTrackService.go(userId);
 
         // Validate
         Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
@@ -112,14 +114,14 @@ public class TimeTrackingServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void go_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
+    public void go_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(null);
 
         int userId = 8;
 
         // Call
-        _testee.go(userId);
+        _timeTrackService.go(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -135,7 +137,7 @@ public class TimeTrackingServiceTest {
         boolean expected = false;
 
         // Call
-        boolean result = _testee.isActive(userId);
+        boolean result = _timeTrackService.isActive(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -143,7 +145,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test
-    public void isActive_ForInactiveUserButWasActiveBefore_ShouldCallRepository() throws NotFoundException, UserException {
+    public void isActive_ForInactiveUserButWasActiveBefore_ShouldCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
         TimeTrack timeTrack = new TimeTrack(_testUser);
@@ -155,7 +157,7 @@ public class TimeTrackingServiceTest {
         boolean expected = false;
 
         // Call
-        boolean result = _testee.isActive(userId);
+        boolean result = _timeTrackService.isActive(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -164,7 +166,7 @@ public class TimeTrackingServiceTest {
     }
 
     @Test
-    public void isActive_ForActiveUser_ShouldCallRepository() throws NotFoundException, UserException {
+    public void isActive_ForActiveUser_ShouldCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
         TimeTrack timeTrack = new TimeTrack(_testUser);
@@ -175,7 +177,7 @@ public class TimeTrackingServiceTest {
         boolean expected = true;
 
         // Call
-        boolean result = _testee.isActive(userId);
+        boolean result = _timeTrackService.isActive(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -192,7 +194,7 @@ public class TimeTrackingServiceTest {
         boolean expected = false;
 
         // Call
-        boolean result = _testee.isActive(userId);
+        boolean result = _timeTrackService.isActive(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -203,13 +205,13 @@ public class TimeTrackingServiceTest {
     public void takesBreak_ForUserNotTakingABreak_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenReturn(null);
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenThrow(NotFoundException.class);
 
         int userId = 8;
         boolean expected = false;
 
         // Call
-        boolean result = _testee.takesBreak(userId);
+        boolean result = _timeTrackService.takesBreak(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -228,7 +230,7 @@ public class TimeTrackingServiceTest {
         boolean expected = true;
 
         // Call
-        boolean result = _testee.takesBreak(userId);
+        boolean result = _timeTrackService.takesBreak(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
@@ -245,10 +247,61 @@ public class TimeTrackingServiceTest {
         boolean expected = false;
 
         // Call
-        boolean result = _testee.takesBreak(userId);
+        boolean result = _timeTrackService.takesBreak(userId);
 
         // Validate
         Mockito.verify(_userRepository, times(1)).readUser(userId);
         Assert.assertEquals(result, expected);
     }
+
+    @Test(expected = UserException.class)
+    public void creatingBreak_ForUserNotExists_ShouldThrowUserException() throws TimeTrackException, UserException, NotFoundException {
+        //prepare
+        when(_userRepository.readUser(7)).thenReturn(null);
+
+        int userId = 7;
+        _timeTrackService.createBreak(userId);
+
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+    }
+
+
+    @Test(expected = UserException.class)
+    public void creatingBreak_ForUserNotCameBefore_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        //prepare
+        when(_timeTrackService.isActive(7)).thenReturn(false);
+
+        int userId = 7;
+        _timeTrackService.createBreak(userId);
+
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackService, times(1)).isActive(userId);
+    }
+
+    @Test(expected = UserException.class)
+    public void creatingABreak_WhenUserAlreadyDidBefore_ShouldThrowUserException() throws UserException, NotFoundException, TimeTrackException {
+        //prepare
+        when(_timeTrackService.takesBreak(7)).thenReturn(true);
+
+        int userId = 7;
+        _timeTrackService.createBreak(userId);
+
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(any(User.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void endBreak_WhenUserDidNotStartBreak_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        //prepare
+        when(_userRepository.readUser(7)).thenReturn(_testUser);
+        when(_timeTrackService.takesBreak(any(Integer.class))).thenReturn(false);
+        when(_timeTrackingRepository.getActiveBreak(_testUser)).thenReturn(null);
+
+        int userId = 7;
+        _timeTrackService.endBreak(userId);
+
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackService, times(1)).takesBreak(userId);
+    }
+
 }

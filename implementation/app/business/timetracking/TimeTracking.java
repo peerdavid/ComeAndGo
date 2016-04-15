@@ -1,8 +1,11 @@
 package business.timetracking;
 
 import business.UseCases;
+import com.avaje.ebean.config.JsonConfig;
+import infrastructure.TimeTrackException;
 import model.TimeTrack;
 import model.User;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -21,4 +24,6 @@ public interface TimeTracking extends UseCases {
     TimeTrackState getState(int userId);
 
     List<TimeTrack> readTimeTracks(int userId);
+
+    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to);
 }

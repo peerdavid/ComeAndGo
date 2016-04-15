@@ -1,7 +1,3 @@
-nav{
-    background-color: #689F38;
-}
-
 nav.top-nav {
     height: 122px;
     box-shadow: none;
@@ -14,6 +10,26 @@ nav.top-nav .page-title {
     margin-top: 0px;
 }
 
+.side-nav {
+    overflow: hidden;
+    height: 100%;
+}
+
+.side-nav > ul {
+    overflow: auto;
+    position: absolute;
+    top: 240px;
+    bottom: 140px;
+    width: 100%;
+}
+
+.content-wrap {
+    margin-left: 240px;
+}
+
+.fullwidth-container {
+    margin-left: 4em;
+}
 
 #login_container {
     position: absolute;
@@ -21,9 +37,15 @@ nav.top-nav .page-title {
     top: 30%;
     background: #F6F6F6;
     padding: 16px;
-    max-width: 400px;
+    max-width: 350px;
+    width: 20%;
+    min-width: 300px;
     font-weight: bold;
     border: 2px solid #F6F6F6;
+}
+
+#login_container .input-field > i {
+    padding-top: 9px;
 }
 
 #login_background {
@@ -35,12 +57,26 @@ nav.top-nav .page-title {
     background-size: cover;
 }
 
+#logout-btn {
+    height: 36px;
+    line-height: 36px;
+    color: #FFF;
+}
 
-#userProfile_container {
+.userProfile_container {
     position: absolute;
     bottom: 0;
     width: 100%;
+    padding: 0 12px;
+    height: 138px;
+    top: auto;
     background: #fff;
+    line-height: 32px;
+}
+
+.userProfile_container .chip {
+    width: 100%;
+    margin: 6px 0 16px;
 }
 
 #admin_dropdown > ul > li > a {
@@ -56,18 +92,76 @@ nav.top-nav .page-title {
     text-align: center;
 }
 
-.progress{
+#active_progress {
     height: 32px;
-    background-color: #c8e6c9;
+    background: #ff5722;
 }
 
-@media (max-width: 1200px) {
+/* change texterea colors */
+textarea:focus {
+    border-bottom: 1px solid #00bcd4 !important;
+    -webkit-box-shadow: 0 1px 0 0 #00bcd4 !important;
+    -moz-box-shadow: 0 1px 0 0 #00bcd4 !important;
+    box-shadow: 0 1px 0 0 #00bcd4 !important;
+}
+
+input:focus:not([type]):not([readonly]), input[type="text"]:focus:not([readonly]),
+input[type="password"]:focus:not([readonly]), input[type="email"]:focus:not([readonly]),
+input[type="url"]:focus:not([readonly]), input[type="time"]:focus:not([readonly]),
+input[type="date"]:focus:not([readonly]), input[type="datetime-local"]:focus:not([readonly]),
+input[type="tel"]:focus:not([readonly]), input[type="number"]:focus:not([readonly]),
+input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
+    border-bottom: 1px solid #00bcd4;
+    box-shadow: 0px 1px 0px 0px #00bcd4;
+}
+
+.input-field .prefix.active {
+    color: inherit;
+}
+
+/* changes input-field placeholder colour for multiple devices */
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #727272;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #727272;
+    opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #727272;
+    opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color:    #727272;
+}
+
+/* phones */
+@media (max-width: 599px) {
     #login_container {
+        max-width: 400px;
+        width: 80%;
+        min-width: 250px;
+        margin: auto;
         position: relative;
-        left: 0;
-        right: 0;
-        top: 0;
+        top: 10em;
+        height: 290px;
+        right: auto;
+    }
+}
+
+/* tablets */
+@media (min-width: 600px) and (max-width: 991px) {
+}
+
+/* tablets & phones */
+@media (max-width: 991px) {
+    .content-wrap {
+        margin: 0;
+    }
+
+    .fullwidth-container {
         margin: auto;
     }
+
 }
 
