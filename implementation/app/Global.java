@@ -18,7 +18,7 @@ public class Global extends GlobalSettings {
 
 
     @Override
-    public void onStart(Application app){
+    public void onStart(Application app) {
         super.onStart(app);
 
         Logger.info("Starting application");
@@ -26,7 +26,7 @@ public class Global extends GlobalSettings {
 
 
     @Override
-    public void onStop(Application app){
+    public void onStop(Application app) {
         super.onStop(app);
 
         Logger.info("Stopping application");
@@ -34,7 +34,6 @@ public class Global extends GlobalSettings {
 
     @Override
     public F.Promise<Result> onError(Http.RequestHeader request, Throwable t) {
-        //return F.Promise.<Result>pure(internalServerError(views.html.error.render(t)));
-        return null;
+        return F.Promise.<Result>pure(internalServerError(views.html.error.render(t)));
     }
 }
