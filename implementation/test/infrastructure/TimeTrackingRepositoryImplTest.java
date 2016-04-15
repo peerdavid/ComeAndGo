@@ -38,12 +38,12 @@ public class TimeTrackingRepositoryImplTest {
       _timeTrackRepository = mock(TimeTrackingRepository.class);
    }
 
-/*
-   @Test(expected = TimeTrackException.class)
+
+/*   @Test(expected = TimeTrackException.class)
    public void searchingTimeTrackList_ForNoUserGiven_ShouldThrowTimeTrackException() throws TimeTrackException {
       _timeTrackRepository.readTimeTracks(null);
-   }
-*/
+   }*/
+
 
 /*   @Test(expected = TimeTrackException.class)
    public void searchingTimeTrackList_WithNoResults_ShouldThrowTimeTrackException() throws TimeTrackException {
