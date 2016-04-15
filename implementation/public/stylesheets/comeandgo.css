@@ -102,10 +102,13 @@ nav.top-nav .page-title {
 }
 
 /* edit users */
-#user-list li form {
+#user-list li .collapsible-body {
     padding: 1em;
 }
 
+div.edit-user-switch-container.col , div.edit-user-switch-container.col .switch {
+    float: right;
+}
 /* change texterea colors */
 textarea:focus {
     border-bottom: 1px solid #00bcd4 !important;

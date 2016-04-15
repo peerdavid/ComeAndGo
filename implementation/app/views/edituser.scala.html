@@ -13,31 +13,46 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
                 <div class="collapsible-body">
+                    <div class="row">
+                        <div class="col s12 m6 edit-user-switch-container">
+                            <div class="switch">
+                                <label>
+                                    @Messages("views.admin.edituser.edit")
+                                    <input id="edit-user-switch" type="checkbox" class="green">
+                                    <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="input-field col s12 m6">
+                            <input disabled="disabled" name="username" type="text" value="@u.getUserName">
+                            <label for="username">@Messages("views.admin.signup.form.username")</label>
+                        </div>
+                    </div>
                     <form action="@routes.UserManagementController.editUser()" method="POST">
-                        <!-- <input name="id" type="String" value="@u.getId" style="visibility : hidden"> -->
-                        <!-- <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")"> -->
                         <div class="row">
                             <div class="input-field col s6">
-                                <input name="firstname" type="text" value="@u.getFirstName" placeholder="@Messages("views.admin.signup.form.firstname")">
+                                <input disabled="disabled" name="firstname" type="text" value="@u.getFirstName">
                                 <label for=firstname">@Messages("views.admin.signup.form.firstname")</label>
                             </div>
                             <div class="input-field col s6">
-                                <input name="lastname" type="text" value="@u.getLastName" placeholder="@Messages("views.admin.signup.form.lastname")">
+                                <input disabled="disabled" name="lastname" type="text" value="@u.getLastName">
                                 <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s6">
-                                <input name="email" type="email" value="@u.getEmail" placeholder="@Messages("views.admin.signup.form.email")">
+                            <div class="input-field col s12 m6">
+                                <input disabled="disabled" name="email" type="email" value="@u.getEmail">
                                 <label for="email">@Messages("views.admin.signup.form.email")</label>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="input-field col s6">
-                                <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
+                            <div class="input-field col s12 m6">
+                                <input disabled="disabled" name="password" type="password">
+                                <label for="password">@Messages("views.admin.signup.form.password")</label>
                             </div>
-                            <div class="input-field col s6">
-                                <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
+                            <div id="disabled" class="input-field col s12 m6">
+                                <input disabled="disabled" name="repeat_password" type="password">
+                                <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
                             </div>
                         </div>
 

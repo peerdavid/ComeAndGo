@@ -30,8 +30,10 @@ views.admin.signup.form.roles.user = User
 views.admin.signup.form.roles.admin = Admin
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
+
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
+views.admin.edituser.edit = Edit
 
 views.holiday.title = Holiday
 
