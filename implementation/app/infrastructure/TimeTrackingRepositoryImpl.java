@@ -20,7 +20,10 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
-        _timeTracks =
+       if(user == null) {
+          throw new TimeTrackException("no user");
+       }
+       _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
                 .findList();
@@ -43,6 +46,8 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException {
        if(from.isAfter(to))
           throw new TimeTrackException("from is after to");
+       if(user == null)
+          throw new TimeTrackException("no user given");
 
        _timeTracks =
             Ebean.find(TimeTrack.class)
@@ -76,21 +81,23 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             .where().eq("_user_id", user.getId())
             .where().isNull("end")
             .findUnique();
-        if (actualTimeTrack != null) {
-            return actualTimeTrack;
+        if (actualTimeTrack == null) {
+           throw new NotFoundException("TimeTrack not found");
         }
 
-        throw new NotFoundException("TimeTrack not found");
+        return actualTimeTrack;
     }
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
-        Ebean.update(timeTrack);
+       if(timeTrack == null) return;
+       Ebean.update(timeTrack);
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-        Ebean.delete(TimeTrack.class, timeTrack);
+       if(timeTrack == null) return;
+       Ebean.delete(TimeTrack.class, timeTrack);
     }
 
     @Override
@@ -127,12 +134,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void deleteBreak(Break actualBreak) {
-        Ebean.delete(Break.class, actualBreak);
+       if(actualBreak == null) return;
+       Ebean.delete(Break.class, actualBreak);
     }
 
     @Override
     public void updateBreak(Break actualBreak) {
-        Ebean.update(actualBreak);
+       if(actualBreak == null) return;
+       Ebean.update(actualBreak);
     }
 
     @Override

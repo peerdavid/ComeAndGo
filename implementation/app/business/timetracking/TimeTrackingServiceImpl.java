@@ -62,9 +62,14 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public boolean isActive(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        TimeTrack activeTimeTrack = _repository.getActiveTimeTrack(user);
+        // _repository throws exception, if there is no TimeTrack available
+        try {
+            _repository.getActiveTimeTrack(user);
+        } catch(NotFoundException e) {
+            return false;
+        }
 
-        return activeTimeTrack != null && activeTimeTrack.get_to() == null;
+        return true;
     }
 
     @Override
@@ -81,18 +86,24 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
-       if(takesBreak(userId)) {
-           throw new UserException("You already take a break");
-       }
+        if(takesBreak(userId)) {
+            throw new UserException("You already take a break");
+        }
+        if(!isActive(userId)) {
+            throw new UserException("You must be working, otherwise you can't take a break");
+        }
 
         User user = loadUserById(userId);
-       _repository.startBreak(user);
+        _repository.startBreak(user);
     }
 
     @Override
     public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
         if(!takesBreak(userId)) {
             throw new UserException("You cannot end your break before you start it.");
+        }
+        if(!isActive(userId)) {
+            throw new UserException("You have to be working, otherwise you can't end your break");
         }
 
         User user = loadUserById(userId);

@@ -8,11 +8,13 @@ import junit.framework.Assert;
 import model.Break;
 import model.TimeTrack;
 import model.User;
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.openqa.selenium.NotFoundException;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -36,7 +38,39 @@ public class TimeTrackingRepositoryImplTest {
       _timeTrackRepository = mock(TimeTrackingRepository.class);
    }
 
-   @Test
-   public void user_comes_twice_should_throw_timetrackexception() {
+/*
+   @Test(expected = TimeTrackException.class)
+   public void searchingTimeTrackList_ForNoUserGiven_ShouldThrowTimeTrackException() throws TimeTrackException {
+      _timeTrackRepository.readTimeTracks(null);
    }
+*/
+
+/*   @Test(expected = TimeTrackException.class)
+   public void searchingTimeTrackList_WithNoResults_ShouldThrowTimeTrackException() throws TimeTrackException {
+      // prepare
+      when(Ebean.find(TimeTrack.class)).thenReturn(null);
+
+      _timeTrackRepository.readTimeTracks(_testuser);
+   }*/
+
+/*   @Test(expected = TimeTrackException.class)
+   public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldThrowTimeTrackException() throws TimeTrackException {
+      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));
+   }*/
+
+/*   @Test(expected = TimeTrackException.class)
+   public void searchingTimeTrackList_WithCorrectDatesButNoResults_ShouldThrowTimeTrackException() throws TimeTrackException {
+      //prepare
+      when(Ebean.find(TimeTrack.class).findList()).thenReturn(null);
+
+      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().plusHours(1));
+   }
+
+   @Test
+   public void searchingTimeTrackList_WithCorrectDatesAndResult_ShouldSucceed() throws TimeTrackException {
+      //prepare
+      when(Ebean.find(TimeTrack.class).findList()).thenReturn(Collections.emptyList());
+
+      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().plusHours(1));
+   }*/
 }
