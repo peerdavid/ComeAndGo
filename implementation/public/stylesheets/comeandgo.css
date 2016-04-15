@@ -48,6 +48,10 @@ nav.top-nav .page-title {
     padding-top: 9px;
 }
 
+#login_container label {
+    margin-left: 2.3rem;
+}
+
 #login_background {
     position: fixed;
     left: 0;
