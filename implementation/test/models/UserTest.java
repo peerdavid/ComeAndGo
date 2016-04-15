@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;

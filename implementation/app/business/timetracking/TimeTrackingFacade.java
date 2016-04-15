@@ -3,9 +3,7 @@ package business.timetracking;
 import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeTrackException;
-import infrastructure.UserRepository;
-import model.TimeTrack;
-import model.User;
+import models.TimeTrack;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
 

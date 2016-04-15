@@ -3,7 +3,7 @@ package business.usermanagement;
 import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
-import model.User;
+import models.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;

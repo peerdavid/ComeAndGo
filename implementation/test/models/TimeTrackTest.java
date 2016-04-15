@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;
@@ -6,8 +6,6 @@ import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.security.InvalidParameterException;
 
 /**
  * Created by david on 21.03.16.

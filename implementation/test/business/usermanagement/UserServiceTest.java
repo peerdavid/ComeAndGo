@@ -4,7 +4,7 @@ package business.usermanagement;
 import business.UserException;
 import infrastructure.UserRepository;
 
-import model.User;
+import models.User;
 
 import org.junit.Assert;
 import org.junit.Before;

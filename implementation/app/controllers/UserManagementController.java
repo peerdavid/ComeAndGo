@@ -1,11 +1,9 @@
 package controllers;
 
-import business.UserException;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
-import model.User;
+import models.User;
 import org.pac4j.core.profile.CommonProfile;
-import org.pac4j.core.profile.UserProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;

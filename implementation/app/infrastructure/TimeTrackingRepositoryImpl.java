@@ -1,9 +1,9 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
-import model.Break;
-import model.TimeTrack;
-import model.User;
+import models.Break;
+import models.TimeTrack;
+import models.User;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
 

@@ -1,7 +1,7 @@
 package business.usermanagement;
 
 import business.UserException;
-import model.User;
+import models.User;
 import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
 
 import java.util.List;

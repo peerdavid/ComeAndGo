@@ -7,14 +7,11 @@ import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
-import model.Break;
-import model.Notification;
-import model.TimeTrack;
-import model.User;
+import models.TimeTrack;
+import models.User;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.google.inject.Inject;
-import play.Logger;
 
 
 /**

@@ -2,7 +2,7 @@ package business.usermanagement;
 
 import business.UserException;
 import com.google.inject.Inject;
-import model.User;
+import models.User;
 
 import java.util.List;
 

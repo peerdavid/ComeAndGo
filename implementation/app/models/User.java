@@ -1,21 +1,14 @@
-package model;
+package models;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
-import play.data.validation.ValidationError;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.validation.ConstraintViolation;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by david on 21.03.16.

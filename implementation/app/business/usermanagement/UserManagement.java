@@ -2,7 +2,7 @@ package business.usermanagement;
 
 import business.UseCases;
 import business.UserException;
-import model.User;
+import models.User;
 
 import java.util.List;
 
