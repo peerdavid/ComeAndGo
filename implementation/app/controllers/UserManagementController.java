@@ -62,19 +62,20 @@ public class UserManagementController extends UserProfileController{
                 break;
             }
         }
-        if(!firstName.equals("")){
+       // should we edit userName?
+        if(userName != null && !userName.equals("")){
             changingUser.setUserName(userName);
         }
-        if(!firstName.equals("")){
+        if(firstName != null && !firstName.equals("")){
             changingUser.setFirstName(firstName);
         }
-        if(!lastName.equals("")){
+        if(lastName != null && !lastName.equals("")){
             changingUser.setLastName(lastName);
         }
-        if(!email.equals("")){
+        if(email != null && !email.equals("")){
             changingUser.setEmail(email);
         }
-        if((!password.isEmpty())&&(!repeatPassword.isEmpty())&&password.equals(repeatPassword)){
+        if(password != null && repeatPassword != null && (!password.isEmpty())&&(!repeatPassword.isEmpty())&&password.equals(repeatPassword)){
             changingUser.setPassword(password);
         }
 
