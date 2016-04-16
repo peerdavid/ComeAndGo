@@ -11,6 +11,6 @@ $( document ).ready(function() {
     $('select').material_select();
 });
 
-$('#edit-user-switch').click(function () {
+$('.edit-user-switch').click(function () {
     $('li.active form input').prop('disabled', !this.checked);
 });
