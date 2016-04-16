@@ -2,12 +2,18 @@ package infrastructure;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;
+import com.avaje.ebean.Ebean;
 import models.TimeTrack;
 import models.User;
+import org.joda.time.DateTime;
 import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Collections;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by stefan on 11.04.16.
@@ -22,42 +28,16 @@ public class TimeTrackingRepositoryImplTest {
    public void setUp() throws UserException {
       _testuser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, "testBoss");
       _timetrack = new TimeTrack(_testuser);
-      _timeTrackRepository = mock(TimeTrackingRepository.class);
+      _timeTrackRepository = new TimeTrackingRepositoryImpl();
    }
 
-
-/*   @Test(expected = TimeTrackException.class)
+   @Test(expected = TimeTrackException.class)
    public void searchingTimeTrackList_ForNoUserGiven_ShouldThrowTimeTrackException() throws TimeTrackException {
       _timeTrackRepository.readTimeTracks(null);
-   }*/
-
-
-/*   @Test(expected = TimeTrackException.class)
-   public void searchingTimeTrackList_WithNoResults_ShouldThrowTimeTrackException() throws TimeTrackException {
-      // prepare
-      when(Ebean.find(TimeTrack.class)).thenReturn(null);
-
-      _timeTrackRepository.readTimeTracks(_testuser);
-   }*/
-
-/*   @Test(expected = TimeTrackException.class)
-   public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldThrowTimeTrackException() throws TimeTrackException {
-      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));
-   }*/
-
-/*   @Test(expected = TimeTrackException.class)
-   public void searchingTimeTrackList_WithCorrectDatesButNoResults_ShouldThrowTimeTrackException() throws TimeTrackException {
-      //prepare
-      when(Ebean.find(TimeTrack.class).findList()).thenReturn(null);
-
-      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().plusHours(1));
    }
 
-   @Test
-   public void searchingTimeTrackList_WithCorrectDatesAndResult_ShouldSucceed() throws TimeTrackException {
-      //prepare
-      when(Ebean.find(TimeTrack.class).findList()).thenReturn(Collections.emptyList());
-
-      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().plusHours(1));
-   }*/
+   @Test(expected = TimeTrackException.class)
+   public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldThrowTimeTrackException() throws TimeTrackException {
+      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));
+   }
 }
