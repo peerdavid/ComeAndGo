@@ -13,4 +13,5 @@ $( document ).ready(function() {
 
 $('.edit-user-switch').click(function () {
     $('li.active form input').prop('disabled', !this.checked);
+    $('li.active form button').css('display', (this.checked ? 'inline' : 'none'));
 });
