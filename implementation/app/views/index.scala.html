@@ -1,7 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 
 @import business.timetracking.TimeTrackState
-@(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTrack: TimeTrack)
+@(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTracks: java.util.List[TimeTrack])
 
 @main(Messages("views.index.title")) {
 
@@ -47,7 +47,7 @@
 
 
 
-        @if(timeTrack != null) {
+        @if(timeTracks != null) {
             <table>
                 <tr>
                     <th>
@@ -57,52 +57,53 @@
                         @Messages("views.index.timetrack.tablehead.time")
                     </th>
                 </tr>
-                <tr>
-                    <td>
-                        @Messages("views.index.timetrack.tablebody.start")
-                    </td>
-                    <td>
-                        @timeTrack.get_from()
-                    </td>
-                </tr>
-
-                @for(b: Break <- timeTrack.get_breaks) {
+                @for(timeTrack: TimeTrack <- timeTracks) {
                     <tr>
                         <td>
-                            @Messages("views.index.timetrack.tablebody.breakstart")
+                            @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @b.getFrom()
+                            @timeTrack.get_from()
                         </td>
                     </tr>
 
-
-                    @if(b.getTo() != null) {
+                    @for(b: Break <- timeTrack.get_breaks) {
                         <tr>
                             <td>
-                                @Messages("views.index.timetrack.tablebody.breakend")
+                                @Messages("views.index.timetrack.tablebody.breakstart")
                             </td>
                             <td>
-                                @b.getTo()
+                                @b.getFrom()
+                            </td>
+                        </tr>
+
+                        @if(b.getTo() != null) {
+                            <tr>
+                                <td>
+                                    @Messages("views.index.timetrack.tablebody.breakend")
+                                </td>
+                                <td>
+                                    @b.getTo()
+                                </td>
+                            </tr>
+                        }
+                    }
+
+                    @if(timeTrack.get_to() != null) {
+                        <tr>
+                            <td>
+                                @Messages("views.index.timetrack.tablebody.end")
+                            </td>
+                            <td>
+                                @timeTrack.get_to()
                             </td>
                         </tr>
                     }
-                }
 
-                @if(timeTrack.get_to() != null) {
-                    <tr>
-                        <td>
-                            @Messages("views.index.timetrack.tablebody.end")
-                        </td>
-                        <td>
-                            @timeTrack.get_to()
-                        </td>
-                    </tr>
                 }
             </table>
+
         }
-
-
         <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
 
     }

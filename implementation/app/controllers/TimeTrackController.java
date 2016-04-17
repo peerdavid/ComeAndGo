@@ -41,13 +41,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         List<TimeTrack> timeTrackList = _timeTracking.readTimeTracks(userId, from, to);
 
-        TimeTrack todaysTimetrack = null;
-
-        if (!timeTrackList.isEmpty()) {
-            todaysTimetrack = timeTrackList.get(0);
-        }
-
-        return ok(views.html.index.render(profile, _timeTracking.getState(userId), progress, todaysTimetrack));
+        return ok(views.html.index.render(profile, _timeTracking.getState(userId), progress, timeTrackList));
     }
 
     @RequiresAuthentication(clientName = "default")
