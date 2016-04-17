@@ -1,52 +1,94 @@
 @import org.pac4j.core.profile.CommonProfile
 
 @import business.timetracking.TimeTrackState
-@(profile: CommonProfile, userState: TimeTrackState, progress: Int)
+@(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTrack: TimeTrack)
 
-    @main(Messages("views.index.title")) {
+@main(Messages("views.index.title")) {
 
-        @navigation(Messages("views.index.title"), profile) {
+    @navigation(Messages("views.index.title"), profile) {
 
-            <div id = "index-welcome-status">
-                <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
+        <div id = "index-welcome-status">
+            <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
 
-                <h4>@(Messages("views.index.state") + " : " + userState)</h4>
+            <h4>@(Messages("views.index.state") + " : " + userState)</h4>
+        </div>
+
+        <br/>
+        <div id="active_progress" class="progress">
+            <div class="determinate green" style="width : @(progress) %"></div>
+        </div>
+
+        @if(userState == TimeTrackState.INACTIVE) {
+            <div id="index-time-track-buttons">
+                <a class="waves-effect waves-light cyan btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                <button class="waves-effect waves-light cyan btn" disabled="disabled">@Messages("views.index.startbreak")</button>
+                <button class="waves-effect waves-light cyan btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
             </div>
-
-            <br/>
-            <div id="active_progress" class="progress">
-                <div class="determinate green"  style="width: @(progress)%"></div>
-            </div>
-
-            @if(userState==TimeTrackState.INACTIVE){
-                <div id="index-time-track-buttons">
-                    <a class="waves-effect waves-light cyan btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
-                    <button class="waves-effect waves-light cyan btn" disabled="disabled">@Messages("views.index.startbreak")</button>
-                    <button class="waves-effect waves-light cyan btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
-                </div>
-            }
-
-            @if(userState==TimeTrackState.ACTIVE){
-                <div id="index-time-track-buttons">
-                    <button class="waves-effect waves-light cyan btn"  disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                    <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-                    <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
-                </div>
-            }
-
-            @if(userState==TimeTrackState.PAUSE){
-                <div id="index-time-track-buttons">
-                    <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                    <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
-                    <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
-                </div>
-            }
-
-            <br />
-            <br />
-
-            <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
-
         }
 
+        @if(userState == TimeTrackState.ACTIVE) {
+            <div id="index-time-track-buttons">
+                <button class="waves-effect waves-light cyan btn" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+            </div>
+        }
+
+        @if(userState == TimeTrackState.PAUSE) {
+            <div id="index-time-track-buttons">
+                <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
+                <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
+            </div>
+        }
+
+        <br />
+        <br />
+
+
+
+        @if(timeTrack != null) {
+            <table>
+                <tr>
+                    <th>Action</th>
+                    <th>Time</th>
+                </tr>
+                <tr>
+                    <td>
+                        Start
+                    </td>
+                    <td>
+                    @timeTrack.get_from()
+                    </td>
+                </tr>
+
+                @for(b: Break <- timeTrack.get_breaks) {
+                    <tr>
+                        <td>
+                        Break
+                        </td>
+                        <td>
+                        @(b.getFrom().toLocalTime + " - " + b.getTo())
+                        </td>
+                    </tr>
+                }
+
+                @if(timeTrack.get_to() != null) {
+                    <tr>
+                        <td>
+                            End
+                        </td>
+                        <td>
+                        @timeTrack.get_to()
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
+
+
+        <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
+
     }
+
+}
