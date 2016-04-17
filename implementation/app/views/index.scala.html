@@ -50,25 +50,38 @@
         @if(timeTrack != null) {
             <table>
                 <tr>
-                    <th>Action</th>
-                    <th>Time</th>
+                    <th>
+                        @Messages("views.index.timetrack.tablehead.action")
+                    </th>
+                    <th>
+                        @Messages("views.index.timetrack.tablehead.time")
+                    </th>
                 </tr>
                 <tr>
                     <td>
-                        Start
+                        @Messages("views.index.timetrack.tablebody.start")
                     </td>
                     <td>
-                    @timeTrack.get_from()
+                        @timeTrack.get_from()
                     </td>
                 </tr>
 
                 @for(b: Break <- timeTrack.get_breaks) {
                     <tr>
                         <td>
-                        Break
+                            @Messages("views.index.timetrack.tablebody.breakstart")
                         </td>
                         <td>
-                        @(b.getFrom().toLocalTime + " - " + b.getTo())
+                            @b.getFrom()
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @Messages("views.index.timetrack.tablebody.breakend")
+                        </td>
+                        <td>
+                            @b.getTo()
                         </td>
                     </tr>
                 }
@@ -76,10 +89,10 @@
                 @if(timeTrack.get_to() != null) {
                     <tr>
                         <td>
-                            End
+                            @Messages("views.index.timetrack.tablebody.end")
                         </td>
                         <td>
-                        @timeTrack.get_to()
+                            @timeTrack.get_to()
                         </td>
                     </tr>
                 }
