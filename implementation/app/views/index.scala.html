@@ -47,7 +47,7 @@
 
 
 
-        @if(timeTracks != null) {
+        @if(!timeTracks.isEmpty) {
             <table>
                 <tr>
                     <th>
@@ -63,7 +63,7 @@
                             @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @timeTrack.get_from()
+                            @(timeTrack.get_from.getHourOfDay + " : " + timeTrack.get_from.getMinuteOfHour)
                         </td>
                     </tr>
 
@@ -73,7 +73,7 @@
                                 @Messages("views.index.timetrack.tablebody.breakstart")
                             </td>
                             <td>
-                                @b.getFrom()
+                                @(b.getFrom.getHourOfDay + " : " + b.getFrom.getMinuteOfHour)
                             </td>
                         </tr>
 
@@ -83,7 +83,7 @@
                                     @Messages("views.index.timetrack.tablebody.breakend")
                                 </td>
                                 <td>
-                                    @b.getTo()
+                                    @(b.getTo.getHourOfDay + " : " + b.getTo.getMinuteOfHour)
                                 </td>
                             </tr>
                         }
@@ -95,7 +95,7 @@
                                 @Messages("views.index.timetrack.tablebody.end")
                             </td>
                             <td>
-                                @timeTrack.get_to()
+                                @(timeTrack.get_to().getHourOfDay + " : " + timeTrack.get_to().getMinuteOfHour)
                             </td>
                         </tr>
                     }

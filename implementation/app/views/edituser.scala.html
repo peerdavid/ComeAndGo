@@ -57,6 +57,19 @@
                         <button class="btn waves-effect waves-light green" type="submit" name="action" style="float: right; display: none;">@Messages("views.admin.edituser.savechanges")
                             <i class="material-icons right">done</i>
                         </button>
+                            <!--
+                        <a class="waves-effect waves-light btn modal-trigger" href="#modal1">delete user link</a>
+                        <button data-target="modal1" class="btn modal-trigger">delete user button</button>-->
+                       <a class="waves-effect waves-light cyan btn" href="@(routes.UserManagementController.deleteUser())?username=@u.getUserName()" style="float : right"> deleteUser</a>
+                        <div id="modal1" class="modal">
+                            <div class="modal-content">
+                                <h4>Modal Header</h4>
+                                <p>A bunch of text</p>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </li>

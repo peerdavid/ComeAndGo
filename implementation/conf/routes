@@ -16,6 +16,8 @@ POST    /signup                     @controllers.AuthenticationController.doSign
 GET     /edituser                   @controllers.UserManagementController.indexEditUser
 POST    /edituser                   @controllers.UserManagementController.editUser
 
+GET     /deleteUser                 @controllers.UserManagementController.deleteUser(username : String ?= null)
+
 # Come & Go
 GET     /come                       @controllers.TimeTrackController.come
 GET     /go                         @controllers.TimeTrackController.go
