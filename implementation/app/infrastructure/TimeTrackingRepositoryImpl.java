@@ -54,9 +54,16 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             .where().eq("_user_id", user.getId())
             .where().ge("start", from)
             .where().le("end", to)
+            .setOrderBy("start")
             .findList();
 
        if(_timeTracks == null) throw new TimeTrackException("list of timetracks not found");
+       // we also should include the active timeTrack:
+       try {
+          _timeTracks.add(getActiveTimeTrack(user));
+       } catch (NotFoundException e) {
+          // in this branch should be done anything
+       }
 
        return _timeTracks;
     }
