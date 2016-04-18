@@ -1,6 +1,5 @@
-package model;
+package models;
 
-import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
 import infrastructure.TimeTrackException;
@@ -9,7 +8,6 @@ import play.data.format.Formats;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.security.InvalidParameterException;
 import java.util.List;
 
 /**

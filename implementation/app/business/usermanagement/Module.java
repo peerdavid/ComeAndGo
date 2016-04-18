@@ -18,14 +18,14 @@ import org.pac4j.play.store.PlayCacheStore;
 public class Module extends AbstractModule {
     @Override
     protected void configure() {
-        bind(AuthenticatorService.class).to(AuthenticatorServiceImpl.class);
+        bind(UserService.class).to(UserServiceImpl.class);
         bind(UserManagement.class).to(UserManagementFacade.class);
 
         Injector injector = Guice.createInjector(new infrastructure.Module());
         UserRepository userRepository = injector.getInstance(UserRepository.class);
 
-        AuthenticatorService authenticatorService = new AuthenticatorServiceImpl(userRepository);
-        final FormClient client = new FormClient("/login", authenticatorService);
+        UserService userService = new UserServiceImpl(userRepository);
+        final FormClient client = new FormClient("/login", userService);
         client.setName("default");
 
         final Config config = new Config(client);

@@ -16,6 +16,12 @@ views.index.stopbreak = Stop break
 views.index.logout = Logout
 views.index.state = State
 views.index.welcomeMessage = Hello
+views.index.timetrack.tablebody.start = Start
+views.index.timetrack.tablebody.breakstart = Break Start
+views.index.timetrack.tablebody.breakend = Break End
+views.index.timetrack.tablebody.end = End
+views.index.timetrack.tablehead.action = Action
+views.index.timetrack.tablehead.time = time
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
@@ -30,8 +36,10 @@ views.admin.signup.form.roles.user = User
 views.admin.signup.form.roles.admin = Admin
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
+
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
+views.admin.edituser.edit = Edit
 
 views.holiday.title = Holiday
 

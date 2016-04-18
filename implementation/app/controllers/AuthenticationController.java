@@ -3,18 +3,14 @@ package controllers;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
-import model.User;
-import org.joda.time.DateTime;
+import models.User;
 import org.pac4j.core.exception.TechnicalException;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.http.client.indirect.FormClient;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
-import play.data.format.Formats;
 import play.mvc.Result;
-
-import java.util.Date;
 
 /**
  * Created by sebastian on 3/28/16.
@@ -32,9 +28,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     public Result loginForm() throws TechnicalException {
         final FormClient formClient = (FormClient) config.getClients().findClient("default");
 
-        int season = ((DateTime.now().getMonthOfYear() + 10) % 12) / 3;
-
-        return ok(views.html.login.render(formClient.getCallbackUrl(), FORM, season));
+        return ok(views.html.login.render(formClient.getCallbackUrl(), FORM));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")

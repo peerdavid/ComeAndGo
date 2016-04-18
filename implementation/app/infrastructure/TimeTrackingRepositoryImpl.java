@@ -1,9 +1,9 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
-import model.Break;
-import model.TimeTrack;
-import model.User;
+import models.Break;
+import models.TimeTrack;
+import models.User;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
 
@@ -20,7 +20,10 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
-        _timeTracks =
+       if(user == null) {
+          throw new TimeTrackException("no user");
+       }
+       _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
                 .findList();
@@ -43,15 +46,24 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException {
        if(from.isAfter(to))
           throw new TimeTrackException("from is after to");
+       if(user == null)
+          throw new TimeTrackException("no user given");
 
        _timeTracks =
             Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())
             .where().ge("start", from)
             .where().le("end", to)
+            .setOrderBy("start")
             .findList();
 
        if(_timeTracks == null) throw new TimeTrackException("list of timetracks not found");
+       // we also should include the active timeTrack:
+       try {
+          _timeTracks.add(getActiveTimeTrack(user));
+       } catch (NotFoundException e) {
+          // in this branch should be done anything
+       }
 
        return _timeTracks;
     }
@@ -76,21 +88,23 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             .where().eq("_user_id", user.getId())
             .where().isNull("end")
             .findUnique();
-        if (actualTimeTrack != null) {
-            return actualTimeTrack;
+        if (actualTimeTrack == null) {
+           throw new NotFoundException("TimeTrack not found");
         }
 
-        throw new NotFoundException("not found");
+        return actualTimeTrack;
     }
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
-        Ebean.update(timeTrack);
+       if(timeTrack == null) return;
+       Ebean.update(timeTrack);
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-        Ebean.delete(TimeTrack.class, timeTrack);
+       if(timeTrack == null) return;
+       Ebean.delete(TimeTrack.class, timeTrack);
     }
 
     @Override
@@ -127,12 +141,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void deleteBreak(Break actualBreak) {
-        Ebean.delete(Break.class, actualBreak);
+       if(actualBreak == null) return;
+       Ebean.delete(Break.class, actualBreak);
     }
 
     @Override
     public void updateBreak(Break actualBreak) {
-        Ebean.update(actualBreak);
+       if(actualBreak == null) return;
+       Ebean.update(actualBreak);
     }
 
     @Override

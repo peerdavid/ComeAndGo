@@ -1,7 +1,7 @@
-@import model.User
+@import models.User
 
 @import org.pac4j.core.profile.CommonProfile
-@(form: Form[User], profile: CommonProfile)
+@(form: play.data.Form[User], profile: CommonProfile)
 
 @main(Messages("views.admin.title")) {
 
@@ -9,20 +9,45 @@
 
 
         <form action="@routes.AuthenticationController.doSignUp()" method="POST">
-            <input name="username" type="text" placeholder="@Messages("views.admin.signup.form.username")">
-            <input name="firstname" type="text" placeholder="@Messages("views.admin.signup.form.firstname")">
-            <input name="lastname" type="text" placeholder="@Messages("views.admin.signup.form.lastname")">
-            <input name="email" type="email" placeholder="@Messages("views.admin.signup.form.email")">
-            <input name="password" type="password" placeholder="@Messages("views.admin.signup.form.password")">
-            <input name="repeat_password" type="password" placeholder="@Messages("views.admin.signup.form.repeatpassword")">
-
-            <div class="input-field col s12">
-                <select name="role" type="text">
-                    <option value="" disabled selected>@Messages("views.admin.signup.form.selectrole")</option>
-                    <option value="ROLE_USER">@Messages("views.admin.signup.form.roles.user")</option>
-                    <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.signup.form.roles.persman")</option>
-                    <option value="ROLE_ADMIN">@Messages("views.admin.signup.form.roles.admin")</option>
-                </select>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input name="username" type="text">
+                    <label for="username">@Messages("views.admin.signup.form.username")</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input name="firstname" type="text">
+                    <label for="firstname">@Messages("views.admin.signup.form.firstname")</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <input name="lastname" type="text">
+                    <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input name="email" type="email">
+                    <label for="email">@Messages("views.admin.signup.form.email")</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <select name="role" type="text">
+                        <option value="ROLE_USER" selected>@Messages("views.admin.signup.form.roles.user")</option>
+                        <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.signup.form.roles.persman")</option>
+                        <option value="ROLE_ADMIN">@Messages("views.admin.signup.form.roles.admin")</option>
+                    </select>
+                    <label for="role">@Messages("views.admin.signup.form.selectrole")</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <input name="password" type="password">
+                    <label for="password">@Messages("views.admin.signup.form.password")</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <input name="repeat_password" type="password">
+                    <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
+                </div>
             </div>
             <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
                 @Messages("views.admin.signup.title")

@@ -1,10 +1,7 @@
 package business.timetracking;
 
 import business.UseCases;
-import com.avaje.ebean.config.JsonConfig;
-import infrastructure.TimeTrackException;
-import model.TimeTrack;
-import model.User;
+import models.TimeTrack;
 import org.joda.time.DateTime;
 
 import java.util.List;

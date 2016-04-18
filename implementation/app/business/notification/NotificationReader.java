@@ -1,7 +1,7 @@
 package business.notification;
 
 import business.UseCases;
-import model.Notification;
+import models.Notification;
 
 /**
  * Created by david on 22.03.16.

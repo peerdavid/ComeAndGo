@@ -48,6 +48,10 @@ nav.top-nav .page-title {
     padding-top: 9px;
 }
 
+#login_container label {
+    margin-left: 2.3rem;
+}
+
 #login_background {
     position: fixed;
     left: 0;
@@ -55,6 +59,19 @@ nav.top-nav .page-title {
     width: 100%;
     overflow: hidden;
     background-size: cover;
+}
+
+#error_container {
+    position: absolute;
+    right: 20%;
+    top: 30%;
+    background: #F6F6F6;
+    padding: 16px;
+    max-width: 500px;
+    width: 40%;
+    min-width: 380px;
+    font-weight: bold;
+    border: 2px solid #F6F6F6;
 }
 
 #logout-btn {
@@ -97,6 +114,14 @@ nav.top-nav .page-title {
     background: #ff5722;
 }
 
+/* edit users */
+#user-list li .collapsible-body {
+    padding: 1em;
+}
+
+div.edit-user-switch-container.col , div.edit-user-switch-container.col .switch {
+    float: right;
+}
 /* change texterea colors */
 textarea:focus {
     border-bottom: 1px solid #00bcd4 !important;
@@ -113,6 +138,14 @@ input[type="tel"]:focus:not([readonly]), input[type="number"]:focus:not([readonl
 input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #00bcd4;
     box-shadow: 0px 1px 0px 0px #00bcd4;
+}
+
+.switch label input[type=checkbox]:checked + .lever:after {
+    background: #00bcd4;
+}
+
+.switch label input[type=checkbox]:checked + .lever {
+    background: #BBDEFB;
 }
 
 .input-field .prefix.active {
@@ -137,7 +170,7 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 
 /* phones */
 @media (max-width: 599px) {
-    #login_container {
+    #login_container, #error_container  {
         max-width: 400px;
         width: 80%;
         min-width: 250px;

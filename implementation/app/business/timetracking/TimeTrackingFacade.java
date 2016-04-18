@@ -3,9 +3,7 @@ package business.timetracking;
 import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeTrackException;
-import infrastructure.UserRepository;
-import model.TimeTrack;
-import model.User;
+import models.TimeTrack;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
 
@@ -45,12 +43,7 @@ class TimeTrackingFacade implements TimeTracking {
     public void go(int userId) {
         try {
             _timeTrackingService.go(userId);
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        } catch (UserException e) {
-            e.printStackTrace();
-        }
-        catch (TimeTrackException e) {
+        } catch (UserException | TimeTrackException | NotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -61,6 +54,7 @@ class TimeTrackingFacade implements TimeTracking {
             _timeTrackingService.createBreak(userId);
         } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
+            e.printStackTrace();
         }
     }
 
@@ -70,6 +64,7 @@ class TimeTrackingFacade implements TimeTracking {
             _timeTrackingService.endBreak(userId);
         } catch (TimeTrackException | UserException | NotFoundException e) {
             // TODO: add exception handling here
+            e.printStackTrace();
         }
     }
 
@@ -85,9 +80,7 @@ class TimeTrackingFacade implements TimeTracking {
             if(_timeTrackingService.takesBreak(userId)) {
                 result = TimeTrackState.PAUSE;
             }
-        } catch (UserException e) {
-            e.printStackTrace();
-        } catch (NotFoundException e) {
+        } catch (UserException | NotFoundException e) {
             e.printStackTrace();
         }
 

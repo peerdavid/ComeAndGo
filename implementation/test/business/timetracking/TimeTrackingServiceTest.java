@@ -7,9 +7,9 @@ import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
-import model.Break;
-import model.TimeTrack;
-import model.User;
+import models.Break;
+import models.TimeTrack;
+import models.User;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
@@ -130,7 +130,7 @@ public class TimeTrackingServiceTest {
     @Test
     public void isActive_ForInactiveUser_ShouldCallRepository() throws NotFoundException, UserException {
         // Prepare
-        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(null);
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);
         when(_userRepository.readUser(8)).thenReturn(_testUser);
 
         int userId = 8;
@@ -145,16 +145,34 @@ public class TimeTrackingServiceTest {
     }
 
     @Test
-    public void isActive_ForInactiveUserButWasActiveBefore_ShouldCallRepository() throws TimeTrackException, NotFoundException, UserException {
+    public void isActive_IfNoTimeTrackIsFound_ShouldCallRepositoryAndReturnFalse() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
-        TimeTrack timeTrack = new TimeTrack(_testUser);
-        timeTrack.set_from(DateTime.now().minusHours(1));
-        timeTrack.set_to(DateTime.now());
-        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);
 
         int userId = 8;
         boolean expected = false;
+
+        // Call
+        boolean result = _timeTrackService.isActive(userId);
+
+        // Validate
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(any(User.class));
+        Assert.assertEquals(result, expected);
+    }
+
+    @Test
+    public void isActive_IfTimeTrackWasFound_ShouldCallRepositoryAndReturnTrue() throws TimeTrackException, NotFoundException, UserException {
+        // Prepare
+        int userId = 8;
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        TimeTrack timeTrack = new TimeTrack(userId, DateTime.now(), DateTime.now().plusHours(1), null);
+
+        when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
+
+        boolean expected = true;
 
         // Call
         boolean result = _timeTrackService.isActive(userId);
@@ -303,5 +321,94 @@ public class TimeTrackingServiceTest {
         Mockito.verify(_userRepository, times(1)).readUser(userId);
         Mockito.verify(_timeTrackService, times(1)).takesBreak(userId);
     }
+
+    @Test(expected = UserException.class)
+    public void startBreak_WhenUserDidNotStartWork_ShouldThrowUserExceptionAndCallRepositoryTwice() throws TimeTrackException, NotFoundException, UserException {
+        int userId = 7;
+        when(_timeTrackService.isActive(userId)).thenReturn(false);
+
+        Mockito.verify(_timeTrackingRepository, times(2)).getActiveTimeTrack(any(User.class));
+        Mockito.verify(_userRepository, times(1)).readUser(userId);
+        _timeTrackService.createBreak(userId);
+    }
+
+    @Test(expected = UserException.class)
+    public void startBreak_WhileAnotherBreakIsCurrentlyActive_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        int userId = 7;
+        when(_timeTrackService.takesBreak(userId)).thenReturn(true);
+
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(any(User.class));
+        _timeTrackService.createBreak(userId);
+    }
+
+    @Test(expected = UserException.class)
+    public void endBreak_BeforeStartingWork_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        int userId = _testUser.getId();
+
+        when(_timeTrackService.isActive(userId)).thenReturn(false);
+
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(any(User.class));
+        _timeTrackService.endBreak(userId);
+    }
+
+    @Test(expected = UserException.class)
+    public void endBreak_BeforeStartingABreak_ShouldThrowUserExceptionAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        int userId = _testUser.getId();
+        when(_timeTrackService.takesBreak(userId)).thenReturn(false);
+
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(any(User.class));
+        _timeTrackService.endBreak(userId);
+    }
+
+    @Test
+    public void startBreak_AfterStartOfWork_ShouldSucceedAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        // prepare
+        int userId = 8;
+        TimeTrack timeTrack = new TimeTrack(_testUser);
+        when(_userRepository.readUser(userId)).thenReturn(_testUser);
+        // simulate _testUser is not having a break currently
+        when(_timeTrackingRepository.getActiveBreak(any(User.class))).thenThrow(NotFoundException.class);
+        // simulate _testUser is working
+        when(_timeTrackingRepository.getActiveTimeTrack(_testUser)).thenReturn(timeTrack);
+
+        _timeTrackService.createBreak(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).startBreak(any(User.class));
+    }
+
+    @Test
+    public void endBreak_AfterStartingABreak_ShouldSucceedAndCallRepository() throws TimeTrackException, UserException, NotFoundException {
+        int userId = 8;
+        TimeTrack timeTrack = new TimeTrack(_testUser);
+        when(_userRepository.readUser(userId)).thenReturn(_testUser);
+        when(_timeTrackingRepository.getActiveTimeTrack(_testUser)).thenReturn(timeTrack);
+        when(_timeTrackingRepository.getActiveBreak(_testUser)).thenReturn(_testBreak);
+
+        _timeTrackService.endBreak(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
+    }
+
+    @Test(expected = TimeTrackException.class)
+    public void getTimeTrackList_ForUserWithNoTimeTracks_ShouldThrowExceptionAndCallRepo() throws TimeTrackException, UserException, NotFoundException {
+        int userId = 8;
+        when(_userRepository.readUser(userId)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class))).thenThrow(TimeTrackException.class);
+
+        _timeTrackService.readTimeTracks(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(_testUser);
+
+    }
+
+    @Test(expected = TimeTrackException.class)
+    public void getTimeTrackList_WithSpecifiedTimesForUserNotHavingTimeTracks_ShouldThrowExceptionAndCallRepo() throws TimeTrackException, UserException, NotFoundException {
+        int userId = 8;
+        when(_userRepository.readUser(userId)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class)))
+            .thenThrow(TimeTrackException.class);
+
+        _timeTrackService.readTimeTracks(userId, DateTime.now().minusDays(1), DateTime.now());
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class));
+
+    }
+
 
 }

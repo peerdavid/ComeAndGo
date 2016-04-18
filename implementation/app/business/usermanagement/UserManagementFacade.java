@@ -2,7 +2,7 @@ package business.usermanagement;
 
 import business.UserException;
 import com.google.inject.Inject;
-import model.User;
+import models.User;
 
 import java.util.List;
 
@@ -12,45 +12,45 @@ import java.util.List;
 class UserManagementFacade implements UserManagement {
 
 
-    private AuthenticatorService _authenticatorService;
+    private UserService _userService;
 
     @Inject
-    public UserManagementFacade(AuthenticatorService authenticatorService) {
+    public UserManagementFacade(UserService userService) {
 
-        _authenticatorService = authenticatorService;
+        _userService = userService;
     }
 
 
     @Override
     public void registerUser(User userToRegister) throws UserException {
 
-        _authenticatorService.registerNewUser(userToRegister);
+        _userService.registerNewUser(userToRegister);
     }
 
 
     @Override
     public void changeUserData(String userName, User newUserData) throws UserException {
-        _authenticatorService.changeUser(userName, newUserData);
+        _userService.changeUser(userName, newUserData);
 
     }
 
     @Override
     public void deleteUser(String userToDelete) throws UserException {
-        _authenticatorService.deleteUser(userToDelete);
+        _userService.deleteUser(userToDelete);
     }
 
     @Override
     public User getUserData(String userName) throws UserException {
-        return _authenticatorService.readUser(userName);
+        return _userService.readUser(userName);
     }
 
     @Override
     public List<User> getAllUsers() throws UserException {
-        return _authenticatorService.getListOfUsers();
+        return _userService.getListOfUsers();
     }
 
     @Override
     public boolean checkUserCredentials(String userName, String password) throws UserException {
-        return _authenticatorService.checkUserCredentials(userName, password);
+        return _userService.checkUserCredentials(userName, password);
     }
 }

@@ -1,4 +1,4 @@
-package model;
+package models;
 
 import com.avaje.ebean.Model;
 import infrastructure.TimeTrackException;

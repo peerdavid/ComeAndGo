@@ -9,4 +9,10 @@ $( document ).ready(function() {
     });
     $(".button-collapse").sideNav();
     $('select').material_select();
+    $('.modal-trigger').leanModal();
+});
+
+$('.edit-user-switch').click(function () {
+    $('li.active form input').prop('disabled', !this.checked);
+    $('li.active form button').css('display', (this.checked ? 'inline' : 'none'));
 });

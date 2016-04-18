@@ -1,8 +1,7 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
-import model.User;
-import scala.xml.MetaData;
+import models.User;
 
 import java.util.List;
 

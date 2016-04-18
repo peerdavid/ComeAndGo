@@ -4,7 +4,7 @@ package business.usermanagement;
 import business.UserException;
 import infrastructure.UserRepository;
 
-import model.User;
+import models.User;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,17 +22,17 @@ import static org.mockito.Mockito.when;
 /**
  * Created by david on 02.04.16.
  */
-public class AuthenticationServiceTest {
+public class UserServiceTest {
 
     UserRepository _userRepository;
-    AuthenticatorService _testee;
+    UserService _testee;
     User _testUser;
     User _testAdmin;
 
     @Before
     public void SetUp() throws Exception {
         _userRepository = mock(UserRepository.class);
-        _testee = new AuthenticatorServiceImpl(_userRepository);
+        _testee = new UserServiceImpl(_userRepository);
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
         _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, "testBoss");
     }

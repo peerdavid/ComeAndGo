@@ -1,4 +1,4 @@
-@import model.User
+@import models.User
 
 @import org.pac4j.core.profile.CommonProfile
 @(throwable: Throwable)
@@ -6,10 +6,10 @@
 @main(Messages("views.login.title")) {
 
 
-    <div id="login_background" style="background: url('  @routes.Assets.at("images/login_background_winter.png") ') center center;"></div>
+    @seasonwallpaper()
 
 
-    <div id="login_container" class="card z-depth-3">
+    <div id="error_container" class="card z-depth-3">
 
         <h3>@Messages("exceptions.unexpected")</h3>
         <p>@Messages(throwable.getMessage)</p>
