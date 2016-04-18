@@ -1,5 +1,6 @@
 package infrastructure;
 
+import business.UserException;
 import com.avaje.ebean.Ebean;
 import models.Break;
 import models.TimeTrack;
@@ -140,14 +141,16 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public void deleteBreak(Break actualBreak) {
-       if(actualBreak == null) return;
+    public void deleteBreak(Break actualBreak) throws TimeTrackException {
+       if(actualBreak == null)
+           throwTimeTrackException("You have not specified actual break");
        Ebean.delete(Break.class, actualBreak);
     }
 
     @Override
-    public void updateBreak(Break actualBreak) {
-       if(actualBreak == null) return;
+    public void updateBreak(Break actualBreak) throws TimeTrackException {
+       if(actualBreak == null)
+           throwTimeTrackException("You have not specified actual break");
        Ebean.update(actualBreak);
     }
 
@@ -168,5 +171,28 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public void endBreak(User user) throws TimeTrackException, NotFoundException {
         Break actualBreak = getActiveBreak(user);
         endBreak(actualBreak);
+    }
+
+    @Override
+    public void addTimeTrack(TimeTrack timeTrack) throws UserException {
+        try {
+            Ebean.save(timeTrack);
+        } catch (Exception e) {
+            throw new UserException("Cannot safe this timetrack");
+        }
+    }
+
+    @Override
+    public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
+        try {
+            timeTrack.addBreak(breakToInsert);
+            updateTimeTrack(timeTrack);
+        } catch(Exception e) {
+            throw new UserException("Could not update TimeTrack and insert break");
+        }
+    }
+
+    private void throwTimeTrackException(String msg) throws TimeTrackException {
+        throw new TimeTrackException(msg);
     }
 }

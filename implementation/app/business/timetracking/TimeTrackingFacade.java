@@ -113,31 +113,47 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void addTimeTrack(TimeTrack timeTrack) {
-
+        try {
+            _timeTrackingService.addTimeTrack(timeTrack);
+        } catch (UserException e) {
+            // TODO: add exception handling here
+        }
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-
+        _timeTrackingService.deleteTimeTrack(timeTrack);
     }
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
-
+        _timeTrackingService.updateTimeTrack(timeTrack);
     }
 
     @Override
     public void addBreak(TimeTrack timeTrack, Break breakToInsert) {
-
+        try {
+            _timeTrackingService.addBreak(timeTrack, breakToInsert);
+        } catch(UserException e) {
+            // TODO: add exception handling here
+        }
     }
 
     @Override
     public void deleteBreak(Break breakToDelete) {
-
+        try {
+            _timeTrackingService.deleteBreak(breakToDelete);
+        } catch(TimeTrackException e) {
+            // TODO: add exception handling
+        }
     }
 
     @Override
     public void updateBreak(Break breakToUpdate) {
-
+        try {
+            _timeTrackingService.updateBreak(breakToUpdate);
+        } catch (TimeTrackException e) {
+            // TODO: add exception handling
+        }
     }
 }

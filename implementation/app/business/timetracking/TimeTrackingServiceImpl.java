@@ -7,6 +7,7 @@ import infrastructure.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
+import models.Break;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -128,5 +129,35 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         }
 
         return user;
+    }
+
+    @Override
+    public void addTimeTrack(TimeTrack timeTrack) throws UserException {
+        _repository.addTimeTrack(timeTrack);
+    }
+
+    @Override
+    public void deleteTimeTrack(TimeTrack timeTrack) {
+        _repository.deleteTimeTrack(timeTrack);
+    }
+
+    @Override
+    public void updateTimeTrack(TimeTrack timeTrack) {
+        _repository.updateTimeTrack(timeTrack);
+    }
+
+    @Override
+    public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
+        _repository.addBreak(timeTrack, breakToInsert);
+    }
+
+    @Override
+    public void deleteBreak(Break breakToDelete) throws TimeTrackException {
+        _repository.deleteBreak(breakToDelete);
+    }
+
+    @Override
+    public void updateBreak(Break breakToUpdate) throws TimeTrackException {
+        _repository.updateBreak(breakToUpdate);
     }
 }

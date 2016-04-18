@@ -1,5 +1,6 @@
 package infrastructure;
 
+import business.UserException;
 import models.Break;
 import models.TimeTrack;
 import models.User;
@@ -29,13 +30,18 @@ public interface TimeTrackingRepository {
 
     Break getActiveBreak(User user) throws NotFoundException;
 
-    void deleteBreak(Break actualBreak);
+    void deleteBreak(Break actualBreak) throws TimeTrackException;
 
-    void updateBreak(Break actualBreak);
+    void updateBreak(Break actualBreak) throws TimeTrackException;
 
     void startBreak(User user) throws TimeTrackException, NotFoundException;
 
     void endBreak(Break actualBreak) throws TimeTrackException;
 
     void endBreak(User user) throws TimeTrackException, NotFoundException;
+
+    /*  EDIT / DELETE / ADD timeTracks and breaks  */
+    void addTimeTrack(TimeTrack timeTrack) throws UserException;
+
+    void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException;
 }
