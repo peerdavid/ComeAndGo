@@ -19,9 +19,11 @@ import com.google.inject.Inject;
  * Created by david on 21.03.16.
  */
 class TimeTrackingServiceImpl implements TimeTrackingService {
+
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
     private final UserRepository _userRepository;
+
 
     @Inject
     public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, UserRepository userRepository) {
@@ -48,12 +50,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
-
-/*        User current = null;
-        User boss = null;
-        Notification notification = new Notification("Go home", current, boss, false);
-        _notificationSender.sendNotification(notification);*/
     }
+
 
     @Override
     public boolean isActive(int userId) throws UserException {
@@ -68,6 +66,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         return true;
     }
+
 
     @Override
     public boolean takesBreak(int userId) throws UserException {
@@ -94,6 +93,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.startBreak(user);
     }
 
+
     @Override
     public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
         if(!takesBreak(userId)) {
@@ -107,6 +107,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.endBreak(user);
     }
 
+
     @Override
     public List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException {
         User user = loadUserById(userId);
@@ -114,40 +115,49 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         return _repository.readTimeTracks(user);
     }
 
+
     @Override
     public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException {
         User user = loadUserById(userId);
        return _repository.readTimeTracks(user, from, to);
     }
+
+
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
         _repository.addTimeTrack(timeTrack);
     }
+
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
         _repository.deleteTimeTrack(timeTrack);
     }
 
+
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
         _repository.updateTimeTrack(timeTrack);
     }
+
 
     @Override
     public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
         _repository.addBreak(timeTrack, breakToInsert);
     }
 
+
     @Override
     public void deleteBreak(Break breakToDelete) {
         _repository.deleteBreak(breakToDelete);
     }
 
+
     @Override
     public void updateBreak(Break breakToUpdate) {
         _repository.updateBreak(breakToUpdate);
     }
+
 
     private User loadUserById(int userId) throws UserException {
         User user = _userRepository.readUser(userId);
