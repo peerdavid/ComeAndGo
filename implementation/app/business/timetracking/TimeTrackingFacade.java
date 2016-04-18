@@ -3,6 +3,7 @@ package business.timetracking;
 import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeTrackException;
+import models.Break;
 import models.TimeTrack;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
@@ -108,5 +109,35 @@ class TimeTrackingFacade implements TimeTracking {
             e.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public void addTimeTrack(TimeTrack timeTrack) {
+
+    }
+
+    @Override
+    public void deleteTimeTrack(TimeTrack timeTrack) {
+
+    }
+
+    @Override
+    public void updateTimeTrack(TimeTrack timeTrack) {
+
+    }
+
+    @Override
+    public void addBreak(TimeTrack timeTrack, Break breakToInsert) {
+
+    }
+
+    @Override
+    public void deleteBreak(Break breakToDelete) {
+
+    }
+
+    @Override
+    public void updateBreak(Break breakToUpdate) {
+
     }
 }
