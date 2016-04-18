@@ -21,7 +21,7 @@ views.index.timetrack.tablebody.breakstart = Break Start
 views.index.timetrack.tablebody.breakend = Break End
 views.index.timetrack.tablebody.end = End
 views.index.timetrack.tablehead.action = Action
-views.index.timetrack.tablehead.time = time
+views.index.timetrack.tablehead.time = Time
 
 views.admin.title = Admin
 views.admin.signup = Sign up new user
