@@ -152,6 +152,14 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color: inherit;
 }
 
+.primary-btn{
+    background-color: #4CAF50 !important;
+}
+
+.secondary-btn{
+    background-color: #00bcd4 !important;
+}
+
 /* changes input-field placeholder colour for multiple devices */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #727272;

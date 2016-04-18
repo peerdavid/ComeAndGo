@@ -20,25 +20,25 @@
 
         @if(userState == TimeTrackState.INACTIVE) {
             <div id="index-time-track-buttons">
-                <a class="waves-effect waves-light cyan btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
-                <button class="waves-effect waves-light cyan btn" disabled="disabled">@Messages("views.index.startbreak")</button>
-                <button class="waves-effect waves-light cyan btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
+                <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.come()" style="float : left"> @Messages("views.index.come")</a>
+                <button class="waves-effect waves-light btn secondary-btn" disabled="disabled">@Messages("views.index.startbreak")</button>
+                <button class="waves-effect waves-light btn secondary-btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
             </div>
         }
 
         @if(userState == TimeTrackState.ACTIVE) {
             <div id="index-time-track-buttons">
-                <button class="waves-effect waves-light cyan btn" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                <button class="waves-effect waves-light btn secondary-btn" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
             </div>
         }
 
         @if(userState == TimeTrackState.PAUSE) {
             <div id="index-time-track-buttons">
-                <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                <a class="waves-effect waves-light btn cyan" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
-                <button class="waves-effect waves-light btn cyan" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
+                <button class="waves-effect waves-light btn secondary-btn" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
+                <button class="waves-effect waves-light btn secondary-btn" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
             </div>
         }
 
@@ -63,7 +63,7 @@
                             @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @(timeTrack.get_from.getHourOfDay + " : " + timeTrack.get_from.getMinuteOfHour)
+                            @(timeTrack.get_from.getHourOfDay + ":" + timeTrack.get_from.getMinuteOfHour + ":" + timeTrack.get_from().getSecondOfMinute)
                         </td>
                     </tr>
 
@@ -73,7 +73,7 @@
                                 @Messages("views.index.timetrack.tablebody.breakstart")
                             </td>
                             <td>
-                                @(b.getFrom.getHourOfDay + " : " + b.getFrom.getMinuteOfHour)
+                                @(b.getFrom.getHourOfDay + ":" + b.getFrom.getMinuteOfHour + ":" + b.getFrom.getSecondOfMinute)
                             </td>
                         </tr>
 
@@ -83,7 +83,7 @@
                                     @Messages("views.index.timetrack.tablebody.breakend")
                                 </td>
                                 <td>
-                                    @(b.getTo.getHourOfDay + " : " + b.getTo.getMinuteOfHour)
+                                    @(b.getTo.getHourOfDay + ":" + b.getTo.getMinuteOfHour + ":" + b.getTo.getSecondOfMinute)
                                 </td>
                             </tr>
                         }
@@ -95,7 +95,7 @@
                                 @Messages("views.index.timetrack.tablebody.end")
                             </td>
                             <td>
-                                @(timeTrack.get_to().getHourOfDay + " : " + timeTrack.get_to().getMinuteOfHour)
+                                @(timeTrack.get_to().getHourOfDay + ":" + timeTrack.get_to().getMinuteOfHour + ":" + timeTrack.get_to().getSecondOfMinute)
                             </td>
                         </tr>
                     }
@@ -104,7 +104,6 @@
             </table>
 
         }
-        <a id="logout-btn" class="waves-effect waves-light btn cyan" href="/logout?url=/">@Messages("views.index.logout")</a>
 
     }
 
