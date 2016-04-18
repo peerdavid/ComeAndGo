@@ -1,5 +1,6 @@
 package models;
 
+import business.UserException;
 import com.avaje.ebean.Model;
 import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
@@ -30,7 +31,7 @@ public class Break extends Model {
     /**
      * @param from, to
      */
-    public Break(DateTime from, DateTime to) throws TimeTrackException {
+    public Break(DateTime from, DateTime to) throws UserException {
        setFrom(from);
        setTo(to);
     }
@@ -55,9 +56,9 @@ public class Break extends Model {
     }
 
 
-    public void setFrom(DateTime from) throws TimeTrackException {
+    public void setFrom(DateTime from) throws UserException {
        if (_to != null && from.isAfter(_to)) {
-          throw new TimeTrackException("from is after to time");
+          throw new UserException("exceptions.timetracking.user_break_error");
        }
        this._from = from;
     }
@@ -68,9 +69,9 @@ public class Break extends Model {
     }
 
 
-    public void setTo(DateTime to) throws TimeTrackException {
+    public void setTo(DateTime to) throws UserException {
        if(to.isBefore(_from)) {
-          throw new TimeTrackException("to time is before from time");
+          throw new UserException("exceptions.timetracking.user_break_error");
        }
        _to = to;
     }

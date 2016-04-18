@@ -13,21 +13,21 @@ import java.util.List;
  * Created by david on 21.03.16.
  */
 interface TimeTrackingService {
-    int come(int userId) throws UserException, TimeTrackException;
+    int come(int userId) throws UserException;
 
-    void go(int userId) throws NotFoundException, UserException, TimeTrackException;
+    void go(int userId) throws UserException, NotFoundException;
 
-    boolean isActive(int userId) throws UserException, NotFoundException;
+    boolean isActive(int userId) throws UserException;
 
-    boolean takesBreak(int userId) throws UserException, NotFoundException;
+    boolean takesBreak(int userId) throws UserException;
 
-    void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException;
+    void createBreak(int userId) throws UserException, NotFoundException;
 
     void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException;
 
     List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException;
 
-    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, TimeTrackException;
+    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException;
 
     /*  EDIT / DELETE / ADD TIMETRACKS AND BREAKS  */
     void addTimeTrack(TimeTrack timeTrack) throws UserException;
@@ -38,7 +38,7 @@ interface TimeTrackingService {
 
     void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException;
 
-    void deleteBreak(Break breakToDelete) throws TimeTrackException;
+    void deleteBreak(Break breakToDelete);
 
-    void updateBreak(Break breakToUpdate) throws TimeTrackException;
+    void updateBreak(Break breakToUpdate);
 }

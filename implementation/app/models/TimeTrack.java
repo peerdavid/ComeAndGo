@@ -1,5 +1,6 @@
 package models;
 
+import business.UserException;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
 import infrastructure.TimeTrackException;
@@ -8,6 +9,7 @@ import play.data.format.Formats;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,9 +37,10 @@ public class TimeTrack extends Model {
     @Column(name = "end", columnDefinition = "datetime")
     private DateTime _to;
 
+    // initialize the following list to a new Arraylist, so that it will be returned an empty list in case of no breaks
     @OneToMany(cascade= CascadeType.ALL)
     @Column(name = "breaks")
-    private List<Break> _breaks;
+    private List<Break> _breaks = new ArrayList();
 
    /**
     * sets userId and from_time to the current date and time
@@ -48,48 +51,47 @@ public class TimeTrack extends Model {
       _from = DateTime.now();
    }
 
-    public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) {
-        this._id = id;
-        this._from = from;
-        this._to = to;
+    public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) throws UserException {
+        setFrom(from);
+        setTo(to);
         this._breaks = breaks;
     }
 
 
-    public int get_id() {
+    public int getId() {
         return _id;
     }
 
 
-    public DateTime get_from() {
+    public DateTime getFrom() {
         return _from;
     }
 
 
-    public void set_from(DateTime from) throws TimeTrackException {
+    public void setFrom(DateTime from) throws UserException {
         if (_to != null && from.isAfter(_to)) {
-            throw new TimeTrackException("From time is after to time");
+            throw new UserException("exceptions.timetracking.user_timetrack_error");
         }
 
         _from = from;
     }
 
 
-    public DateTime get_to() {
+    public DateTime getTo() {
         return _to;
     }
 
 
-    public void set_to(DateTime to) throws TimeTrackException {
+    public void setTo(DateTime to) throws UserException {
         if (to.isBefore(_from)) {
-            throw new TimeTrackException("To time is before from time");
+            throw new UserException("exceptions.timetracking.user_timetrack_error");
         }
 
         _to = to;
     }
 
 
-    public List<Break> get_breaks() {
+    public List<Break> getBreaks() {
         return _breaks;
     }
 

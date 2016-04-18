@@ -32,22 +32,21 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public int come(int userId) throws UserException, TimeTrackException {
+    public int come(int userId) throws UserException {
         User user = loadUserById(userId);
 
         TimeTrack newTimeTrack = new TimeTrack(user);
-        newTimeTrack.set_from(DateTime.now());
         int newId = _repository.createTimeTrack(newTimeTrack, user);
         return newId;
     }
 
 
     @Override
-    public void go(int userId) throws NotFoundException, UserException, TimeTrackException {
+    public void go(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
         TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
-        timeTrack.set_to(DateTime.now());
+        timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
 
 /*        User current = null;
@@ -57,7 +56,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public boolean isActive(int userId) throws UserException, NotFoundException {
+    public boolean isActive(int userId) throws UserException {
         User user = loadUserById(userId);
 
         // _repository throws exception, if there is no TimeTrack available
@@ -71,7 +70,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public boolean takesBreak(int userId) throws UserException, NotFoundException {
+    public boolean takesBreak(int userId) throws UserException {
         User user = loadUserById(userId);
 
         try {
@@ -79,16 +78,16 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         } catch(NotFoundException e) {
             return false;
         }
-        return true; //activeBreak != null && activeBreak.getTo() == null;
+        return true;
     }
 
     @Override
-    public void createBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
+    public void createBreak(int userId) throws UserException, NotFoundException {
         if(takesBreak(userId)) {
-            throw new UserException("You already take a break");
+            throw new UserException("exceptions.timetracking.user_break_error");
         }
         if(!isActive(userId)) {
-            throw new UserException("You must be working, otherwise you can't take a break");
+            throw new UserException("exceptions.timetracking.user_not_working_and_break");
         }
 
         User user = loadUserById(userId);
@@ -98,10 +97,10 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     @Override
     public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
         if(!takesBreak(userId)) {
-            throw new UserException("You cannot end your break before you start it.");
+            throw new UserException("exceptions.timetracking.user_break_error");
         }
         if(!isActive(userId)) {
-            throw new UserException("You have to be working, otherwise you can't end your break");
+            throw new UserException("exceptions.timetracking.user_not_working_and_break");
         }
 
         User user = loadUserById(userId);
@@ -116,21 +115,10 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException, TimeTrackException {
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException {
         User user = loadUserById(userId);
        return _repository.readTimeTracks(user, from, to);
     }
-
-    private User loadUserById(int userId) throws UserException {
-        User user = _userRepository.readUser(userId);
-
-        if (user == null) {
-            throw new UserException("exceptions.usermanagement.no_such_user");
-        }
-
-        return user;
-    }
-
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
         _repository.addTimeTrack(timeTrack);
@@ -152,12 +140,22 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public void deleteBreak(Break breakToDelete) throws TimeTrackException {
+    public void deleteBreak(Break breakToDelete) {
         _repository.deleteBreak(breakToDelete);
     }
 
     @Override
-    public void updateBreak(Break breakToUpdate) throws TimeTrackException {
+    public void updateBreak(Break breakToUpdate) {
         _repository.updateBreak(breakToUpdate);
+    }
+
+    private User loadUserById(int userId) throws UserException {
+        User user = _userRepository.readUser(userId);
+
+        if (user != null) {
+            return user;
+        }
+
+        throw new UserException("exceptions.usermanagement.no_such_user");
     }
 }

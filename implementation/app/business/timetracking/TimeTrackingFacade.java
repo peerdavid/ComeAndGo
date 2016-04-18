@@ -41,48 +41,30 @@ class TimeTrackingFacade implements TimeTracking {
      * from and to time and send the report to our admin... or something like this
      */
     @Override
-    public void go(int userId) {
-        try {
+    public void go(int userId) throws Exception {
             _timeTrackingService.go(userId);
-        } catch (UserException | TimeTrackException | NotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void startBreak(int userId) {
-        try {
+    public void startBreak(int userId) throws Exception {
             _timeTrackingService.createBreak(userId);
-        } catch (TimeTrackException | UserException | NotFoundException e) {
-            // TODO: add exception handling here
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public void endBreak(int userId) {
-        try {
+    public void endBreak(int userId) throws Exception {
             _timeTrackingService.endBreak(userId);
-        } catch (TimeTrackException | UserException | NotFoundException e) {
-            // TODO: add exception handling here
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public TimeTrackState getState(int userId) {
+    public TimeTrackState getState(int userId) throws Exception {
         TimeTrackState result = TimeTrackState.INACTIVE;
 
-        try {
-            if(_timeTrackingService.isActive(userId)) {
-                result = TimeTrackState.ACTIVE;
-            }
+        if(_timeTrackingService.isActive(userId)) {
+            result = TimeTrackState.ACTIVE;
+        }
 
-            if(_timeTrackingService.takesBreak(userId)) {
-                result = TimeTrackState.PAUSE;
-            }
-        } catch (UserException | NotFoundException e) {
-            e.printStackTrace();
+        if(_timeTrackingService.takesBreak(userId)) {
+            result = TimeTrackState.PAUSE;
         }
 
         return result;
@@ -90,70 +72,42 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) {
-        try {
-            return _timeTrackingService.readTimeTracks(userId);
-        } catch (UserException e) {
-            e.printStackTrace();
-        } catch (TimeTrackException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<TimeTrack> readTimeTracks(int userId) throws Exception {
+        return _timeTrackingService.readTimeTracks(userId);
     }
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) {
-        try {
-            return _timeTrackingService.readTimeTracks(userId, from, to);
-        } catch (UserException | TimeTrackException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
+    public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception {
+        return _timeTrackingService.readTimeTracks(userId, from, to);
     }
 
     @Override
-    public void addTimeTrack(TimeTrack timeTrack) {
-        try {
-            _timeTrackingService.addTimeTrack(timeTrack);
-        } catch (UserException e) {
-            // TODO: add exception handling here
-        }
+    public void addTimeTrack(TimeTrack timeTrack) throws Exception {
+        _timeTrackingService.addTimeTrack(timeTrack);
     }
 
     @Override
-    public void deleteTimeTrack(TimeTrack timeTrack) {
+    public void deleteTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.deleteTimeTrack(timeTrack);
     }
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack) {
+    public void updateTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.updateTimeTrack(timeTrack);
     }
 
     @Override
-    public void addBreak(TimeTrack timeTrack, Break breakToInsert) {
-        try {
-            _timeTrackingService.addBreak(timeTrack, breakToInsert);
-        } catch(UserException e) {
-            // TODO: add exception handling here
-        }
+    public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws Exception {
+        _timeTrackingService.addBreak(timeTrack, breakToInsert);
     }
 
     @Override
-    public void deleteBreak(Break breakToDelete) {
-        try {
-            _timeTrackingService.deleteBreak(breakToDelete);
-        } catch(TimeTrackException e) {
-            // TODO: add exception handling
-        }
+    public void deleteBreak(Break breakToDelete) throws Exception {
+        _timeTrackingService.deleteBreak(breakToDelete);
     }
 
     @Override
-    public void updateBreak(Break breakToUpdate) {
-        try {
-            _timeTrackingService.updateBreak(breakToUpdate);
-        } catch (TimeTrackException e) {
-            // TODO: add exception handling
-        }
+    public void updateBreak(Break breakToUpdate) throws Exception {
+        _timeTrackingService.updateBreak(breakToUpdate);
     }
 }

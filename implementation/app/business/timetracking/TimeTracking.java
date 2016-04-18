@@ -13,41 +13,41 @@ import java.util.List;
 public interface TimeTracking extends UseCases {
     void come(int userId) throws Exception;
 
-    void go(int userId);
+    void go(int userId) throws Exception;
 
-    void startBreak(int userId);
+    void startBreak(int userId) throws Exception;
 
-    void endBreak(int userId);
+    void endBreak(int userId) throws Exception;
 
-    TimeTrackState getState(int userId);
+    TimeTrackState getState(int userId) throws Exception;
 
-    List<TimeTrack> readTimeTracks(int userId);
+    List<TimeTrack> readTimeTracks(int userId) throws Exception;
 
-    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to);
+    List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
 
     /**
      * adds the new timeTrack to repository
      * @param timeTrack
      */
-    void addTimeTrack(TimeTrack timeTrack);
+    void addTimeTrack(TimeTrack timeTrack) throws Exception;
 
     /**
      * delete timeTrack
      * @param timeTrack
      */
-    void deleteTimeTrack(TimeTrack timeTrack);
+    void deleteTimeTrack(TimeTrack timeTrack) throws Exception;
 
-    void updateTimeTrack(TimeTrack timeTrack);
+    void updateTimeTrack(TimeTrack timeTrack) throws Exception;
 
     /**
      * add breakToInsert which belongs to the specified timeTrack
      * @param timeTrack
      * @param breakToInsert
      */
-    void addBreak(TimeTrack timeTrack, Break breakToInsert);
+    void addBreak(TimeTrack timeTrack, Break breakToInsert) throws Exception;
 
-    void deleteBreak(Break breakToDelete);
+    void deleteBreak(Break breakToDelete) throws Exception;
 
-    void updateBreak(Break breakToUpdate);
+    void updateBreak(Break breakToUpdate) throws Exception;
     
 }

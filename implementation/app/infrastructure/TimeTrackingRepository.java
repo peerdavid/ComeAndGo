@@ -14,15 +14,15 @@ import java.util.List;
  */
 public interface TimeTrackingRepository {
 
-    int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException;
+    int createTimeTrack(TimeTrack timeTrack, User user) throws UserException;
 
-    TimeTrack readTimeTrack(int id) throws TimeTrackException;
+    TimeTrack readTimeTrack(int id) throws NotFoundException;
 
     TimeTrack getActiveTimeTrack(User user) throws NotFoundException;
 
     List<TimeTrack> readTimeTracks(User user) throws TimeTrackException;
 
-    List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException;
+    List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to);
 
     void updateTimeTrack(TimeTrack timeTrack);
 
@@ -30,15 +30,15 @@ public interface TimeTrackingRepository {
 
     Break getActiveBreak(User user) throws NotFoundException;
 
-    void deleteBreak(Break actualBreak) throws TimeTrackException;
+    void deleteBreak(Break actualBreak);
 
-    void updateBreak(Break actualBreak) throws TimeTrackException;
+    void updateBreak(Break actualBreak);
 
-    void startBreak(User user) throws TimeTrackException, NotFoundException;
+    void startBreak(User user) throws NotFoundException;
 
-    void endBreak(Break actualBreak) throws TimeTrackException;
+    void endBreak(Break actualBreak) throws TimeTrackException, UserException;
 
-    void endBreak(User user) throws TimeTrackException, NotFoundException;
+    void endBreak(User user) throws TimeTrackException, NotFoundException, UserException;
 
     /*  EDIT / DELETE / ADD timeTracks and breaks  */
     void addTimeTrack(TimeTrack timeTrack) throws UserException;

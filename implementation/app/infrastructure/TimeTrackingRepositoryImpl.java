@@ -9,27 +9,23 @@ import javassist.NotFoundException;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
-    private List<TimeTrack> _timeTracks = new ArrayList();
-
-    public TimeTrackingRepositoryImpl() {
-    }
-
-
     @Override
     public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
-       if(user == null) {
-          throw new TimeTrackException("no user");
-       }
-       _timeTracks =
+        // user should not be null at that point
+
+        List<TimeTrack> _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
                 .findList();
 
-       if(_timeTracks == null) throw new TimeTrackException("timetracks not found");
+       if(_timeTracks == null) {
+           return Collections.emptyList();
+       }
 
         return _timeTracks;
     }
@@ -44,13 +40,11 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     * @throws NotFoundException
     */
     @Override
-    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) throws TimeTrackException {
+    public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) {
        if(from.isAfter(to))
-          throw new TimeTrackException("from is after to");
-       if(user == null)
-          throw new TimeTrackException("no user given");
+          return Collections.emptyList();
 
-       _timeTracks =
+        List<TimeTrack> _timeTracks =
             Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())
             .where().ge("start", from)
@@ -58,7 +52,11 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             .setOrderBy("start")
             .findList();
 
-       if(_timeTracks == null) throw new TimeTrackException("list of timetracks not found");
+        // if we have the case that there was nothing found
+       if(_timeTracks == null) {
+           _timeTracks = Collections.emptyList();
+       }
+
        // we also should include the active timeTrack:
        try {
           _timeTracks.add(getActiveTimeTrack(user));
@@ -70,7 +68,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public TimeTrack readTimeTrack(int id) throws TimeTrackException {
+    public TimeTrack readTimeTrack(int id) throws NotFoundException {
         TimeTrack wantedTimeTrack =
             Ebean.find(TimeTrack.class)
                 .where().eq("id", id).findUnique();
@@ -80,7 +78,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         }
 
         // We should never return null
-        throw new TimeTrackException("Entity does not exist.");
+        throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
     }
 
     @Override
@@ -89,22 +87,19 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             .where().eq("_user_id", user.getId())
             .where().isNull("end")
             .findUnique();
-        if (actualTimeTrack == null) {
-           throw new NotFoundException("TimeTrack not found");
+        if (actualTimeTrack != null) {
+           return actualTimeTrack;
         }
-
-        return actualTimeTrack;
+        throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
     }
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) {
-       if(timeTrack == null) return;
        Ebean.update(timeTrack);
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-       if(timeTrack == null) return;
        Ebean.delete(TimeTrack.class, timeTrack);
     }
 
@@ -114,85 +109,69 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
         Break activeBreak =
             Ebean.find(Break.class)
-                .where().eq("time_track_id", activeTimeTrack.get_id())
+                .where().eq("time_track_id", activeTimeTrack.getId())
                 .where().isNull("end").findUnique();
 
-        if (activeBreak == null) {
-            throw new NotFoundException("break was not found");
+        if (activeBreak != null) {
+            return activeBreak;
         }
-        return activeBreak;
+        throw new NotFoundException("exceptions.timetracking.could_not_find_break");
     }
 
     @Override
-    public int createTimeTrack(TimeTrack timeTrack, User user) throws TimeTrackException {
+    public int createTimeTrack(TimeTrack timeTrack, User user) throws UserException {
         // first ensure that there is no TimeTrack already created for this user
         int rowCount = Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())
             .where().isNull("end").findRowCount();
         if (rowCount != 0) {
-            throw new TimeTrackException("user already started work");
+            throw new UserException("exceptions.timetracking.user_timetrack_error");
         }
 
         Ebean.save(timeTrack);
         // refresh to get the auto_incremented id inside newTimeTrack
         Ebean.refresh(timeTrack);
 
-        return timeTrack.get_id();
+        return timeTrack.getId();
     }
 
     @Override
-    public void deleteBreak(Break actualBreak) throws TimeTrackException {
-       if(actualBreak == null)
-           throwTimeTrackException("You have not specified actual break");
+    public void deleteBreak(Break actualBreak) {
        Ebean.delete(Break.class, actualBreak);
     }
 
     @Override
-    public void updateBreak(Break actualBreak) throws TimeTrackException {
-       if(actualBreak == null)
-           throwTimeTrackException("You have not specified actual break");
+    public void updateBreak(Break actualBreak) {
        Ebean.update(actualBreak);
     }
 
     @Override
-    public void startBreak(User user) throws TimeTrackException, NotFoundException {
+    public void startBreak(User user) throws NotFoundException {
         TimeTrack actualTimeTrack = getActiveTimeTrack(user);
         actualTimeTrack.addBreak(new Break(DateTime.now()));
         updateTimeTrack(actualTimeTrack);
     }
 
     @Override
-    public void endBreak(Break actualBreak) throws TimeTrackException {
+    public void endBreak(Break actualBreak) throws TimeTrackException, UserException {
         actualBreak.setTo(DateTime.now());
         updateBreak(actualBreak);
     }
 
     @Override
-    public void endBreak(User user) throws TimeTrackException, NotFoundException {
+    public void endBreak(User user) throws NotFoundException, TimeTrackException, UserException {
         Break actualBreak = getActiveBreak(user);
         endBreak(actualBreak);
     }
 
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
-        try {
             Ebean.save(timeTrack);
-        } catch (Exception e) {
-            throw new UserException("Cannot safe this timetrack");
-        }
     }
 
     @Override
     public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
-        try {
             timeTrack.addBreak(breakToInsert);
             updateTimeTrack(timeTrack);
-        } catch(Exception e) {
-            throw new UserException("Could not update TimeTrack and insert break");
-        }
-    }
-
-    private void throwTimeTrackException(String msg) throws TimeTrackException {
-        throw new TimeTrackException(msg);
     }
 }
