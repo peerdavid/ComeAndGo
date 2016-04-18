@@ -45,6 +45,9 @@ public class User extends Model {
     @Column(name = "user_name_boss")
     private String _userNameBoss;
 
+    @Column(name = "isfired")
+    private boolean _isFired;
+
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, String bossUserName) throws UserException {
 
         // Data Validation in Setters
@@ -57,6 +60,7 @@ public class User extends Model {
         this.setRole(role);
         this.setUserNameBoss(bossUserName);
         this._active = active;
+        this._isFired = false;
     }
 
     public String getPassword() {
@@ -150,6 +154,14 @@ public class User extends Model {
 
     public String getUserNameBoss() {
         return _userNameBoss;
+    }
+
+    public boolean isFired() {
+        return _isFired;
+    }
+
+    public void setFired(boolean fired) {
+        _isFired = fired;
     }
 
 

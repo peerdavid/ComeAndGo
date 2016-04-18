@@ -82,7 +82,7 @@ public class TimeTrackingServiceTest {
         // prepare
         TimeTrack timeTrack = new TimeTrack(_testUser);
 
-        timeTrack.set_from(new DateTime(2016, 4, 7, 8, 0));
+        timeTrack.setFrom(new DateTime(2016, 4, 7, 8, 0));
         when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
         when(_userRepository.readUser(8)).thenReturn(_testUser);
 
@@ -94,7 +94,7 @@ public class TimeTrackingServiceTest {
         // Validate
         Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
         Mockito.verify(_userRepository, times(1)).readUser(userId);
-        Assert.assertNotEquals(timeTrack.get_to(), null);
+        Assert.assertNotEquals(timeTrack.getTo(), null);
     }
 
     @Test(expected = NotFoundException.class)
@@ -188,7 +188,7 @@ public class TimeTrackingServiceTest {
         // Prepare
         when(_userRepository.readUser(8)).thenReturn(_testUser);
         TimeTrack timeTrack = new TimeTrack(_testUser);
-        timeTrack.set_from(DateTime.now().minusHours(1));
+        timeTrack.setFrom(DateTime.now().minusHours(1));
         when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
 
         int userId = 8;

@@ -22,6 +22,7 @@ class UserRepositoryImpl implements UserRepository {
     public User readUser(String userName) {
         User result = Ebean.find(User.class)
                 .where().eq("username", userName)
+                .where().eq("isfired", false)
                 .findUnique();
 
         return result;
@@ -31,6 +32,7 @@ class UserRepositoryImpl implements UserRepository {
     public User readUser(int userId) {
         User result = Ebean.find(User.class)
             .where().eq("id", userId)
+            .where().eq("isfired", false)
             .findUnique();
 
         return result;
@@ -38,7 +40,8 @@ class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void deleteUser(User user) {
-        Ebean.delete(user);
+        user.setFired(true);
+        updateUser(user);
     }
 
     @Override
@@ -49,8 +52,9 @@ class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> getAllUsers() {
         List<User> userList =
-            Ebean.find(User.class)
-            .findList();
+                Ebean.find(User.class)
+                .where().eq("isfired", false)
+                .findList();
 
         return userList;
     }

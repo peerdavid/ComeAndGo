@@ -60,4 +60,14 @@ exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.boss_username_format = Wrong Boss Username Format
 exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
+exceptions.timetracking.could_not_update_break = Could not update TimeTrack and insert break
+exceptions.timetracking.could_not_find_timetrack = Timetrack was not found
+exceptions.timetracking.could_not_find_break = Break was not found
+exceptions.timetracking.from_to_error = There was some error in given date from and to
+exceptions.timetracking.no_user = No User found
+exceptions.timetracking.user_timetrack_error = There was an error with specified times of timetrack
+exceptions.timetracking.user_break_error = There was an error with specified times of break
+exceptions.timetracking.user_not_working_and_break = You have no permissions to manipulate your break without working state ACTIVE
+
+
 

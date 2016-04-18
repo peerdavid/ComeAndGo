@@ -26,29 +26,29 @@ public class TimeTrackTest {
 
 
     @Test
-    public void setFromTime_InEmptyObject_ShouldSucceed() throws TimeTrackException {
+    public void setFromTime_InEmptyObject_ShouldSucceed() throws UserException, TimeTrackException {
         TimeTrack testee = new TimeTrack(_testUser);
-        testee.set_to(_testFromTime);
+        testee.setTo(_testFromTime);
     }
 
 
-    @Test(expected = TimeTrackException.class)
-    public void setToTime_IsSmallerThanFromTime_ShouldFail() throws TimeTrackException{
+    @Test(expected = UserException.class)
+    public void setToTime_IsSmallerThanFromTime_ShouldFail() throws UserException, TimeTrackException{
         TimeTrack testee = new TimeTrack(_testUser);
         DateTime invalidTo = new DateTime(2016, 5, 17, 7, 0);
 
-        testee.set_from(_testFromTime);
-        testee.set_to(invalidTo);
+        testee.setFrom(_testFromTime);
+        testee.setTo(invalidTo);
     }
 
 
-    @Test(expected = TimeTrackException.class)
-    public void setFromTime_IsBiggerThanToTime_ShouldFail() throws TimeTrackException {
+    @Test(expected = UserException.class)
+    public void setFromTime_IsBiggerThanToTime_ShouldFail() throws UserException, TimeTrackException {
         TimeTrack testee = new TimeTrack(_testUser);
         DateTime invalidFrom = new DateTime(2016, 5, 17, 10, 0);
 
-        testee.set_from(_testFromTime);
-        testee.set_to(_testToTime);
-        testee.set_from(invalidFrom);
+        testee.setFrom(_testFromTime);
+        testee.setTo(_testToTime);
+        testee.setFrom(invalidFrom);
     }
 }

@@ -6,10 +6,12 @@ import com.avaje.ebean.Ebean;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -31,13 +33,15 @@ public class TimeTrackingRepositoryImplTest {
       _timeTrackRepository = new TimeTrackingRepositoryImpl();
    }
 
-   @Test(expected = TimeTrackException.class)
+   @Test(expected = Exception.class)
    public void searchingTimeTrackList_ForNoUserGiven_ShouldThrowTimeTrackException() throws TimeTrackException {
       _timeTrackRepository.readTimeTracks(null);
    }
 
-   @Test(expected = TimeTrackException.class)
-   public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldThrowTimeTrackException() throws TimeTrackException {
-      _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));
+   @Test
+   public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldReturnEmptyList() {
+      List<TimeTrack> testList = _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));
+      int expected = 0;
+      Assert.assertEquals(testList.size(), expected);
    }
 }
