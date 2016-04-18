@@ -23,6 +23,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
     private final UserRepository _userRepository;
+    private final TimeTrackingValidation _validation;
 
 
     @Inject
@@ -30,6 +31,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository = repository;
         _notificationSender = notificationSender;
         _userRepository = userRepository;
+        _validation = new TimeTrackingValidationImpl(repository);
     }
 
 
@@ -109,7 +111,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException {
+    public List<TimeTrack> readTimeTracks(int userId) throws UserException {
         User user = loadUserById(userId);
 
         return _repository.readTimeTracks(user);
@@ -122,9 +124,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
        return _repository.readTimeTracks(user, from, to);
     }
 
-
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
+        if(!_validation.validateTimeTrackInsert(timeTrack)) {
+            throw new UserException(".....");
+        }
         _repository.addTimeTrack(timeTrack);
     }
 
@@ -136,7 +140,10 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack) {
+    public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
+        if(!_validation.validateTimeTrackUpdate(timeTrack)) {
+            throw new UserException("...");
+        }
         _repository.updateTimeTrack(timeTrack);
     }
 

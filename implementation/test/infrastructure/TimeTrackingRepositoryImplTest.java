@@ -33,11 +33,6 @@ public class TimeTrackingRepositoryImplTest {
       _timeTrackRepository = new TimeTrackingRepositoryImpl();
    }
 
-   @Test(expected = Exception.class)
-   public void searchingTimeTrackList_ForNoUserGiven_ShouldThrowTimeTrackException() throws TimeTrackException {
-      _timeTrackRepository.readTimeTracks(null);
-   }
-
    @Test
    public void searchingTimeTrackList_WithFromDateAfterToDate_ShouldReturnEmptyList() {
       List<TimeTrack> testList = _timeTrackRepository.readTimeTracks(_testuser, DateTime.now(), DateTime.now().minusHours(1));

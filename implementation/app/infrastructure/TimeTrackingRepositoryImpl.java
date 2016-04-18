@@ -8,14 +8,13 @@ import models.User;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
-    public List<TimeTrack> readTimeTracks(User user) throws TimeTrackException{
+    public List<TimeTrack> readTimeTracks(User user) {
         // user should not be null at that point
 
         List<TimeTrack> _timeTracks =
@@ -81,7 +80,25 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
     }
 
-    @Override
+   @Override
+   public List<TimeTrack> readTimeTracksOverlay(User user, TimeTrack timeTrack) {
+      List<TimeTrack> wantedList =
+          Ebean.find(TimeTrack.class)
+          .where().eq("_user_id", user.getId())
+          .disjunction()
+          .where().ge("to", timeTrack.getFrom())
+          .where().le("from", timeTrack.getTo())
+          .endJunction()
+          .findList();
+
+      if(wantedList == null) {
+         return Collections.emptyList();
+      }
+
+      return wantedList;
+   }
+
+   @Override
     public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
         TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())

@@ -4,6 +4,7 @@ import business.UserException;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
 import infrastructure.TimeTrackException;
+import infrastructure.UserRepository;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
@@ -51,10 +52,13 @@ public class TimeTrack extends Model {
       _from = DateTime.now();
    }
 
-    public TimeTrack(int id, DateTime from, DateTime to, List<Break> breaks) throws UserException {
-        setFrom(from);
-        setTo(to);
-        this._breaks = breaks;
+    public TimeTrack(User user, DateTime from, DateTime to, List<Break> breaks) throws UserException {
+       _user = user;
+       setFrom(from);
+       setTo(to);
+       if(breaks != null) {      // if we get that case, breaks should keep an empty list (see above)
+          this._breaks = breaks;
+       }
     }
 
 
@@ -99,4 +103,8 @@ public class TimeTrack extends Model {
     public void addBreak(Break breakToAdd){
         this._breaks.add(breakToAdd);
     }
+
+   public User getUser() {
+      return _user;
+   }
 }

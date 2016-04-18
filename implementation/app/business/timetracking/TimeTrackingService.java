@@ -25,7 +25,7 @@ interface TimeTrackingService {
 
     void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException;
 
-    List<TimeTrack> readTimeTracks(int userId) throws UserException, TimeTrackException;
+    List<TimeTrack> readTimeTracks(int userId) throws UserException;
 
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException;
 
@@ -34,7 +34,7 @@ interface TimeTrackingService {
 
     void deleteTimeTrack(TimeTrack timeTrack);
 
-    void updateTimeTrack(TimeTrack timeTrack);
+    void updateTimeTrack(TimeTrack timeTrack) throws UserException;
 
     void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException;
 

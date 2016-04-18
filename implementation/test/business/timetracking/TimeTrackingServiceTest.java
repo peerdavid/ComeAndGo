@@ -16,6 +16,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -168,7 +172,7 @@ public class TimeTrackingServiceTest {
         int userId = 8;
         when(_userRepository.readUser(8)).thenReturn(_testUser);
 
-        TimeTrack timeTrack = new TimeTrack(userId, DateTime.now(), DateTime.now().plusHours(1), null);
+        TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(1), null);
 
         when(_timeTrackingRepository.getActiveTimeTrack(any(User.class))).thenReturn(timeTrack);
 
@@ -385,6 +389,8 @@ public class TimeTrackingServiceTest {
         when(_timeTrackingRepository.getActiveBreak(_testUser)).thenReturn(_testBreak);
 
         _timeTrackService.endBreak(userId);
+        Mockito.verify(_timeTrackingRepository, times(1)).endBreak(_testUser);
+        Mockito.verify(_timeTrackingRepository, times(1)).getActiveBreak(_testUser);
         Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
     }
 
@@ -409,6 +415,57 @@ public class TimeTrackingServiceTest {
         _timeTrackService.readTimeTracks(userId, DateTime.now().minusDays(1), DateTime.now());
         Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class));
 
+    }
+
+    @Test(expected = UserException.class)
+    public void addTimeTrack_whichOverlaysToAnother_ShouldThrowUserException() throws UserException {
+        // init
+        List<TimeTrack> storedList = new ArrayList();
+        storedList.add(new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusDays(1), null));
+        storedList.add(new TimeTrack(_testUser, DateTime.now().plusDays(3), DateTime.now().plusDays(4), null));
+        TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(23), DateTime.now().plusHours(50), null);
+
+        // prepare
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(storedList);
+
+        _timeTrackService.addTimeTrack(timeTrackToInsert);
+    }
+
+    @Test
+    public void addTimeTrack_whichDoesNotOverlayToAnother_ShouldSucceedAndCallRepository() throws UserException {
+        // init
+        TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(6), DateTime.now().plusHours(20), null);
+
+        // prepare
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+        when(_userRepository.readUser(8)).thenReturn(_testUser);
+
+        _timeTrackService.addTimeTrack(timeTrackToInsert);
+        Mockito.verify(_timeTrackingRepository, times(1)).addTimeTrack(timeTrackToInsert);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+/*    @Test(expected = UserException.class)
+    public void addTimeTrack_withMoreThan12HoursBetweenFromAndToTime_ShouldThrowUserException() throws UserException {
+        // init
+        DateTime morning = new DateTime(2016, 4, 18, 0, 5);
+        TimeTrack timeTrack = new TimeTrack(_testUser, morning, morning.plusHours(13), null);
+
+        _timeTrackService.addTimeTrack(timeTrack);
+    }*/
+
+    @Test
+    public void addTimeTrack_withExactly8HoursBetweenFromAndTo_ShouldSucceedAndCallRepository() throws UserException {
+        // init
+        TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
+        when(_timeTrackingRepository.readTimeTracksOverlay(_testUser, timeTrack)).thenReturn(Collections.emptyList());
+
+        _timeTrackingRepository.addTimeTrack(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).addTimeTrack(timeTrack);
+    }
+
+    @Test
+    public void editTimeTrack_whichIsTheActiveOneAndOnlyEditsToTime_ShouldSucceedAndCallRepository() throws NotFoundException, UserException {
     }
 
 
