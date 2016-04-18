@@ -24,36 +24,30 @@ class TimeTrackingFacade implements TimeTracking {
         _timeTrackingService = timeTrackingService;
     }
 
-    /*
-     * ToDo: Annotate with logging and transaction = true
-     */
+
     @Override
     public void come(int userId) throws Exception {
         _timeTrackingService.come(userId);
     }
 
 
-    /*
-     * Note: Our facade is responsible for exception handling, use case
-     * logging and transaction handling. In this case we know exactly
-     * the right use case -> so we could react with (for instance): start
-     * a new subusecase, were we create a new timetrack with the same
-     * from and to time and send the report to our admin... or something like this
-     */
     @Override
     public void go(int userId) throws Exception {
             _timeTrackingService.go(userId);
     }
+
 
     @Override
     public void startBreak(int userId) throws Exception {
             _timeTrackingService.createBreak(userId);
     }
 
+
     @Override
     public void endBreak(int userId) throws Exception {
             _timeTrackingService.endBreak(userId);
     }
+
 
     @Override
     public TimeTrackState getState(int userId) throws Exception {
@@ -76,35 +70,42 @@ class TimeTrackingFacade implements TimeTracking {
         return _timeTrackingService.readTimeTracks(userId);
     }
 
+
     @Override
     public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception {
         return _timeTrackingService.readTimeTracks(userId, from, to);
     }
+
 
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.addTimeTrack(timeTrack);
     }
 
+
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.deleteTimeTrack(timeTrack);
     }
+
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.updateTimeTrack(timeTrack);
     }
 
+
     @Override
     public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws Exception {
         _timeTrackingService.addBreak(timeTrack, breakToInsert);
     }
 
+
     @Override
     public void deleteBreak(Break breakToDelete) throws Exception {
         _timeTrackingService.deleteBreak(breakToDelete);
     }
+
 
     @Override
     public void updateBreak(Break breakToUpdate) throws Exception {
