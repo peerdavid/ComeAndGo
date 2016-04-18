@@ -40,6 +40,9 @@ views.admin.signup.title = Sign Up
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
 views.admin.edituser.edit = Edit
+views.admin.edituser.deleteuser = Delete User
+views.admin.edituser.delete = Delete
+views.admin.edituser.deletemessage = Do you want to remove
 
 views.holiday.title = Holiday
 
