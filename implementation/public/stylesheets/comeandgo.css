@@ -127,6 +127,20 @@ nav.top-nav .page-title {
 div.edit-user-switch-container.col , div.edit-user-switch-container.col .switch {
     float: right;
 }
+
+/* edit timetracks */
+#date-chooser-card {
+    padding: 16px;
+}
+
+#date-chooser-card .input-field {
+    margin-top: 0;
+}
+
+#date-chooser-card .row {
+    margin-bottom: 0;
+}
+
 /* change texterea colors */
 textarea:focus {
     border-bottom: 1px solid #00bcd4 !important;
