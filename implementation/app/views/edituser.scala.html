@@ -57,10 +57,11 @@
 
                         <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")</button>
 
+                        <a class="waves-effect waves-light btn modal-trigger secondary-btn" href="@routes.TimeTrackController.editTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")</a>
+
                         <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.edituser.savechanges")
                             <i class="material-icons right">done</i>
                         </button>
-
 
 
                         <div id="modal@(u.getId)" class="modal">

@@ -18,6 +18,20 @@ $( document ).ready(function() {
         increase_direction:'up',
         disable_keyboard_mobile: true
     });
+
+    // initialize datepicker
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 15,
+        // translation strings
+        monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        showMonthsShort: true,
+        showWeekdaysFull: false,
+        format: 'dd.mm.yyyy'
+    });
 });
 
 $('.edit-user-switch').click(function () {
