@@ -19,7 +19,7 @@ public class User extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer _id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @Constraints.MinLength(4)
     private String _userName;
 
