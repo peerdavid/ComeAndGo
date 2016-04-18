@@ -63,11 +63,11 @@
                             @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @(timeTrack.get_from.getHourOfDay + ":" + timeTrack.get_from.getMinuteOfHour + ":" + timeTrack.get_from().getSecondOfMinute)
+                            @(timeTrack.getFrom.getHourOfDay + ":" + timeTrack.getFrom.getMinuteOfHour + ":" + timeTrack.getFrom().getSecondOfMinute)
                         </td>
                     </tr>
 
-                    @for(b: Break <- timeTrack.get_breaks) {
+                    @for(b: Break <- timeTrack.getBreaks) {
                         <tr>
                             <td>
                                 @Messages("views.index.timetrack.tablebody.breakstart")
@@ -89,13 +89,13 @@
                         }
                     }
 
-                    @if(timeTrack.get_to() != null) {
+                    @if(timeTrack.getTo() != null) {
                         <tr>
                             <td>
                                 @Messages("views.index.timetrack.tablebody.end")
                             </td>
                             <td>
-                                @(timeTrack.get_to().getHourOfDay + ":" + timeTrack.get_to().getMinuteOfHour + ":" + timeTrack.get_to().getSecondOfMinute)
+                                @(timeTrack.getTo().getHourOfDay + ":" + timeTrack.getTo().getMinuteOfHour + ":" + timeTrack.getTo().getSecondOfMinute)
                             </td>
                         </tr>
                     }

@@ -80,7 +80,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result editTimeTracks(int userId, String from, String to) {
+    public Result editTimeTracks(int userId, String from, String to) throws Exception {
         CommonProfile profile = getUserProfile();
 
         List<TimeTrack> timeTracks;

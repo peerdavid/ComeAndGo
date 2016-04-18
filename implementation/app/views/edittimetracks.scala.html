@@ -30,14 +30,14 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">schedule</i>
                     <b>
-                        @(t.get_from().getDayOfMonth + "." + t.get_from().getMonthOfYear + "." + t.get_from().getYear + ":")
+                        @(t.getFrom().getDayOfMonth + "." + t.getFrom().getMonthOfYear + "." + t.getFrom().getYear + ":")
                     </b>
                     <span>
-                        @(t.get_from().getHourOfDay + ":" + t.get_from().getMinuteOfHour)
+                        @(t.getFrom().getHourOfDay + ":" + t.getFrom().getMinuteOfHour)
                     </span>
                      -
                     <span>
-                        @(t.get_to().getHourOfDay + ":" + t.get_to().getMinuteOfHour)
+                        @(t.getTo().getHourOfDay + ":" + t.getTo().getMinuteOfHour)
                     </span>
                 </div>
                 <div class="collapsible-body">
