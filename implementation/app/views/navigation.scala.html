@@ -11,7 +11,9 @@
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
-        <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
+        @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)||profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
+        }
         <!-- if user is admin -> add admin menu -->
         @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
             <li id="admin_dropdown" class="no-padding">
