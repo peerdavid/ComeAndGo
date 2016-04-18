@@ -1,6 +1,7 @@
 package infrastructure;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlQuery;
 import models.User;
 
 import java.util.List;
@@ -36,11 +37,8 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteUser(String userName) {
-        User user = Ebean.find(User.class)
-                .where().eq("username", userName)
-                .findUnique();
-        Ebean.delete(User.class, user);
+    public void deleteUser(User user) {
+        Ebean.delete(user);
     }
 
     @Override

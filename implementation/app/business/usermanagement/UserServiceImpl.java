@@ -162,6 +162,6 @@ class UserServiceImpl implements UserService {
                 throw new UserException("exceptions.usermanagement.at_least_one_admin");
             }
         }
-        _userRepository.deleteUser(userToDelete.getUserName());
+        _userRepository.deleteUser(userToDelete);
     }
 }

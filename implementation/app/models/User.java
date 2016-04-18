@@ -6,9 +6,7 @@ import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by david on 21.03.16.
@@ -18,9 +16,10 @@ public class User extends Model {
 
     @Id
     @Column(name = "id")
-    private int _id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer _id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     @Constraints.MinLength(4)
     private String _userName;
 
