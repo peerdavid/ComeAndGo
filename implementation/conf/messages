@@ -36,6 +36,8 @@ views.admin.signup.form.roles.user = User
 views.admin.signup.form.roles.admin = Admin
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
+views.admin.edittimetracks = edit timetracks
+views.admin.edittimetracks.loadtimetracks = load timetracks
 
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
@@ -43,6 +45,7 @@ views.admin.edituser.edit = Edit
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
 views.admin.edituser.deletemessage = Do you want to remove
+views.admin.edituser.closemessage = Close
 
 views.holiday.title = Holiday
 

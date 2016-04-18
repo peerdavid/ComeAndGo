@@ -1,5 +1,5 @@
 nav.top-nav {
-    height: 122px;
+    height: 120px;
     box-shadow: none;
 }
 
@@ -119,9 +119,28 @@ nav.top-nav .page-title {
     padding: 1em;
 }
 
+#user-list .modal{
+    min-width: 254px;
+    width: 25%;
+}
+
 div.edit-user-switch-container.col , div.edit-user-switch-container.col .switch {
     float: right;
 }
+
+/* edit timetracks */
+#date-chooser-card {
+    padding: 16px;
+}
+
+#date-chooser-card .input-field {
+    margin-top: 0;
+}
+
+#date-chooser-card .row {
+    margin-bottom: 0;
+}
+
 /* change texterea colors */
 textarea:focus {
     border-bottom: 1px solid #00bcd4 !important;
@@ -150,6 +169,14 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 
 .input-field .prefix.active {
     color: inherit;
+}
+
+.primary-btn{
+    background-color: #4CAF50 !important;
+}
+
+.secondary-btn{
+    background-color: #00bcd4 !important;
 }
 
 /* changes input-field placeholder colour for multiple devices */

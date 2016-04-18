@@ -1,0 +1,55 @@
+@import org.pac4j.core.profile.CommonProfile
+
+@(profile: CommonProfile, userId :Int, timetracklist: java.util.List[TimeTrack])
+
+@main(Messages("views.admin.title")) {
+
+    @navigation(Messages("views.admin.edituser"), profile) {
+
+        <div id="date-chooser-card" class="card">
+            <form action="@routes.TimeTrackController.editTimeTracks(userId)" type="GET">
+                <input type="hidden" name="userId" value="@(userId)">
+                <div class="row">
+                    <div class="input-field col s6 m4">
+                        <input id="date-from" name="from" type="date" class="datepicker">
+                        <label for="date-from">from</label>
+                    </div>
+                    <div class="input-field col s6 m4">
+                        <input id="date-to" name="to" type="date" class="datepicker">
+                        <label for="date-from">to</label>
+                    </div>
+                    <button class="btn waves-effect waves-light cyan" type="submit">
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <ul id=timetrack-list" class="collapsible" data-collapsible="accordion">
+        @for(t : TimeTrack <- timetracklist) {
+            <li>
+                <div class="collapsible-header"><i class="material-icons">schedule</i>
+                    <b>
+                        @(t.get_from().getDayOfMonth + "." + t.get_from().getMonthOfYear + "." + t.get_from().getYear + ":")
+                    </b>
+                    <span>
+                        @(t.get_from().getHourOfDay + ":" + t.get_from().getMinuteOfHour)
+                    </span>
+                     -
+                    <span>
+                        @(t.get_to().getHourOfDay + ":" + t.get_to().getMinuteOfHour)
+                    </span>
+                </div>
+                <div class="collapsible-body">
+                    <form action="@routes.UserManagementController.editUser()" method="POST">
+
+                        <button class="btn waves-effect waves-light green" type="submit" name="action" style="float: right; display: none;">@Messages("views.admin.edituser.savechanges")
+                        <i class="material-icons right">done</i>
+                        </button>
+                    </form>
+                </div>
+            </li>
+        }
+        </ul>
+    }
+}

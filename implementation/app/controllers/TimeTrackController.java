@@ -10,6 +10,7 @@ import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.mvc.Result;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -76,5 +77,25 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         _timeTracking.go(Integer.parseInt(profile.getId()));
         return redirect(routes.TimeTrackController.index());
+    }
+
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result editTimeTracks(int userId, String from, String to) {
+        CommonProfile profile = getUserProfile();
+
+        List<TimeTrack> timeTracks;
+        if(from == null || to == null || from.isEmpty() || to.isEmpty()) {
+            timeTracks = Collections.emptyList();
+        } else {
+            String[] fromDate = from.split("\\.");
+            String[] toDate = to.split("\\.");
+
+            DateTime dateFrom = new DateTime(Integer.parseInt(fromDate[2]), Integer.parseInt(fromDate[1]), Integer.parseInt(fromDate[0]), 0, 0);
+            DateTime dateTo = new DateTime(Integer.parseInt(toDate[2]), Integer.parseInt(toDate[1]), Integer.parseInt(toDate[0]), 23, 59);
+
+            timeTracks = _timeTracking.readTimeTracks(userId, dateFrom, dateTo);
+        }
+
+        return ok(views.html.edittimetracks.render(profile, userId, timeTracks));
     }
 }
