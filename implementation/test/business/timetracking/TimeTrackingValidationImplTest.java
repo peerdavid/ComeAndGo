@@ -37,7 +37,8 @@ public class TimeTrackingValidationImplTest {
     Break _testBreak;
     TimeTrackingValidation _validation;
     List<TimeTrack> _testList;
-    DateTime midNight;
+    DateTime _MIDNIGHT;
+    DateTime _MIDDAY;
 
 
     @Before
@@ -56,7 +57,8 @@ public class TimeTrackingValidationImplTest {
         timeTrack.setId(1);
         _testList.add(timeTrack);
 
-        midNight  = new DateTime(2016, 5, 3, 0, 0, 0);
+        _MIDNIGHT  = new DateTime(2016, 5, 3, 0, 0, 0);
+        _MIDDAY = _MIDNIGHT.plusHours(12);
     }
 
     /*
@@ -78,12 +80,12 @@ public class TimeTrackingValidationImplTest {
     @Test
     public void validateTimeTrackInsert_WithEmptyOverlayListAndTwoValidBreaks_ShouldSucceedAndCallRepo() throws UserException {
         // init
-        Break firstBreak = new Break(midNight.plusMinutes(10), midNight.plusMinutes(20));
-        Break secondBreak = new Break(midNight.plusHours(1), midNight.plusHours(2));
+        Break firstBreak = new Break(_MIDNIGHT.plusMinutes(10), _MIDNIGHT.plusMinutes(20));
+        Break secondBreak = new Break(_MIDNIGHT.plusHours(1), _MIDNIGHT.plusHours(2));
         List<Break> breakList = new ArrayList<>();
         breakList.add(firstBreak);
         breakList.add(secondBreak);
-        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.plusMinutes(1), midNight.plusHours(10), breakList);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.plusMinutes(1), _MIDNIGHT.plusHours(10), breakList);
         timeTrack.setUser(_testUser);
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
@@ -95,12 +97,12 @@ public class TimeTrackingValidationImplTest {
     @Test(expected = UserException.class)
     public void validateTimeTrackInsert_WithEmptyOverlayListAndClashingBreaks_ShouldThrowUserExceptionCallRepo() throws UserException {
         // init
-        Break firstBreak = new Break(midNight.plusMinutes(10), midNight.plusMinutes(30));
-        Break secondBreak = new Break(midNight.plusMinutes(28), midNight.plusHours(1));
+        Break firstBreak = new Break(_MIDNIGHT.plusMinutes(10), _MIDNIGHT.plusMinutes(30));
+        Break secondBreak = new Break(_MIDNIGHT.plusMinutes(28), _MIDNIGHT.plusHours(1));
         List<Break> breakList = new ArrayList<>();
         breakList.add(firstBreak);
         breakList.add(secondBreak);
-        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.plusMinutes(5), midNight.plusHours(8), breakList);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.plusMinutes(5), _MIDNIGHT.plusHours(8), breakList);
         timeTrack.setUser(_testUser);
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
@@ -112,12 +114,12 @@ public class TimeTrackingValidationImplTest {
     @Test
     public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakBeforeMidnightAndAfterMidnight_ShouldSucceedAndCallRepo() throws UserException {
         // init
-        Break firstBreak = new Break(midNight.minusHours(3), midNight.minusHours(2));
-        Break secondBreak = new Break(midNight.plusHours(1), midNight.plusHours(2));
+        Break firstBreak = new Break(_MIDNIGHT.minusHours(3), _MIDNIGHT.minusHours(2));
+        Break secondBreak = new Break(_MIDNIGHT.plusHours(1), _MIDNIGHT.plusHours(2));
         List<Break> breakList = new ArrayList<>();
         breakList.add(firstBreak);
         breakList.add(secondBreak);
-        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.minusHours(5), midNight.plusHours(3), breakList);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(3), breakList);
         timeTrack.setUser(_testUser);
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
@@ -129,10 +131,26 @@ public class TimeTrackingValidationImplTest {
     @Test
     public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakAroundMidnight_ShouldSucceedAndCallRepo() throws UserException {
         // init
-        Break firstBreak = new Break(midNight.minusMinutes(10), midNight.plusMinutes(10));
+        Break firstBreak = new Break(_MIDNIGHT.minusMinutes(10), _MIDNIGHT.plusMinutes(10));
         List<Break> breakList = new ArrayList<>();
         breakList.add(firstBreak);
-        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.minusHours(5), midNight.plusHours(3), breakList);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        //
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test
+    public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakBeforeMidnight_ShouldSucceedAndCallRepo() throws UserException {
+        // init
+        Break firstBreak = new Break(_MIDNIGHT.minusHours(3), _MIDNIGHT.minusHours(2));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(3), breakList);
         timeTrack.setUser(_testUser);
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
@@ -141,5 +159,129 @@ public class TimeTrackingValidationImplTest {
         Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
+    @Test
+    public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakAfterMidnight_ShouldSucceedAndCallRepo() throws UserException {
+        // init
+        Break firstBreak = new Break(_MIDNIGHT.plusHours(1), _MIDNIGHT.plusHours(2));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test
+    public void validateTimeTrackInsert_WorkingOnDayAndTakingNonClashingBreaks_ShouldSucceedAndCallRepo() throws UserException {
+        // init
+        Break firstBreak = new Break(_MIDDAY.minusHours(3), _MIDDAY.minusHours(2));
+        Break secondBreak = new Break(_MIDDAY.plusMinutes(10), _MIDDAY.plusMinutes(30));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WorkingOnDayAndTakingClashingBreaks_ShouldThrowUserExceptionAndCallRepo() throws UserException {
+        // init
+        Break firstBreak = new Break(_MIDDAY.minusHours(1), _MIDDAY.minusMinutes(30));
+        Break secondBreak = new Break(_MIDDAY.minusMinutes(31), _MIDDAY.plusMinutes(10));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WorkingOnDayAndTakingBreaksBeforeTimeTrack_ShouldThrowUserExceptionAndCallRepo() throws UserException {
+        // init
+
+        Break firstBreak = new Break(_MIDDAY.plusMinutes(20), _MIDDAY.plusMinutes(30));
+        Break secondBreak = new Break(_MIDDAY.minusMinutes(31), _MIDDAY.plusMinutes(10));
+        Break thirdBreak = new Break(_MIDDAY.minusHours(6), _MIDDAY.minusHours(4)); // this one is outside timetrack
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        breakList.add(thirdBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WorkingOnDayAndTakingBreaksAfterTimeTrack_ShouldThrowUserExceptionAndCallRepo() throws UserException {
+        // initialize
+        Break firstBreak = new Break(_MIDDAY.plusMinutes(20), _MIDDAY.plusMinutes(30));
+        Break secondBreak = new Break(_MIDDAY.plusHours(2), _MIDDAY.plusHours(4));  // this one is outside timetrack
+        Break thirdBreak = new Break(_MIDDAY.minusMinutes(31), _MIDDAY.plusMinutes(10));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        breakList.add(thirdBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WorkingInNightAndTakingBreaksBeforeTimeTrack_ShouldThrowUserExceptionAndCallRepo() throws UserException {
+        // initialize
+
+        Break firstBreak = new Break(_MIDNIGHT.plusMinutes(20), _MIDNIGHT.plusMinutes(30));
+        Break secondBreak = new Break(_MIDNIGHT.minusHours(6), _MIDNIGHT.minusHours(5));  // this one is outside timetrack
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WorkingInNightAndTakingBreaksAfterTimeTrack_ShouldThrowUserExceptionAndCallRepo() throws UserException {
+        // initialize
+
+        Break firstBreak = new Break(_MIDNIGHT.plusMinutes(20), _MIDNIGHT.plusMinutes(30));
+        Break secondBreak = new Break(_MIDNIGHT.plusHours(4), _MIDNIGHT.plusHours(5));  // this one is outside timetrack
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(6), _MIDNIGHT.plusHours(4), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // start the test method
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
 
 }

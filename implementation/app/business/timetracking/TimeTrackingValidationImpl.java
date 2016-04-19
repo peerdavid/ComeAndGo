@@ -29,6 +29,11 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
       // this list contains timeTracks which do overlap, if it is empty, then there is no worry of conflict timeTracks
       User user = timeTrack.getUser();
+      List<Break> breakList = timeTrack.getBreaks();
+      if(breakList == null) {
+         breakList = Collections.emptyList();
+      }
+
       List<TimeTrack> timesFromUser =
           _repository.readTimeTracksOverlay(user, timeTrack);
       if(timesFromUser.size() > 0) {
@@ -37,12 +42,12 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
       // now at this point the timeTrack could be inserted
       // we also have to check times from the breaks ...
-      for(Break actual : timeTrack.getBreaks()) {
+      for(Break actual : breakList) {
          validateBreakInsideTimeTrack(timeTrack, actual);
       }
 
       // finally check breaks for not clashing
-      validateBreaksDoNotClash(timeTrack.getBreaks());
+      validateBreaksDoNotClash(breakList);
    }
 
    private void validateBreakInsideTimeTrack(TimeTrack timeTrack, Break toInsert) throws UserException {
@@ -56,7 +61,6 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
       //   we can trust that original start and end times in module TimeTrack.class are validated to be start before end
       boolean nightWork = timeTrackStart.isAfter(timeTrackEnd);
       if(nightWork) {
-         LocalTime midNight = LocalTime.MIDNIGHT;
          // e.g. break is between 8pm and midnight and also after begin of work
          if(breakStart.isAfter(timeTrackStart) && breakEnd.isAfter(timeTrackStart)) {
             return;
@@ -97,7 +101,7 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
             LocalTime toInspectEnd = breakList.get(j).getTo().toLocalTime();
 
             if(breakOverMidnight) {
-
+               // TODO: add implementation here
             } else {
                boolean isActualBeforeMidnight = actualStart.isBefore(midNight);
                boolean isToInspectBeforeMidnight = toInspectStart.isBefore(midNight);
