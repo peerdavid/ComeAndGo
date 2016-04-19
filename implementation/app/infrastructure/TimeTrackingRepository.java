@@ -44,8 +44,9 @@ public interface TimeTrackingRepository {
 
     void endBreak(User user) throws TimeTrackException, NotFoundException, UserException;
 
-    /*  EDIT / DELETE / ADD timeTracks and breaks  */
+    /**
+     *  ADD timeTracks and corresponding breaks  */
     void addTimeTrack(TimeTrack timeTrack) throws UserException;
 
-    void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException;
+    //void updateTimeTrack(TimeTrack timeTrack) throws UserException;
 }

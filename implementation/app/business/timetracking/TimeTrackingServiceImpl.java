@@ -126,9 +126,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
-        if(!_validation.validateTimeTrackInsert(timeTrack)) {
-            throw new UserException(".....");
-        }
+        _validation.validateTimeTrackInsert(timeTrack);
         _repository.addTimeTrack(timeTrack);
     }
 
@@ -141,28 +139,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
-        if(!_validation.validateTimeTrackUpdate(timeTrack)) {
-            throw new UserException("...");
-        }
+        _validation.validateTimeTrackUpdate(timeTrack);
         _repository.updateTimeTrack(timeTrack);
-    }
-
-
-    @Override
-    public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
-        _repository.addBreak(timeTrack, breakToInsert);
-    }
-
-
-    @Override
-    public void deleteBreak(Break breakToDelete) {
-        _repository.deleteBreak(breakToDelete);
-    }
-
-
-    @Override
-    public void updateBreak(Break breakToUpdate) {
-        _repository.updateBreak(breakToUpdate);
     }
 
 

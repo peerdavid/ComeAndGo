@@ -9,8 +9,7 @@ import javassist.NotFoundException;
 import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
@@ -210,9 +209,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
             Ebean.save(timeTrack);
     }
 
-    @Override
-    public void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException {
-            timeTrack.addBreak(breakToInsert);
-            updateTimeTrack(timeTrack);
-    }
+    //@Override
+    //public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
+        //List<Break> newBreaks = timeTrack.getBreaks();
+        //Set<Integer> idSet = new HashSet();
+        // TODO: test with database, if calling this method with breaks less then before already deletes the entry in db
+        //for(Break actual : newBreaks) {
+
+        //}
+    //    Ebean.update(timeTrack);
+    //}
 }

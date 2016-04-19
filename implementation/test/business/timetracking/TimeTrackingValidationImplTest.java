@@ -37,6 +37,7 @@ public class TimeTrackingValidationImplTest {
     Break _testBreak;
     TimeTrackingValidation _validation;
     List<TimeTrack> _testList;
+    DateTime midNight;
 
 
     @Before
@@ -54,72 +55,91 @@ public class TimeTrackingValidationImplTest {
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
         timeTrack.setId(1);
         _testList.add(timeTrack);
+
+        midNight  = new DateTime(2016, 5, 3, 0, 0, 0);
     }
 
-    @Test
-    public void validateTimeTrackInsert_WithNonEmpyOverlayResult_ShouldReturnFalseAndCallRepo() throws UserException {
+    /*
+     *
+     * THIS SECTION TESTS ALL ABOUT INSERTING A NEW TIMETRACK
+     *
+     */
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WithNonEmptyOverlayResult_ShouldThrowExceptionAndCallRepo() throws UserException {
         // init
-        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(_testList);
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now().minusHours(5), DateTime.now().plusHours(1), null);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(_testList);
 
-        boolean expected = false;
-        boolean result = _validation.validateTimeTrackInsert(timeTrack);
-        Assert.assertEquals(expected, result);
+        _validation.validateTimeTrackInsert(timeTrack);
         Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
     @Test
-    public void validateTimeTrackInsert_WithEmptyOverlayList_ShouldReturnTrueAndCallRepo() throws UserException {
+    public void validateTimeTrackInsert_WithEmptyOverlayListAndTwoValidBreaks_ShouldSucceedAndCallRepo() throws UserException {
         // init
+        Break firstBreak = new Break(midNight.plusMinutes(10), midNight.plusMinutes(20));
+        Break secondBreak = new Break(midNight.plusHours(1), midNight.plusHours(2));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.plusMinutes(1), midNight.plusHours(10), breakList);
+        timeTrack.setUser(_testUser);
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
-        TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now().minusHours(5), DateTime.now().plusHours(1), null);
 
-        boolean expected = true;
-        boolean result = _validation.validateTimeTrackInsert(timeTrack);
-        Assert.assertEquals(expected, result);
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackInsert_WithEmptyOverlayListAndClashingBreaks_ShouldThrowUserExceptionCallRepo() throws UserException {
+        // init
+        Break firstBreak = new Break(midNight.plusMinutes(10), midNight.plusMinutes(30));
+        Break secondBreak = new Break(midNight.plusMinutes(28), midNight.plusHours(1));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.plusMinutes(5), midNight.plusHours(8), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
+
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
         Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
     @Test
-    public void validateUpdateTimeTrack_WhichIsTheActiveOne_ShouldReturnTrueAndCallRepo() throws UserException, NotFoundException {
+    public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakBeforeMidnightAndAfterMidnight_ShouldSucceedAndCallRepo() throws UserException {
         // init
-        TimeTrack actualTimeTrack = new TimeTrack(_testUser);
-        actualTimeTrack.setId(5);
-        actualTimeTrack.setUser(_testUser);
-        when(_timeTrackingRepository.getActiveTimeTrack(_testUser)).thenReturn(actualTimeTrack);
+        Break firstBreak = new Break(midNight.minusHours(3), midNight.minusHours(2));
+        Break secondBreak = new Break(midNight.plusHours(1), midNight.plusHours(2));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        breakList.add(secondBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.minusHours(5), midNight.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
-        boolean expected = true;
-        boolean result = _validation.validateTimeTrackUpdate(actualTimeTrack);
-        Assert.assertEquals(expected, result);
-        Mockito.verify(_timeTrackingRepository, times(1)).getActiveTimeTrack(_testUser);
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
     @Test
-    public void validateUpdateTimeTrack_ForNoActiveTimeTrackFoundAndOnlyOverlapTimeTrackHasSameID_ShouldReturnTrue() throws NotFoundException, UserException {
+    public void validateTimeTrackInsert_WorkingAroundMidnightAndTakingBreakAroundMidnight_ShouldSucceedAndCallRepo() throws UserException {
         // init
-        TimeTrack anotherTimeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(5), null);
-        anotherTimeTrack.setId(1);
-        anotherTimeTrack.setUser(_testUser);
-        when(_timeTrackingRepository.getActiveTimeTrack(_testUser)).thenThrow(NotFoundException.class);
-        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(_testList);
+        Break firstBreak = new Break(midNight.minusMinutes(10), midNight.plusMinutes(10));
+        List<Break> breakList = new ArrayList<>();
+        breakList.add(firstBreak);
+        TimeTrack timeTrack = new TimeTrack(_testUser, midNight.minusHours(5), midNight.plusHours(3), breakList);
+        timeTrack.setUser(_testUser);
+        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
 
-        boolean expected = true;
-        boolean result = _validation.validateTimeTrackUpdate(anotherTimeTrack);
-        Assert.assertEquals(expected, result);
+        // execute test
+        _validation.validateTimeTrackInsert(timeTrack);
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
-    @Test
-    public void validateUpdateTimeTrack_ForNoActiveTimeTrackAndOneOfOverlapingTimeTracksHasSameId_ShouldReturnFalse() throws UserException, NotFoundException {
-        // init
-        TimeTrack anotherTimeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(5), null);
-        anotherTimeTrack.setId(4);
-        anotherTimeTrack.setUser(_testUser);
-        _testList.add(anotherTimeTrack);
-        when(_timeTrackingRepository.getActiveTimeTrack(_testUser)).thenThrow(NotFoundException.class);
-        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(_testList);
 
-        boolean expected = false;
-        boolean result = _validation.validateTimeTrackUpdate(anotherTimeTrack);
-        Assert.assertEquals(expected, result);
-    }
 }

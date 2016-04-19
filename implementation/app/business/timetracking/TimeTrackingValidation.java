@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.UserException;
 import models.Break;
 import models.TimeTrack;
 import models.User;
@@ -8,9 +9,7 @@ import models.User;
  * Created by stefan on 18.04.16.
  */
 interface TimeTrackingValidation {
-   boolean validateTimeTrackInsert(TimeTrack timeTrack);
+   void validateTimeTrackInsert(TimeTrack timeTrack) throws UserException;
 
-   boolean validateTimeTrackUpdate(TimeTrack timeTrack);
-
-   boolean validateBreakInsert(TimeTrack timeTrack, Break breakToInsert);
+   void validateTimeTrackUpdate(TimeTrack timeTrack) throws UserException;
 }

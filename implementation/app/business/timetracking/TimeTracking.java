@@ -26,28 +26,23 @@ public interface TimeTracking extends UseCases {
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
 
     /**
-     * adds the new timeTrack to repository
+     * adds the new timeTrack and corresponding breaks to repository
      * @param timeTrack
      */
     void addTimeTrack(TimeTrack timeTrack) throws Exception;
 
     /**
-     * delete timeTrack
+     * delete whole timeTrack plus corresponding breaks
      * @param timeTrack
      */
     void deleteTimeTrack(TimeTrack timeTrack) throws Exception;
 
-    void updateTimeTrack(TimeTrack timeTrack) throws Exception;
-
     /**
-     * add breakToInsert which belongs to the specified timeTrack
+     * use this method to update timeTracks and the breaks inside this timeTrack
+     * this method can also be used to delete breaks, specify times of breaks and so on
      * @param timeTrack
-     * @param breakToInsert
+     * @param breakList
+     * @throws Exception
      */
-    void addBreak(TimeTrack timeTrack, Break breakToInsert) throws Exception;
-
-    void deleteBreak(Break breakToDelete) throws Exception;
-
-    void updateBreak(Break breakToUpdate) throws Exception;
-    
+    void updateTimeTrack(TimeTrack timeTrack) throws Exception;
 }

@@ -35,10 +35,4 @@ interface TimeTrackingService {
     void deleteTimeTrack(TimeTrack timeTrack);
 
     void updateTimeTrack(TimeTrack timeTrack) throws UserException;
-
-    void addBreak(TimeTrack timeTrack, Break breakToInsert) throws UserException;
-
-    void deleteBreak(Break breakToDelete);
-
-    void updateBreak(Break breakToUpdate);
 }
