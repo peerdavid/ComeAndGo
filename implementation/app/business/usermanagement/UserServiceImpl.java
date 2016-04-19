@@ -86,11 +86,14 @@ class UserServiceImpl implements UserService {
             if (!checkUserCredentials(enteredUserName, enteredPassword)) {
                 throw new UserException("exceptions.usermanagement.invalid_credentials");
             }
+            if (!possibleUser.getActive()) {
+                throw new UserException("exceptions.usermanagement.user_inactive");
+            }
 
             HttpProfile userProfile = getProfileForUser(possibleUser);
             credentials.setUserProfile(userProfile);
         } catch (UserException e) {
-            throw new CredentialsException("exceptions.usermanagement.invalid_credentials");
+            throw new CredentialsException(e.getMessage());
         }
 
     }

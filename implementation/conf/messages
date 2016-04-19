@@ -56,6 +56,7 @@ views.report.title = Calculation
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
+exceptions.usermanagement.user_inactive = User is in inactive state
 exceptions.usermanagement.no_credentials = Invalid Credentials
 exceptions.usermanagement.user_already_exists = User already exists
 exceptions.usermanagement.short_password = Password must have at least length 8
