@@ -7,6 +7,7 @@ import models.TimeTrack;
 import models.User;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 
 import java.util.Collections;
 import java.util.List;
@@ -104,8 +105,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
                 Ebean.find(Break.class)
                         .where().eq("time_track_id", timeTrack.getId())
                         .disjunction()
-                        .where().ge("to", breakToInsert.getFrom())
-                        .where().le("from", breakToInsert.getTo())
+                            .conjunction()
+                                .where().ge("to", breakToInsert.getFrom())
+                                .where().le("to", breakToInsert.getTo())
+                            .endJunction()
+                            .conjunction()
+                                .where().le("from", breakToInsert.getTo())
+                                .where().ge("from", breakToInsert.getFrom())
+                            .endJunction()
                         .endJunction()
                         .findList();
 
