@@ -135,6 +135,10 @@ class UserServiceImpl implements UserService {
                 throw new UserException("exceptions.usermanagement.at_least_one_admin");
             }
         }
+        // Check if boss is valid
+        if (_userRepository.readUser(newUserData.getUserNameBoss()) == null) {
+            throw new UserException("exceptions.usermanagement.invalid_boss");
+        }
 
         _userRepository.updateUser(newUserData);
 
