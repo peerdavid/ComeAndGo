@@ -19,12 +19,10 @@ public class Break extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int _id;
 
-   @Formats.DateTime(pattern="yyyy-MM-dd")
-   @Column(name = "start", columnDefinition = "datetime")
+   @Column(name = "start", columnDefinition = "time")
    private DateTime _from;
 
-   @Formats.DateTime(pattern="yyyy-MM-dd")
-   @Column(name = "end", columnDefinition = "datetime")
+   @Column(name = "end", columnDefinition = "time")
    private DateTime _to;
 
 
@@ -46,16 +44,25 @@ public class Break extends Model {
     }
 
 
-    public int get_id() {
+    public int getId() {
         return _id;
     }
 
 
+    /**
+     * this function returns ONLY correct TIME informations from database, dates are not valid
+     * @return FROM time
+     */
     public DateTime getFrom() {
         return _from;
     }
 
 
+    /**
+     * only time information will be stored into db, date information will be ignored
+     * @param from
+     * @throws UserException
+     */
     public void setFrom(DateTime from) throws UserException {
        if (_to != null && from.isAfter(_to)) {
           throw new UserException("exceptions.timetracking.user_break_error");
@@ -64,11 +71,20 @@ public class Break extends Model {
     }
 
 
+    /**
+     * this function returns ONLY correct TIME informations from database, dates are not valid
+     * @return TO time
+     */
     public DateTime getTo() {
         return _to;
     }
 
 
+    /**
+     * only time informations will be stored into database, date information will be ignored
+     * @param to
+     * @throws UserException
+     */
     public void setTo(DateTime to) throws UserException {
        if(to.isBefore(_from)) {
           throw new UserException("exceptions.timetracking.user_break_error");
