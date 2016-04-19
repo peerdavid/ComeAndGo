@@ -52,7 +52,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void registerAlreadyExistingUser_ShouldFail() throws UserException{
+    public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException{
         // Prepare
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
@@ -63,16 +63,20 @@ public class UserServiceTest {
 
 
     @Test(expected = UserException.class)
-    public void readNotExistingUser_ShouldFail() throws  UserException {
+    public void readUser_ForNotExistingUser_ShouldFail() throws  UserException {
         // Prepare
         String notExistingUsername = "abc";
         when(_userRepository.readUser(notExistingUsername)).thenReturn(null);
 
-        _testee.readUser(notExistingUsername);
+        User expected = null;
+
+        User actual = _testee.readUser(notExistingUsername);
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void checkUserCredentials_ShouldFail() throws  UserException {
+    public void checkUserCredentials_ForWrongPassword_ShouldFail() throws  UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = false;
@@ -83,7 +87,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkUserCredentials_ShouldSucceed() throws  UserException {
+    public void checkUserCredentials_WithActualPassword_ShouldSucceed() throws  UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = true;
@@ -93,7 +97,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void deleteLastAdmin_ShouldFail() throws UserException {
+    public void deleteUser_ForLastRemainingAdmin_ShouldFail() throws UserException {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testAdmin);
@@ -104,7 +108,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUser_ShouldSucceed() throws UserException {
+    public void deleteUser_ForExistingUser_ShouldSucceed() throws UserException {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testUser);
