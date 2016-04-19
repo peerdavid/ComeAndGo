@@ -98,7 +98,24 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
       return wantedList;
    }
 
-   @Override
+    @Override
+    public List<Break> readBreakListOverlay(TimeTrack timeTrack, Break breakToInsert) {
+        List<Break> wantedList =
+                Ebean.find(Break.class)
+                        .where().eq("time_track_id", timeTrack.getId())
+                        .disjunction()
+                        .where().ge("to", breakToInsert.getFrom())
+                        .where().le("from", breakToInsert.getTo())
+                        .endJunction()
+                        .findList();
+
+        if(wantedList == null) {
+            return Collections.emptyList();
+        }
+
+        return wantedList;    }
+
+    @Override
     public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
         TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())

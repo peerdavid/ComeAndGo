@@ -61,6 +61,9 @@ public class TimeTrack extends Model {
        }
     }
 
+    public void setId(int id) {
+        _id = id;
+    }
 
     public int getId() {
         return _id;
@@ -107,4 +110,8 @@ public class TimeTrack extends Model {
    public User getUser() {
       return _user;
    }
+
+    public void setUser(User user) {
+        _user = user;
+    }
 }

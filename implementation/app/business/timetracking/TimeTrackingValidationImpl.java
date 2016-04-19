@@ -2,6 +2,7 @@ package business.timetracking;
 
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
+import models.Break;
 import models.TimeTrack;
 import models.User;
 
@@ -63,5 +64,23 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          }
       }
       return validate;
+   }
+
+   @Override
+   public boolean validateBreakInsert(TimeTrack timeTrack, Break breakToInsert) {
+      // break has to be in between the times from timeTrack;
+      if(timeTrack.getFrom().isAfter(breakToInsert.getFrom())
+              || timeTrack.getTo().isBefore(breakToInsert.getTo())) {
+         return false;
+      }
+
+      // at this point we have to be sure, there is no timetrack when the user is ill or in holiday
+      // so we do not have to check this again
+
+      // check for breaks which are overlaping to the other
+      List<Break> overlapBreakList = _repository.readBreakListOverlay(timeTrack, breakToInsert);
+      return overlapBreakList.size() <= 0;
+
+
    }
 }
