@@ -2,6 +2,8 @@ package infrastructure;
 
 import business.UserException;
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Expression;
 import models.Break;
 import models.TimeTrack;
 import models.User;
@@ -91,16 +93,16 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
       List<TimeTrack> wantedList =
           Ebean.find(TimeTrack.class)
           .where().eq("_user_id", user.getId())             // filter for only timeTracks from given user
-          .disjunction()
-            .conjunction()
-                .where().ge("to", timeTrack.getFrom())
-                .where().le("to", timeTrack.getTo())
-            .endJunction()
-            .conjunction()
-                .where().ge("from", timeTrack.getFrom())
-                .where().le("from", timeTrack.getTo())
-            .endJunction()
-          .endJunction()
+          .where().or(
+                  Expr.and(
+                          Expr.ge("end", timeTrack.getFrom()),
+                          Expr.le("end", timeTrack.getTo())
+                  ),
+                  Expr.and(
+                          Expr.ge("start", timeTrack.getFrom()),
+                          Expr.le("start", timeTrack.getTo())
+                  )
+          )
           .findList();
 
       if(wantedList == null) {
