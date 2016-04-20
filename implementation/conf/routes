@@ -19,6 +19,8 @@ GET     /edittimetracks             @controllers.TimeTrackController.editTimeTra
 
 GET     /deleteUser                 @controllers.UserManagementController.deleteUser(username : String ?= null)
 
+GET     /notification               @controllers.NotificationController.index
+
 # Come & Go
 GET     /come                       @controllers.TimeTrackController.come
 GET     /go                         @controllers.TimeTrackController.go
