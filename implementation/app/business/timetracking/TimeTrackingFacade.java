@@ -64,6 +64,10 @@ class TimeTrackingFacade implements TimeTracking {
         return result;
     }
 
+    @Override
+    public TimeTrack readTimeTrackById(int id) throws Exception {
+        return _timeTrackingService.readTimeTrackById(id);
+    }
 
     @Override
     public List<TimeTrack> readTimeTracks(int userId) throws Exception {

@@ -21,6 +21,8 @@ public interface TimeTracking extends UseCases {
 
     TimeTrackState getState(int userId) throws Exception;
 
+    TimeTrack readTimeTrackById(int id) throws Exception;
+
     List<TimeTrack> readTimeTracks(int userId) throws Exception;
 
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
