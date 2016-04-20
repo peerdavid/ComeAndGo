@@ -51,6 +51,7 @@ views.admin.edittimetracks.to = to
 views.admin.edittimetracks.savechanges = Save Changes
 
 views.admin.edituser = Edit User
+views.admin.edituser.empty = Nothing to show
 views.admin.edituser.savechanges = Save Changes
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete

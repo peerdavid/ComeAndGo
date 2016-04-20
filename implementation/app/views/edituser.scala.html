@@ -6,78 +6,86 @@
 
     @navigation(Messages("views.admin.edituser"), profile) {
 
-        <ul id="user-list" class="collapsible listing" data-collapsible="accordion">
-        @for(u : User <- userlist) {
-            <li>
-                <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
-                <div class="collapsible-body">
-                    <div class="row">
-                        <div class="col s12 m6 enable-editing-switch-container">
-                            <div class="switch">
-                                <label>
-                                    @Messages("views.admin.enableediting")
-                                    <input type="checkbox" class="green enable-editing-switch">
-                                    <span class="lever"></span>
-                                </label>
+        @if(userlist.isEmpty) {
+
+            <h4>@Messages("views.admin.edituser.empty")</h4>
+
+        } else {
+
+            <ul id="user-list" class="collapsible listing" data-collapsible="accordion">
+            @for(u : User <- userlist) {
+                <li>
+                    <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
+                    <div class="collapsible-body">
+                        <div class="row">
+                            <div class="col s12 m6 enable-editing-switch-container">
+                                <div class="switch">
+                                    <label>
+                                        @Messages("views.admin.enableediting")
+                                        <input type="checkbox" class="green enable-editing-switch">
+                                        <span class="lever"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input disabled="disabled" name="username" type="text" value="@u.getUserName">
+                                <label for="username">@Messages("views.admin.signup.form.username")</label>
                             </div>
                         </div>
-                        <div class="input-field col s12 m6">
-                            <input disabled="disabled" name="username" type="text" value="@u.getUserName">
-                            <label for="username">@Messages("views.admin.signup.form.username")</label>
-                        </div>
+                        <form action="@routes.UserManagementController.editUser()" method="POST">
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <input disabled="disabled" name="firstname" type="text" value="@u.getFirstName">
+                                    <label for=firstname">@Messages("views.admin.signup.form.firstname")</label>
+                                </div>
+                                <div class="input-field col s12 m6">
+                                    <input disabled="disabled" name="lastname" type="text" value="@u.getLastName">
+                                    <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <input disabled="disabled" name="email" type="email" value="@u.getEmail">
+                                    <label for="email">@Messages("views.admin.signup.form.email")</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <input disabled="disabled" name="password" type="password">
+                                    <label for="password">@Messages("views.admin.signup.form.password")</label>
+                                </div>
+                                <div id="disabled" class="input-field col s12 m6">
+                                    <input disabled="disabled" name="repeat_password" type="password">
+                                    <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
+                                </div>
+                            </div>
+                            <input type="hidden" name="id" value="@u.getId">
+
+                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")</button>
+
+                            <a class="waves-effect waves-light btn modal-trigger secondary-btn" href="@routes.TimeTrackController.editTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")</a>
+
+                            <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.edituser.savechanges")
+                                <i class="material-icons right">done</i>
+                            </button>
+
+
+                            <div id="modal@(u.getId)" class="modal">
+                                <div class="modal-content">
+                                    <h4>@Messages("views.admin.edituser.deleteuser")</h4>
+                                    <p>@(Messages("views.admin.edituser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="waves-effect modal-action modal-close waves-light btn primary-btn" href="@(routes.UserManagementController.deleteUser())?username=@u.getUserName()" style="float : right">@Messages("views.admin.edituser.delete")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edituser.closemessage")</a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <form action="@routes.UserManagementController.editUser()" method="POST">
-                        <div class="row">
-                            <div class="input-field col s12 m6">
-                                <input disabled="disabled" name="firstname" type="text" value="@u.getFirstName">
-                                <label for=firstname">@Messages("views.admin.signup.form.firstname")</label>
-                            </div>
-                            <div class="input-field col s12 m6">
-                                <input disabled="disabled" name="lastname" type="text" value="@u.getLastName">
-                                <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 m6">
-                                <input disabled="disabled" name="email" type="email" value="@u.getEmail">
-                                <label for="email">@Messages("views.admin.signup.form.email")</label>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="input-field col s12 m6">
-                                <input disabled="disabled" name="password" type="password">
-                                <label for="password">@Messages("views.admin.signup.form.password")</label>
-                            </div>
-                            <div id="disabled" class="input-field col s12 m6">
-                                <input disabled="disabled" name="repeat_password" type="password">
-                                <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
-                            </div>
-                        </div>
-                        <input type="hidden" name="id" value="@u.getId">
+                </li>
+            }
+            </ul>
 
-                        <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")</button>
-
-                        <a class="waves-effect waves-light btn modal-trigger secondary-btn" href="@routes.TimeTrackController.editTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")</a>
-
-                        <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.edituser.savechanges")
-                            <i class="material-icons right">done</i>
-                        </button>
-
-
-                        <div id="modal@(u.getId)" class="modal">
-                            <div class="modal-content">
-                                <h4>@Messages("views.admin.edituser.deleteuser")</h4>
-                                <p>@(Messages("views.admin.edituser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
-                            </div>
-                            <div class="modal-footer">
-                                <a class="waves-effect modal-action modal-close waves-light btn primary-btn" href="@(routes.UserManagementController.deleteUser())?username=@u.getUserName()" style="float : right">@Messages("views.admin.edituser.delete")</a>
-                                <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edituser.closemessage")</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
         }
-        </ul>
     }
 }
