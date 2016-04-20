@@ -1,5 +1,6 @@
 package controllers;
 
+import business.UserException;
 import business.timetracking.TimeTrackState;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
@@ -156,19 +157,61 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         }
 
         // update timetrack breaks
-        for(Break b : timeTrack.getBreaks()) {
+        for (Break b : timeTrack.getBreaks()) {
             String breakStart = "break_starttime" + b.getId();
             String breakEnd = "break_endtime" + b.getId();
 
-            if(formData.get(breakStart) != null && !formData.get(breakStart)[0].isEmpty()) {
+            if (formData.get(breakStart) != null && !formData.get(breakStart)[0].isEmpty()) {
                 String[] d = formData.get(breakStart)[0].split(":");
                 b.setFrom(new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1])));
             }
-            if(formData.get(breakEnd) != null && !formData.get(breakEnd)[0].isEmpty()) {
+            if (formData.get(breakEnd) != null && !formData.get(breakEnd)[0].isEmpty()) {
                 String[] d = formData.get(breakEnd)[0].split(":");
                 b.setTo(new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1])));
             }
         }
+
+        _timeTracking.updateTimeTrack(timeTrack);
+
+        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+    }
+
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result deleteBreak(int breakId, int timetrackId, int userId, String from, String to) throws Exception {
+        TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
+
+        for (int i = 0; i < timeTrack.getBreaks().size(); ++i) {
+            if (timeTrack.getBreaks().get(i).getId() == breakId) {
+                timeTrack.getBreaks().remove(i);
+                break;
+            }
+        }
+
+        _timeTracking.updateTimeTrack(timeTrack);
+
+        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+    }
+
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result addBreak(int timetrackId, int userId, String from, String to) throws Exception {
+        TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
+
+        Map<String, String[]> formData = request().body().asFormUrlEncoded();
+
+        DateTime fromDate = null;
+        DateTime toDate = null;
+
+        if (formData.get("from") != null && !formData.get("from")[0].isEmpty()) {
+            String[] d = formData.get("from")[0].split(":");
+            fromDate = new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1]));
+        }
+        if (formData.get("to") != null && !formData.get("to")[0].isEmpty()) {
+            String[] d = formData.get("to")[0].split(":");
+            toDate = new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1]));
+        }
+        if (fromDate == null || toDate == null) throw new UserException("exceptions.timetracking.error_in_break_form");
+
+        timeTrack.getBreaks().add(new Break(fromDate, toDate));
 
         _timeTracking.updateTimeTrack(timeTrack);
 

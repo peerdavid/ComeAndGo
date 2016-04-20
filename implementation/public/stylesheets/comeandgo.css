@@ -124,6 +124,10 @@ nav.top-nav .page-title {
     width: 25%;
 }
 
+.listing .modal #modal-add-break {
+    height: 40%;
+}
+
 div.enable-editing-switch-container.col , div.enable-editing-switch-container.col .switch {
     float: right;
 }

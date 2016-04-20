@@ -50,6 +50,7 @@ views.admin.edittimetracks.enddate = ending date
 views.admin.edittimetracks.from = from
 views.admin.edittimetracks.to = to
 views.admin.edittimetracks.savechanges = Save Changes
+views.admin.edittimetracks.addbreak = Add Break
 
 views.admin.edituser = Edit User
 views.admin.edituser.empty = Nothing to show
@@ -92,5 +93,6 @@ exceptions.timetracking.validate_clashing_timetracks = This timetrack is clashin
 exceptions.timetracking.validate_clashing_breaks = There are some breaks clashing
 exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to be inside a timetrack
 exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
+exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
 
 

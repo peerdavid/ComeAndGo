@@ -64,6 +64,7 @@
 
                         <form action="@routes.TimeTrackController.editTimeTracks(userId)" method="POST">
 
+                            <!-- general info about timetrack -->
                             <input type="hidden" name="id" value="@t.getId">
                             <div class="row">
                                 <div class="input-field col s6 m3">
@@ -84,12 +85,14 @@
                                 </div>
                             </div>
 
+                            <!-- list existing breaks -->
                             @if(t.getBreaks.size() > 0) {
-                                <ul class="collapsible" data-collapsible="expandable">
+                                <ul class="collapsible popout" data-collapsible="expandable">
                                     @for(b : Break <- t.getBreaks) {
 
-                                        <li>
-                                            <div class="collapsible-header">
+                                        <li class="z-depth-0">
+                                            <div class="collapsible-header grey lighten-5">
+                                                <i class="material-icons">pause</i>
                                                 <span>
                                                     @(b.getFrom.getHourOfDay + ":" + b.getFrom.getMinuteOfHour)
                                                 </span>
@@ -116,10 +119,36 @@
                                 </ul>
                             }
 
+                            <!-- buttons -->
                             <div class="row">
-                                <button class="btn waves-effect waves-light green right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.edittimetracks.savechanges")
+                                <button class="btn waves-effect waves-light primary-btn right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.edittimetracks.savechanges")
                                     <i class="material-icons right">done</i>
                                 </button>
+                                <button data-target="modal-add-break" class="btn modal-trigger secondary-btn">@Messages("views.admin.edittimetracks.addbreak")</button>
+                            </div>
+
+                            <!-- add break -->
+                            <div id="modal-add-break" class="modal">
+                                <div class="modal-content">
+                                    <h4>@Messages("views.admin.edittimetracks.addbreak")</h4>
+                                </div>
+                                <div class="modal-footer">
+                                    <form action="@routes.TimeTrackController.addBreak(t.getId, userId, from, to)" method="POST">
+                                        <div class="row">
+                                            <div class="input-field col s6 m3">
+                                                <input name="from" type="text" class="timepicker">
+                                                <label for="from">@Messages("views.admin.edittimetracks.starttime")</label>
+                                            </div>
+                                            <div class="input-field col s6 m3 offset-m3">
+                                                <input disabled="disabled" name="to" type="text" class="timepicker">
+                                                <label for="to">@Messages("views.admin.edittimetracks.endtime")</label>
+                                            </div>
+                                            <button class="btn waves-effect waves-light right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addbreak")
+                                                <i class="material-icons right">add</i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </form>
                     </div>
