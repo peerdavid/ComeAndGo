@@ -7,45 +7,48 @@
 
     @navigation(Messages("views.index.title"), profile) {
 
-        <table>
-        <tr>
-            <th>
-                Read Notification
-            </th>
-            <th>
-                UnreadNotification
-            </th>
-        </tr>
-            <tr>
-                <td>
+
+        <div>
+            <div class="right">
+                <h4>@Messages("views.notification.notificationsread")</h4>
+                @if(!notificationsread.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">
                     @for(n: Notification <- notificationsread) {
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
+                            <div class="collapsible-header"><i class="material-icons">email</i> @(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
                             <div class="collapsible-body"><p>@n.getMessage</p></div>
                         </li>
                     }
                     </ul>
-                </td>
-                <td>
+                } else {
+                    <p>@Messages("views.notification.nonotificationmessage")</p>
+                }
+            </div>
+
+            <div class="left">
+                <h4>@Messages("views.notification.notificationsnotread")</h4>
+                @if(!notificationsunread.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">
                     @for(n: Notification <- notificationsunread) {
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
+                            <div class="collapsible-header"><i class="material-icons">email</i> @(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
                             <div class="collapsible-body">
                                 <p>@n.getMessage</p>
-                                <button class="btn waves-effect waves-light primary-btn ghost right">Accept</button>
+                                <button class="btn waves-effect waves-light primary-btn ghost right">@Messages("views.notification.buttonaccept")</button>
 
-                                @if(n.get_type()!=NotificationType.BUSINESS_TRIP_INFORMATION){
-                                    <button class="btn waves-effect waves-light negative-btn ghost right">Reject</button>
+                                @if(n.get_type() != NotificationType.BUSINESS_TRIP_INFORMATION) {
+                                    <button class="btn waves-effect waves-light negative-btn ghost right">@Messages("views.notification.buttonreject")</button>
                                 }
                             </div>
                         </li>
                     }
                     </ul>
-                </td>
-            </tr>
-        </table>
+                } else {
+                    <p>@Messages("views.notification.nonotificationmessage")</p>
+                }
+            </div>
+        </div>
+        <br style="clear : both ;"/>
 
     }
 }

@@ -30,9 +30,10 @@ public class NotificationController extends UserProfileController {
         List<Notification> readNotification = new ArrayList();
         List<Notification> unreadNotification = new ArrayList();
 
+        /*
         readNotification.add(new Notification(NotificationType.INFORMATION,"i am a read message",klaus,boss));
         readNotification.add(new Notification(NotificationType.HOLIDAY_ACCEPT,"happy holidays",klaus,boss));
-
+*/
         unreadNotification.add(new Notification(NotificationType.INFORMATION,"i am a unread message",boss,klaus));
         unreadNotification.add(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION,"i am a going trip message",klaus,boss));
 
