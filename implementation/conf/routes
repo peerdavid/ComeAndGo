@@ -20,6 +20,8 @@ POST    /edittimetracks/:userId     @controllers.TimeTrackController.saveTimeTra
 
 GET     /deleteUser                 @controllers.UserManagementController.deleteUser(username : String ?= null)
 
+GET     /notification               @controllers.NotificationController.index
+
 # Come & Go
 GET     /come                       @controllers.TimeTrackController.come
 GET     /go                         @controllers.TimeTrackController.go
