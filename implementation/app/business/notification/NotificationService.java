@@ -23,10 +23,10 @@ class NotificationService implements NotificationSender {
     @Override
     public void sendNotification(Notification notification) throws UserException {
 
-        if (_userRepository.readUser(notification.getFromUser()) == null) {
+        if (notification.getFromUser() == null) {
             throw new UserException("exceptions.usermanagement.no_such_user");
         }
-        if (_userRepository.readUser(notification.getToUser()) == null) {
+        if (notification.getToUser() == null) {
             throw new UserException("exceptions.usermanagement.no_such_user");
         }
 
