@@ -1,22 +1,22 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, userId :Int, timetracklist: java.util.List[TimeTrack])
+@import sun.security.krb5.internal.PAForUserEnc
+@(profile: CommonProfile, userId :Int, from: String, to: String, timetracklist: java.util.List[TimeTrack])
 
 @main(Messages("views.admin.title")) {
 
     @navigation(Messages("views.admin.edituser"), profile) {
 
-        <div id="date-chooser-card" class="card">
+        <div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
             <form action="@routes.TimeTrackController.editTimeTracks(userId)" type="GET">
-                <input type="hidden" name="userId" value="@(userId)">
                 <div class="row">
                     <div class="input-field col s6 m4">
-                        <input id="date-from" name="from" type="date" class="datepicker">
-                        <label for="date-from">from</label>
+                        <input id="date-from" value="@from" name="from" type="date" class="datepicker">
+                        <label for="date-from">@Messages("views.admin.edittimetracks.from")</label>
                     </div>
                     <div class="input-field col s6 m4">
-                        <input id="date-to" name="to" type="date" class="datepicker">
-                        <label for="date-from">to</label>
+                        <input id="date-to" value="@to" name="to" type="date" class="datepicker">
+                        <label for="date-from">@Messages("views.admin.edittimetracks.to")</label>
                     </div>
                     <button class="btn waves-effect waves-light cyan" type="submit">
                         <i class="material-icons right">send</i>
@@ -30,21 +30,85 @@
             <li>
                 <div class="collapsible-header"><i class="material-icons">schedule</i>
                     <b>
-                        @(t.getFrom().getDayOfMonth + "." + t.getFrom().getMonthOfYear + "." + t.getFrom().getYear + ":")
+                        @(t.getFrom.getDayOfMonth + "." + t.getFrom.getMonthOfYear + "." + t.getFrom.getYear + ":")
                     </b>
                     <span>
-                        @(t.getFrom().getHourOfDay + ":" + t.getFrom().getMinuteOfHour)
+                        @(t.getFrom.getHourOfDay + ":" + t.getFrom.getMinuteOfHour)
                     </span>
                      -
                     <span>
-                        @(t.getTo().getHourOfDay + ":" + t.getTo().getMinuteOfHour)
+                        @(t.getTo.getHourOfDay + ":" + t.getTo.getMinuteOfHour)
                     </span>
                 </div>
                 <div class="collapsible-body">
-                    <form action="@routes.UserManagementController.editUser()" method="POST">
+                    <div class="row">
+                        <div class="col s12 m6 edit-user-switch-container">
+                            <div class="switch">
+                                <label>
+                                    @Messages("views.admin.edituser.edit")
+                                <input type="checkbox" class="green edit-user-switch">
+                                <span class="lever"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
 
-                        <button class="btn waves-effect waves-light green" type="submit" name="action" style="float: right; display: none;">@Messages("views.admin.edituser.savechanges")
-                        <i class="material-icons right">done</i>
+                    <form action="@routes.TimeTrackController.editTimeTracks(userId)" method="POST">
+
+                        <input type="hidden" name="id" value="@t.getId">
+                        <div class="row">
+                            <div class="input-field col s6 m3">
+                                <input disabled="disabled" value="@(t.getFrom.getDayOfMonth + "." + t.getFrom.getMonthOfYear + "." + t.getFrom.getYear)" name="startdate" type="date" class="datepicker">
+                                <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input disabled="disabled" value="@(t.getFrom.getHourOfDay + ":" + t.getFrom.getMinuteOfHour)" name="starttime" type="text" class="timepicker">
+                                <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
+                            </div>
+                            <div class="input-field col s6 m3">
+                                <input disabled="disabled" value="@(t.getTo.getDayOfMonth + "." + t.getTo.getMonthOfYear + "." + t.getTo.getYear)" name="enddate" type="time" class="datepicker">
+                                <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
+                            </div>
+                            <div id="disabled" class="input-field col s6 m3">
+                                <input disabled="disabled" value="@(t.getTo.getHourOfDay + ":" + t.getTo.getMinuteOfHour)"  name="endtime" type="text" class="timepicker">
+                                <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
+                            </div>
+                        </div>
+
+                        @if(t.getBreaks.size() > 0) {
+                            <ul class="collapsible" data-collapsible="expandable">
+                                @for(b : Break <- t.getBreaks) {
+
+                                    <li>
+                                        <div class="collapsible-header">
+                                            <span>
+                                                @(b.getFrom.getHourOfDay + ":" + b.getFrom.getMinuteOfHour)
+                                            </span>
+                                             -
+                                            <span>
+                                            @(b.getTo.getHourOfDay + ":" + b.getTo.getMinuteOfHour)
+                                            </span>
+                                        </div>
+                                        <div class="collapsible-body">
+                                            <div class="row">
+                                                <div class="input-field col s6 m3">
+                                                    <input disabled="disabled" value="@(b.getFrom.getHourOfDay + " : " + b.getFrom.getMinuteOfHour)" name="break_starttime_@b.getId" type="text" class="timepicker">
+                                                    <label for="break_starttime_@b.getId">@Messages("views.admin.edittimetracks.starttime")</label>
+                                                </div>
+                                                <div id="disabled" class="input-field col s6 m3 offset-m3">
+                                                    <input disabled="disabled" value="@(b.getTo.getHourOfDay + " : " + b.getTo.getMinuteOfHour)"  name="break_endtime_@b.getId" type="text" class="timepicker">
+                                                    <label for="break_endtime_@b.getId">@Messages("views.admin.edittimetracks.endtime")</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                }
+                            </ul>
+                        }
+
+                        <button class="btn waves-effect waves-light green ghost" type="submit" name="action" style="float: right; display: none;">@Messages("views.admin.edittimetracks.savechanges")
+                            <i class="material-icons right">done</i>
                         </button>
                     </form>
                 </div>

@@ -15,7 +15,8 @@ POST    /signup                     @controllers.AuthenticationController.doSign
 
 GET     /edituser                   @controllers.UserManagementController.indexEditUser
 POST    /edituser                   @controllers.UserManagementController.editUser
-GET     /edittimetracks             @controllers.TimeTrackController.editTimeTracks(userId : Int ?= -1, from : String ?= null, to : String ?= null)
+GET     /edittimetracks/:userId     @controllers.TimeTrackController.editTimeTracks(userId : Int, from : String ?= null, to : String ?= null)
+POST    /edittimetracks/:userId     @controllers.TimeTrackController.saveTimeTrack(userId : Int, from : String ?= null, to : String ?= null)
 
 GET     /deleteUser                 @controllers.UserManagementController.deleteUser(username : String ?= null)
 
@@ -27,4 +28,3 @@ GET     /pause                      @controllers.TimeTrackController.pause
 # Map static resources _from the /public folder _to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
 
-    
