@@ -179,6 +179,10 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     background-color: #00bcd4 !important;
 }
 
+.negative-btn{
+    background-color: #D32F2F;
+}
+
 /* changes input-field placeholder colour for multiple devices */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #727272;

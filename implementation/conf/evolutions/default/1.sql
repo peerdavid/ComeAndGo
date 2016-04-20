@@ -6,9 +6,23 @@
 create table break (
   id                            integer auto_increment not null,
   time_track_id                 integer not null,
-  start                         datetime,
-  end                           datetime,
+  start                         time,
+  end                           time,
   constraint pk_break primary key (id)
+);
+
+create table notification (
+  id                            integer auto_increment not null,
+  type                          integer,
+  message                       varchar(255),
+  _from_user_id                 integer not null,
+  _to_user_id                   integer not null,
+  read                          boolean,
+  accepted                      boolean,
+  vis_from_user                 boolean,
+  vis_to_user                   boolean,
+  constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14)),
+  constraint pk_notification primary key (id)
 );
 
 create table time_track (
@@ -36,6 +50,12 @@ create table user (
 alter table break add constraint fk_break_time_track_id foreign key (time_track_id) references time_track (id) on delete restrict on update restrict;
 create index ix_break_time_track_id on break (time_track_id);
 
+alter table notification add constraint fk_notification__from_user_id foreign key (_from_user_id) references user (id) on delete restrict on update restrict;
+create index ix_notification__from_user_id on notification (_from_user_id);
+
+alter table notification add constraint fk_notification__to_user_id foreign key (_to_user_id) references user (id) on delete restrict on update restrict;
+create index ix_notification__to_user_id on notification (_to_user_id);
+
 alter table time_track add constraint fk_time_track__user_id foreign key (_user_id) references user (id) on delete restrict on update restrict;
 create index ix_time_track__user_id on time_track (_user_id);
 
@@ -45,10 +65,18 @@ create index ix_time_track__user_id on time_track (_user_id);
 alter table break drop constraint if exists fk_break_time_track_id;
 drop index if exists ix_break_time_track_id;
 
+alter table notification drop constraint if exists fk_notification__from_user_id;
+drop index if exists ix_notification__from_user_id;
+
+alter table notification drop constraint if exists fk_notification__to_user_id;
+drop index if exists ix_notification__to_user_id;
+
 alter table time_track drop constraint if exists fk_time_track__user_id;
 drop index if exists ix_time_track__user_id;
 
 drop table if exists break;
+
+drop table if exists notification;
 
 drop table if exists time_track;
 

@@ -80,12 +80,23 @@
                                     <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edituser.closemessage")</a>
                                 </div>
                             </div>
+<<<<<<< HEAD
                         </form>
                     </div>
                 </li>
             }
             </ul>
 
+=======
+                            <div class="modal-footer">
+                                <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@(routes.UserManagementController.deleteUser())?username=@u.getUserName()" style="float : right">@Messages("views.admin.edituser.delete")</a>
+                                <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edituser.closemessage")</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+>>>>>>> origin/master
         }
     }
 }
