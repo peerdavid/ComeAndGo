@@ -6,7 +6,7 @@ $( document ).ready(function() {
     $(".button-collapse").sideNav();
     $('select').material_select();
     $('.modal-trigger').leanModal();
-    $('#timepicker').timepicki({
+    $('.timepicker').timepicki({
         show_meridian:false,
         min_hour_value:0,
         max_hour_value:23,
