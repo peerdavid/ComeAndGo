@@ -119,7 +119,7 @@ nav.top-nav .page-title {
     padding: 1em;
 }
 
-.listing .modal{
+.listing .modal .delete-user {
     min-width: 254px;
     width: 25%;
 }
