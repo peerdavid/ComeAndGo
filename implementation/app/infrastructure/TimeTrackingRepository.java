@@ -26,8 +26,6 @@ public interface TimeTrackingRepository {
 
     List<TimeTrack> readTimeTracksOverlay(User user, TimeTrack timeTrack);
 
-    List<Break> readBreakListOverlay(TimeTrack timeTrack, Break breakToInsert);
-
     void updateTimeTrack(TimeTrack timeTrack);
 
     void deleteTimeTrack(TimeTrack timeTrack);

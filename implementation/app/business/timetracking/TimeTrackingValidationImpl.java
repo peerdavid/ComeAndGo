@@ -17,7 +17,6 @@ import java.util.List;
  */
 class TimeTrackingValidationImpl implements TimeTrackingValidation {
    private TimeTrackingRepository _repository;
-   final LocalTime BEFORE_MIDNIGHT = LocalTime.MIDNIGHT.minusMillis(1);
 
    public TimeTrackingValidationImpl(TimeTrackingRepository repository) {
       _repository = repository;
@@ -40,6 +39,33 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
       }
 
+      validateBreaks(breakList, timeTrack);
+   }
+
+   @Override
+   public void validateTimeTrackUpdate(TimeTrack timeTrack) throws UserException {
+      // TODO: add validation, if timeTrack lies inside holiday, ill time, ...
+
+      // the following query does the filtering for overlapping timeTracks
+      //     after that we have to find out, if the list contains timeTrack itself, because timeTrack
+      //     will overlap itself
+      User user = timeTrack.getUser();
+      List<Break> breakList = timeTrack.getBreaks();
+      if(breakList == null) {
+         breakList = Collections.emptyList();
+      }
+      List<TimeTrack> overLayList = _repository.readTimeTracksOverlay(user, timeTrack);
+
+      for(TimeTrack actual : overLayList) {
+         if(actual.getId() != timeTrack.getId()) {
+            throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
+         }
+      }
+
+      validateBreaks(breakList, timeTrack);
+   }
+
+   private void validateBreaks(List<Break> breakList, TimeTrack timeTrack) throws UserException {
       // now at this point the timeTrack could be inserted
       // we also have to check times from the breaks ...
       for(Break actual : breakList) {
@@ -85,7 +111,6 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
    private void validateBreaksDoNotClash(List<Break> breakList) throws UserException {
       int amountBreaks = breakList.size();
       boolean breakOverMidnight;
-      LocalTime midNight = LocalTime.MIDNIGHT;
       /*
       take first, compare with second, third ...
       take second, compare with third ...
@@ -103,54 +128,25 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
             if(breakOverMidnight) {
                if(actualStart.isBefore(toInspectEnd) || actualEnd.isAfter(toInspectStart)) {
-                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+                  throwClashingBreakException();
                }
             }
             else {
                boolean isToInspectOverMidnight = toInspectStart.isAfter(toInspectEnd);
-               if(isToInspectOverMidnight && toInspectStart.isAfter(actualEnd)) {
-                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-               }
+               if(isToInspectOverMidnight && toInspectStart.isBefore(actualEnd)) {
+                  throwClashingBreakException();               }
                if(isToInspectOverMidnight && toInspectEnd.isAfter(actualStart)) {
-                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-               }
+                  throwClashingBreakException();               }
                if(!isToInspectOverMidnight && toInspectStart.isAfter(actualStart) && toInspectStart.isBefore(actualEnd)) {
-                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-               }
+                  throwClashingBreakException();               }
                if(!isToInspectOverMidnight && toInspectEnd.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
-                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-               }
+                  throwClashingBreakException();               }
             }
          }
       }
    }
 
-   @Override
-   public void validateTimeTrackUpdate(TimeTrack timeTrack) throws UserException {
-      // TODO: add validation, if timeTrack lies inside holiday, ill time, ...
-
-      // the following query does the filtering for overlapping timeTracks
-      //     after that we have to find out, if the list contains timeTrack itself, because timeTrack
-      //     will overlap itself
-      User user = timeTrack.getUser();
-      List<Break> breakList = timeTrack.getBreaks();
-      if(breakList == null) {
-         breakList = Collections.emptyList();
-      }
-      List<TimeTrack> overLayList = _repository.readTimeTracksOverlay(user, timeTrack);
-
-      for(TimeTrack actual : overLayList) {
-         if(actual.getId() != timeTrack.getId()) {
-            throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
-         }
-      }
-
-      // reaching this point means there are no clashing timetracks
-      // now we need to validate all breaks to lie inside timetrack:
-      for(Break actual: breakList) {
-         validateBreakInsideTimeTrack(timeTrack, actual);
-      }
-      // finally validate breaks to do not clash
-      validateBreaksDoNotClash(breakList);
+   private void throwClashingBreakException() throws UserException {
+      throw new UserException("exceptions.timetracking.validate_clashing_breaks");
    }
 }
