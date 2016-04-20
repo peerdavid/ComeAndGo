@@ -59,6 +59,7 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
       // we have nightWork, if start of work e.g. 7pm is "after" 6am
       //   we can trust that original start and end times in module TimeTrack.class are validated to be start before end
+      //   but above DateTime is parsed to LocalTime, which means we have no date any more
       boolean nightWork = timeTrackStart.isAfter(timeTrackEnd);
       if(nightWork) {
          // e.g. break is between 8pm and midnight and also after begin of work
@@ -101,27 +102,24 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
             LocalTime toInspectEnd = breakList.get(j).getTo().toLocalTime();
 
             if(breakOverMidnight) {
-               // TODO: add implementation here
-            } else {
-               boolean isActualBeforeMidnight = actualStart.isBefore(midNight);
-               boolean isToInspectBeforeMidnight = toInspectStart.isBefore(midNight);
-
-               // only if this condition is true, we have to check for clashing (imagine a XOR connection)
-               if((isActualBeforeMidnight && isToInspectBeforeMidnight) || (!isActualBeforeMidnight && !isToInspectBeforeMidnight)) {
-                  if(isActualBeforeMidnight && toInspectStart.isAfter(actualStart) && toInspectStart.isBefore(actualEnd)) {
-                     throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-                  }
-                  if(isActualBeforeMidnight && toInspectEnd.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
-                     throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-                  }
-                  if(!isActualBeforeMidnight && toInspectStart.isAfter(actualStart) && toInspectStart.isBefore(actualEnd)) {
-                     throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-                  }
-                  if(!isActualBeforeMidnight && toInspectEnd.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
-                     throw new UserException("exceptions.timetracking.validate_clashing_breaks");
-                  }
+               if(actualStart.isBefore(toInspectEnd) || actualEnd.isAfter(toInspectStart)) {
+                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
                }
-
+            }
+            else {
+               boolean isToInspectOverMidnight = toInspectStart.isAfter(toInspectEnd);
+               if(isToInspectOverMidnight && toInspectStart.isAfter(actualEnd)) {
+                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+               }
+               if(isToInspectOverMidnight && toInspectEnd.isAfter(actualStart)) {
+                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+               }
+               if(!isToInspectOverMidnight && toInspectStart.isAfter(actualStart) && toInspectStart.isBefore(actualEnd)) {
+                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+               }
+               if(!isToInspectOverMidnight && toInspectEnd.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
+                  throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+               }
             }
          }
       }
