@@ -21,7 +21,7 @@
                     <ul class="collapsible" data-collapsible="accordion">
                     @for(n: Notification <- notificationsread) {
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " " + n.getFromUser)</div>
+                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
                             <div class="collapsible-body"><p>@n.getMessage</p></div>
                         </li>
                     }
@@ -31,7 +31,7 @@
                     <ul class="collapsible" data-collapsible="accordion">
                     @for(n: Notification <- notificationsunread) {
                         <li>
-                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " " + n.getFromUser)</div>
+                            <div class="collapsible-header"><i class="material-icons">email</i>@(n.get_type() + " : " + n.getFromUser.getFirstName + " " + n.getFromUser.getLastName)</div>
                             <div class="collapsible-body">
                                 <p>@n.getMessage</p>
                                 <button class="btn waves-effect waves-light primary-btn ghost right">Accept</button>
