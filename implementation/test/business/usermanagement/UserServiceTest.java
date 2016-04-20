@@ -52,7 +52,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void registerAlreadyExistingUser_ShouldFail() throws UserException{
+    public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException{
         // Prepare
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
@@ -61,18 +61,37 @@ public class UserServiceTest {
 
     }
 
+    @Test(expected = UserException.class)
+    public void changeUser_ForUnregisteredUser_ShouldFail() throws UserException {
+        when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
+
+        _testee.changeUser(_testUser.getUserName(), _testUser);
+    }
 
     @Test(expected = UserException.class)
-    public void readNotExistingUser_ShouldFail() throws  UserException {
+    public void changeUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
+        when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
+
+        _testUser.setPassword("test123");
+
+        _testee.changeUser(_testUser.getUserName(), _testUser);
+    }
+
+    @Test(expected = UserException.class)
+    public void readUser_ForNotExistingUser_ShouldFail() throws  UserException {
         // Prepare
         String notExistingUsername = "abc";
         when(_userRepository.readUser(notExistingUsername)).thenReturn(null);
 
-        _testee.readUser(notExistingUsername);
+        User expected = null;
+
+        User actual = _testee.readUser(notExistingUsername);
+
+        Assert.assertEquals(expected, actual);
     }
 
     @Test
-    public void checkUserCredentials_ShouldFail() throws  UserException {
+    public void checkUserCredentials_ForWrongPassword_ShouldSucceed() throws  UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = false;
@@ -82,8 +101,19 @@ public class UserServiceTest {
         Assert.assertEquals(expected, result);
     }
 
+    @Test(expected = UserException.class)
+    public void checkUserCredentials_ForUnregisteredUser_ShouldFail() throws  UserException {
+        when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
+
+        boolean expected = false;
+
+        boolean result = _testee.checkUserCredentials(_testUser.getUserName(), "falschesPW");
+
+        Assert.assertEquals(expected, result);
+    }
+
     @Test
-    public void checkUserCredentials_ShouldSucceed() throws  UserException {
+    public void checkUserCredentials_WithActualPassword_ShouldSucceed() throws  UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = true;
@@ -93,7 +123,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void deleteLastAdmin_ShouldFail() throws UserException {
+    public void deleteUser_ForLastRemainingAdmin_ShouldFail() throws UserException {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testAdmin);
@@ -104,7 +134,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void deleteUser_ShouldSucceed() throws UserException {
+    public void deleteUser_ForExistingUser_ShouldSucceed() throws UserException {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testUser);
@@ -118,7 +148,20 @@ public class UserServiceTest {
         Mockito.verify(_userRepository, times(1)).deleteUser(any()); // Check if the function really called our repository
     }
 
+    @Test(expected = UserException.class)
+    public void deleteUser_ForUnregisteredUser_ShouldFail() throws UserException {
+        //Prepare
+        List<User> userList = new ArrayList<User>();
+        userList.add(_testUser);
+        userList.add(_testAdmin);
+        when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
+        when(_userRepository.getAllUsers()).thenReturn(userList);
 
+        _testee.deleteUser(_testUser.getUserName());
+
+        // Check if a User is deleted in repo
+        Mockito.verify(_userRepository, times(1)).deleteUser(any()); // Check if the function really called our repository
+    }
 
 
 

@@ -6,13 +6,9 @@ $( document ).ready(function() {
     $(".button-collapse").sideNav();
     $('select').material_select();
     $('.modal-trigger').leanModal();
-    $('#timepicker').timepicki({
-        show_meridian:false,
-        min_hour_value:0,
-        max_hour_value:23,
-        overflow_minutes:true,
-        increase_direction:'up',
-        disable_keyboard_mobile: true
+    $('.timepicker').lolliclock({
+        hour24: true,
+        autoclose: true
     });
 
     // initialize datepicker

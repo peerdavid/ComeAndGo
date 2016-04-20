@@ -11,12 +11,13 @@ import java.util.List;
 public interface NotificationRepository {
     void createNotification(Notification notification);
 
-    Notification readNotification(int notificationId);
+    Notification readNotificationById(int notificationId) throws NotificationException;
 
-    void deleteNotification(int notificationId);
+    void deleteNotification(Notification toDelete);
 
-    void updateNotification(int notificationId);
+    void updateNotification(Notification toUpdate);
 
-    List<Notification> getAllUnreadNotificationsForUser(String username);
+    List<Notification> getAllUnreadNotificationsToUser(User user) throws NotificationException;
 
+    List<Notification> getAllReadNotificationsForUser(User user) throws NotificationException;
 }
