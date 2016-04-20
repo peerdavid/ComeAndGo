@@ -117,6 +117,10 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         return _repository.readTimeTracks(user);
     }
 
+    @Override
+    public TimeTrack readTimeTrackById(int id) throws Exception {
+        return _repository.readTimeTrack(id);
+    }
 
     @Override
     public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException {

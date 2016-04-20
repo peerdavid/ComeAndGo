@@ -3,14 +3,12 @@ package models;
 import business.UserException;
 import business.notification.NotificationType;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by david on 22.03.16.
  */
+@Entity
 public class Notification {
 
     @Id

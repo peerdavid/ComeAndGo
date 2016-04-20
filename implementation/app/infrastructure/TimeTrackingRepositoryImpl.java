@@ -80,14 +80,26 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
     }
 
+    /**
+     * get all timeTracks which are overlapping to given timeTrack
+     * @param user
+     * @param timeTrack
+     * @return list of timeTracks
+     */
    @Override
    public List<TimeTrack> readTimeTracksOverlay(User user, TimeTrack timeTrack) {
       List<TimeTrack> wantedList =
           Ebean.find(TimeTrack.class)
-          .where().eq("_user_id", user.getId())
+          .where().eq("_user_id", user.getId())             // filter for only timeTracks from given user
           .disjunction()
-          .where().ge("to", timeTrack.getFrom())
-          .where().le("from", timeTrack.getTo())
+            .conjunction()
+                .where().ge("to", timeTrack.getFrom())
+                .where().le("to", timeTrack.getTo())
+            .endJunction()
+            .conjunction()
+                .where().ge("from", timeTrack.getFrom())
+                .where().le("from", timeTrack.getTo())
+            .endJunction()
           .endJunction()
           .findList();
 
@@ -97,29 +109,6 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
       return wantedList;
    }
-
-    @Override
-    public List<Break> readBreakListOverlay(TimeTrack timeTrack, Break breakToInsert) {
-        List<Break> wantedList =
-                Ebean.find(Break.class)
-                        .where().eq("time_track_id", timeTrack.getId())
-                        .disjunction()
-                            .conjunction()
-                                .where().ge("to", breakToInsert.getFrom())
-                                .where().le("to", breakToInsert.getTo())
-                            .endJunction()
-                            .conjunction()
-                                .where().le("from", breakToInsert.getTo())
-                                .where().ge("from", breakToInsert.getFrom())
-                            .endJunction()
-                        .endJunction()
-                        .findList();
-
-        if(wantedList == null) {
-            return Collections.emptyList();
-        }
-
-        return wantedList;    }
 
     @Override
     public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
@@ -208,15 +197,4 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public void addTimeTrack(TimeTrack timeTrack) throws UserException {
             Ebean.save(timeTrack);
     }
-
-    //@Override
-    //public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
-        //List<Break> newBreaks = timeTrack.getBreaks();
-        //Set<Integer> idSet = new HashSet();
-        // TODO: test with database, if calling this method with breaks less then before already deletes the entry in db
-        //for(Break actual : newBreaks) {
-
-        //}
-    //    Ebean.update(timeTrack);
-    //}
 }
