@@ -180,7 +180,7 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 }
 
 .negative-btn{
-    background-color: #D32F2F;
+    background-color: #ff5252;
 }
 
 /* changes input-field placeholder colour for multiple devices */
