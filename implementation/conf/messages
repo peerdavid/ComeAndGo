@@ -24,6 +24,8 @@ views.index.timetrack.tablehead.action = Action
 views.index.timetrack.tablehead.time = Time
 
 views.admin.title = Admin
+views.admin.enableediting = Edit
+
 views.admin.signup = Sign up new user
 views.admin.signup.form.firstname = Firstname
 views.admin.signup.form.lastname = Lastname
@@ -37,6 +39,7 @@ views.admin.signup.form.roles.admin = Admin
 views.admin.signup.form.roles.boss = Boss
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
+
 views.admin.edittimetracks = edit timetracks
 views.admin.edittimetracks.loadtimetracks = load timetracks
 views.admin.edittimetracks.starttime = starting time
@@ -49,7 +52,6 @@ views.admin.edittimetracks.savechanges = Save Changes
 
 views.admin.edituser = Edit User
 views.admin.edituser.savechanges = Save Changes
-views.admin.edituser.edit = Edit
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
 views.admin.edituser.deletemessage = Do you want to remove

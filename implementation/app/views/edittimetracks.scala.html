@@ -10,22 +10,25 @@
         <div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
             <form action="@routes.TimeTrackController.editTimeTracks(userId)" type="GET">
                 <div class="row">
-                    <div class="input-field col s6 m4">
+                    <div class="input-field col s6 m6 l3">
                         <input id="date-from" value="@from" name="from" type="date" class="datepicker">
                         <label for="date-from">@Messages("views.admin.edittimetracks.from")</label>
                     </div>
-                    <div class="input-field col s6 m4">
+                    <div class="input-field col s6 m6 offset-l1 l3">
                         <input id="date-to" value="@to" name="to" type="date" class="datepicker">
                         <label for="date-from">@Messages("views.admin.edittimetracks.to")</label>
                     </div>
-                    <button class="btn waves-effect waves-light cyan" type="submit">
-                        <i class="material-icons right">send</i>
-                    </button>
+                    <div class="input-field col s12 m12 l5">
+                        <button class="btn waves-effect waves-light right cyan" type="submit">
+                            @Messages("views.admin.edittimetracks.loadtimetracks")
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
 
-        <ul id=timetrack-list" class="collapsible" data-collapsible="accordion">
+        <ul id=timetrack-list" class="collapsible listing" data-collapsible="accordion">
         @for(t : TimeTrack <- timetracklist) {
             <li>
                 <div class="collapsible-header"><i class="material-icons">schedule</i>
@@ -42,11 +45,11 @@
                 </div>
                 <div class="collapsible-body">
                     <div class="row">
-                        <div class="col s12 m6 edit-user-switch-container">
+                        <div class="col s12 m6 enable-editing-switch-container">
                             <div class="switch">
                                 <label>
-                                    @Messages("views.admin.edituser.edit")
-                                <input type="checkbox" class="green edit-user-switch">
+                                    @Messages("views.admin.enableediting")
+                                <input type="checkbox" class="green enable-editing-switch">
                                 <span class="lever"></span>
                                 </label>
                             </div>
@@ -107,9 +110,11 @@
                             </ul>
                         }
 
-                        <button class="btn waves-effect waves-light green ghost" type="submit" name="action" style="float: right; display: none;">@Messages("views.admin.edittimetracks.savechanges")
-                            <i class="material-icons right">done</i>
-                        </button>
+                        <div class="row">
+                            <button class="btn waves-effect waves-light green right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.edittimetracks.savechanges")
+                                <i class="material-icons right">done</i>
+                            </button>
+                        </div>
                     </form>
                 </div>
             </li>

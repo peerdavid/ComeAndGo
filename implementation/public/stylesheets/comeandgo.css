@@ -114,17 +114,17 @@ nav.top-nav .page-title {
     background: #ff5722;
 }
 
-/* edit users */
-#user-list li .collapsible-body {
+/* listings */
+.listing li .collapsible-body {
     padding: 1em;
 }
 
-#user-list .modal{
+.listing .modal{
     min-width: 254px;
     width: 25%;
 }
 
-div.edit-user-switch-container.col , div.edit-user-switch-container.col .switch {
+div.enable-editing-switch-container.col , div.enable-editing-switch-container.col .switch {
     float: right;
 }
 

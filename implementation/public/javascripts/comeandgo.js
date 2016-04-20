@@ -26,7 +26,7 @@ $( document ).ready(function() {
     });
 });
 
-$('.edit-user-switch').click(function () {
+$('.enable-editing-switch').click(function () {
     $('li.active form input').prop('disabled', !this.checked);
     $('li.active form button.ghost').css('display', (this.checked ? 'inline' : 'none'));
 });
