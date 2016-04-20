@@ -41,6 +41,7 @@ views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
 
 views.admin.edittimetracks = edit timetracks
+views.admin.edittimetracks.empty = no timetracks found
 views.admin.edittimetracks.loadtimetracks = load timetracks
 views.admin.edittimetracks.starttime = starting time
 views.admin.edittimetracks.endtime = ending time

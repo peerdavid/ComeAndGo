@@ -14,7 +14,7 @@ $( document ).ready(function() {
     // initialize datepicker
     $('.datepicker').pickadate({
         selectMonths: true,
-        selectYears: 15,
+        selectYears: 300,
         // translation strings
         monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
         monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
