@@ -40,7 +40,7 @@ views.admin.signup.form.roles.boss = Boss
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
 
-views.admin.edittimetracks = edit timetracks
+views.admin.edittimetracks = Edit Timetracks
 views.admin.edittimetracks.empty = no timetracks found
 views.admin.edittimetracks.loadtimetracks = load timetracks
 views.admin.edittimetracks.starttime = starting time
@@ -51,6 +51,7 @@ views.admin.edittimetracks.from = from
 views.admin.edittimetracks.to = to
 views.admin.edittimetracks.savechanges = Save Changes
 views.admin.edittimetracks.addbreak = Add Break
+views.admin.edittimetracks.addtimetrack = Add Timetrack
 
 views.admin.edituser = Edit User
 views.admin.edituser.empty = Nothing to show
