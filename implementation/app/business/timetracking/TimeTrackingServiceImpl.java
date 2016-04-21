@@ -3,11 +3,10 @@ package business.timetracking;
 
 import business.UserException;
 import business.notification.NotificationSender;
-import infrastructure.TimeTrackException;
+import business.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
-import models.Break;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;

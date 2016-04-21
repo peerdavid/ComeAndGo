@@ -1,4 +1,4 @@
-package infrastructure;
+package business;
 
 /**
  * Created by stefan on 11.04.16.

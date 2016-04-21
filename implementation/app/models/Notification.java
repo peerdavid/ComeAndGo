@@ -37,7 +37,6 @@ public class Notification extends Model {
     @NotNull
     private User _toUser;
 
-    //private String link; // Check if this is a good idea -> better use a enum with a type
     @Column(name = "read")
     private boolean _read;
 

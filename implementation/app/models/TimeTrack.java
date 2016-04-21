@@ -3,8 +3,6 @@ package models;
 import business.UserException;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
-import infrastructure.TimeTrackException;
-import infrastructure.UserRepository;
 import org.joda.time.DateTime;
 import play.data.format.Formats;
 
