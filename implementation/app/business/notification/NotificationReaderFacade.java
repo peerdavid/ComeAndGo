@@ -55,7 +55,26 @@ public class NotificationReaderFacade implements NotificationReader {
 
     @Override
     public int getNumberOfUnreadNotifications(int userId) throws NotificationException {
-        User user = _userRepository.readUser(userId);
         return 0;
+    }
+
+    @Override
+    public List<Notification> getReadNotificationsForUser(int userId, int amount) throws NotificationException {
+        return null;
+    }
+
+    @Override
+    public List<Notification> getSentNotifications(int userId, int amount) throws NotificationException {
+        return null;
+    }
+
+    @Override
+    public void accept(int notificationId) throws NotificationException {
+
+    }
+
+    @Override
+    public void reject(int notificationId) throws NotificationException {
+
     }
 }
