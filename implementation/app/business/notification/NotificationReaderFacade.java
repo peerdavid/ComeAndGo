@@ -31,7 +31,7 @@ public class NotificationReaderFacade implements NotificationReader {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getAllUnreadNotificationsToUser(user);
+        return _notificationRepository.getUnreadNotificationsForUser(user);
     }
 
     public List<Notification> getReadNotificationsForUser(int userId) throws NotificationException {
@@ -41,7 +41,9 @@ public class NotificationReaderFacade implements NotificationReader {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getAllReadNotificationsForUser(user);
+        // TODO: change amount
+        int amount = 10;
+        return _notificationRepository.getReadNotificationsForUser(user, amount);
     }
 
     @Override
