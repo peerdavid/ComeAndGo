@@ -208,6 +208,26 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     overflow: visible !important;
 }
 
+/* style pickers */
+.picker__date-display, .picker__day--selected,
+.picker__day--selected:hover, .picker--focused
+.picker__day--selectedh {
+    background: #4CAF50 !important;
+}
+
+.picker__weekday-display {
+    background: #43A047 !important;
+}
+
+.clockpicker-canvas line {
+    stroke: #644CAF50 !important;
+}
+
+.clockpicker-canvas-fg, .clockpicker-canvas-bg,
+.clockpicker-tick.active, .clockpicker-tick:hover {
+    fill: #644CAF50 !important;
+}
+
 /* phones */
 @media (max-width: 599px) {
     #login_container, #error_container  {
