@@ -10,6 +10,8 @@ import javassist.NotFoundException;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
+
+import java.util.Collections;
 import java.util.List;
 import com.google.inject.Inject;
 
@@ -133,6 +135,12 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.addTimeTrack(timeTrack);
     }
 
+    @Override
+    public void addTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
+        User user = loadUserById(userId);
+        TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
+        addTimeTrack(timeTrack);
+    }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {

@@ -32,6 +32,7 @@ interface TimeTrackingService {
 
     /*  EDIT / DELETE / ADD TIMETRACKS AND BREAKS  */
     void addTimeTrack(TimeTrack timeTrack) throws UserException;
+    void addTimeTrack(int userId, DateTime from, DateTime to) throws UserException;
 
     void deleteTimeTrack(TimeTrack timeTrack);
 
