@@ -5,17 +5,17 @@
 
 @main(Messages("views.admin.title")) {
 
-    @navigation(Messages("views.admin.edituser"), profile) {
+    @navigation(Messages("views.admin.edittimetracks"), profile) {
 
         <div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
             <form action="@routes.TimeTrackController.editTimeTracks(userId)" type="GET">
                 <div class="row">
                     <div class="input-field col s6 m6 l3">
-                        <input id="date-from" value="@from" name="from" type="date" class="datepicker">
+                        <input id="date-from" value="@from" name="from" type="text" class="datepicker">
                         <label for="date-from">@Messages("views.admin.edittimetracks.from")</label>
                     </div>
                     <div class="input-field col s6 m6 offset-l1 l3">
-                        <input id="date-to" value="@to" name="to" type="date" class="datepicker">
+                        <input id="date-to" value="@to" name="to" type="text" class="datepicker">
                         <label for="date-from">@Messages("views.admin.edittimetracks.to")</label>
                     </div>
                     <div class="input-field col s12 m12 l5">
@@ -68,7 +68,7 @@
                             <input type="hidden" name="id" value="@t.getId">
                             <div class="row">
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(t.getFrom.getDayOfMonth + "." + t.getFrom.getMonthOfYear + "." + t.getFrom.getYear)" name="startdate" type="date" class="datepicker">
+                                    <input disabled="disabled" value="@(t.getFrom.getDayOfMonth + "." + t.getFrom.getMonthOfYear + "." + t.getFrom.getYear)" name="startdate" type="text" class="datepicker">
                                     <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
@@ -76,7 +76,7 @@
                                     <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(t.getTo.getDayOfMonth + "." + t.getTo.getMonthOfYear + "." + t.getTo.getYear)" name="enddate" type="time" class="datepicker">
+                                    <input disabled="disabled" value="@(t.getTo.getDayOfMonth + "." + t.getTo.getMonthOfYear + "." + t.getTo.getYear)" name="enddate" type="text" class="datepicker">
                                     <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
                                 </div>
                                 <div id="disabled" class="input-field col s6 m3">
@@ -140,7 +140,7 @@
                                                 <label for="from">@Messages("views.admin.edittimetracks.starttime")</label>
                                             </div>
                                             <div class="input-field col s6 m3 offset-m3">
-                                                <input disabled="disabled" name="to" type="text" class="timepicker">
+                                                <input name="to" type="text" class="timepicker">
                                                 <label for="to">@Messages("views.admin.edittimetracks.endtime")</label>
                                             </div>
                                             <button class="btn waves-effect waves-light right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addbreak")
