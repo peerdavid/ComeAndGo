@@ -77,10 +77,9 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     @Override
-    public void addTimeTrack(TimeTrack timeTrack) throws Exception {
-        _timeTrackingService.addTimeTrack(timeTrack);
+    public void addTimeTrack(int userId, DateTime from, DateTime to) throws Exception {
+        // TODO: implement addTimeTrack
     }
-
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) throws Exception {
