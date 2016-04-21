@@ -33,7 +33,7 @@ public interface NotificationReader extends UseCases {
 
     void reject(int notificationId) throws NotificationException;
 
-    void setNotificationAsRead(int NotificationId) throws NotificationException;
+    void setNotificationAsRead(int notificationId) throws NotificationException;
 
     int getNumberOfUnreadNotifications(int userId) throws NotificationException;
 }

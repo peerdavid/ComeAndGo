@@ -45,14 +45,15 @@ public class Notification extends Model {
     @Column(name = "accepted")
     private Boolean _accepted;
 
+
+    @Column(name = "isvisible")
+    private Boolean _isVisible;
+
     @Column(name = "requeststart", columnDefinition = "date")
     private LocalDate _requestedStartDate = null;
 
     @Column(name = "requestend", columnDefinition = "date")
     private LocalDate _requestedEndDate = null;
-
-    @Column(name = "isvisible")
-    private boolean _isVisible;
 
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
