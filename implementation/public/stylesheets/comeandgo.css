@@ -203,6 +203,11 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color:    #727272;
 }
 
+/* fix date and time pickers in modals */
+.picker__holder, .modal {
+    overflow: visible !important;
+}
+
 /* phones */
 @media (max-width: 599px) {
     #login_container, #error_container  {

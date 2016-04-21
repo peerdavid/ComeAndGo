@@ -9,7 +9,8 @@ $( document ).ready(function() {
     $('.timepicker').pickatime({
         autoclose: true,
         twelvehour: false,
-        ampmclickable: false
+        ampmclickable: false,
+        container: 'body'
     });
 
     // initialize datepicker
@@ -23,7 +24,8 @@ $( document ).ready(function() {
         weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
         showMonthsShort: true,
         showWeekdaysFull: false,
-        format: 'dd.mm.yyyy'
+        format: 'dd.mm.yyyy',
+        container: 'body'
     });
 });
 
