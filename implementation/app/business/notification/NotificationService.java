@@ -1,5 +1,6 @@
 package business.notification;
 
+import business.NotificationException;
 import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
@@ -21,13 +22,13 @@ class NotificationService implements NotificationSender {
     }
 
     @Override
-    public void sendNotification(Notification notification) throws UserException {
+    public void sendNotification(Notification notification) throws NotificationException {
 
-        if (notification.getFromUser() == null) {
-            throw new UserException("exceptions.usermanagement.no_such_user");
+        if (_userRepository.readUser(notification.getFromUser().getUserName()) == null) {
+            throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
-        if (notification.getToUser() == null) {
-            throw new UserException("exceptions.usermanagement.no_such_user");
+        if (_userRepository.readUser(notification.getToUser().getUserName()) == null) {
+            throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
         _notificationRepository.createNotification(notification);

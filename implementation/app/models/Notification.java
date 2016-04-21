@@ -1,9 +1,11 @@
 package models;
 
+import business.NotificationException;
 import business.UserException;
 import business.notification.NotificationType;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
+import play.i18n.Messages;
 
 import javax.persistence.*;
 import javax.validation.Constraint;
@@ -37,7 +39,6 @@ public class Notification extends Model {
     @NotNull
     private User _toUser;
 
-    //private String link; // Check if this is a good idea -> better use a enum with a type
     @Column(name = "read")
     private boolean _read;
 
@@ -50,7 +51,18 @@ public class Notification extends Model {
     @Column(name = "vis_to_user")
     private boolean _visibleForToUser = true;
 
-    public Notification(NotificationType type, String message, User fromUser, User toUser) throws UserException {
+    // Use standard messages for each Notification Type
+    public Notification(NotificationType type, User fromUser, User toUser) throws NotificationException {
+
+        this.setType(type);
+        this.setMessage(getStandardMessage(this));
+        this.setFromUser(fromUser);
+        this.setToUser(toUser);
+        _read = false;
+        _accepted = false;
+    }
+
+    public Notification(NotificationType type, String message, User fromUser, User toUser) throws NotificationException {
 
         this.setType(type);
         this.setMessage(message);
@@ -76,7 +88,10 @@ public class Notification extends Model {
         return _message;
     }
 
-    public void setMessage(String message) throws UserException {
+    public void setMessage(String message) throws NotificationException {
+        if (message.length() > 150) {
+            throw new NotificationException("exceptions.notification.message_length");
+        }
         this._message = message;
     }
 
@@ -84,7 +99,7 @@ public class Notification extends Model {
         return _fromUser;
     }
 
-    public void setFromUser(User user) throws UserException {
+    public void setFromUser(User user) throws NotificationException {
         this._fromUser = user;
     }
 
@@ -92,7 +107,7 @@ public class Notification extends Model {
         return _toUser;
     }
 
-    public void setToUser(User user) throws UserException {
+    public void setToUser(User user) throws NotificationException {
         this._toUser = user;
     }
 
@@ -118,5 +133,9 @@ public class Notification extends Model {
 
     public boolean getVisibleForToUser() {
         return _visibleForToUser;
+    }
+
+    public static String getStandardMessage(Notification notification) {
+        return Messages.get("notifications." + notification.get_type().name().toLowerCase(), notification.getFromUser());
     }
 }

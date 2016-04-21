@@ -2,7 +2,7 @@ package models;
 
 import business.UserException;
 import business.usermanagement.SecurityRole;
-import infrastructure.TimeTrackException;
+import business.TimeTrackException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

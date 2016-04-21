@@ -21,7 +21,7 @@ create table notification (
   accepted                      boolean,
   vis_from_user                 boolean,
   vis_to_user                   boolean,
-  constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14)),
+  constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)),
   constraint pk_notification primary key (id)
 );
 

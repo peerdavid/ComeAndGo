@@ -8,7 +8,7 @@ public enum NotificationType {
     INFORMATION,
     ERROR,
 
-    // User notifications
+    // User as sender notifications
     HOLYDAY_REQUEST,
     SPECIAL_HOLIDAY_REQUEST,
     BUSINESS_TRIP_INFORMATION,
@@ -16,13 +16,18 @@ public enum NotificationType {
     HOLIDAY_PAYOUT_REQUEST,
     OVERTIME_PAYOUT_REQUEST,
 
-    // Boss notifications
+    // Boss as sender notifications
     HOLIDAY_ACCEPT,
     HOLIDAY_REJECT,
     HOLIDAY_PAYOUT_ACCEPT,
     HOLIDAY_PAYOUT_REJECT,
     OVERTIME_PAYOUT_ACCEPT,
     OVERTIME_PAYOUT_REJECT,
-    FIRE_EMPLOYEE
+    FIRE_EMPLOYEE,
+
+    // Personnel Manager as sender notifications
+    CHANGED_TIMETRACK,
+    DELETED_TIMETRACK
+
 
 }

@@ -2,9 +2,7 @@ package models;
 
 import business.UserException;
 import com.avaje.ebean.Model;
-import infrastructure.TimeTrackException;
 import org.joda.time.DateTime;
-import play.data.format.Formats;
 
 import javax.persistence.*;
 

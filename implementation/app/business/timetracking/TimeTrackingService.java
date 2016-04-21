@@ -1,8 +1,7 @@
 package business.timetracking;
 
 import business.UserException;
-import infrastructure.TimeTrackException;
-import models.Break;
+import business.TimeTrackException;
 import models.TimeTrack;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
