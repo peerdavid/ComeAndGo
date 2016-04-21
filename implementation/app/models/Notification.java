@@ -1,19 +1,15 @@
 package models;
 
 import business.NotificationException;
-import business.UserException;
 import business.notification.NotificationType;
 import com.avaje.ebean.Model;
-import com.avaje.ebean.config.JsonConfig;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 
 import javax.persistence.*;
-import javax.validation.Constraint;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
 
 /**
  * Created by david on 22.03.16.
@@ -33,27 +29,30 @@ public class Notification extends Model {
     @Constraints.MaxLength(150)
     private String _message;
 
-    @Column(name = "senderId")
+    @Column(name = "_sender_id")
     @ManyToOne()
     @NotNull
     private User _sender;
 
-    @Column(name = "receiverId")
+    @Column(name = "_receiver_id")
     @ManyToOne()
     @NotNull
     private User _receiver;
 
-    @Column(name = "haveSeen")
+    @Column(name = "haveseen")
     private Boolean _read;
 
     @Column(name = "accepted")
     private Boolean _accepted;
 
-    @Column(name = "requestStart", columnDefinition = "date")
+    @Column(name = "requeststart", columnDefinition = "date")
     private LocalDate _requestedStartDate = null;
 
-    @Column(name = "requestEnd", columnDefinition = "date")
+    @Column(name = "requestend", columnDefinition = "date")
     private LocalDate _requestedEndDate = null;
+
+    @Column(name = "isvisible")
+    private boolean _isVisible;
 
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
@@ -72,6 +71,7 @@ public class Notification extends Model {
         setRequestedEndDate(requestEnd);
         setRead(false);
         _createdOn = DateTime.now();
+        _isVisible = true;
     }
 
     public int getId() {
@@ -151,5 +151,9 @@ public class Notification extends Model {
 
     public void setRequestedStartDate(LocalDate requestedStartDate) {
         this._requestedStartDate = requestedStartDate;
+    }
+
+    public void makeInvisible() {
+        _isVisible = false;
     }
 }
