@@ -41,7 +41,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public List<Notification> getAllUnreadNotificationsToUser(User user) throws NotificationException {
+    public List<Notification> getUnreadNotificationsForUser(User user) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
                 .where().eq("to_user", user.getId())
@@ -54,7 +54,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public List<Notification> getAllReadNotificationsForUser(User user) throws NotificationException {
+    public List<Notification> getReadNotificationsForUser(User user, int amount) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
                         .where().eq("to_user", user.getId())
@@ -64,5 +64,10 @@ public class NotificationRepositoryImpl implements NotificationRepository {
             return result;
         }
         throw new NotificationException("no unread notifications here");
+    }
+
+    @Override
+    public List<Notification> getSentNotifications(User user, int amount) throws NotificationException {
+        return null;
     }
 }

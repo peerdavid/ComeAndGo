@@ -18,7 +18,9 @@ public interface NotificationRepository {
 
     void updateNotification(Notification toUpdate);
 
-    List<Notification> getAllUnreadNotificationsToUser(User user) throws NotificationException;
+    List<Notification> getUnreadNotificationsForUser(User user) throws NotificationException;
 
-    List<Notification> getAllReadNotificationsForUser(User user) throws NotificationException;
+    List<Notification> getReadNotificationsForUser(User user, int amount) throws NotificationException;
+
+    List<Notification> getSentNotifications(User user, int amount) throws NotificationException;
 }
