@@ -34,8 +34,22 @@ public class NotificationReaderFacade implements NotificationReader {
         return _notificationRepository.getAllUnreadNotificationsToUser(user);
     }
 
+    public List<Notification> getReadNotifictionsForUser(String userName) throws NotificationException {
+        User user = _userRepository.readUser(userName);
+
+        if (user == null) {
+            throw new NotificationException("exceptions.usermanagement.no_such_user");
+        }
+
+        return _notificationRepository.getAllReadNotificationsForUser(user);
+    }
+
     @Override
     public void setNotificationAsRead(int NotificationId) throws NotificationException {
+        Notification notificationToChange = _notificationRepository.readNotificationById(NotificationId);
+
+        notificationToChange.setRead(true);
+        _notificationRepository.updateNotification(notificationToChange);
 
     }
 }
