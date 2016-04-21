@@ -1,8 +1,9 @@
 package controllers;
 
+import business.notification.NotificationReader;
 import business.notification.NotificationType;
 import business.usermanagement.SecurityRole;
-import com.google.common.io.ByteStreams;
+import com.google.inject.Inject;
 import models.Notification;
 import models.User;
 import org.pac4j.core.profile.CommonProfile;
@@ -18,25 +19,43 @@ import java.util.List;
  */
 public class NotificationController extends UserProfileController {
 
+    private NotificationReader _notifReader;
+
+    @Inject
+    public NotificationController(NotificationReader notifReader) {
+        _notifReader = notifReader;
+    }
+
     @RequiresAuthentication(clientName = "default")
     public Result index() throws Exception{
         CommonProfile profile = getUserProfile();
 
-        // sample notifications for frontend testing
+        int id = Integer.parseInt(profile.getId());
 
-        User klaus = new User("klaus","password,", SecurityRole.ROLE_USER,"klaus","huber","huber@mail.com",true,"boss");
-        User boss = new User("boss","password,", SecurityRole.ROLE_BOSS,"boss","huber","boss@mail.com",true,"klaus");
+        List<Notification> readNotifications = _notifReader.getReadNotificationsForUser(id,10);
+        List<Notification> unreadNotifications = _notifReader.getUnreadNotificationsForUser(id);
+        List<Notification> sentNotifications = _notifReader.getSentNotifications(id,10);
 
-        List<Notification> readNotification = new ArrayList();
-        List<Notification> unreadNotification = new ArrayList();
+        return ok(views.html.notification.render(profile,unreadNotifications,readNotifications,sentNotifications));
+    }
 
-        /*
-        readNotification.add(new Notification(NotificationType.INFORMATION,"i am a read message",klaus,boss));
-        readNotification.add(new Notification(NotificationType.HOLIDAY_ACCEPT,"happy holidays",klaus,boss));
-*/
-        unreadNotification.add(new Notification(NotificationType.INFORMATION,"i am a unread message",boss,klaus, null, null));
-        unreadNotification.add(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION,"i am a going trip message",klaus,boss, null, null));
+    @RequiresAuthentication(clientName = "default")
+    public Result acceptNotification(int notificationId) throws Exception{
 
-        return ok(views.html.notification.render(profile,unreadNotification,readNotification));
+
+        _notifReader.accept(notificationId);
+
+
+        return redirect(routes.NotificationController.index());
+    }
+
+    @RequiresAuthentication(clientName = "default")
+    public Result rejectNotification(int notificationId) throws Exception{
+
+
+        _notifReader.reject(notificationId);
+
+
+        return redirect(routes.NotificationController.index());
     }
 }

@@ -187,6 +187,15 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     background-color: #ff5252;
 }
 
+.column-center{
+    display: inline-block;
+    width: 33%;
+}
+
+.column-sides{
+    width: 33%;
+}
+
 /* changes input-field placeholder colour for multiple devices */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #727272;

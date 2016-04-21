@@ -1,7 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 
 @import business.notification.NotificationType
-@(profile: CommonProfile, notificationsunread: java.util.List[Notification], notificationsread: java.util.List[Notification])
+@(profile: CommonProfile, notreadnotifications: java.util.List[Notification], readnotifications: java.util.List[Notification],sentnotifications: java.util.List[Notification])
 
 @main(Messages("views.index.title")) {
 
@@ -9,11 +9,46 @@
 
 
         <div>
-            <div class="right">
-                <h4>@Messages("views.notification.notificationsread")</h4>
-                @if(!notificationsread.isEmpty) {
+
+            <!--  Not read Notifications   -->
+            <div class="left column-sides">
+                <h4>@Messages("views.notification.notreadnotifications")</h4>
+                @if(!notreadnotifications.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">
-                    @for(n: Notification <- notificationsread) {
+                    @for(n: Notification <- notreadnotifications) {
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">email</i> @(n.getType() + " : " + n.getSender.getFirstName + " " + n.getSender.getLastName)</div>
+                            <div class="collapsible-body">
+                                <p>@n.getMessage</p>
+
+                                <a class="btn-floating btn-large waves-light right ghost primary-btn" href="@routes.NotificationController.acceptNotification(n.getId())">
+                                    <i class="material-icons right">@Messages("views.notification.buttonaccept")</i>
+                                </a>
+
+                                @if((n.getType() == NotificationType.HOLIDAY_PAYOUT_REQUEST)
+                                        || (n.getType() == NotificationType.HOLYDAY_REQUEST)
+                                        || (n.getType() == NotificationType.OVERTIME_PAYOUT_REQUEST)) {
+
+                                    <a class="btn-floating btn-large waves-light left ghost negative-btn" href="@routes.NotificationController.rejectNotification(n.getId())">
+                                        <i class="material-icons right">@Messages("views.notification.buttonreject")</i>
+                                    </a>
+                                }
+
+                            </div>
+                        </li>
+                    }
+                    </ul>
+                } else {
+                    <p>@Messages("views.notification.nonotificationmessage")</p>
+                }
+            </div>
+
+            <!--  Read and accepted/rejected Notifications  -->
+            <div class="right column-center">
+                <h4>@Messages("views.notification.readnotifications")</h4>
+                @if(!readnotifications.isEmpty) {
+                    <ul class="collapsible" data-collapsible="accordion">
+                    @for(n: Notification <- readnotifications) {
                         <li>
                             <div class="collapsible-header"><i class="material-icons">email</i> @(n.getType() + " : " + n.getSender.getFirstName + " " + n.getSender.getLastName)</div>
                             <div class="collapsible-body"><p>@n.getMessage</p></div>
@@ -25,21 +60,15 @@
                 }
             </div>
 
-            <div class="left">
-                <h4>@Messages("views.notification.notificationsnotread")</h4>
-                @if(!notificationsunread.isEmpty) {
+            <!-- Sent Notifications  -->
+            <div class="right column-sides">
+                <h4>@Messages("views.notification.sentnotifications")</h4>
+                @if(!sentnotifications.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">
-                    @for(n: Notification <- notificationsunread) {
+                    @for(n: Notification <- sentnotifications) {
                         <li>
                             <div class="collapsible-header"><i class="material-icons">email</i> @(n.getType() + " : " + n.getSender.getFirstName + " " + n.getSender.getLastName)</div>
-                            <div class="collapsible-body">
-                                <p>@n.getMessage</p>
-                                <button class="btn waves-effect waves-light primary-btn ghost right">@Messages("views.notification.buttonaccept")</button>
-
-                                @if(n.getType() != NotificationType.BUSINESS_TRIP_INFORMATION) {
-                                    <button class="btn waves-effect waves-light negative-btn ghost right">@Messages("views.notification.buttonreject")</button>
-                                }
-                            </div>
+                            <div class="collapsible-body"><p>@n.getMessage</p></div>
                         </li>
                     }
                     </ul>

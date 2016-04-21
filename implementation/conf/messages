@@ -64,8 +64,9 @@ views.admin.edituser.closemessage = Close
 views.notification.buttonaccept = Accept
 views.notification.buttonreject = Reject
 views.notification.nonotificationmessage = No Notifications to show
-views.notification.notificationsread = Read Notifications
-views.notification.notificationsnotread = Not Read Notifications
+views.notification.readnotifications = Read Notifications
+views.notification.notreadnotifications = Not Read Notifications
+views.notification.sentnotifications = Sent Notifications
 
 views.holiday.title = Holiday
 
