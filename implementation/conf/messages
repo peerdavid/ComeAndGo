@@ -101,4 +101,20 @@ exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to
 exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
 
+notifications.holiday_request = Holiday request from employee "%s"
+notifications.special_holiday_request = Special-holiday request from employee "%s"
+notifications.business_trip_information = Employee "%s" is on Business trip
+notifications.sick_leave_information = Employee "%s" is sick
+notifications.holiday_payout_request = Employee "%s" requested holiday payout
+notifications.overtime_payout_request = Employee "%s" requested overtime payout
+notifications.holiday_accept = Boss "%s" accepted holiday
+notifications.holiday_reject = Boss "%s" rejected holiday
+notifications.holiday_payout_accept = Boss "%s" accepted holiday payout
+notifications.holiday_payout_reject = Boss "%s" rejected holiday payout
+notifications.overtime_payout_accept = Boss "%s" accepted overtime payout
+notifications.overtime_payout_reject = Boss "%s" rejected overtime payout
+notifications.fire_employee = Boss "%s" fired you
+notifications.changed_timetrack = Personnel Manager "%s" changed a timetrack
+notifications.deleted_timetrack = Personnel Manager "%s" deleted a timetrack
+
 
