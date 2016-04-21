@@ -61,9 +61,13 @@
                             </div>
                             <input type="hidden" name="id" value="@u.getId">
 
-                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")</button>
+                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")
+                                <i class="material-icons right">delete</i>
+                            </button>
 
-                            <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.editTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")</a>
+                            <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.editTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")
+                                <i class="material-icons right">list</i>
+                            </a>
 
                             <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.edituser.savechanges")
                                 <i class="material-icons right">done</i>
@@ -86,5 +90,11 @@
             }
             </ul>
         }
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a class="btn-floating btn-large waves-light primary-btn" href="@routes.AuthenticationController.signUp()">
+                <i class="material-icons right">add</i>
+            </a>
+        </div>
     }
 }

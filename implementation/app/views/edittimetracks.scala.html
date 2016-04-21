@@ -79,7 +79,7 @@
                                     <input disabled="disabled" value="@(t.getTo.getDayOfMonth + "." + t.getTo.getMonthOfYear + "." + t.getTo.getYear)" name="enddate" type="text" class="datepicker">
                                     <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
                                 </div>
-                                <div id="disabled" class="input-field col s6 m3">
+                                <div class="input-field col s6 m3">
                                     <input disabled="disabled" value="@(t.getTo.getHourOfDay + ":" + t.getTo.getMinuteOfHour)"  name="endtime" type="text" class="timepicker">
                                     <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
                                 </div>
@@ -92,7 +92,7 @@
 
                                         <li class="z-depth-0">
                                             <div class="collapsible-header grey lighten-5">
-                                                <i class="material-icons">pause</i>
+                                                <i class="material-icons">pause_circle_outline</i>
                                                 <span>
                                                     @(b.getFrom.getHourOfDay + ":" + b.getFrom.getMinuteOfHour)
                                                 </span>
@@ -157,6 +157,44 @@
             </ul>
 
         }
+
+            <!-- add timetrack -->
+        <div id="modal-add-timetrack" class="modal">
+            <div class="modal-content">
+                <h4>@Messages("views.admin.edittimetracks.addtimetrack")</h4>
+            </div>
+            <div class="modal-footer">
+                <form action="@routes.TimeTrackController.addTimeTrack(userId, from, to)" method="POST">
+                    <div class="row">
+                        <div class="input-field col s6 m3">
+                            <input name="startdate" type="text" class="datepicker">
+                            <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
+                        </div>
+                        <div class="input-field col s6 m3">
+                            <input name="starttime" type="text" class="timepicker">
+                            <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
+                        </div>
+                        <div class="input-field col s6 m3">
+                            <input name="enddate" type="text" class="datepicker">
+                            <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
+                        </div>
+                        <div class="input-field col s6 m3">
+                            <input  name="endtime" type="text" class="timepicker">
+                            <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
+                        </div>
+                        <button class="btn waves-effect waves-light right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addtimetrack")
+                            <i class="material-icons right">add</i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <button data-target="modal-add-timetrack" class="btn modal-trigger btn-floating btn-large waves-light primary-btn">
+                <i class="material-icons right">add</i>
+            </button>
+        </div>
 
     }
 
