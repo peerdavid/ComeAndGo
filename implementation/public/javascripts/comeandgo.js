@@ -6,9 +6,10 @@ $( document ).ready(function() {
     $(".button-collapse").sideNav();
     $('select').material_select();
     $('.modal-trigger').leanModal();
-    $('.timepicker').lolliclock({
-        hour24: true,
-        autoclose: true
+    $('.timepicker').pickatime({
+        autoclose: true,
+        twelvehour: false,
+        ampmclickable: false
     });
 
     // initialize datepicker
