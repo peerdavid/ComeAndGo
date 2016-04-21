@@ -24,10 +24,10 @@ class NotificationService implements NotificationSender {
     @Override
     public void sendNotification(Notification notification) throws NotificationException {
 
-        if (_userRepository.readUser(notification.getFromUser().getUserName()) == null) {
+        if (_userRepository.readUser(notification.getSender().getUserName()) == null) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
-        if (_userRepository.readUser(notification.getToUser().getUserName()) == null) {
+        if (_userRepository.readUser(notification.getReceiver().getUserName()) == null) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 

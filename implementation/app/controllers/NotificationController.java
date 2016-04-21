@@ -34,8 +34,8 @@ public class NotificationController extends UserProfileController {
         readNotification.add(new Notification(NotificationType.INFORMATION,"i am a read message",klaus,boss));
         readNotification.add(new Notification(NotificationType.HOLIDAY_ACCEPT,"happy holidays",klaus,boss));
 */
-        unreadNotification.add(new Notification(NotificationType.INFORMATION,"i am a unread message",boss,klaus));
-        unreadNotification.add(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION,"i am a going trip message",klaus,boss));
+        unreadNotification.add(new Notification(NotificationType.INFORMATION,"i am a unread message",boss,klaus, null, null));
+        unreadNotification.add(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION,"i am a going trip message",klaus,boss, null, null));
 
         return ok(views.html.notification.render(profile,unreadNotification,readNotification));
     }

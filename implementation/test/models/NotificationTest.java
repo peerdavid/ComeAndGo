@@ -17,7 +17,7 @@ public class NotificationTest {
 
     @Before
     public void Setup() throws NotificationException {
-        testNotification = new Notification(NotificationType.INFORMATION, "text", null, null);
+        testNotification = new Notification(NotificationType.INFORMATION, "text", null, null, null, null);
     }
 
     @Test(expected = NotificationException.class)
