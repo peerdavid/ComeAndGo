@@ -24,8 +24,8 @@ public class NotificationReaderFacade implements NotificationReader {
         _userRepository = userRepository;
     }
 
-    public List<Notification> getUnreadNotifictionsForUser(String userName) throws NotificationException {
-        User user = _userRepository.readUser(userName);
+    public List<Notification> getUnreadNotificationsForUser(int userId) throws NotificationException {
+        User user = _userRepository.readUser(userId);
 
         if (user == null) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
@@ -34,8 +34,8 @@ public class NotificationReaderFacade implements NotificationReader {
         return _notificationRepository.getAllUnreadNotificationsToUser(user);
     }
 
-    public List<Notification> getReadNotifictionsForUser(String userName) throws NotificationException {
-        User user = _userRepository.readUser(userName);
+    public List<Notification> getReadNotificationsForUser(int userId) throws NotificationException {
+        User user = _userRepository.readUser(userId);
 
         if (user == null) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
@@ -50,6 +50,31 @@ public class NotificationReaderFacade implements NotificationReader {
 
         notificationToChange.setRead(true);
         _notificationRepository.updateNotification(notificationToChange);
+
+    }
+
+    @Override
+    public int getNumberOfUnreadNotifications(int userId) throws NotificationException {
+        return 0;
+    }
+
+    @Override
+    public List<Notification> getReadNotificationsForUser(int userId, int amount) throws NotificationException {
+        return null;
+    }
+
+    @Override
+    public List<Notification> getSentNotifications(int userId, int amount) throws NotificationException {
+        return null;
+    }
+
+    @Override
+    public void accept(int notificationId) throws NotificationException {
+
+    }
+
+    @Override
+    public void reject(int notificationId) throws NotificationException {
 
     }
 }

@@ -31,7 +31,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     @Override
     public void deleteNotification(Notification toDelete) {
-        toDelete.setVisibleToUser(false);
+        //toDelete.setVisibleToUser(false);
         Ebean.update(toDelete);
     }
 

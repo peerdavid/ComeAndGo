@@ -36,7 +36,7 @@ public class NotificationServiceTest {
         _testee = new NotificationService(_notificationRepository, _userRepository);
         _toTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
         _fromTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
-        _testNotification = new Notification(NotificationType.INFORMATION, "test", _fromTestUser, _toTestUser);
+        _testNotification = new Notification(NotificationType.INFORMATION, "test", _fromTestUser, _toTestUser, null, null);
 
     }
 

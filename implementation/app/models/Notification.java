@@ -4,12 +4,16 @@ import business.NotificationException;
 import business.UserException;
 import business.notification.NotificationType;
 import com.avaje.ebean.Model;
+import com.avaje.ebean.config.JsonConfig;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 
 import javax.persistence.*;
 import javax.validation.Constraint;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 
 /**
  * Created by david on 22.03.16.
@@ -20,63 +24,65 @@ public class Notification extends Model {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer _id;
 
     @Column(name = "type")
     private NotificationType _type;
 
-    @Column(name = "message")
+    @Column(name = "message", columnDefinition = "varchar(150)")
     @Constraints.MaxLength(150)
     private String _message;
 
-    @Column(name = "from_user")
+    @Column(name = "senderId")
     @ManyToOne()
     @NotNull
-    private User _fromUser;
+    private User _sender;
 
-    @Column(name = "to_user")
-    @ManyToOne
+    @Column(name = "receiverId")
+    @ManyToOne()
     @NotNull
-    private User _toUser;
+    private User _receiver;
 
-    @Column(name = "read")
-    private boolean _read;
+    @Column(name = "haveSeen")
+    private Boolean _read;
 
     @Column(name = "accepted")
-    private boolean _accepted;
+    private Boolean _accepted;
 
-    @Column(name = "vis_from_user")
-    private boolean _visibleForFromUser = false;
+    @Column(name = "requestStart", columnDefinition = "date")
+    private LocalDate _requestedStartDate = null;
 
-    @Column(name = "vis_to_user")
-    private boolean _visibleForToUser = true;
+    @Column(name = "requestEnd", columnDefinition = "date")
+    private LocalDate _requestedEndDate = null;
+
+    @Column(name = "created", columnDefinition = "datetime")
+    private DateTime _createdOn;
 
     // Use standard messages for each Notification Type
-    public Notification(NotificationType type, User fromUser, User toUser) throws NotificationException {
-
-        this.setType(type);
-        this.setMessage(getStandardMessage(this));
-        this.setFromUser(fromUser);
-        this.setToUser(toUser);
-        _read = false;
-        _accepted = false;
+    public Notification(NotificationType type, User sender, User receiver, LocalDate requestStart, LocalDate requestEnd) throws NotificationException {
+        this(type, getStandardMessage(type, sender), sender, receiver, requestStart, requestEnd);
     }
 
-    public Notification(NotificationType type, String message, User fromUser, User toUser) throws NotificationException {
-
-        this.setType(type);
-        this.setMessage(message);
-        this.setFromUser(fromUser);
-        this.setToUser(toUser);
-        _read = false;
-        _accepted = false;
+    public Notification(NotificationType type, String message, User sender, User receiver, LocalDate requestStart, LocalDate requestEnd) throws NotificationException {
+        setType(type);
+        setMessage(message);
+        setSender(sender);
+        setReceiver(receiver);
+        setRequestedStartDate(requestStart);
+        setRequestedEndDate(requestEnd);
+        setRead(false);
+        _createdOn = DateTime.now();
     }
 
     public int getId() {
-        return id;
+        return _id;
     }
 
-    public NotificationType get_type() {
+    public void setId(int id) {
+        _id = id;
+    }
+
+    public NotificationType getType() {
         return _type;
     }
 
@@ -95,20 +101,20 @@ public class Notification extends Model {
         this._message = message;
     }
 
-    public User getFromUser() {
-        return _fromUser;
+    public User getSender() {
+        return _sender;
     }
 
-    public void setFromUser(User user) throws NotificationException {
-        this._fromUser = user;
+    public void setSender(User user) throws NotificationException {
+        this._sender = user;
     }
 
-    public User getToUser() {
-        return _toUser;
+    public User getReceiver() {
+        return _receiver;
     }
 
-    public void setToUser(User user) throws NotificationException {
-        this._toUser = user;
+    public void setReceiver(User user) throws NotificationException {
+        this._receiver = user;
     }
 
     public boolean isRead() {
@@ -127,15 +133,23 @@ public class Notification extends Model {
         this._accepted = accepted;
     }
 
-    public void setVisibleToUser(boolean visible) {
-        _visibleForToUser = visible;
+    public static String getStandardMessage(NotificationType type, User sender) {
+        return Messages.get("notifications." + type.name().toLowerCase(), sender.getFirstName() + " " + sender.getLastName());
     }
 
-    public boolean getVisibleForToUser() {
-        return _visibleForToUser;
+    public LocalDate getRequestedEndDate() {
+        return _requestedEndDate;
     }
 
-    public static String getStandardMessage(Notification notification) {
-        return Messages.get("notifications." + notification.get_type().name().toLowerCase(), notification.getFromUser());
+    public void setRequestedEndDate(LocalDate requestedEndDate) {
+        this._requestedEndDate = requestedEndDate;
+    }
+
+    public LocalDate getRequestedStartDate() {
+        return _requestedStartDate;
+    }
+
+    public void setRequestedStartDate(LocalDate requestedStartDate) {
+        this._requestedStartDate = requestedStartDate;
     }
 }
