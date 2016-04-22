@@ -196,6 +196,11 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     width: 33%;
 }
 
+/* fix for labels (click through) */
+label {
+    pointer-events: none !important;
+}
+
 /* changes input-field placeholder colour for multiple devices */
 ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
     color:    #727272;

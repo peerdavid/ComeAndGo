@@ -1,6 +1,6 @@
 @import org.pac4j.core.profile.CommonProfile
-
 @import business.timetracking.TimeTrackState
+@import utils.DateTimeUtils
 @(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTracks: java.util.List[TimeTrack])
 
 @main(Messages("views.index.title")) {
@@ -63,7 +63,7 @@
                             @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @(timeTrack.getFrom.getHourOfDay + ":" + timeTrack.getFrom.getMinuteOfHour + ":" + timeTrack.getFrom().getSecondOfMinute)
+                            @(DateTimeUtils.dateTimeToTime(timeTrack.getFrom))
                         </td>
                     </tr>
 
@@ -73,7 +73,7 @@
                                 @Messages("views.index.timetrack.tablebody.breakstart")
                             </td>
                             <td>
-                                @(b.getFrom.getHourOfDay + ":" + b.getFrom.getMinuteOfHour + ":" + b.getFrom.getSecondOfMinute)
+                                @(DateTimeUtils.dateTimeToTime(b.getFrom))
                             </td>
                         </tr>
 
@@ -83,7 +83,7 @@
                                     @Messages("views.index.timetrack.tablebody.breakend")
                                 </td>
                                 <td>
-                                    @(b.getTo.getHourOfDay + ":" + b.getTo.getMinuteOfHour + ":" + b.getTo.getSecondOfMinute)
+                                    @(DateTimeUtils.dateTimeToTime(b.getTo))
                                 </td>
                             </tr>
                         }
@@ -95,7 +95,7 @@
                                 @Messages("views.index.timetrack.tablebody.end")
                             </td>
                             <td>
-                                @(timeTrack.getTo().getHourOfDay + ":" + timeTrack.getTo().getMinuteOfHour + ":" + timeTrack.getTo().getSecondOfMinute)
+                                @(DateTimeUtils.dateTimeToTime(timeTrack.getTo))
                             </td>
                         </tr>
                     }
