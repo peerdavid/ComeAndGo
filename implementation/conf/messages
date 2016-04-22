@@ -102,6 +102,7 @@ exceptions.timetracking.validate_clashing_breaks = There are some breaks clashin
 exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to be inside a timetrack
 exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
+exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have an error
 
 notifications.holiday_request = Holiday request from employee "%s"
 notifications.special_holiday_request = Special-holiday request from employee "%s"

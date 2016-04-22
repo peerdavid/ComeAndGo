@@ -1,7 +1,5 @@
 @import org.pac4j.core.profile.CommonProfile
-
-@import sun.security.krb5.internal.PAForUserEnc
-@(profile: CommonProfile, userId :Int, from: String, to: String, timetracklist: java.util.List[TimeTrack])
+@(profile: CommonProfile, userId :Int, from: java.lang.String, to: java.lang.String, timetracklist: java.util.List[TimeTrack])
 
 @main(Messages("views.admin.title")) {
 
