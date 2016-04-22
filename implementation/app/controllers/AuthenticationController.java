@@ -1,5 +1,6 @@
 package controllers;
 
+import business.UserException;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
@@ -11,6 +12,8 @@ import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
 import play.mvc.Result;
+
+import java.util.List;
 
 /**
  * Created by sebastian on 3/28/16.
@@ -32,11 +35,12 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result signUp() {
+    public Result signUp() throws UserException {
         Form<User> form = FORM;
         CommonProfile profile = getUserProfile();
+        List<User> userList = _userManagement.getAllUsers();
 
-        return ok(views.html.signup.render(form, profile));
+        return ok(views.html.signup.render(form, profile, userList));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -49,12 +53,17 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String lastName = form.data().get("lastname");
         String role = form.data().get("role");
         String email = form.data().get("email");
+        String bossOfUser = form.data().get("bossofuser");
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;
         }
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, "admin");
+        if (bossOfUser.isEmpty()) {
+            bossOfUser = "admin";
+        }
+
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, bossOfUser);
 
         _userManagement.registerUser(userToRegister);
 

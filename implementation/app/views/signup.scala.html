@@ -1,7 +1,8 @@
 @import models.User
 
 @import org.pac4j.core.profile.CommonProfile
-@(form: play.data.Form[User], profile: CommonProfile)
+@import business.usermanagement.SecurityRole
+@(form: play.data.Form[User], profile: CommonProfile, userlist: java.util.List[User])
 
 @main(Messages("views.admin.title")) {
 
@@ -48,6 +49,18 @@
                 <div class="input-field col s12 m6">
                     <input name="repeat_password" type="password">
                     <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <select name="bossofuser" type="text">
+                        <option value="admin" selected >@Messages("views.admin.title")</option>
+                            @for(u : User <- userlist) {
+                                @if(u.getRole == SecurityRole.ROLE_BOSS) {
+                                    <option value=@u.getUserName selected >@(u.getFirstName + " " + u.getLastName)</option>
+                                }
+                            }
+                    </select>
                 </div>
             </div>
             <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
