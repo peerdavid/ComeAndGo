@@ -67,7 +67,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
                         .where().eq("_receiver_id", user.getId())
                         .where().eq("haveseen", true)
                         .orderBy("created desc")
-                        .setMaxRows(amount)
+                        //.setMaxRows(amount)
                         .findList();
         if(result != null) {
             return result;
@@ -85,7 +85,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
             Ebean.find(Notification.class)
             .where().eq("_sender_id", user.getId())
             .orderBy("created desc")
-            .setMaxRows(amount)
+            //.setMaxRows(amount)
             .findList();
 
         if(result != null) {
