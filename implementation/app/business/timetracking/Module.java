@@ -10,5 +10,6 @@ public class Module extends AbstractModule {
     protected void configure() {
         bind(TimeTrackingService.class).to(TimeTrackingServiceImpl.class);
         bind(TimeTracking.class).to(TimeTrackingFacade.class);
+        bind(TimeOffService.class).to(TimeOffServiceImpl.class);
     }
 }
