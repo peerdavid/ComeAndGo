@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import business.UseCases;
+import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 
@@ -28,7 +29,6 @@ public interface TimeTracking extends UseCases {
 
     /**
      * adds the new timeTrack and corresponding breaks to repository
-     * @param timeTrack
      */
     void addTimeTrack(int userId, DateTime from, DateTime to) throws Exception;
 
@@ -42,8 +42,8 @@ public interface TimeTracking extends UseCases {
      * use this method to update timeTracks and the breaks inside this timeTrack
      * this method can also be used to delete breaks, specify times of breaks and so on
      * @param timeTrack
-     * @param breakList
      * @throws Exception
      */
     void updateTimeTrack(TimeTrack timeTrack) throws Exception;
+
 }
