@@ -17,8 +17,9 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class Notification extends Model {
 
+    // DON'T rename column name _id, otherwise limit functions won't work anymore
     @Id
-    @Column(name = "id")
+    @Column(name = "_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer _id;
 
