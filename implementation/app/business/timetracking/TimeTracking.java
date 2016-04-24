@@ -46,6 +46,4 @@ public interface TimeTracking extends UseCases {
      */
     void updateTimeTrack(TimeTrack timeTrack) throws Exception;
 
-
-    void takeSickLeave(int userId, DateTime from, DateTime to);
 }
