@@ -196,6 +196,10 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     width: 33%;
 }
 
+.column{
+    padding: 5px;
+}
+
 /* fix for labels (click through) */
 .input-field > label {
     pointer-events: none !important;

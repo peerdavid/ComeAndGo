@@ -24,8 +24,8 @@ POST    /edittimetracks/:userId/addbreak/          @controllers.TimeTrackControl
 GET     /deleteUser                                @controllers.UserManagementController.deleteUser(username : String ?= null)
 
 GET     /notification                              @controllers.NotificationController.index
-POST    /notification/accept                       @controllers.NotificationController.acceptNotification(notificationId:Int)
-POST    /notification/reject                       @controllers.NotificationController.rejectNotification(notificationId:Int)
+POST    /notification/accept                       @controllers.NotificationController.acceptNotification(notId : Int)
+POST    /notification/reject                       @controllers.NotificationController.rejectNotification(notId:Int)
 
 # Come & Go
 GET     /come                                      @controllers.TimeTrackController.come
