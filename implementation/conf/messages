@@ -22,6 +22,9 @@ views.index.timetrack.tablebody.breakend = Break End
 views.index.timetrack.tablebody.end = End
 views.index.timetrack.tablehead.action = Action
 views.index.timetrack.tablehead.time = Time
+views.index.state.active = Active
+views.index.state.inactive = Inactive
+views.index.state.pause = Pause
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
@@ -65,7 +68,7 @@ views.notification.buttonaccept = Accept
 views.notification.buttonreject = Reject
 views.notification.nonotificationmessage = No Notifications to show
 views.notification.readnotifications = Read Notifications
-views.notification.notreadnotifications = Not Read Notifications
+views.notification.notreadnotifications = New Notifications
 views.notification.sentnotifications = Sent Notifications
 
 views.holiday.title = Holiday
