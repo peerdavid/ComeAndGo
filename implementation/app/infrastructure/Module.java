@@ -10,6 +10,7 @@ public class Module extends AbstractModule {
     @Override
     protected void configure() {
         bind(NotificationRepository.class).to(NotificationRepositoryImpl.class);
+        bind(TimeOffRepository.class).to(TimeOffRepositoryImpl.class);
         bind(TimeTrackingRepository.class).to(TimeTrackingRepositoryImpl.class);
         bind(UserRepository.class).to(UserRepositoryImpl.class);
     }

@@ -71,7 +71,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
         try {
             alreadyExistingUser = _userRepository.readUser(userName);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             return true;
         }
 

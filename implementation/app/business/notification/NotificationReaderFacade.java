@@ -1,6 +1,7 @@
 package business.notification;
 
 import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import business.usermanagement.UserNotFoundException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
@@ -27,7 +28,7 @@ class NotificationReaderFacade implements NotificationReader {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
@@ -45,7 +46,7 @@ class NotificationReaderFacade implements NotificationReader {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
@@ -57,7 +58,7 @@ class NotificationReaderFacade implements NotificationReader {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
@@ -70,7 +71,7 @@ class NotificationReaderFacade implements NotificationReader {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
