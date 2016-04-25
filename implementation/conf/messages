@@ -55,13 +55,18 @@ views.admin.edittimetracks.to = to
 views.admin.edittimetracks.savechanges = Save Changes
 views.admin.edittimetracks.addbreak = Add Break
 views.admin.edittimetracks.addtimetrack = Add Timetrack
+views.admin.edittimetracks.deletebreak = Delete Break
+views.admin.edittimetracks.deletebreakmessage = Do you really want to remove this break?
+views.admin.edittimetracks.closemessage = Close
+views.admin.edittimetracks.deletetimetrack = Delete Timetrack
+views.admin.edittimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?
 
 views.admin.edituser = Edit User
 views.admin.edituser.empty = Nothing to show
 views.admin.edituser.savechanges = Save Changes
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
-views.admin.edituser.deletemessage = Do you want to remove
+views.admin.edituser.deletemessage = Do you really want to remove this user?
 views.admin.edituser.closemessage = Close
 views.admin.edituser.bossofuser = Boss of User
 
@@ -107,6 +112,8 @@ exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to
 exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have an error
+exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
+exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 
 notifications.holiday_request = Holiday request from employee "%s"
 notifications.special_holiday_request = Special-holiday request from employee "%s"

@@ -1,4 +1,4 @@
-package business;
+package business.notification;
 
 /**
  * Created by Stefan on 20.04.2016.

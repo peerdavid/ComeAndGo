@@ -20,6 +20,7 @@ public class Module extends AbstractModule {
     protected void configure() {
         bind(UserService.class).to(UserServiceImpl.class);
         bind(UserManagement.class).to(UserManagementFacade.class);
+        bind(InternalUserManagement.class).to(UserServiceImpl.class);
 
         Injector injector = Guice.createInjector(new infrastructure.Module());
         UserRepository userRepository = injector.getInstance(UserRepository.class);

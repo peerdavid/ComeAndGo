@@ -1,7 +1,6 @@
 package business.timetracking;
 
-import business.UserException;
-import business.TimeTrackException;
+import business.usermanagement.UserException;
 import models.TimeTrack;
 import javassist.NotFoundException;
 import org.joda.time.DateTime;
@@ -31,8 +30,8 @@ interface TimeTrackingService {
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException;
 
     /*  EDIT / DELETE / ADD TIMETRACKS AND BREAKS  */
-    void addTimeTrack(TimeTrack timeTrack) throws UserException;
-    void addTimeTrack(int userId, DateTime from, DateTime to) throws UserException;
+    void createTimeTrack(TimeTrack timeTrack) throws UserException;
+    void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException;
 
     void deleteTimeTrack(TimeTrack timeTrack);
 

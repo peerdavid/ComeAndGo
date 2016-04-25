@@ -1,4 +1,4 @@
-package business;
+package business.usermanagement;
 
 /**
  * Created by paz on 07.04.16.

@@ -31,7 +31,7 @@ public class UserManagementController extends UserProfileController {
     public Result indexEditUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        return ok(views.html.edituser.render(profile, _userManagement.getAllUsers()));
+        return ok(views.html.edituser.render(profile, _userManagement.readUsers()));
     }
 
 
@@ -42,7 +42,7 @@ public class UserManagementController extends UserProfileController {
     public Result editUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        List<User> userList = _userManagement.getAllUsers();
+        List<User> userList = _userManagement.readUsers();
 
         Form<User> form = FORM.bindFromRequest();
 
@@ -65,16 +65,16 @@ public class UserManagementController extends UserProfileController {
             }
         }
         // should we edit userName?
-        if (userName != null && !userName.equals("")) {
+        if (userName != null) {
             changingUser.setUserName(userName);
         }
-        if (firstName != null && !firstName.equals("")) {
+        if (firstName != null) {
             changingUser.setFirstName(firstName);
         }
-        if (lastName != null && !lastName.equals("")) {
+        if (lastName != null) {
             changingUser.setLastName(lastName);
         }
-        if (email != null && !email.equals("")) {
+        if (email != null) {
             changingUser.setEmail(email);
         }
         if (password != null && repeatPassword != null && (!password.isEmpty()) && (!repeatPassword.isEmpty()) && password.equals(repeatPassword)) {
@@ -87,9 +87,9 @@ public class UserManagementController extends UserProfileController {
             changingUser.setRole(role);
         }
 
-        _userManagement.changeUserData(changingUser.getUserName(), changingUser);
+        _userManagement.updateUser(changingUser.getUserName(), changingUser);
 
-        return ok(views.html.edituser.render(profile, _userManagement.getAllUsers()));
+        return ok(views.html.edituser.render(profile, _userManagement.readUsers()));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")

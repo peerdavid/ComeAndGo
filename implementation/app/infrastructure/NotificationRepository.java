@@ -1,6 +1,6 @@
 package infrastructure;
 
-import business.NotificationException;
+import business.notification.NotificationException;
 import models.Notification;
 import models.User;
 
@@ -15,10 +15,6 @@ public interface NotificationRepository {
     void deleteNotification(Notification toDelete);
 
     void updateNotification(Notification toUpdate);
-
-    void markAsAccepted(Notification accept) throws NotificationException;
-
-    void markAsRejected(Notification reject) throws NotificationException;
 
     void markAsRead(Notification read) throws NotificationException;
 

@@ -1,7 +1,8 @@
 @import org.pac4j.core.profile.CommonProfile
 
 @import business.notification.NotificationType
-@(profile: CommonProfile, notreadnotifications: java.util.List[Notification], readnotifications: java.util.List[Notification],sentnotifications: java.util.List[Notification])
+@import controllers.notification.NotificationViewModel
+@(profile: CommonProfile, notreadnotifications: java.util.List[NotificationViewModel], readnotifications: java.util.List[NotificationViewModel],sentnotifications: java.util.List[NotificationViewModel])
 
 @main(Messages("views.index.title")) {
 
@@ -13,228 +14,50 @@
             <!--  Not read Notifications   -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.notreadnotifications")</h5>
-                @if(!notreadnotifications.isEmpty) {
-                    <ul class="collapsible notification-list" data-collapsible="accordion">
-                    @for(n: Notification <- notreadnotifications) {
-                        <li>
-                            <div class="collapsible-header"><i class="material-icons">
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.icons.information")
-                                    case NotificationType.ERROR => Messages("notifications.icons.error")
+                <ul class="collapsible notification-list" data-collapsible="accordion">
+                @for(notification:NotificationViewModel <- notreadnotifications){
+                    <li>
+                        <div class="collapsible-header">
+                            <i class="material-icons">@notification.getIcon</i>
+                            <h7>@notification.getHeader</h7>
+                        </div>
 
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.icons.holidayrequest")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.icons.specialholidayrequest")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.icons.businesstripp")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.icons.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.icons.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.icons.overtimepayout")
+                        <div class="collapsible-body">
+                            <p>@notification.getMessage</p>
 
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.icons.holiday.accept")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.icons.holiday.reject")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.icons.holidaypayout.accept")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.icons.holidaypayout.reject")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.icons.overtimepayout.accept")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.icons.overtimepayout.reject")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.icons.fireemployee")
+                            <div class="row button-container">
 
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.icons.changedtimetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.icons.deletedtimetrack")
-
-                                })
-                            </i>
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.information")
-                                    case NotificationType.ERROR => Messages("notifications.error")
-
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.holiday")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.specialholiday")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.businesstrip")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.overtimepayout")
-
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.holidaypayout")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.overtimepayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.overtimepayout")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.fireemployee")
-
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.timetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.timetrack")
+                            @if(notification.isRejectable) {
+                                <a class="btn waves-effect waves-light negative-btn col s12 l6" href="@routes.NotificationController.rejectNotification(notification.getNotificationId)">
+                                    <i class="material-icons right"></i>
+                                    @Messages("views.notification.buttonreject")
+                                </a>
+                            }
 
 
-                                })
-                                <br>
-                                @(n.getSender.getFirstName + " " +  n.getSender.getLastName)
-                            </div>
-                            <div class="collapsible-body">
-                                <p>@n.getMessage</p>
+                            <a class="btn waves-effect waves-light primary-btn s12 col l6 offset-l6" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
+                                @Messages("views.notification.buttonaccept")
+                            </a>
 
-                                <div class="row button-container">
-
-                                    @if((n.getType() == NotificationType.HOLIDAY_PAYOUT_REQUEST)
-                                            || (n.getType() == NotificationType.HOLIDAY_REQUEST)
-                                            || (n.getType() == NotificationType.SPECIAL_HOLIDAY_REQUEST)
-                                            || (n.getType() == NotificationType.OVERTIME_PAYOUT_REQUEST)) {
-
-                                        <a class="btn waves-effect waves-light negative-btn col s12 l6" href="@routes.NotificationController.rejectNotification(n.getId())">
-                                            <i class="material-icons right"></i>
-                                            @Messages("views.notification.buttonreject")
-                                        </a>
-
-                                        <a class="btn waves-effect waves-light primary-btn col s12 l6" href="@(routes.NotificationController.acceptNotification(n.getId))">
-                                            @Messages("views.notification.buttonaccept")
-                                        </a>
-                                    } else {
-                                        <a class="btn waves-effect waves-light primary-btn s12 col l6 offset-l6" href="@(routes.NotificationController.acceptNotification(n.getId))">
-                                            @Messages("views.notification.buttonaccept")
-                                        </a>
-                                    }
-
-                                </div>
 
                             </div>
-                        </li>
-                    }
-                    </ul>
-                } else {
-                    <p>@Messages("views.notification.nonotificationmessage")</p>
+
+                        </div>
+                    </li>
                 }
+                </ul>
             </div>
 
             <!--  Read and accepted/rejected Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.readnotifications")</h5>
-                @if(!readnotifications.isEmpty) {
-                    <ul class="collapsible" data-collapsible="accordion">
-                    @for(n: Notification <- readnotifications) {
-                        <li>
-                            <div class="collapsible-header">
-                                <i class="material-icons">
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.icons.information")
-                                    case NotificationType.ERROR => Messages("notifications.icons.error")
 
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.icons.holidayrequest")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.icons.specialholidayrequest")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.icons.businesstripp")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.icons.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.icons.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.icons.overtimepayout")
-
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.icons.holiday.accept")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.icons.holiday.reject")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.icons.holidaypayout.accept")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.icons.holidaypayout.reject")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.icons.overtimepayout.accept")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.icons.overtimepayout.reject")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.icons.fireemployee")
-
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.icons.changedtimetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.icons.deletedtimetrack")
-
-                                })
-                                </i>
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.information")
-                                    case NotificationType.ERROR => Messages("notifications.error")
-
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.holiday")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.specialholiday")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.businesstrip")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.overtimepayout")
-
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.holidaypayout")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.overtimepayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.overtimepayout")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.fireemployee")
-
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.timetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.timetrack")
-
-
-                                })
-                            </div>
-                            <div class="collapsible-body"><p>@n.getMessage</p></div>
-                        </li>
-                    }
-                    </ul>
-                } else {
-                    <p>@Messages("views.notification.nonotificationmessage")</p>
-                }
             </div>
 
             <!-- Sent Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.sentnotifications")</h5>
-                @if(!sentnotifications.isEmpty) {
-                    <ul class="collapsible" data-collapsible="accordion">
-                    @for(n: Notification <- sentnotifications) {
-                        <li>
-                            <div class="collapsible-header">
-                                <i class="material-icons">
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.icons.information")
-                                    case NotificationType.ERROR => Messages("notifications.icons.error")
 
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.icons.holidayrequest")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.icons.specialholidayrequest")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.icons.businesstripp")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.icons.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.icons.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.icons.overtimepayout")
-
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.icons.holiday.accept")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.icons.holiday.reject")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.icons.holidaypayout.accept")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.icons.holidaypayout.reject")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.icons.overtimepayout.accept")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.icons.overtimepayout.reject")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.icons.fireemployee")
-
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.icons.changedtimetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.icons.deletedtimetrack")
-
-                                })
-                                </i>
-                                @(n.getType()match {
-                                    case NotificationType.INFORMATION => Messages("notifications.information")
-                                    case NotificationType.ERROR => Messages("notifications.error")
-
-                                    case NotificationType.HOLIDAY_REQUEST => Messages("notifications.holiday")
-                                    case NotificationType.SPECIAL_HOLIDAY_REQUEST => Messages("notifications.specialholiday")
-                                    case NotificationType.BUSINESS_TRIP_INFORMATION => Messages("notifications.businesstrip")
-                                    case NotificationType.SICK_LEAVE_INFORMATION => Messages("notifications.sickleave")
-                                    case NotificationType.HOLIDAY_PAYOUT_REQUEST => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REQUEST => Messages("notifications.overtimepayout")
-
-                                    case NotificationType.HOLIDAY_ACCEPT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_REJECT => Messages("notifications.holiday")
-                                    case NotificationType.HOLIDAY_PAYOUT_ACCEPT => Messages("notifications.holidaypayout")
-                                    case NotificationType.HOLIDAY_PAYOUT_REJECT => Messages("notifications.holidaypayout")
-                                    case NotificationType.OVERTIME_PAYOUT_ACCEPT => Messages("notifications.overtimepayout")
-                                    case NotificationType.OVERTIME_PAYOUT_REJECT => Messages("notifications.overtimepayout")
-                                    case NotificationType.FIRE_EMPLOYEE => Messages("notifications.fireemployee")
-
-                                    case NotificationType.CHANGED_TIMETRACK => Messages("notifications.timetrack")
-                                    case NotificationType.DELETED_TIMETRACK => Messages("notifications.timetrack")
-
-                                })
-                            </div>
-                            <div class="collapsible-body"><p>@n.getMessage</p></div>
-                        </li>
-                    }
-                    </ul>
-                } else {
-                    <p>@Messages("views.notification.nonotificationmessage")</p>
-                }
             </div>
         </div>
         <br style="clear : both ;"/>
