@@ -16,6 +16,9 @@ def pac4j_http = "org.pac4j" % "pac4j-http" % "1.8.6"
 def bcrypt = "org.mindrot" % "jbcrypt" % "0.3m"
 // for unit testing
 def mockito = "org.mockito" % "mockito-core" % "1.9.5" % "test"
+// For software architecture graph
+def guice_grapher = "com.google.inject.extensions" % "guice-grapher" % "4.0"
+
 
 libraryDependencies ++= Seq(
   jdbc,
@@ -24,8 +27,11 @@ libraryDependencies ++= Seq(
   pac4j,
   pac4j_http,
   bcrypt,
+  guice_grapher,
   mockito,
   specs2 % Test )
+
+
 
 unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
 
