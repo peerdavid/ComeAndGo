@@ -46,6 +46,9 @@ public class Notification extends Model {
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
 
+
+    private int referenceId;
+
     // Use standard messages for each Notification Type
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
         this(type, getStandardMessage(type, sender), sender, receiver);
