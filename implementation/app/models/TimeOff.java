@@ -19,7 +19,7 @@ public class TimeOff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer _id;
 
-    @Column(name = "_user_id")
+    @Column(name = "user_id")
     @NotNull
     @Index
     @ManyToOne()

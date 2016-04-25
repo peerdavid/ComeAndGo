@@ -1,8 +1,7 @@
 package infrastructure;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
-import com.avaje.ebean.Ebean;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -10,12 +9,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by stefan on 11.04.16.

@@ -1,6 +1,6 @@
 package models;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;

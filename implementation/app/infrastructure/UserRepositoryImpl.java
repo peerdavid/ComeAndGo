@@ -1,7 +1,7 @@
 package infrastructure;
 
+import business.usermanagement.UserNotFoundException;
 import com.avaje.ebean.Ebean;
-import com.avaje.ebean.SqlQuery;
 import models.User;
 
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by david on 29.03.16.
  */
-class UserRepositoryImpl implements UserRepository {
+class UserRepositoryImpl implements InternalUserManagement {
 
 
     @Override
@@ -19,23 +19,33 @@ class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public User readUser(String userName) {
+    public User readUser(String userName) throws UserNotFoundException {
         User result = Ebean.find(User.class)
                 .where().eq("username", userName)
                 .where().eq("active", true)
                 .findUnique();
 
-        return result;
+        if (result != null) {
+            return result;
+        }
+
+        // We should never return null
+        throw new UserNotFoundException("exceptions.usermanagement.could_not_find_timetrack");
     }
 
     @Override
-    public User readUser(int userId) {
+    public User readUser(int userId) throws UserNotFoundException {
         User result = Ebean.find(User.class)
             .where().eq("id", userId)
             .where().eq("active", true)
             .findUnique();
 
-        return result;
+        if (result != null) {
+            return result;
+        }
+
+        // We should never return null
+        throw new UserNotFoundException("exceptions.usermanagement.could_not_find_timetrack");
     }
 
     @Override
@@ -53,9 +63,13 @@ class UserRepositoryImpl implements UserRepository {
     public List<User> readUsers() {
         List<User> userList =
                 Ebean.find(User.class)
-                .where().eq("active", true)
-                .findList();
+                        .where().eq("active", true)
+                        .findList();
+
 
         return userList;
     }
+
 }
+
+

@@ -1,10 +1,10 @@
 package business.timetracking;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import business.usermanagement.SecurityRole;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
 import javassist.NotFoundException;
 import models.Break;
 import models.TimeTrack;
@@ -31,7 +31,7 @@ public class TimeTrackingServiceTest {
 
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
-    UserRepository _userRepository;
+    InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
     User _testUser;
     Break _testBreak;
@@ -44,7 +44,7 @@ public class TimeTrackingServiceTest {
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
-        _userRepository = mock(UserRepository.class);
+        _userRepository = mock(InternalUserManagement.class);
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
     }

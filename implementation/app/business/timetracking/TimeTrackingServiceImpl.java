@@ -1,10 +1,10 @@
 package business.timetracking;
 
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
 import javassist.NotFoundException;
 import models.Break;
 import models.TimeTrack;
@@ -23,12 +23,12 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
-    private final UserRepository _userRepository;
+    private final InternalUserManagement _userRepository;
     private final TimeTrackingValidation _validation;
 
 
     @Inject
-    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, UserRepository userRepository) {
+    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
         _userRepository = userRepository;

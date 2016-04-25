@@ -1,6 +1,6 @@
 package controllers;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;

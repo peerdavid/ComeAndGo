@@ -1,6 +1,6 @@
 package models;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
 import org.mindrot.jbcrypt.BCrypt;

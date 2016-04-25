@@ -16,10 +16,6 @@ public interface NotificationRepository {
 
     void updateNotification(Notification toUpdate);
 
-    void markAsAccepted(Notification accept) throws NotificationException;
-
-    void markAsRejected(Notification reject) throws NotificationException;
-
     void markAsRead(Notification read) throws NotificationException;
 
     Notification readNotificationById(int notificationId) throws NotificationException;

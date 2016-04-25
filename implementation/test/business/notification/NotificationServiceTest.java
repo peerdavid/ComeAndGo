@@ -2,7 +2,7 @@ package business.notification;
 
 import business.usermanagement.SecurityRole;
 import infrastructure.NotificationRepository;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
 import models.Notification;
 import models.User;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import static org.mockito.Mockito.mock;
 public class NotificationServiceTest {
 
 
-    UserRepository _userRepository;
+    InternalUserManagement _userRepository;
     NotificationRepository _notificationRepository;
     NotificationService _testee;
     Notification _testNotification;
@@ -25,12 +25,12 @@ public class NotificationServiceTest {
 
     @Before
     public void SetUp() throws Exception {
-        _userRepository = mock(UserRepository.class);
+        _userRepository = mock(InternalUserManagement.class);
         _notificationRepository = mock(NotificationRepository.class);
         _testee = new NotificationService(_notificationRepository, _userRepository);
         _toTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
         _fromTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
-        _testNotification = new Notification(NotificationType.INFORMATION, "test", _fromTestUser, _toTestUser, null, null);
+        _testNotification = new Notification(NotificationType.INFORMATION, "test", _fromTestUser, _toTestUser);
 
     }
 

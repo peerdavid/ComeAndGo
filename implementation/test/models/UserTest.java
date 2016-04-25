@@ -1,6 +1,6 @@
 package models;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 
 import org.junit.Before;
