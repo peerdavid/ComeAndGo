@@ -1,7 +1,6 @@
 package controllers;
 
 import business.UserException;
-import business.timetracking.TimeTrackState;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import models.Break;
@@ -13,8 +12,6 @@ import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
 import play.mvc.Result;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +42,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         List<TimeTrack> timeTrackList = _timeTracking.readTimeTracks(userId, from, to);
 
-        return ok(views.html.index.render(profile, _timeTracking.getState(userId), progress, timeTrackList));
+        return ok(views.html.index.render(profile, _timeTracking.readState(userId), progress, timeTrackList));
     }
 
     @RequiresAuthentication(clientName = "default")
@@ -62,7 +59,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int profileId = Integer.parseInt(profile.getId());
 
-        switch (_timeTracking.getState(profileId)) {
+        switch (_timeTracking.readState(profileId)) {
             case ACTIVE:
                 _timeTracking.startBreak(profileId);
                 break;
@@ -246,7 +243,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             throw new UserException("exceptions.timetracking.error_in_timetrack_form");
 
 
-        _timeTracking.addTimeTrack(userId, fromDate, toDate);
+        _timeTracking.createTimeTrack(userId, fromDate, toDate);
 
         return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
     }

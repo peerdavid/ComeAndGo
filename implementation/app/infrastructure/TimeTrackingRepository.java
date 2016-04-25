@@ -15,11 +15,11 @@ import java.util.List;
  */
 public interface TimeTrackingRepository {
 
-    int createTimeTrack(TimeTrack timeTrack, User user) throws UserException;
+    int createTimeTrack(TimeTrack timeTrack) throws UserException;
 
     TimeTrack readTimeTrack(int id) throws NotFoundException;
 
-    TimeTrack getActiveTimeTrack(User user) throws NotFoundException;
+    TimeTrack readActiveTimeTrack(User user) throws NotFoundException;
 
     List<TimeTrack> readTimeTracks(User user);
 
@@ -31,7 +31,7 @@ public interface TimeTrackingRepository {
 
     void deleteTimeTrack(TimeTrack timeTrack);
 
-    Break getActiveBreak(User user) throws NotFoundException;
+    Break readActiveBreak(User user) throws NotFoundException;
 
     void deleteBreak(Break actualBreak);
 
@@ -42,10 +42,4 @@ public interface TimeTrackingRepository {
     void endBreak(Break actualBreak) throws TimeTrackException, UserException;
 
     void endBreak(User user) throws TimeTrackException, NotFoundException, UserException;
-
-    /**
-     *  ADD timeTracks and corresponding breaks  */
-    void addTimeTrack(TimeTrack timeTrack) throws UserException;
-
-    //void updateTimeTrack(TimeTrack timeTrack) throws UserException;
 }

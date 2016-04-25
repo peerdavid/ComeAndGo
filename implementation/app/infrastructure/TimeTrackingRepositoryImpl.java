@@ -32,7 +32,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
 
    /**
-    * returns all timetracks from user, which are between from and to
+    * returns all timeTracks from user, which are between from and to
     * @param user
     * @param from
     * @param to
@@ -59,7 +59,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
        // we also should include the active timeTrack:
        try {
-          _timeTracks.add(getActiveTimeTrack(user));
+          _timeTracks.add(readActiveTimeTrack(user));
        } catch (NotFoundException e) {
           // in this branch should be done anything
        }
@@ -112,7 +112,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
    }
 
     @Override
-    public TimeTrack getActiveTimeTrack(User user) throws NotFoundException {
+    public TimeTrack readActiveTimeTrack(User user) throws NotFoundException {
         TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
             .where().eq("_user_id", user.getId())
             .where().isNull("end")
@@ -134,8 +134,8 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     }
 
     @Override
-    public Break getActiveBreak(User user) throws NotFoundException {
-        TimeTrack activeTimeTrack = getActiveTimeTrack(user);
+    public Break readActiveBreak(User user) throws NotFoundException {
+        TimeTrack activeTimeTrack = readActiveTimeTrack(user);
 
         Break activeBreak =
             Ebean.find(Break.class)
@@ -148,16 +148,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
         throw new NotFoundException("exceptions.timetracking.could_not_find_break");
     }
 
+    /**
+     * creates a new timeTrack
+     * @param timeTrack
+     * @return timeTrack ID created by database after storing
+     * @throws UserException
+     */
     @Override
-    public int createTimeTrack(TimeTrack timeTrack, User user) throws UserException {
-        // first ensure that there is no TimeTrack already created for this user
-        int rowCount = Ebean.find(TimeTrack.class)
-            .where().eq("_user_id", user.getId())
-            .where().isNull("end").findRowCount();
-        if (rowCount != 0) {
-            throw new UserException("exceptions.timetracking.user_timetrack_error");
-        }
-
+    public int createTimeTrack(TimeTrack timeTrack) throws UserException {
         Ebean.save(timeTrack);
         // refresh to get the auto_incremented id inside newTimeTrack
         Ebean.refresh(timeTrack);
@@ -177,7 +175,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void startBreak(User user) throws NotFoundException {
-        TimeTrack actualTimeTrack = getActiveTimeTrack(user);
+        TimeTrack actualTimeTrack = readActiveTimeTrack(user);
         actualTimeTrack.addBreak(new Break(DateTime.now()));
         updateTimeTrack(actualTimeTrack);
     }
@@ -190,12 +188,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void endBreak(User user) throws NotFoundException, TimeTrackException, UserException {
-        Break actualBreak = getActiveBreak(user);
+        Break actualBreak = readActiveBreak(user);
         endBreak(actualBreak);
-    }
-
-    @Override
-    public void addTimeTrack(TimeTrack timeTrack) throws UserException {
-            Ebean.save(timeTrack);
     }
 }
