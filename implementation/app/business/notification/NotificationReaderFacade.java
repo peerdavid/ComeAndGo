@@ -31,12 +31,12 @@ class NotificationReaderFacade implements NotificationReader {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getUnreadNotificationsForUser(user);
+        return _notificationRepository.readUnseenNotifications(user);
     }
 
     @Override
     public void setNotificationAsRead(int notificationId) throws NotificationException {
-        Notification notificationToChange = _notificationRepository.readNotificationById(notificationId);
+        Notification notificationToChange = _notificationRepository.readNotification(notificationId);
         _notificationRepository.markAsRead(notificationToChange);
     }
 
@@ -49,7 +49,7 @@ class NotificationReaderFacade implements NotificationReader {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getNumberOfUnreadNotifications(user);
+        return _notificationRepository.readNumberOfUnseenNotifications(user);
     }
 
     @Override
@@ -62,7 +62,7 @@ class NotificationReaderFacade implements NotificationReader {
         }
 
 
-        return _notificationRepository.getReadNotificationsForUser(user, amount);
+        return _notificationRepository.readSeenNotifications(user, amount);
     }
 
     @Override
@@ -74,7 +74,7 @@ class NotificationReaderFacade implements NotificationReader {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getSentNotifications(user, amount);
+        return _notificationRepository.readSentNotifications(user, amount);
     }
 
 }

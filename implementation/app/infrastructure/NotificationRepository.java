@@ -18,13 +18,13 @@ public interface NotificationRepository {
 
     void markAsRead(Notification read) throws NotificationException;
 
-    Notification readNotificationById(int notificationId) throws NotificationException;
+    Notification readNotification(int notificationId) throws NotificationException;
 
-    int getNumberOfUnreadNotifications(User user) throws NotificationException;
+    int readNumberOfUnseenNotifications(User user) throws NotificationException;
 
-    List<Notification> getUnreadNotificationsForUser(User user) throws NotificationException;
+    List<Notification> readUnseenNotifications(User user) throws NotificationException;
 
-    List<Notification> getReadNotificationsForUser(User user, int amount) throws NotificationException;
+    List<Notification> readSeenNotifications(User user, int amount) throws NotificationException;
 
-    List<Notification> getSentNotifications(User user, int amount) throws NotificationException;
+    List<Notification> readSentNotifications(User user, int amount) throws NotificationException;
 }
