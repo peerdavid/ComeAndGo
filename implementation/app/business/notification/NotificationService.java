@@ -1,7 +1,5 @@
 package business.notification;
 
-import business.NotificationException;
-import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
 import infrastructure.UserRepository;

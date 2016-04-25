@@ -1,6 +1,5 @@
 package business.notification;
 
-import business.NotificationException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
 import infrastructure.UserRepository;
@@ -12,7 +11,7 @@ import java.util.List;
 /**
  * Created by david on 22.03.16.
  */
-public class NotificationReaderFacade implements NotificationReader {
+class NotificationReaderFacade implements NotificationReader {
 
     private final NotificationRepository _notificationRepository;
     private final UserRepository _userRepository;

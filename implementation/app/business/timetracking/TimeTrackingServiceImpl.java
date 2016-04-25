@@ -3,7 +3,6 @@ package business.timetracking;
 
 import business.UserException;
 import business.notification.NotificationSender;
-import business.TimeTrackException;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;

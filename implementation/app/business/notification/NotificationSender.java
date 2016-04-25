@@ -1,6 +1,5 @@
 package business.notification;
 
-import business.NotificationException;
 import models.Notification;
 
 /**

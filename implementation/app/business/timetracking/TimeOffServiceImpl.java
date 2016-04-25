@@ -9,7 +9,7 @@ import models.TimeOff;
 /**
  * Created by paz on 24.04.16.
  */
-public class TimeOffServiceImpl implements TimeOffService {
+class TimeOffServiceImpl implements TimeOffService {
 
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
