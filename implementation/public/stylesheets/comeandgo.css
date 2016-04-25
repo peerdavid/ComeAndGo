@@ -128,6 +128,10 @@ nav.top-nav .page-title {
     height: 40%;
 }
 
+.notification-list .button-container {
+    padding: 0px 18px 0px 18px;
+}
+
 div.enable-editing-switch-container.col , div.enable-editing-switch-container.col .switch {
     float: right;
 }
@@ -187,18 +191,7 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     background-color: #ff5252;
 }
 
-.column-center{
-    display: inline-block;
-    width: 33%;
-}
 
-.column-sides{
-    width: 33%;
-}
-
-.column{
-    padding: 5px;
-}
 
 /* fix for labels (click through) */
 .input-field > label {

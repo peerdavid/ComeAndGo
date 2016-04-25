@@ -8,13 +8,13 @@
     @navigation(Messages("views.index.title"), profile) {
 
 
-        <div>
+        <div class="row">
 
             <!--  Not read Notifications   -->
-            <div class="left column-sides column">
+            <div class="col s12 m4">
                 <h5>@Messages("views.notification.notreadnotifications")</h5>
                 @if(!notreadnotifications.isEmpty) {
-                    <ul class="collapsible" data-collapsible="accordion">
+                    <ul class="collapsible notification-list" data-collapsible="accordion">
                     @for(n: Notification <- notreadnotifications) {
                         <li>
                             <div class="collapsible-header"><i class="material-icons">
@@ -72,20 +72,28 @@
                             <div class="collapsible-body">
                                 <p>@n.getMessage</p>
 
-                                <a class="btn waves-effect waves-light primary-btn ghost right" href="@(routes.NotificationController.acceptNotification(n.getId))">
-                                    @Messages("views.notification.buttonaccept")
-                                </a>
+                                <div class="row button-container">
 
-                                @if((n.getType() == NotificationType.HOLIDAY_PAYOUT_REQUEST)
-                                        || (n.getType() == NotificationType.HOLIDAY_REQUEST)
-                                        || (n.getType() == NotificationType.SPECIAL_HOLIDAY_REQUEST)
-                                        || (n.getType() == NotificationType.OVERTIME_PAYOUT_REQUEST)) {
+                                    @if((n.getType() == NotificationType.HOLIDAY_PAYOUT_REQUEST)
+                                            || (n.getType() == NotificationType.HOLIDAY_REQUEST)
+                                            || (n.getType() == NotificationType.SPECIAL_HOLIDAY_REQUEST)
+                                            || (n.getType() == NotificationType.OVERTIME_PAYOUT_REQUEST)) {
 
-                                    <a class="btn waves-effect waves-light negative-btn left ghost" href="@routes.NotificationController.rejectNotification(n.getId())">
-                                        <i class="material-icons right"></i>
-                                        @Messages("views.notification.buttonreject")
-                                    </a>
-                                }
+                                        <a class="btn waves-effect waves-light negative-btn col s12 l6" href="@routes.NotificationController.rejectNotification(n.getId())">
+                                            <i class="material-icons right"></i>
+                                            @Messages("views.notification.buttonreject")
+                                        </a>
+
+                                        <a class="btn waves-effect waves-light primary-btn col s12 l6" href="@(routes.NotificationController.acceptNotification(n.getId))">
+                                            @Messages("views.notification.buttonaccept")
+                                        </a>
+                                    } else {
+                                        <a class="btn waves-effect waves-light primary-btn s12 col l6 offset-l6" href="@(routes.NotificationController.acceptNotification(n.getId))">
+                                            @Messages("views.notification.buttonaccept")
+                                        </a>
+                                    }
+
+                                </div>
 
                             </div>
                         </li>
@@ -97,7 +105,7 @@
             </div>
 
             <!--  Read and accepted/rejected Notifications  -->
-            <div class="right column-center column">
+            <div class="col s12 m4">
                 <h5>@Messages("views.notification.readnotifications")</h5>
                 @if(!readnotifications.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">
@@ -164,7 +172,7 @@
             </div>
 
             <!-- Sent Notifications  -->
-            <div class="right column-sides column">
+            <div class="col s12 m4">
                 <h5>@Messages("views.notification.sentnotifications")</h5>
                 @if(!sentnotifications.isEmpty) {
                     <ul class="collapsible" data-collapsible="accordion">

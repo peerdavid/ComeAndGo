@@ -141,7 +141,7 @@ notifications.icons.error = close
 notifications.icons.holidayrequest = beach_access
 notifications.icons.specialholidayrequest =email
 notifications.icons.businesstripp = language
-notifications.icons.sickleave = mood_bad
+notifications.icons.sickleave = hotel
 notifications.icons.holidaypayout = monetization_on
 notifications.icons.overtimepayout = monetization_on
 
