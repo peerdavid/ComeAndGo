@@ -31,7 +31,7 @@ public class UserManagementController extends UserProfileController {
     public Result indexEditUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        return ok(views.html.edituser.render(profile, _userManagement.getAllUsers()));
+        return ok(views.html.edituser.render(profile, _userManagement.readUsers()));
     }
 
 
@@ -42,7 +42,7 @@ public class UserManagementController extends UserProfileController {
     public Result editUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        List<User> userList = _userManagement.getAllUsers();
+        List<User> userList = _userManagement.readUsers();
 
         Form<User> form = FORM.bindFromRequest();
 
@@ -79,9 +79,9 @@ public class UserManagementController extends UserProfileController {
             changingUser.setPassword(password);
         }
 
-        _userManagement.changeUserData(changingUser.getUserName(), changingUser);
+        _userManagement.updateUser(changingUser.getUserName(), changingUser);
 
-        return ok(views.html.edituser.render(profile, _userManagement.getAllUsers()));
+        return ok(views.html.edituser.render(profile, _userManagement.readUsers()));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")

@@ -45,7 +45,7 @@ public class UserServiceTest {
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
 
 
-        _testee.registerNewUser(_testUser);
+        _testee.createUser(_testUser);
 
         // Check if a new User is created in repo
         Mockito.verify(_userRepository, times(1)).createUser(any()); // Check if the function really called our repository
@@ -57,7 +57,7 @@ public class UserServiceTest {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
 
-        _testee.registerNewUser(_testUser);
+        _testee.createUser(_testUser);
 
     }
 
@@ -65,7 +65,7 @@ public class UserServiceTest {
     public void changeUser_ForUnregisteredUser_ShouldFail() throws UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
 
-        _testee.changeUser(_testUser.getUserName(), _testUser);
+        _testee.updateUser(_testUser.getUserName(), _testUser);
     }
 
     @Test(expected = UserException.class)
@@ -74,7 +74,7 @@ public class UserServiceTest {
 
         _testUser.setPassword("test123");
 
-        _testee.changeUser(_testUser.getUserName(), _testUser);
+        _testee.updateUser(_testUser.getUserName(), _testUser);
     }
 
     @Test(expected = UserException.class)
@@ -128,7 +128,7 @@ public class UserServiceTest {
         List<User> userList = new ArrayList<User>();
         userList.add(_testAdmin);
         when(_userRepository.readUser(_testAdmin.getUserName())).thenReturn(_testAdmin);
-        when(_userRepository.getAllUsers()).thenReturn(userList);
+        when(_userRepository.readUsers()).thenReturn(userList);
 
         _testee.deleteUser(_testAdmin.getUserName());
     }
@@ -140,7 +140,7 @@ public class UserServiceTest {
         userList.add(_testUser);
         userList.add(_testAdmin);
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
-        when(_userRepository.getAllUsers()).thenReturn(userList);
+        when(_userRepository.readUsers()).thenReturn(userList);
 
         _testee.deleteUser(_testUser.getUserName());
 
@@ -155,7 +155,7 @@ public class UserServiceTest {
         userList.add(_testUser);
         userList.add(_testAdmin);
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
-        when(_userRepository.getAllUsers()).thenReturn(userList);
+        when(_userRepository.readUsers()).thenReturn(userList);
 
         _testee.deleteUser(_testUser.getUserName());
 
