@@ -1,10 +1,10 @@
 package business.timetracking;
 
+import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import business.usermanagement.SecurityRole;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.InternalUserManagement;
 import models.Break;
 import models.TimeTrack;
 import models.User;

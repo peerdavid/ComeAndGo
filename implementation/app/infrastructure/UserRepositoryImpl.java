@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by david on 29.03.16.
  */
-class UserRepositoryImpl implements InternalUserManagement {
+class UserRepositoryImpl implements UserRepository {
 
 
     @Override
