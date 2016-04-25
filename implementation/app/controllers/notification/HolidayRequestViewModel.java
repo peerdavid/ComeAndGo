@@ -2,6 +2,7 @@ package controllers.notification;
 
 import business.timetracking.TimeTracking;
 import models.TimeTrack;
+import play.i18n.Messages;
 
 /**
  * Created by csaq5996 on 4/25/16.
@@ -10,39 +11,52 @@ public class HolidayRequestViewModel implements NotificationViewModel {
 
     private TimeTracking _timeTracking;
 
-    public HolidayRequestViewModel(TimeTracking timeTracking){
+    private int notificationId;
+    private int timeOffId;
+
+    private String message;
+
+    private boolean read;
+
+
+    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, boolean read){
 
         _timeTracking = timeTracking;
+
+        this.notificationId = notificationId;
+        this.timeOffId = timeOffId;
+        this.message = message;
+        this.read = read;
     }
 
     @Override
     public int getTimeOffId() {
-        return 0;
+        return timeOffId;
     }
 
     @Override
     public int getNotificationId() {
-        return 0;
+        return notificationId;
     }
 
     @Override
     public boolean hasRead() {
-        return true;
+        return read;
     }
 
     @Override
     public String getIcon() {
-        return "sun";
+        return Messages.get("notifications.icons.holidayrequest");
     }
 
     @Override
     public String getHeader() {
-        return "HOLIDAY";
+        return Messages.get("notifications.holiday");
     }
 
     @Override
     public String getMessage() {
-        return "das ist ein super cooler urlaub...";
+        return message;
     }
 
     @Override
@@ -52,6 +66,12 @@ public class HolidayRequestViewModel implements NotificationViewModel {
 
     @Override
     public void accept() {
+        this.read = true;
         //_timeTracking.acceptHolidayRequest();
+    }
+
+    public void reject() {
+        this.read = true;
+        //_timeTracking.rejectHolidayRequest();
     }
 }

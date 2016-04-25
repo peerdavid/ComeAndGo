@@ -11,6 +11,7 @@ import controllers.notification.NotificationViewModelFactory;
 import controllers.notification.SickLeaveViewModel;
 import models.Notification;
 import models.User;
+import net.sf.ehcache.search.expression.Not;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -40,14 +41,18 @@ public class NotificationController extends UserProfileController {
 
         int id = Integer.parseInt(profile.getId());
 
-        //Notification not = null;
-        //NotificationViewModelFactory.createNotificationViewModel(not);
+        /*
+        List<NotificationViewModel> readNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getReadNotificationsForUser(id,10), _timeTracking);
+        List<NotificationViewModel> unreadNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getUnreadNotificationsForUser(id), _timeTracking);
+        List<NotificationViewModel> sentNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getSentNotifications(id,10), _timeTracking);
+        */
 
         List<NotificationViewModel> readNotifications = new ArrayList<>();
         List<NotificationViewModel> unreadNotifications = new ArrayList<>();
-        unreadNotifications.add(new SickLeaveViewModel());
+        unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig",false));
+        unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message",false));
         List<NotificationViewModel> sentNotifications = new ArrayList<>();
-        readNotifications.add(new SickLeaveViewModel());
+        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig",false));
 
         return ok(views.html.notification.render(profile, unreadNotifications, readNotifications, sentNotifications));
     }
@@ -55,11 +60,13 @@ public class NotificationController extends UserProfileController {
     @RequiresAuthentication(clientName = "default")
     public Result acceptNotification(int notificationId) throws Exception{
 
-
         // _notifications.getNotification(notificationId)
+
+        /*
         Notification not = null;
         NotificationViewModel notViewModel = NotificationViewModelFactory.createNotificationViewModel(not, _timeTracking);
         notViewModel.accept();
+        */
 
         //_notifReader.accept(notificationId);
 
@@ -72,7 +79,6 @@ public class NotificationController extends UserProfileController {
 
         //_notifReader.reject(notificationId);
 
-        Messages.get("");
 
 
         return redirect(routes.NotificationController.index());
