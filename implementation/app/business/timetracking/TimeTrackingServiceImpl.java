@@ -1,10 +1,10 @@
 package business.timetracking;
 
 
+import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.InternalUserManagement;
 import javassist.NotFoundException;
 import models.TimeTrack;
 import models.User;
@@ -22,7 +22,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
-    private final InternalUserManagement _userRepository;
+    private final InternalUserManagement _userManagement;
     private final TimeTrackingValidation _validation;
 
 
@@ -30,7 +30,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
-        _userRepository = userRepository;
+        _userManagement = userRepository;
         _validation = new TimeTrackingValidationImpl(repository);
     }
 
@@ -161,7 +161,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         User user;
 
         try {
-            user = _userRepository.readUser(userId);
+            user = _userManagement.readUser(userId);
         } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.no_such_user");
         }

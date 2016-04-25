@@ -1,8 +1,7 @@
 package business.usermanagement;
 
 import com.google.inject.Inject;
-import infrastructure.InternalUserManagement;
-import javassist.NotFoundException;
+import infrastructure.UserRepository;
 import models.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
@@ -17,10 +16,10 @@ import java.util.List;
 class UserServiceImpl implements UserService, business.usermanagement.InternalUserManagement {
 
 
-    private InternalUserManagement _userRepository;
+    private UserRepository _userRepository;
 
     @Inject
-    public UserServiceImpl(InternalUserManagement userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         _userRepository = userRepository;
     }
 

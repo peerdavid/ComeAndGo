@@ -1,8 +1,8 @@
 package business.notification;
 
+import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
-import infrastructure.InternalUserManagement;
 import models.Notification;
 
 /**
@@ -11,12 +11,12 @@ import models.Notification;
 class NotificationService implements NotificationSender {
 
     private final NotificationRepository _notificationRepository;
-    private final InternalUserManagement _userRepository;
+    private final InternalUserManagement _userManagement;
 
     @Inject
     public NotificationService(NotificationRepository notificationRepository, InternalUserManagement userRepository) {
         _notificationRepository = notificationRepository;
-        _userRepository = userRepository;
+        _userManagement = userRepository;
     }
 
     @Override

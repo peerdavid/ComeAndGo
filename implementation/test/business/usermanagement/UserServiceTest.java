@@ -1,8 +1,7 @@
 package business.usermanagement;
 
 
-import infrastructure.InternalUserManagement;
-
+import infrastructure.UserRepository;
 import models.User;
 
 import org.junit.Assert;
@@ -23,14 +22,14 @@ import static org.mockito.Mockito.when;
  */
 public class UserServiceTest {
 
-    InternalUserManagement _userRepository;
+    UserRepository _userRepository;
     UserService _testee;
     User _testUser;
     User _testAdmin;
 
     @Before
     public void SetUp() throws Exception {
-        _userRepository = mock(InternalUserManagement.class);
+        _userRepository = mock(UserRepository.class);
         _testee = new UserServiceImpl(_userRepository);
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
         _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, "testBoss");

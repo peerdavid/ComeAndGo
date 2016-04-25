@@ -1,8 +1,8 @@
 package business.notification;
 
+import business.usermanagement.InternalUserManagement;
 import business.usermanagement.SecurityRole;
 import infrastructure.NotificationRepository;
-import infrastructure.InternalUserManagement;
 import models.Notification;
 import models.User;
 import org.junit.Before;

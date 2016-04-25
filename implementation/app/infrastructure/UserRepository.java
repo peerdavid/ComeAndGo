@@ -1,7 +1,6 @@
 package infrastructure;
 
 import business.usermanagement.UserNotFoundException;
-import javassist.NotFoundException;
 import models.User;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 /**
  * Created by david on 29.03.16.
  */
-public interface InternalUserManagement {
+public interface UserRepository {
     void createUser(User user);
 
     User readUser(String userName) throws UserNotFoundException;

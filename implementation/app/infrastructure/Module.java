@@ -11,6 +11,6 @@ public class Module extends AbstractModule {
     protected void configure() {
         bind(NotificationRepository.class).to(NotificationRepositoryImpl.class);
         bind(TimeTrackingRepository.class).to(TimeTrackingRepositoryImpl.class);
-        bind(InternalUserManagement.class).to(UserRepositoryImpl.class);
+        bind(UserRepository.class).to(UserRepositoryImpl.class);
     }
 }
