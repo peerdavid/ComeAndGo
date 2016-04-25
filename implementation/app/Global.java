@@ -1,7 +1,7 @@
 import static play.mvc.Results.internalServerError;
 import static play.mvc.Results.ok;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
