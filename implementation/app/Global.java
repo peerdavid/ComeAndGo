@@ -1,3 +1,6 @@
+import static play.mvc.Results.internalServerError;
+import static play.mvc.Results.ok;
+
 import business.UserException;
 import play.Application;
 import play.GlobalSettings;
@@ -5,19 +8,13 @@ import play.Logger;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
-import scala.reflect.internal.Trees;
 
-import static play.mvc.Results.internalServerError;
-import static play.mvc.Results.ok;
 
 /**
- * Created by david on 03.04.16.
+ * Global actions such as error handling
+ * -> Will be called by PlayFramework!
  */
 public class Global extends GlobalSettings {
-
-    public Global(){
-
-    }
 
 
     @Override
@@ -36,12 +33,12 @@ public class Global extends GlobalSettings {
     }
 
     @Override
-    public F.Promise<Result> onError(Http.RequestHeader request, Throwable t) {
+    public F.Promise<Result> onError(Http.RequestHeader request, Throwable throwable) {
 
-        if(t instanceof UserException){
+        if (throwable instanceof UserException) {
             return F.Promise.<Result>pure(ok(request.uri()));
         }
 
-        return F.Promise.<Result>pure(internalServerError(views.html.error.render(t)));
+        return F.Promise.<Result>pure(internalServerError(views.html.error.render(throwable)));
     }
 }
