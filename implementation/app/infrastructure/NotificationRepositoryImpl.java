@@ -1,7 +1,6 @@
 package infrastructure;
 
-import business.NotificationException;
-import business.notification.NotificationType;
+import business.notification.NotificationException;
 import com.avaje.ebean.Ebean;
 import models.Notification;
 import models.User;

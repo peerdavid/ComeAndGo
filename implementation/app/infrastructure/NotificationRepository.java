@@ -1,6 +1,6 @@
 package infrastructure;
 
-import business.NotificationException;
+import business.notification.NotificationException;
 import models.Notification;
 import models.User;
 

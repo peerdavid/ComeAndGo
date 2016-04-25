@@ -1,12 +1,11 @@
 package business.timetracking;
 
-import business.TimeTrackException;
 import models.TimeOff;
 
 /**
  * Created by paz on 24.04.16.
  */
-public interface TimeOffService {
+interface TimeOffService {
 
     void takeSickLeave(TimeOff sickLeave) throws Exception;
 

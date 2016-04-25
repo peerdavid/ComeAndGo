@@ -37,15 +37,18 @@ public class TimeOff {
     @Column(name = "state")
     private TimeOffState _state;
 
+    @Column(name = "comment")
+    private String _comment;
+
     @Column(name = "reviewed_by")
     private User _reviewed_by;
 
-    public TimeOff(User _user, DateTime _from, DateTime _to, TimeOffType _type, TimeOffState _state, User _reviewed_by) {
+    public TimeOff(User _user, DateTime _from, DateTime _to, TimeOffType _type, TimeOffState _state, String _comment) {
         this._user = _user;
         this._from = _from;
         this._to = _to;
         this._type = _type;
         this._state = _state;
-        this._reviewed_by = _reviewed_by;
+        this._comment = _comment;
     }
 }

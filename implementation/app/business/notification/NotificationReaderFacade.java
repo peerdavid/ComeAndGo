@@ -1,7 +1,5 @@
 package business.notification;
 
-import business.NotificationException;
-import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
 import infrastructure.UserRepository;
@@ -13,7 +11,7 @@ import java.util.List;
 /**
  * Created by david on 22.03.16.
  */
-public class NotificationReaderFacade implements NotificationReader {
+class NotificationReaderFacade implements NotificationReader {
 
     private final NotificationRepository _notificationRepository;
     private final UserRepository _userRepository;
@@ -91,7 +89,7 @@ public class NotificationReaderFacade implements NotificationReader {
 
     private NotificationType getAcceptOppositeNotificationType(NotificationType type) {
         switch(type) {
-            case HOLYDAY_REQUEST:
+            case HOLIDAY_REQUEST:
                 return NotificationType.HOLIDAY_ACCEPT;
             case HOLIDAY_PAYOUT_REQUEST:
                 return NotificationType.HOLIDAY_PAYOUT_ACCEPT;
@@ -107,7 +105,7 @@ public class NotificationReaderFacade implements NotificationReader {
 
     private NotificationType getRejectOppositeNotificationType(NotificationType type) {
         switch(type) {
-            case HOLYDAY_REQUEST:
+            case HOLIDAY_REQUEST:
                 return NotificationType.HOLIDAY_REJECT;
             case HOLIDAY_PAYOUT_REQUEST:
                 return NotificationType.HOLIDAY_PAYOUT_REJECT;

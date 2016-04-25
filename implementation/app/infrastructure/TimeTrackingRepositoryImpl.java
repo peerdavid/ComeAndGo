@@ -1,6 +1,6 @@
 package infrastructure;
 
-import business.TimeTrackException;
+import business.timetracking.TimeTrackException;
 import business.UserException;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;

@@ -34,6 +34,7 @@ create table time_off (
   end                           time,
   type                          integer,
   state                         integer,
+  comment                       varchar(255),
   constraint ck_time_off_type check (type in (0,1,2,3)),
   constraint ck_time_off_state check (state in (0,1,2,3)),
   constraint pk_time_off primary key (id)

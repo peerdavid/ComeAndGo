@@ -1,6 +1,6 @@
 package models;
 
-import business.NotificationException;
+import business.notification.NotificationException;
 import business.notification.NotificationType;
 import com.avaje.ebean.Model;
 import org.joda.time.DateTime;

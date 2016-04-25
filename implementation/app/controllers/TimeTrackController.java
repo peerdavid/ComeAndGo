@@ -18,9 +18,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * ExampleInterface controller -> to be removed.
- */
 public class TimeTrackController extends UserProfileController<CommonProfile> {
 
 

@@ -9,7 +9,7 @@ public enum NotificationType {
     ERROR,
 
     // User as sender notifications
-    HOLYDAY_REQUEST,
+    HOLIDAY_REQUEST,
     SPECIAL_HOLIDAY_REQUEST,
     BUSINESS_TRIP_INFORMATION,
     SICK_LEAVE_INFORMATION,

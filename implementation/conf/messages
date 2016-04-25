@@ -22,6 +22,9 @@ views.index.timetrack.tablebody.breakend = Break End
 views.index.timetrack.tablebody.end = End
 views.index.timetrack.tablehead.action = Action
 views.index.timetrack.tablehead.time = Time
+views.index.state.active = Active
+views.index.state.inactive = Inactive
+views.index.state.pause = Pause
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
@@ -65,7 +68,7 @@ views.notification.buttonaccept = Accept
 views.notification.buttonreject = Reject
 views.notification.nonotificationmessage = No Notifications to show
 views.notification.readnotifications = Read Notifications
-views.notification.notreadnotifications = Not Read Notifications
+views.notification.notreadnotifications = New Notifications
 views.notification.sentnotifications = Sent Notifications
 
 views.holiday.title = Holiday
@@ -120,4 +123,35 @@ notifications.fire_employee = Boss "%s" fired you
 notifications.changed_timetrack = Personnel Manager "%s" changed a timetrack
 notifications.deleted_timetrack = Personnel Manager "%s" deleted a timetrack
 
+notifications.holiday = Holiday
+notifications.holidaypayout = Holiday Payout
+notifications.overtime = Overtime
+notifications.overtimepayout = Overtime Payout
+notifications.information = Information
+notifications.error = Error
+notifications.specialholiday = Special Holiday
+notifications.businesstrip = Business Trip
+notifications.sickleave = Sick Leave
+notifications.timetrack = Timetrack Changed
+notifications.fireemployee = You Are Fired
 
+notifications.icons.information = email
+notifications.icons.error = close
+
+notifications.icons.holidayrequest = beach_access
+notifications.icons.specialholidayrequest =email
+notifications.icons.businesstripp = language
+notifications.icons.sickleave = hotel
+notifications.icons.holidaypayout = monetization_on
+notifications.icons.overtimepayout = monetization_on
+
+notifications.icons.holiday.accept = check
+notifications.icons.holiday.reject = close
+notifications.icons.holidaypayout.accept = check
+notifications.icons.holidaypayout.reject = close
+notifications.icons.overtimepayout.accept = check
+notifications.icons.overtimepayout.reject = close
+notifications.icons.fireemployee = priority_high
+
+notifications.icons.changedtimetrack = access_time
+notifications.icons.deletedtimetrack = access_time
