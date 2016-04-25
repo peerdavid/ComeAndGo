@@ -106,6 +106,8 @@ exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to
 exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have an error
+exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
+exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 
 notifications.holiday_request = Holiday request from employee "%s"
 notifications.special_holiday_request = Special-holiday request from employee "%s"
