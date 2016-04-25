@@ -50,7 +50,7 @@ class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> readUsers() {
         List<User> userList =
                 Ebean.find(User.class)
                 .where().eq("active", true)

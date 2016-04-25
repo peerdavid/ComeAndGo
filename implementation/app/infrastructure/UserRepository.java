@@ -18,6 +18,6 @@ public interface UserRepository {
 
     void updateUser(User user);
 
-    List<User> getAllUsers();
+    List<User> readUsers();
 
 }

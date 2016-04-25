@@ -12,13 +12,13 @@ import java.util.List;
 interface UserService extends UsernamePasswordAuthenticator {
     User readUser(String userName) throws UserException;
 
-    boolean checkUserCredentials(String userName, String password) throws UserException;
+    List<User> readUsers() throws UserException;
 
-    void registerNewUser(User userToRegister) throws UserException;
+    void createUser(User userToRegister) throws UserException;
 
     void deleteUser(String userToDelete) throws UserException;
 
-    void changeUser(String userName, User newUserData) throws UserException;
+    void updateUser(String userName, User newUserData) throws UserException;
 
-    List<User> getListOfUsers() throws UserException;
+    boolean checkUserCredentials(String userName, String password) throws UserException;
 }
