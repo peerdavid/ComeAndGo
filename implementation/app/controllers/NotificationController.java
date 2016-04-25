@@ -43,7 +43,7 @@ public class NotificationController extends UserProfileController {
     public Result acceptNotification(int notificationId) throws Exception{
 
 
-        _notifReader.accept(notificationId);
+        //_notifReader.accept(notificationId);
 
 
         return redirect(routes.NotificationController.index());
@@ -53,7 +53,7 @@ public class NotificationController extends UserProfileController {
     public Result rejectNotification(int notificationId) throws Exception{
 
 
-        _notifReader.reject(notificationId);
+        //_notifReader.reject(notificationId);
 
 
         return redirect(routes.NotificationController.index());

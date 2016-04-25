@@ -1,8 +1,8 @@
 package business.usermanagement;
 
-import business.UserException;
 import com.google.inject.Inject;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
+import javassist.NotFoundException;
 import models.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
@@ -14,14 +14,19 @@ import java.util.List;
 /**
  * Created by david on 03.04.16.
  */
-class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService, business.usermanagement.InternalUserManagement {
 
 
-    private UserRepository _userRepository;
+    private InternalUserManagement _userRepository;
 
     @Inject
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(InternalUserManagement userRepository) {
         _userRepository = userRepository;
+    }
+
+    @Override
+    public User readUser(int id) throws UserNotFoundException {
+        return _userRepository.readUser(id);
     }
 
     @Override
@@ -61,9 +66,17 @@ class UserServiceImpl implements UserService {
 
     }
 
+
     private boolean userAlreadyExists(String userName) {
-        User aleadyExistingUser = _userRepository.readUser(userName);
-        return aleadyExistingUser != null;
+        User alreadyExistingUser;
+
+        try {
+            alreadyExistingUser = _userRepository.readUser(userName);
+        } catch (UserNotFoundException e) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -97,7 +110,6 @@ class UserServiceImpl implements UserService {
         }
 
     }
-
 
     @NotNull
     private HttpProfile getProfileForUser(User possibleUser) {
@@ -146,6 +158,7 @@ class UserServiceImpl implements UserService {
         _userRepository.updateUser(newUserData);
 
     }
+
 
     @Override
     public void deleteUser(String userName) throws UserException {

@@ -2,7 +2,7 @@ package business.notification;
 
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
 import models.Notification;
 
 /**
@@ -11,25 +11,16 @@ import models.Notification;
 class NotificationService implements NotificationSender {
 
     private final NotificationRepository _notificationRepository;
-    private final UserRepository _userRepository;
+    private final InternalUserManagement _userRepository;
 
     @Inject
-    public NotificationService(NotificationRepository notificationRepository, UserRepository userRepository) {
+    public NotificationService(NotificationRepository notificationRepository, InternalUserManagement userRepository) {
         _notificationRepository = notificationRepository;
         _userRepository = userRepository;
     }
 
     @Override
     public void sendNotification(Notification notification) throws NotificationException {
-
-        if (_userRepository.readUser(notification.getSender().getUserName()) == null) {
-            throw new NotificationException("exceptions.usermanagement.no_such_user");
-        }
-        if (_userRepository.readUser(notification.getReceiver().getUserName()) == null) {
-            throw new NotificationException("exceptions.usermanagement.no_such_user");
-        }
-
         _notificationRepository.createNotification(notification);
-
     }
 }

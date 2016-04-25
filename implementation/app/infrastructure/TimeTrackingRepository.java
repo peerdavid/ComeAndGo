@@ -1,7 +1,7 @@
 package infrastructure;
 
 import business.timetracking.TimeTrackException;
-import business.UserException;
+import business.usermanagement.UserException;
 import models.Break;
 import models.TimeTrack;
 import models.User;

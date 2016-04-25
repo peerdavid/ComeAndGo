@@ -1,12 +1,9 @@
 package models;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import sun.util.calendar.LocalGregorianCalendar;
-
-import java.util.Date;
 
 /**
  * Created by Stefan on 20.04.2016.

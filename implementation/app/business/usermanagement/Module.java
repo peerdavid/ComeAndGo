@@ -3,7 +3,7 @@ package business.usermanagement;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import infrastructure.UserRepository;
+import infrastructure.InternalUserManagement;
 import org.pac4j.core.authorization.RequireAnyRoleAuthorizer;
 import org.pac4j.core.config.Config;
 import org.pac4j.http.client.indirect.FormClient;
@@ -22,7 +22,7 @@ public class Module extends AbstractModule {
         bind(UserManagement.class).to(UserManagementFacade.class);
 
         Injector injector = Guice.createInjector(new infrastructure.Module());
-        UserRepository userRepository = injector.getInstance(UserRepository.class);
+        InternalUserManagement userRepository = injector.getInstance(InternalUserManagement.class);
 
         UserService userService = new UserServiceImpl(userRepository);
         final FormClient client = new FormClient("/login", userService);
