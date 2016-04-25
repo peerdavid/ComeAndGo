@@ -1,9 +1,7 @@
 package business.timetracking;
 
-import business.UserException;
-import models.Break;
+import business.usermanagement.UserException;
 import models.TimeTrack;
-import models.User;
 
 /**
  * Created by stefan on 18.04.16.

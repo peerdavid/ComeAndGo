@@ -1,5 +1,6 @@
 package infrastructure;
 
+import business.usermanagement.UserNotFoundException;
 import models.User;
 
 import java.util.List;
@@ -10,14 +11,14 @@ import java.util.List;
 public interface UserRepository {
     void createUser(User user);
 
-    User readUser(String userName);
+    User readUser(String userName) throws UserNotFoundException;
 
-    User readUser(int userId);
+    User readUser(int userId) throws UserNotFoundException;
 
     void deleteUser(User user);
 
     void updateUser(User user);
 
-    List<User> getAllUsers();
+    List<User> readUsers();
 
 }

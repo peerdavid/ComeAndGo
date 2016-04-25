@@ -1,6 +1,5 @@
 package business.notification;
 
-import business.NotificationException;
 import business.UseCases;
 import models.Notification;
 
@@ -29,9 +28,6 @@ public interface NotificationReader extends UseCases {
     */
     List<Notification> getSentNotifications(int userId, int amount) throws NotificationException;
 
-    void accept(int notificationId) throws NotificationException;
-
-    void reject(int notificationId) throws NotificationException;
 
     void setNotificationAsRead(int notificationId) throws NotificationException;
 

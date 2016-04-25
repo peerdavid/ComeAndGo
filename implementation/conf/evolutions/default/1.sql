@@ -17,11 +17,7 @@ create table notification (
   message                       varchar(150),
   _sender_id                    integer not null,
   _receiver_id                  integer not null,
-  haveseen                      boolean,
-  accepted                      boolean,
-  isvisible                     boolean,
-  requeststart                  date,
-  requestend                    date,
+  read                          boolean,
   created                       datetime,
   constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)),
   constraint pk_notification primary key (_id)
@@ -34,6 +30,7 @@ create table time_off (
   end                           time,
   type                          integer,
   state                         integer,
+  comment                       varchar(255),
   constraint ck_time_off_type check (type in (0,1,2,3)),
   constraint ck_time_off_state check (state in (0,1,2,3)),
   constraint pk_time_off primary key (id)

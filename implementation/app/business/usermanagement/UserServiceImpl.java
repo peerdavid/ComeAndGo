@@ -1,6 +1,5 @@
 package business.usermanagement;
 
-import business.UserException;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
 import models.User;
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Created by david on 03.04.16.
  */
-class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService, business.usermanagement.InternalUserManagement {
 
 
     private UserRepository _userRepository;
@@ -22,6 +21,11 @@ class UserServiceImpl implements UserService {
     @Inject
     public UserServiceImpl(UserRepository userRepository) {
         _userRepository = userRepository;
+    }
+
+    @Override
+    public User readUser(int id) throws UserNotFoundException {
+        return _userRepository.readUser(id);
     }
 
     @Override
@@ -34,8 +38,8 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getListOfUsers() throws UserException {
-        return _userRepository.getAllUsers();
+    public List<User> readUsers() throws UserException {
+        return _userRepository.readUsers();
     }
 
     @Override
@@ -46,7 +50,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registerNewUser(User newUser) throws UserException {
+    public void createUser(User newUser) throws UserException {
 
         // Input validation
         if (userAlreadyExists(newUser.getUserName())) {
@@ -61,9 +65,17 @@ class UserServiceImpl implements UserService {
 
     }
 
+
     private boolean userAlreadyExists(String userName) {
-        User aleadyExistingUser = _userRepository.readUser(userName);
-        return aleadyExistingUser != null;
+        User alreadyExistingUser;
+
+        try {
+            alreadyExistingUser = _userRepository.readUser(userName);
+        } catch (UserNotFoundException e) {
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -98,7 +110,6 @@ class UserServiceImpl implements UserService {
 
     }
 
-
     @NotNull
     private HttpProfile getProfileForUser(User possibleUser) {
         HttpProfile userProfile = new HttpProfile();
@@ -114,7 +125,7 @@ class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeUser(String userName, User newUserData) throws UserException {
+    public void updateUser(String userName, User newUserData) throws UserException {
         User userToChange = _userRepository.readUser(userName);
 
         if (userToChange == null) {
@@ -125,7 +136,7 @@ class UserServiceImpl implements UserService {
         }
         // Check if there exists at least one user with role administrator
         if (userToChange.getRole().equals(SecurityRole.ROLE_ADMIN) && !newUserData.getRole().equals(SecurityRole.ROLE_ADMIN)) {
-            List<User> userList = _userRepository.getAllUsers();
+            List<User> userList = _userRepository.readUsers();
             boolean foundAdmin = false;
             for (User u : userList) {
                 if (u.getRole().equals(SecurityRole.ROLE_ADMIN)) {
@@ -147,6 +158,7 @@ class UserServiceImpl implements UserService {
 
     }
 
+
     @Override
     public void deleteUser(String userName) throws UserException {
         User userToDelete = _userRepository.readUser(userName);
@@ -156,7 +168,7 @@ class UserServiceImpl implements UserService {
         }
         // Check if its not the last admin
         if (userToDelete.getRole().equals(SecurityRole.ROLE_ADMIN)) {
-            List<User> userList = _userRepository.getAllUsers();
+            List<User> userList = _userRepository.readUsers();
             boolean foundAdmin = false;
             for (User u : userList) {
                 if (u.getRole().equals(SecurityRole.ROLE_ADMIN) && !u.getUserName().equals(userToDelete.getUserName())) {

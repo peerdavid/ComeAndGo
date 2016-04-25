@@ -1,6 +1,5 @@
 package business.usermanagement;
 
-import business.UserException;
 import com.google.inject.Inject;
 import models.User;
 
@@ -22,15 +21,15 @@ class UserManagementFacade implements UserManagement {
 
 
     @Override
-    public void registerUser(User userToRegister) throws UserException {
+    public void createUser(User userToRegister) throws UserException {
 
-        _userService.registerNewUser(userToRegister);
+        _userService.createUser(userToRegister);
     }
 
 
     @Override
-    public void changeUserData(String userName, User newUserData) throws UserException {
-        _userService.changeUser(userName, newUserData);
+    public void updateUser(String userName, User newUserData) throws UserException {
+        _userService.updateUser(userName, newUserData);
 
     }
 
@@ -40,13 +39,13 @@ class UserManagementFacade implements UserManagement {
     }
 
     @Override
-    public User getUserData(String userName) throws UserException {
+    public User readUser(String userName) throws UserException {
         return _userService.readUser(userName);
     }
 
     @Override
-    public List<User> getAllUsers() throws UserException {
-        return _userService.getListOfUsers();
+    public List<User> readUsers() throws UserException {
+        return _userService.readUsers();
     }
 
     @Override

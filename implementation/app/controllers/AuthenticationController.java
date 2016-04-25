@@ -1,6 +1,6 @@
 package controllers;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
@@ -38,7 +38,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     public Result signUp() throws UserException {
         Form<User> form = FORM;
         CommonProfile profile = getUserProfile();
-        List<User> userList = _userManagement.getAllUsers();
+        List<User> userList = _userManagement.readUsers();
 
         return ok(views.html.signup.render(form, profile, userList));
     }
@@ -65,7 +65,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
 
         User userToRegister = new User(userName, password, role, firstName, lastName, email, true, bossOfUser);
 
-        _userManagement.registerUser(userToRegister);
+        _userManagement.createUser(userToRegister);
 
         return redirect(routes.UserManagementController.editUser());
     }

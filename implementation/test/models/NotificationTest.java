@@ -1,12 +1,9 @@
 package models;
 
-import business.NotificationException;
-import business.UserException;
+import business.notification.NotificationException;
 import business.notification.NotificationType;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import play.i18n.Messages;
 
 /**
  * Created by paz on 21.04.16.

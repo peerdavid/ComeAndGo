@@ -1,7 +1,6 @@
 package business.usermanagement;
 
 import business.UseCases;
-import business.UserException;
 import models.User;
 
 import java.util.List;
@@ -11,15 +10,15 @@ import java.util.List;
  */
 public interface UserManagement extends UseCases {
 
-    void registerUser(User userToRegister) throws UserException;
+    void createUser(User userToRegister) throws UserException;
 
-    void changeUserData(String userName, User newUserData) throws UserException;
+    void updateUser(String userName, User newUserData) throws UserException;
 
     void deleteUser(String userName) throws UserException;
 
-    User getUserData(String userName) throws UserException;
+    User readUser(String userName) throws UserException;
 
-    List<User> getAllUsers() throws UserException;
+    List<User> readUsers() throws UserException;
 
     boolean checkUserCredentials(String userName, String password) throws UserException;
 

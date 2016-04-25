@@ -1,11 +1,10 @@
-import business.UserException;
+import business.usermanagement.UserException;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
-import scala.reflect.internal.Trees;
 
 import static play.mvc.Results.internalServerError;
 import static play.mvc.Results.ok;

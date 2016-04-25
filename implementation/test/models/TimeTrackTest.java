@@ -1,8 +1,8 @@
 package models;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
-import business.TimeTrackException;
+import business.timetracking.TimeTrackException;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
