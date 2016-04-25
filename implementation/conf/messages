@@ -63,6 +63,7 @@ views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
 views.admin.edituser.deletemessage = Do you want to remove
 views.admin.edituser.closemessage = Close
+views.admin.edituser.bossofuser = Boss of User
 
 views.notification.buttonaccept = Accept
 views.notification.buttonreject = Reject

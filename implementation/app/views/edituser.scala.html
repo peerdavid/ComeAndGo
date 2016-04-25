@@ -1,4 +1,5 @@
 @import org.pac4j.core.profile.CommonProfile
+@import business.usermanagement.SecurityRole
 
 @(profile: CommonProfile, userlist: java.util.List[User])
 
@@ -57,6 +58,24 @@
                                 <div id="disabled" class="input-field col s12 m6">
                                     <input disabled="disabled" name="repeat_password" type="password">
                                     <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <select disabled="disabled" name="role" type="text" value="@u.getRole">
+                                        <option value="ROLE_USER">@Messages("views.admin.signup.form.roles.user")</option>
+                                        <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.signup.form.roles.persman")</option>
+                                        <option value="ROLE_BOSS">@Messages("views.admin.signup.form.roles.boss")</option>
+                                        <option value="ROLE_ADMIN">@Messages("views.admin.signup.form.roles.admin")</option>
+                                    </select>
+                                    <label for="role">@Messages("views.admin.signup.form.selectrole")</label>
+                                </div>
+                                <div class="input-field col s12 m6">
+                                    <select disabled="disabled" name="bossofuser" type="text">
+                                        <option value="admin" selected >@Messages("views.admin.title")</option>
+                                        <option value=@u.getUserNameBoss selected >@(u.getUserNameBoss)</option>
+                                    </select>
+                                    <label for="role">@Messages("views.admin.edituser.bossofuser")</label>
                                 </div>
                             </div>
                             <input type="hidden" name="id" value="@u.getId">
