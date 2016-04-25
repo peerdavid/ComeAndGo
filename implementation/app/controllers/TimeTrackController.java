@@ -250,4 +250,13 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
     }
+
+    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
+    public Result deleteTimeTrack(int timetrackId, int userId, String from, String to) throws Exception {
+        TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
+
+        _timeTracking.deleteTimeTrack(timeTrack);
+
+        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+    }
 }
