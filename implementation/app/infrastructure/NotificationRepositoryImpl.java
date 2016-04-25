@@ -32,8 +32,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     @Override
     public void deleteNotification(Notification toDelete) {
-        toDelete.makeInvisible();   // sets flag in Notification object to make this notification invisible
-        Ebean.update(toDelete);
+        Ebean.delete(Notification.class, toDelete);
     }
 
     @Override
@@ -46,7 +45,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         List<Notification> result =
                 Ebean.find(Notification.class)
                 .where().eq("_receiver_id", user.getId())   // filter notifications for user
-                .where().eq("haveseen", false)              // filter for only unread notes
+                .where().eq("read", false)              // filter for only unread notes
                 .orderBy("created desc")                    // the newer the higher in the list
                 .findList();
         if(result != null) {
@@ -64,7 +63,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         List<Notification> result =
                 Ebean.find(Notification.class)
                         .where().eq("_receiver_id", user.getId())
-                        .where().eq("haveseen", true)
+                        .where().eq("read", true)
                         .orderBy("created desc")
                         .setMaxRows(amount)
                         .findList();
@@ -93,17 +92,6 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         return Collections.emptyList();
     }
 
-    @Override
-    public void markAsAccepted(Notification accept) throws NotificationException {
-        accept.setAccepted(true);
-        updateNotification(accept);
-    }
-
-    @Override
-    public void markAsRejected(Notification reject) throws NotificationException {
-        reject.setAccepted(false);
-        markAsRead(reject);
-    }
 
     @Override
     public void markAsRead(Notification read) throws NotificationException {
@@ -115,7 +103,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public int getNumberOfUnreadNotifications(User user) throws NotificationException {
         return Ebean.find(Notification.class)
             .where().eq("_receiver_id", user.getId())
-            .where().eq("haveseen", false)
+            .where().eq("read", false)
             .findRowCount();
     }
 }

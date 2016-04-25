@@ -53,11 +53,11 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 m6">
-                    <select name="bossofuser" type="text">
+                    <select name="usernameboss" type="text">
                         <option value="admin" selected >@Messages("views.admin.title")</option>
                             @for(u : User <- userlist) {
                                 @if(u.getRole == SecurityRole.ROLE_BOSS) {
-                                    <option value=@u.getUserName selected >@(u.getFirstName + " " + u.getLastName)</option>
+                                    <option value=@u.getUserName>@(u.getFirstName + " " + u.getLastName)</option>
                                 }
                             }
                     </select>

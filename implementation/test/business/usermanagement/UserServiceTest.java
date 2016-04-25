@@ -1,9 +1,7 @@
 package business.usermanagement;
 
 
-import business.UserException;
 import infrastructure.UserRepository;
-
 import models.User;
 
 import org.junit.Assert;

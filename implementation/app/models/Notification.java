@@ -40,40 +40,27 @@ public class Notification extends Model {
     @NotNull
     private User _receiver;
 
-    @Column(name = "haveseen")
+    @Column(name = "read")
     private Boolean _read;
-
-    @Column(name = "accepted")
-    private Boolean _accepted;
-
-
-    @Column(name = "isvisible")
-    private Boolean _isVisible;
-
-    @Column(name = "requeststart", columnDefinition = "date")
-    private LocalDate _requestedStartDate = null;
-
-    @Column(name = "requestend", columnDefinition = "date")
-    private LocalDate _requestedEndDate = null;
 
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
 
+
+    private int referenceId;
+
     // Use standard messages for each Notification Type
-    public Notification(NotificationType type, User sender, User receiver, LocalDate requestStart, LocalDate requestEnd) throws NotificationException {
-        this(type, getStandardMessage(type, sender), sender, receiver, requestStart, requestEnd);
+    public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
+        this(type, getStandardMessage(type, sender), sender, receiver);
     }
 
-    public Notification(NotificationType type, String message, User sender, User receiver, LocalDate requestStart, LocalDate requestEnd) throws NotificationException {
+    public Notification(NotificationType type, String message, User sender, User receiver) throws NotificationException {
         setType(type);
         setMessage(message);
         setSender(sender);
         setReceiver(receiver);
-        setRequestedStartDate(requestStart);
-        setRequestedEndDate(requestEnd);
         setRead(false);
         _createdOn = DateTime.now();
-        _isVisible = true;
     }
 
     public int getId() {
@@ -127,35 +114,10 @@ public class Notification extends Model {
         this._read = read;
     }
 
-    public boolean isAccepted() {
-        return _accepted;
-    }
-
-    public void setAccepted(boolean accepted) {
-        this._accepted = accepted;
-    }
 
     public static String getStandardMessage(NotificationType type, User sender) {
         return Messages.get("notifications." + type.name().toLowerCase(), sender.getFirstName() + " " + sender.getLastName());
     }
 
-    public LocalDate getRequestedEndDate() {
-        return _requestedEndDate;
-    }
 
-    public void setRequestedEndDate(LocalDate requestedEndDate) {
-        this._requestedEndDate = requestedEndDate;
-    }
-
-    public LocalDate getRequestedStartDate() {
-        return _requestedStartDate;
-    }
-
-    public void setRequestedStartDate(LocalDate requestedStartDate) {
-        this._requestedStartDate = requestedStartDate;
-    }
-
-    public void makeInvisible() {
-        _isVisible = false;
-    }
 }

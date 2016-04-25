@@ -1,17 +1,14 @@
 package business.timetracking;
 
-import business.UserException;
+import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import business.usermanagement.SecurityRole;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.UserRepository;
-import javassist.NotFoundException;
 import models.Break;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
-import org.joda.time.LocalTime;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +28,7 @@ import static org.mockito.Mockito.when;
 public class TimeTrackingValidationImplTest {
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
-    UserRepository _userRepository;
+    InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
     User _testUser;
     TimeTrack _testTimeTrack;
@@ -48,7 +45,7 @@ public class TimeTrackingValidationImplTest {
         _testBreak = new Break(DateTime.now());
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
-        _userRepository = mock(UserRepository.class);
+        _userRepository = mock(InternalUserManagement.class);
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
         _validation = new TimeTrackingValidationImpl(_timeTrackingRepository);

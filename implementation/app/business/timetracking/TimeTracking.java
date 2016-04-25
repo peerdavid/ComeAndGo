@@ -19,7 +19,7 @@ public interface TimeTracking extends UseCases {
 
     void endBreak(int userId) throws Exception;
 
-    TimeTrackState getState(int userId) throws Exception;
+    TimeTrackState readState(int userId) throws Exception;
 
     TimeTrack readTimeTrackById(int id) throws Exception;
 
@@ -30,7 +30,7 @@ public interface TimeTracking extends UseCases {
     /**
      * adds the new timeTrack and corresponding breaks to repository
      */
-    void addTimeTrack(int userId, DateTime from, DateTime to) throws Exception;
+    void createTimeTrack(int userId, DateTime from, DateTime to) throws Exception;
 
     /**
      * delete whole timeTrack plus corresponding breaks

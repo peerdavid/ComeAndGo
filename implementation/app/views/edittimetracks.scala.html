@@ -100,6 +100,19 @@
                                                 <span>
                                                 @(DateTimeUtils.dateTimeToTime(b.getTo))
                                                 </span>
+                                                <button data-target="modal-delete-break@b.getId" class="btn-flat delete-break modal-trigger waves-red waves-effect text-black right">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                                <div id="modal-delete-break@b.getId" class="modal">
+                                                    <div class="modal-content">
+                                                        <h4>@Messages("views.admin.edittimetracks.deletebreak")</h4>
+                                                        <p>@Messages("views.admin.edittimetracks.deletebreakmessage")</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteBreak(b.getId, t.getId, userId, from, to)" style="float : right">@Messages("views.admin.edittimetracks.deletebreak")</a>
+                                                        <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edittimetracks.closemessage")</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="collapsible-body">
                                                 <div class="row">
@@ -124,11 +137,26 @@
                                 <button class="btn waves-effect waves-light primary-btn right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.edittimetracks.savechanges")
                                     <i class="material-icons right">done</i>
                                 </button>
-                                <button data-target="modal-add-break" class="btn modal-trigger secondary-btn">@Messages("views.admin.edittimetracks.addbreak")</button>
+                                <button data-target="modal-delete-timetrack@t.getId" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edittimetracks.deletetimetrack")
+                                    <i class="material-icons right">delete</i>
+                                </button>
+                                <button data-target="modal-add-break@t.getId" class="btn modal-trigger secondary-btn">@Messages("views.admin.edittimetracks.addbreak")</button>
+                            </div>
+
+                            <!-- delete timetrack -->
+                            <div id="modal-delete-timetrack@t.getId" class="modal">
+                                <div class="modal-content">
+                                    <h4>@Messages("views.admin.edittimetracks.deletetimetrack")</h4>
+                                    <p>@Messages("views.admin.edittimetracks.deletetimetrackmessage")</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteTimeTrack(t.getId, userId, from, to)" style="float : right">@Messages("views.admin.edittimetracks.deletetimetrack")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edittimetracks.closemessage")</a>
+                                </div>
                             </div>
 
                             <!-- add break -->
-                            <div id="modal-add-break" class="modal">
+                            <div id="modal-add-break@t.getId" class="modal">
                                 <div class="modal-content">
                                     <h4>@Messages("views.admin.edittimetracks.addbreak")</h4>
                                 </div>
@@ -150,6 +178,7 @@
                                     </form>
                                 </div>
                             </div>
+
                         </form>
                     </div>
                 </li>

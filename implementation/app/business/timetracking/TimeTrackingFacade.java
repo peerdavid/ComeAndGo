@@ -45,7 +45,7 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     @Override
-    public TimeTrackState getState(int userId) throws Exception {
+    public TimeTrackState readState(int userId) throws Exception {
         TimeTrackState result = TimeTrackState.INACTIVE;
 
         if(_timeTrackingService.isActive(userId)) {
@@ -77,8 +77,8 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     @Override
-    public void addTimeTrack(int userId, DateTime from, DateTime to) throws Exception {
-        _timeTrackingService.addTimeTrack(userId, from, to);
+    public void createTimeTrack(int userId, DateTime from, DateTime to) throws Exception {
+        _timeTrackingService.createTimeTrack(userId, from, to);
     }
 
     @Override

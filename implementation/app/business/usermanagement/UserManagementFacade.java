@@ -1,6 +1,5 @@
 package business.usermanagement;
 
-import business.UserException;
 import com.google.inject.Inject;
 import models.User;
 

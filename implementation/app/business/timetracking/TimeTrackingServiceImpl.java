@@ -1,10 +1,10 @@
 package business.timetracking;
 
 
-import business.UserException;
+import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.UserRepository;
 import javassist.NotFoundException;
 import models.TimeTrack;
 import models.User;
@@ -22,26 +22,29 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
-    private final UserRepository _userRepository;
+    private final InternalUserManagement _userManagement;
     private final TimeTrackingValidation _validation;
 
 
     @Inject
-    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, UserRepository userRepository) {
+    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
-        _userRepository = userRepository;
+        _userManagement = userRepository;
         _validation = new TimeTrackingValidationImpl(repository);
     }
 
 
     @Override
     public int come(int userId) throws UserException {
-        User user = loadUserById(userId);
+        boolean isActive = isActive(userId);
+        if(isActive) {
+            throw new UserException("exceptions.timetracking.error_user_already_working");
+        }
 
+        User user = loadUserById(userId);
         TimeTrack newTimeTrack = new TimeTrack(user);
-        int newId = _repository.createTimeTrack(newTimeTrack, user);
-        return newId;
+        return _repository.createTimeTrack(newTimeTrack);
     }
 
 
@@ -49,7 +52,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void go(int userId) throws UserException, NotFoundException {
         User user = loadUserById(userId);
 
-        TimeTrack timeTrack = _repository.getActiveTimeTrack(user);
+        TimeTrack timeTrack = _repository.readActiveTimeTrack(user);
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
     }
@@ -61,7 +64,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
         // _repository throws exception, if there is no TimeTrack available
         try {
-            _repository.getActiveTimeTrack(user);
+            _repository.readActiveTimeTrack(user);
         } catch(NotFoundException e) {
             return false;
         }
@@ -75,7 +78,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         User user = loadUserById(userId);
 
         try {
-            _repository.getActiveBreak(user);
+            _repository.readActiveBreak(user);
         } catch(NotFoundException e) {
             return false;
         }
@@ -129,16 +132,16 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public void addTimeTrack(TimeTrack timeTrack) throws UserException {
+    public void createTimeTrack(TimeTrack timeTrack) throws UserException {
         _validation.validateTimeTrackInsert(timeTrack);
-        _repository.addTimeTrack(timeTrack);
+        _repository.createTimeTrack(timeTrack);
     }
 
     @Override
-    public void addTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
+    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
         User user = loadUserById(userId);
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
-        addTimeTrack(timeTrack);
+        createTimeTrack(timeTrack);
     }
 
     @Override
@@ -155,12 +158,13 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     private User loadUserById(int userId) throws UserException {
-        User user = _userRepository.readUser(userId);
+        User user;
 
-        if (user != null) {
-            return user;
+        try {
+            user = _userManagement.readUser(userId);
+        } catch (Exception e) {
+            throw new UserException("exceptions.usermanagement.no_such_user");
         }
-
-        throw new UserException("exceptions.usermanagement.no_such_user");
+        return user;
     }
 }

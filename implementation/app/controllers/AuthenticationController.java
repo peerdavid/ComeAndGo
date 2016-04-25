@@ -1,6 +1,6 @@
 package controllers;
 
-import business.UserException;
+import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
@@ -53,17 +53,17 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String lastName = form.data().get("lastname");
         String role = form.data().get("role");
         String email = form.data().get("email");
-        String bossOfUser = form.data().get("bossofuser");
+        String UserNameBoss = form.data().get("usernameboss");
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;
         }
 
-        if (bossOfUser.isEmpty()) {
-            bossOfUser = "admin";
+        if (UserNameBoss.isEmpty()) {
+            UserNameBoss = "admin";
         }
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, bossOfUser);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, UserNameBoss);
 
         _userManagement.createUser(userToRegister);
 

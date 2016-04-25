@@ -53,6 +53,8 @@ public class UserManagementController extends UserProfileController {
         String email = form.data().get("email");
         String password = form.data().get("password");
         String repeatPassword = form.data().get("repeat_password");
+        String userNameBoss = form.data().get("usernameboss");
+        String role = form.data().get("role");
 
         User changingUser = null;
 
@@ -63,20 +65,26 @@ public class UserManagementController extends UserProfileController {
             }
         }
         // should we edit userName?
-        if (userName != null && !userName.equals("")) {
+        if (userName != null) {
             changingUser.setUserName(userName);
         }
-        if (firstName != null && !firstName.equals("")) {
+        if (firstName != null) {
             changingUser.setFirstName(firstName);
         }
-        if (lastName != null && !lastName.equals("")) {
+        if (lastName != null) {
             changingUser.setLastName(lastName);
         }
-        if (email != null && !email.equals("")) {
+        if (email != null) {
             changingUser.setEmail(email);
         }
         if (password != null && repeatPassword != null && (!password.isEmpty()) && (!repeatPassword.isEmpty()) && password.equals(repeatPassword)) {
             changingUser.setPassword(password);
+        }
+        if (userNameBoss != null) {
+            changingUser.setUserNameBoss(userNameBoss);
+        }
+        if (role != null) {
+            changingUser.setRole(role);
         }
 
         _userManagement.updateUser(changingUser.getUserName(), changingUser);

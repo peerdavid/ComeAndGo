@@ -18,14 +18,15 @@ POST    /edituser                                  @controllers.UserManagementCo
 GET     /edittimetracks/:userId                    @controllers.TimeTrackController.editTimeTracks(userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
 POST    /edittimetracks/:userId                    @controllers.TimeTrackController.saveTimeTrack(userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
 POST    /edittimetracks/:userId/addtimetrack       @controllers.TimeTrackController.addTimeTrack(userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
-POST    /edittimetracks/:userId/deletebreak/       @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
+GET     /edittimetracks/:userId/deletetimetrack    @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
+GET     /edittimetracks/:userId/deletebreak/       @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
 POST    /edittimetracks/:userId/addbreak/          @controllers.TimeTrackController.addBreak(timetrackId: Int, userId : Int, from : java.lang.String ?= null, to : java.lang.String ?= null)
 
 GET     /deleteUser                                @controllers.UserManagementController.deleteUser(username : String ?= null)
 
 GET     /notification                              @controllers.NotificationController.index
-GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notId : Int)
-GET     /notification/reject                       @controllers.NotificationController.rejectNotification(notId:Int)
+GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
+GET     /notification/reject                       @controllers.NotificationController.rejectNotification(notifId : Int)
 
 # Come & Go
 GET     /come                                      @controllers.TimeTrackController.come

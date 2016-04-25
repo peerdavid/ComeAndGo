@@ -1,9 +1,9 @@
 package business.timetracking;
 
 import business.notification.NotificationSender;
+import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import infrastructure.TimeTrackingRepository;
-import infrastructure.UserRepository;
 import models.TimeOff;
 
 /**
@@ -13,14 +13,14 @@ class TimeOffServiceImpl implements TimeOffService {
 
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
-    private final UserRepository _userRepository;
+    private final InternalUserManagement _userManagement;
 
 
     @Inject
-    public TimeOffServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, UserRepository userRepository) {
+    public TimeOffServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
-        _userRepository = userRepository;
+        _userManagement = userRepository;
     }
 
 
