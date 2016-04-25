@@ -172,23 +172,4 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public void updateBreak(Break actualBreak) {
        Ebean.update(actualBreak);
     }
-
-    @Override
-    public void startBreak(User user) throws NotFoundException {
-        TimeTrack actualTimeTrack = readActiveTimeTrack(user);
-        actualTimeTrack.addBreak(new Break(DateTime.now()));
-        updateTimeTrack(actualTimeTrack);
-    }
-
-    @Override
-    public void endBreak(Break actualBreak) throws TimeTrackException, UserException {
-        actualBreak.setTo(DateTime.now());
-        updateBreak(actualBreak);
-    }
-
-    @Override
-    public void endBreak(User user) throws NotFoundException, TimeTrackException, UserException {
-        Break actualBreak = readActiveBreak(user);
-        endBreak(actualBreak);
-    }
 }

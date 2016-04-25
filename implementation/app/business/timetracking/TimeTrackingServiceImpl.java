@@ -6,6 +6,7 @@ import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
+import models.Break;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -95,7 +96,9 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         }
 
         User user = loadUserById(userId);
-        _repository.startBreak(user);
+        TimeTrack activeTimeTrack = _repository.readActiveTimeTrack(user);
+        activeTimeTrack.addBreak(new Break(DateTime.now()));
+        _repository.updateTimeTrack(activeTimeTrack);
     }
 
 
@@ -109,7 +112,9 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         }
 
         User user = loadUserById(userId);
-        _repository.endBreak(user);
+        Break activeBreak = _repository.readActiveBreak(user);
+        activeBreak.setTo(DateTime.now());
+        _repository.updateBreak(activeBreak);
     }
 
 

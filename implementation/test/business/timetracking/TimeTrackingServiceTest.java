@@ -263,7 +263,7 @@ public class TimeTrackingServiceTest {
     @Test(expected = UserException.class)
     public void takesBreak_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws NotFoundException, UserException {
         // Prepare
-        when(_userRepository.readUser(8)).thenReturn(null);
+        when(_userRepository.readUser(8)).thenThrow(Exception.class);
 
         int userId = 8;
         boolean expected = false;
@@ -369,7 +369,7 @@ public class TimeTrackingServiceTest {
         when(_timeTrackingRepository.readActiveTimeTrack(_testUser)).thenReturn(timeTrack);
 
         _timeTrackService.createBreak(userId);
-        Mockito.verify(_timeTrackingRepository, times(1)).startBreak(any(User.class));
+        Mockito.verify(_timeTrackingRepository, times(1)).updateTimeTrack(any(TimeTrack.class));
     }
 
     @Test
@@ -381,8 +381,7 @@ public class TimeTrackingServiceTest {
         when(_timeTrackingRepository.readActiveBreak(_testUser)).thenReturn(_testBreak);
 
         _timeTrackService.endBreak(userId);
-        Mockito.verify(_timeTrackingRepository, times(1)).endBreak(_testUser);
-        Mockito.verify(_timeTrackingRepository, times(1)).readActiveBreak(_testUser);
+        Mockito.verify(_timeTrackingRepository, times(1)).updateBreak(any(Break.class));
         Mockito.verify(_timeTrackingRepository, times(1)).readActiveTimeTrack(_testUser);
     }
 
