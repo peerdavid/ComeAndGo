@@ -5,6 +5,7 @@ import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import infrastructure.TimeTrackingRepository;
 import models.TimeOff;
+import org.joda.time.DateTime;
 
 /**
  * Created by paz on 24.04.16.
@@ -23,29 +24,33 @@ class TimeOffServiceImpl implements TimeOffService {
         _userManagement = userRepository;
     }
 
-
     @Override
-    public void takeSickLeave(TimeOff sickLeave) throws Exception {
+    public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
 
     }
 
     @Override
-    public void takeBusinessTrip(TimeOff trip) throws Exception {
+    public void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception {
 
     }
 
     @Override
-    public void requestTimeOff(TimeOff timeoff) throws Exception {
+    public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
 
     }
 
     @Override
-    public void acceptTimeOff(TimeOff timeoff) throws Exception {
+    public void requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
 
     }
 
     @Override
-    public void rejectTimeOff(TimeOff timeoff) throws Exception {
+    public void acceptHoliday(int timeOffId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectHoliday(int timeOffId, int bossId) throws Exception {
 
     }
 }

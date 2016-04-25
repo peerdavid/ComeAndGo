@@ -23,7 +23,7 @@ class NotificationReaderFacade implements NotificationReader {
         _userManagement = userRepository;
     }
 
-    public List<Notification> getUnreadNotificationsForUser(int userId) throws NotificationException {
+    public List<Notification> readUnseenNotifications(int userId) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
@@ -35,13 +35,13 @@ class NotificationReaderFacade implements NotificationReader {
     }
 
     @Override
-    public void setNotificationAsRead(int notificationId) throws NotificationException {
+    public void updateNotificationAsRead(int notificationId) throws NotificationException {
         Notification notificationToChange = _notificationRepository.readNotification(notificationId);
         _notificationRepository.markAsRead(notificationToChange);
     }
 
     @Override
-    public int getNumberOfUnreadNotifications(int userId) throws NotificationException {
+    public int readNumberOfUnseenNotifications(int userId) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
@@ -53,7 +53,7 @@ class NotificationReaderFacade implements NotificationReader {
     }
 
     @Override
-    public List<Notification> getReadNotificationsForUser(int userId, int amount) throws NotificationException {
+    public List<Notification> readSeenNotifications(int userId, int amount) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
@@ -66,7 +66,7 @@ class NotificationReaderFacade implements NotificationReader {
     }
 
     @Override
-    public List<Notification> getSentNotifications(int userId, int amount) throws NotificationException {
+    public List<Notification> readSentNotifications(int userId, int amount) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
