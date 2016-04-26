@@ -70,6 +70,7 @@ views.admin.edituser.deletemessage = Do you really want to remove this user?
 views.admin.edituser.closemessage = Close
 views.admin.edituser.bossofuser = Boss of User
 
+views.notification.title = Notifications
 views.notification.buttonaccept = Accept
 views.notification.buttonreject = Reject
 views.notification.nonotificationmessage = No Notifications to show

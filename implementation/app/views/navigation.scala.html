@@ -11,6 +11,7 @@
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.holiday.title")</a></li>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
+        <li><a href="@routes.NotificationController.index()">@Messages("views.notification.title")</a></li>
         @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)||profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
             <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
         }
@@ -56,12 +57,13 @@
             <div class="container fullwidth-container">
                 <div class="nav-wrapper">
                     <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
-                    <form>
-                        <input class="right" type="button" onClick="history.go(0)" value="Refresh">
-                    </form>
-                    <h1 class="page-title truncate">@title</h1>
+                    <h1 class="brand-logo page-title truncate">@title</h1>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="@routes.NotificationController.index()"><i class="material-icons">email</i></a></li>
+                        <li><a href="@routes.TimeTrackController.index()"><i class="material-icons">home</i></a></li>
+                        <li><a href="javascript:history.go(0)"><i class="material-icons">refresh</i></a></li>
+                    </ul>
                 </div>
-
             </div>
         </nav>
     </header>
