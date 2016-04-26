@@ -7,5 +7,7 @@ public enum TimeOffType {
     HOLIDAY,
     SPECIAL_HOLIDAY,
     SICK_LEAVE,
+    PARENTAL_LEAVE,
+    EDUCATIONAL_LEAVE,
     BUSINESS_TRIP
 }

@@ -12,7 +12,7 @@ create table break (
 );
 
 create table notification (
-  _id                           integer auto_increment not null,
+  id                            integer auto_increment not null,
   type                          integer,
   message                       varchar(150),
   _sender_id                    integer not null,
@@ -21,7 +21,7 @@ create table notification (
   created                       datetime,
   reference_id                  integer,
   constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)),
-  constraint pk_notification primary key (_id)
+  constraint pk_notification primary key (id)
 );
 
 create table time_off (
@@ -32,8 +32,8 @@ create table time_off (
   type                          integer,
   state                         integer,
   comment                       varchar(255),
-  constraint ck_time_off_type check (type in (0,1,2,3)),
-  constraint ck_time_off_state check (state in (0,1,2,3)),
+  constraint ck_time_off_type check (type in (0,1,2,3,4,5)),
+  constraint ck_time_off_state check (state in (0,1,2,3,4)),
   constraint pk_time_off primary key (id)
 );
 

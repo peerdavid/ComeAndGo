@@ -7,5 +7,6 @@ public enum TimeOffState {
     NEW,
     REQUEST_SENT,
     REQUEST_ACCEPTED,
-    REQUEST_REJECTED
+    REQUEST_REJECTED,
+    DONE
 }
