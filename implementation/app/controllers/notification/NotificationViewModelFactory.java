@@ -18,10 +18,10 @@ public class NotificationViewModelFactory {
 
             case HOLIDAY_REQUEST:
                 //timeTracking.readHolidayRequest(notification.referenceId);
-                return new HolidayRequestViewModel(timeTracking, notification.getId(), 0, notification.getMessage(),notification.isRead());
+                return new HolidayRequestViewModel(timeTracking, notification.getId(), 0, notification.getMessage(), new String(notification.getSender().getFirstName() + " "+ notification.getSender().getLastName()), notification.isRead());
 
             case SICK_LEAVE_INFORMATION:
-                return new SickLeaveViewModel(notification.getId(),0,notification.getMessage(),notification.isRead());
+                return new SickLeaveViewModel(notification.getId(), 0, notification.getMessage(), new String(notification.getSender().getFirstName() + " "+ notification.getSender().getLastName()), notification.isRead());
 
             default:
                 throw new Exception("Unknown notification type");

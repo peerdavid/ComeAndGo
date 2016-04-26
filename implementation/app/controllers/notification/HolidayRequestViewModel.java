@@ -7,7 +7,7 @@ import play.i18n.Messages;
 /**
  * Created by csaq5996 on 4/25/16.
  */
-public class HolidayRequestViewModel implements NotificationViewModel {
+public class HolidayRequestViewModel extends BasicViewModel implements NotificationViewModel {
 
     private TimeTracking _timeTracking;
 
@@ -15,33 +15,24 @@ public class HolidayRequestViewModel implements NotificationViewModel {
     private int timeOffId;
 
     private String message;
+    private String sender;
 
     private boolean read;
 
 
-    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, boolean read){
+    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, String sender, boolean read){
+
+        super(notificationId,message,sender,read);
+
+        this.timeOffId = timeOffId;
 
         _timeTracking = timeTracking;
 
-        this.notificationId = notificationId;
-        this.timeOffId = timeOffId;
-        this.message = message;
-        this.read = read;
     }
 
     @Override
     public int getTimeOffId() {
         return timeOffId;
-    }
-
-    @Override
-    public int getNotificationId() {
-        return notificationId;
-    }
-
-    @Override
-    public boolean hasRead() {
-        return read;
     }
 
     @Override
@@ -52,11 +43,6 @@ public class HolidayRequestViewModel implements NotificationViewModel {
     @Override
     public String getHeader() {
         return Messages.get("notifications.holiday");
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
     }
 
     @Override

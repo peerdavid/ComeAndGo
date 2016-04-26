@@ -5,37 +5,21 @@ import play.i18n.Messages;
 /**
  * Created by csaq5996 on 4/25/16.
  */
-public class SickLeaveViewModel implements NotificationViewModel{
+public class SickLeaveViewModel extends BasicViewModel implements NotificationViewModel{
 
-    private int notificationId;
     private int timeOffId;
 
-    private String message;
+    public SickLeaveViewModel(int notificationId, int timeOffId, String message, String sender, boolean read){
 
-    private boolean read;
+        super(notificationId, message,sender,read);
 
-
-    public SickLeaveViewModel(int notificationId, int timeOffId, String message, boolean read){
-
-        this.notificationId = notificationId;
         this.timeOffId = timeOffId;
-        this.message = message;
-        this.read = read;
+
     }
 
     @Override
     public int getTimeOffId() {
         return timeOffId;
-    }
-
-    @Override
-    public int getNotificationId() {
-        return notificationId;
-    }
-
-    @Override
-    public boolean hasRead() {
-        return read;
     }
 
     @Override
@@ -46,11 +30,6 @@ public class SickLeaveViewModel implements NotificationViewModel{
     @Override
     public String getHeader() {
         return Messages.get("notifications.sickleave");
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
     }
 
     @Override

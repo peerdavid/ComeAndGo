@@ -49,10 +49,10 @@ public class NotificationController extends UserProfileController {
 
         List<NotificationViewModel> readNotifications = new ArrayList<>();
         List<NotificationViewModel> unreadNotifications = new ArrayList<>();
-        unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig",false));
-        unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message",false));
+        unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig","sender",false));
+        unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message","sender klaus",false));
         List<NotificationViewModel> sentNotifications = new ArrayList<>();
-        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig",false));
+        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig","sender",false));
 
         return ok(views.html.notification.render(profile, unreadNotifications, readNotifications, sentNotifications));
     }

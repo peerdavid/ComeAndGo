@@ -17,6 +17,8 @@ public interface NotificationViewModel {
 
     String getMessage();
 
+    String getSender();
+
     boolean isRejectable();
 
     void accept();
