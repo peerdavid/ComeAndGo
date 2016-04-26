@@ -29,17 +29,17 @@
                                 <div class="row button-container">
 
                                 @if(notification.isRejectable) {
-                                    <a class="btn waves-effect waves-light negative-btn col s12 l6" href="@routes.NotificationController.rejectNotification(notification.getNotificationId)">
+                                    <a class="btn waves-effect waves-light negative-btn col s12 l5" href="@routes.NotificationController.rejectNotification(notification.getNotificationId)">
                                         <i class="material-icons right"></i>
                                         @Messages("views.notification.buttonreject")
                                     </a>
-                                    <a class="btn waves-effect waves-light primary-btn col s12 l6 offset-l6" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
+                                    <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l2" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
                                         @Messages("views.notification.buttonaccept")
                                     </a>
 
                                 } else {
 
-                                    <a class="btn waves-effect waves-light primary-btn col s12 l6 offset-l6" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
+                                    <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l7" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
                                         @Messages("views.notification.buttonaccept")
                                     </a>
                                 }
@@ -63,7 +63,7 @@
                     @for(notification: NotificationViewModel <- readnotifications) {
                         <li>
                             <div class="collapsible-header">
-                                <i class="material-icons">@notification.getIcon</i>
+                                <i class="material-icons">drafts</i>
                                 <h7>@(notification.getHeader + " - " + notification.getSender)</h7>
                             </div>
 
