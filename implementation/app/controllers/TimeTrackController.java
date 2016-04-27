@@ -118,7 +118,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(Integer.parseInt(formData.get("id")[0]));
 
-
         // update timetrack dates
         if(formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
             String[] s = formData.get("startdate")[0].split("\\.");
