@@ -1,8 +1,10 @@
 # --- !Ups
-insert into user values (0, 'admin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'admin', 'admin', 'admin@comego.at', 'testboss'),
-(1, 'stefan', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'Stefan', 'Haberl', 'stefan@comego.at', 'testboss'),
-(2, 'leo', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'Leo', 'Haas', 'leo@comego.at', 'testboss'),
-(3, 'david', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'David', 'Peer', 'david@comego.at', 'testboss');
+insert into user values (0, 'admin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'admin', 'admin', 'admin@comego.at', 'admin'),
+(1, 'stefan', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'Stefan', 'Haberl', 'stefan@comego.at', 'martin'),
+(2, 'leo', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'Leo', 'Haas', 'leo@comego.at', 'martin'),
+(3, 'david', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'David', 'Peer', 'david@comego.at', 'martin'),
+(4, 'martin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_BOSS', true, 'Martin', 'Brunner', 'martin@comego.at', 'martin');
+
 
 insert into time_track values
 (0, 0, '2016-05-01 08:10:09', '2016-05-01 16:34:09'),

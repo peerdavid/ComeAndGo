@@ -2,13 +2,20 @@ package controllers;
 
 import business.notification.NotificationReader;
 import business.notification.NotificationType;
+import business.timetracking.TimeTracking;
 import business.usermanagement.SecurityRole;
 import com.google.inject.Inject;
+import controllers.notification.HolidayRequestViewModel;
+import controllers.notification.NotificationViewModel;
+import controllers.notification.NotificationViewModelFactory;
+import controllers.notification.SickLeaveViewModel;
 import models.Notification;
 import models.User;
+import net.sf.ehcache.search.expression.Not;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
+import play.i18n.Messages;
 import play.mvc.Result;
 
 import java.util.ArrayList;
@@ -19,10 +26,12 @@ import java.util.List;
  */
 public class NotificationController extends UserProfileController {
 
+    private TimeTracking _timeTracking;
     private NotificationReader _notifReader;
 
     @Inject
-    public NotificationController(NotificationReader notifReader) {
+    public NotificationController(TimeTracking timeTracking, NotificationReader notifReader) {
+        _timeTracking = timeTracking;
         _notifReader = notifReader;
     }
 
@@ -32,19 +41,34 @@ public class NotificationController extends UserProfileController {
 
         int id = Integer.parseInt(profile.getId());
 
-        List<Notification> readNotifications = _notifReader.getReadNotificationsForUser(id,10);
-        List<Notification> unreadNotifications = _notifReader.getUnreadNotificationsForUser(id);
-        List<Notification> sentNotifications = _notifReader.getSentNotifications(id,10);
+        /*
+        List<NotificationViewModel> readNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getReadNotificationsForUser(id,10), _timeTracking);
+        List<NotificationViewModel> unreadNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getUnreadNotificationsForUser(id), _timeTracking);
+        List<NotificationViewModel> sentNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.getSentNotifications(id,10), _timeTracking);
+        */
 
-        return ok(views.html.notification.render(profile,unreadNotifications,readNotifications,sentNotifications));
+        List<NotificationViewModel> readNotifications = new ArrayList<>();
+        List<NotificationViewModel> unreadNotifications = new ArrayList<>();
+        unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig","sender",false));
+        unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message","sender klaus",false));
+        List<NotificationViewModel> sentNotifications = new ArrayList<>();
+        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig","sender",false));
+
+        return ok(views.html.notification.render(profile, unreadNotifications, readNotifications, sentNotifications));
     }
 
     @RequiresAuthentication(clientName = "default")
     public Result acceptNotification(int notificationId) throws Exception{
 
+        // _notifications.getNotification(notificationId)
+
+        /*
+        Notification not = null;
+        NotificationViewModel notViewModel = NotificationViewModelFactory.createNotificationViewModel(not, _timeTracking);
+        notViewModel.accept();
+        */
 
         //_notifReader.accept(notificationId);
-
 
         return redirect(routes.NotificationController.index());
     }
@@ -54,6 +78,7 @@ public class NotificationController extends UserProfileController {
 
 
         //_notifReader.reject(notificationId);
+
 
 
         return redirect(routes.NotificationController.index());

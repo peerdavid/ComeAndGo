@@ -13,10 +13,12 @@ class TimeTrackingFacade implements TimeTracking {
 
 
     private TimeTrackingService _timeTrackingService;
+    private TimeOffService _timeOffService;
 
     @Inject
-    public TimeTrackingFacade(TimeTrackingService timeTrackingService) {
+    public TimeTrackingFacade(TimeTrackingService timeTrackingService, TimeOffService timeOffService) {
         _timeTrackingService = timeTrackingService;
+        _timeOffService = timeOffService;
     }
 
 
@@ -89,5 +91,35 @@ class TimeTrackingFacade implements TimeTracking {
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) throws Exception {
         _timeTrackingService.updateTimeTrack(timeTrack);
+    }
+
+    @Override
+    public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.takeSickLeave(userId, from, to, comment);
+    }
+
+    @Override
+    public void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.takeBusinessTrip(userId, from, to, comment);
+    }
+
+    @Override
+    public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.requestHoliday(userId, from, to, comment);
+    }
+
+    @Override
+    public void requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.requestSpecialHoliday(userId, from, to, comment);
+    }
+
+    @Override
+    public void acceptHoliday(int timeOffId, int bossId) throws Exception {
+        _timeOffService.acceptHoliday(timeOffId, bossId);
+    }
+
+    @Override
+    public void rejectHoliday(int timeOffId, int bossId) throws Exception {
+        _timeOffService.rejectHoliday(timeOffId, bossId);
     }
 }

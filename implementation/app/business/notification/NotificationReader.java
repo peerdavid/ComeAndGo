@@ -9,7 +9,7 @@ import java.util.List;
  * Created by david on 22.03.16.
  */
 public interface NotificationReader extends UseCases {
-    List<Notification> getUnreadNotificationsForUser(int userId) throws NotificationException;
+    List<Notification> readUnseenNotifications(int userId) throws NotificationException;
 
    /**
     *
@@ -18,7 +18,7 @@ public interface NotificationReader extends UseCases {
     * @return list of notifications sent to user, which are specified by userId
     * @throws NotificationException
     */
-    List<Notification> getReadNotificationsForUser(int userId, int amount) throws NotificationException;
+    List<Notification> readSeenNotifications(int userId, int amount) throws NotificationException;
 
    /**
     * @param userId
@@ -26,10 +26,10 @@ public interface NotificationReader extends UseCases {
     * @return outgoing notifications which are sent from user specified by userId
     * @throws NotificationException
     */
-    List<Notification> getSentNotifications(int userId, int amount) throws NotificationException;
+    List<Notification> readSentNotifications(int userId, int amount) throws NotificationException;
 
 
-    void setNotificationAsRead(int notificationId) throws NotificationException;
+    void updateNotificationAsRead(int notificationId) throws NotificationException;
 
-    int getNumberOfUnreadNotifications(int userId) throws NotificationException;
+    int readNumberOfUnseenNotifications(int userId) throws NotificationException;
 }

@@ -1,6 +1,7 @@
 package business.notification;
 
 import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import business.usermanagement.UserNotFoundException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
@@ -23,58 +24,58 @@ class NotificationReaderFacade implements NotificationReader {
         _userManagement = userRepository;
     }
 
-    public List<Notification> getUnreadNotificationsForUser(int userId) throws NotificationException {
+    public List<Notification> readUnseenNotifications(int userId) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getUnreadNotificationsForUser(user);
+        return _notificationRepository.readUnseenNotifications(user);
     }
 
     @Override
-    public void setNotificationAsRead(int notificationId) throws NotificationException {
-        Notification notificationToChange = _notificationRepository.readNotificationById(notificationId);
+    public void updateNotificationAsRead(int notificationId) throws NotificationException {
+        Notification notificationToChange = _notificationRepository.readNotification(notificationId);
         _notificationRepository.markAsRead(notificationToChange);
     }
 
     @Override
-    public int getNumberOfUnreadNotifications(int userId) throws NotificationException {
+    public int readNumberOfUnseenNotifications(int userId) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getNumberOfUnreadNotifications(user);
+        return _notificationRepository.readNumberOfUnseenNotifications(user);
     }
 
     @Override
-    public List<Notification> getReadNotificationsForUser(int userId, int amount) throws NotificationException {
+    public List<Notification> readSeenNotifications(int userId, int amount) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
 
-        return _notificationRepository.getReadNotificationsForUser(user, amount);
+        return _notificationRepository.readSeenNotifications(user, amount);
     }
 
     @Override
-    public List<Notification> getSentNotifications(int userId, int amount) throws NotificationException {
+    public List<Notification> readSentNotifications(int userId, int amount) throws NotificationException {
         User user;
         try {
             user = _userManagement.readUser(userId);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             throw new NotificationException("exceptions.usermanagement.no_such_user");
         }
 
-        return _notificationRepository.getSentNotifications(user, amount);
+        return _notificationRepository.readSentNotifications(user, amount);
     }
 
 }

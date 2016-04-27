@@ -27,23 +27,21 @@ public interface TimeTracking extends UseCases {
 
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
 
-    /**
-     * adds the new timeTrack and corresponding breaks to repository
-     */
     void createTimeTrack(int userId, DateTime from, DateTime to) throws Exception;
 
-    /**
-     * delete whole timeTrack plus corresponding breaks
-     * @param timeTrack
-     */
     void deleteTimeTrack(TimeTrack timeTrack) throws Exception;
 
-    /**
-     * use this method to update timeTracks and the breaks inside this timeTrack
-     * this method can also be used to delete breaks, specify times of breaks and so on
-     * @param timeTrack
-     * @throws Exception
-     */
     void updateTimeTrack(TimeTrack timeTrack) throws Exception;
 
+    void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception;
+
+    void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception;
+
+    void  requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception;
+
+    void  requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception;
+
+    void  acceptHoliday(int timeOffId, int bossId) throws Exception;
+
+    void  rejectHoliday(int timeOffId, int bossId) throws Exception;
 }

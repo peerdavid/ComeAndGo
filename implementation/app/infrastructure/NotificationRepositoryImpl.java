@@ -18,7 +18,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public Notification readNotificationById(int notificationId) throws NotificationException {
+    public Notification readNotification(int notificationId) throws NotificationException {
         Notification notification =
                 Ebean.find(Notification.class)
                 .where().eq("id", notificationId)
@@ -27,7 +27,8 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         if(notification != null) {
             return notification;
         }
-        throw new NotificationException("no notification with that id found");
+        // We should never return null
+        throw new NotificationException("exceptions.notification.could_not_find_notification");
     }
 
     @Override
@@ -41,7 +42,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public List<Notification> getUnreadNotificationsForUser(User user) throws NotificationException {
+    public List<Notification> readUnseenNotifications(User user) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
                 .where().eq("_receiver_id", user.getId())   // filter notifications for user
@@ -55,11 +56,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public List<Notification> getReadNotificationsForUser(User user, int amount) throws NotificationException {
-        if(amount <= 0) {
-            amount = 100;
-        }
-
+    public List<Notification> readSeenNotifications(User user, int amount) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
                         .where().eq("_receiver_id", user.getId())
@@ -70,15 +67,12 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         if(result != null) {
             return result;
         }
-        return Collections.emptyList();
+        // We should never return null
+        throw new NotificationException("exceptions.notification.could_not_find_notification");
     }
 
     @Override
-    public List<Notification> getSentNotifications(User user, int amount) throws NotificationException {
-        if(amount <= 0) {
-            amount = 100;
-        }
-
+    public List<Notification> readSentNotifications(User user, int amount) throws NotificationException {
         List<Notification> result =
             Ebean.find(Notification.class)
             .where().eq("_sender_id", user.getId())
@@ -89,7 +83,8 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         if(result != null) {
             return result;
         }
-        return Collections.emptyList();
+        // We should never return null
+        throw new NotificationException("exceptions.notification.could_not_find_notification");
     }
 
 
@@ -100,7 +95,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public int getNumberOfUnreadNotifications(User user) throws NotificationException {
+    public int readNumberOfUnseenNotifications(User user) throws NotificationException {
         return Ebean.find(Notification.class)
             .where().eq("_receiver_id", user.getId())
             .where().eq("read", false)

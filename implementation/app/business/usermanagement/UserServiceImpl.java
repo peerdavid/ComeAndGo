@@ -24,7 +24,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
     }
 
     @Override
-    public User readUser(int id) throws UserNotFoundException {
+    public User readUser(int id) throws UserException {
         return _userRepository.readUser(id);
     }
 
@@ -71,7 +71,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
         try {
             alreadyExistingUser = _userRepository.readUser(userName);
-        } catch (UserNotFoundException e) {
+        } catch (UserException e) {
             return true;
         }
 

@@ -19,7 +19,7 @@ public class Notification extends Model {
 
     // DON'T rename column name _id, otherwise limit functions won't work anymore
     @Id
-    @Column(name = "_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer _id;
 
@@ -30,12 +30,12 @@ public class Notification extends Model {
     @Constraints.MaxLength(150)
     private String _message;
 
-    @Column(name = "_sender_id")
+    @Column(name = "sender_id")
     @ManyToOne()
     @NotNull
     private User _sender;
 
-    @Column(name = "_receiver_id")
+    @Column(name = "receiver_id")
     @ManyToOne()
     @NotNull
     private User _receiver;
@@ -45,6 +45,9 @@ public class Notification extends Model {
 
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
+
+
+    private int referenceId;
 
     // Use standard messages for each Notification Type
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
