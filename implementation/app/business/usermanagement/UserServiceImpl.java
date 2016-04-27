@@ -57,7 +57,9 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
             throw new UserException("exceptions.usermanagement.user_already_exists");
         }
 
-        if (_userRepository.readUser(newUser.getUserNameBoss()) == null) {
+        try {
+            _userRepository.readUser(newUser.getUserNameBoss());
+        } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }
 
@@ -150,7 +152,9 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
             }
         }
         // Check if boss is valid
-        if (_userRepository.readUser(newUserData.getUserNameBoss()) == null) {
+        try {
+            _userRepository.readUser(newUserData.getUserNameBoss());
+        } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }
 
