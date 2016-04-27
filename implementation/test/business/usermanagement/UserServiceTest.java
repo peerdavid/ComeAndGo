@@ -2,6 +2,7 @@ package business.usermanagement;
 
 
 import infrastructure.UserRepository;
+import javassist.NotFoundException;
 import models.User;
 
 import org.junit.Assert;
@@ -37,7 +38,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void registerUser_ShouldCallRepository() throws UserException{
+    public void registerUser_ShouldCallRepository() throws UserException, NotFoundException {
         // Prepare
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
@@ -50,7 +51,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException{
+    public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException, NotFoundException {
         // Prepare
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
         when(_userRepository.readUser(_testAdmin.getUserNameBoss())).thenReturn(_testAdmin);
