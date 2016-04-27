@@ -27,11 +27,11 @@ create table notification (
 create table time_off (
   id                            integer auto_increment not null,
   _user_id                      integer not null,
-  start                         time,
-  end                           time,
+  start                         datetime,
+  end                           datetime,
   type                          integer,
   state                         integer,
-  comment                       varchar(255),
+  comment                       varchar(150),
   constraint ck_time_off_type check (type in (0,1,2,3,4,5)),
   constraint ck_time_off_state check (state in (0,1,2,3,4)),
   constraint pk_time_off primary key (id)

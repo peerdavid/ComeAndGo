@@ -152,10 +152,7 @@ public class User extends Model {
         _userNameBoss = name;
     }
 
-    public String getUserNameBoss() throws NotFoundException {
-        if(_userNameBoss == null) {
-            throw new NotFoundException("boss not found");
-        }
+    public String getUserNameBoss() {
         return _userNameBoss;
     }
 

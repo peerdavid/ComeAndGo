@@ -59,10 +59,14 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = readBoss(employee);
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.REQUEST_SENT, comment);
-
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.NEW, comment);
         _repository.createTimeOff(timeOff);
+
         _notificationSender.sendNotification(new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss));
+        timeOff.setState(TimeOffState.REQUEST_SENT);
+
+        _repository.updateTimeOff(timeOff);
+
     }
 
     @Override
@@ -70,10 +74,13 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = readBoss(employee);
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, comment);
-
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.NEW, comment);
         _repository.createTimeOff(timeOff);
+
         _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss));
+        timeOff.setState(TimeOffState.REQUEST_SENT);
+
+        _repository.updateTimeOff(timeOff);
     }
 
     @Override
@@ -108,11 +115,8 @@ class TimeOffServiceImpl implements TimeOffService {
 
     private User readBoss(User employee) throws UserException {
         String userNameBoss;
-        try {
-            userNameBoss = employee.getUserNameBoss();
-        } catch(NotFoundException e) {
-            return employee;
-        }
+        userNameBoss = employee.getUserNameBoss();
+
         return _userManagement.readUser(userNameBoss);
     }
 }
