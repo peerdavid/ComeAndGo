@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <form action="@routes.TimeTrackController.editTimeTracks(userId)" method="POST">
+                        <form action="@routes.TimeTrackController.editTimeTracks(userId, from, to)" method="POST">
 
                             <!-- general info about timetrack -->
                             <input type="hidden" name="id" value="@t.getId">
@@ -170,7 +170,7 @@
                                                 <input name="to" type="text" class="timepicker">
                                                 <label for="to">@Messages("views.admin.edittimetracks.endtime")</label>
                                             </div>
-                                            <button class="btn waves-effect waves-light right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addbreak")
+                                            <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addbreak")
                                                 <i class="material-icons right">add</i>
                                             </button>
                                         </div>
@@ -210,7 +210,7 @@
                             <input  name="endtime" type="text" class="timepicker">
                             <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
                         </div>
-                        <button class="btn waves-effect waves-light right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addtimetrack")
+                        <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addtimetrack")
                             <i class="material-icons right">add</i>
                         </button>
                     </div>
