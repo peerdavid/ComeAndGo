@@ -3,6 +3,7 @@ package models;
 import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
+import javassist.NotFoundException;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
@@ -151,7 +152,10 @@ public class User extends Model {
         _userNameBoss = name;
     }
 
-    public String getUserNameBoss() {
+    public String getUserNameBoss() throws NotFoundException {
+        if(_userNameBoss == null) {
+            throw new NotFoundException("boss not found");
+        }
         return _userNameBoss;
     }
 

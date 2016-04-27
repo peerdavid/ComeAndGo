@@ -3,6 +3,7 @@ package models;
 import business.timetracking.*;
 import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;
+import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -36,11 +37,12 @@ public class TimeOff {
     @Column(name = "state")
     private TimeOffState _state;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "varchar(150)")
+    @Constraints.MaxLength(150)
     private String _comment;
 
     @Column(name = "reviewed_by")
-    private User _reviewed_by;
+    private User _reviewedBy;
 
     public TimeOff(User user, DateTime from, DateTime to, TimeOffType type, TimeOffState state, String comment) throws TimeTrackException {
         setFrom(from);
@@ -105,6 +107,18 @@ public class TimeOff {
     }
 
     public User getReviewedBy() {
-        return _reviewed_by;
+        return _reviewedBy;
+    }
+
+    public void setState(TimeOffState state) {
+        this._state = state;
+    }
+
+    public void setType(TimeOffType type) {
+        this._type = type;
+    }
+
+    public void setReviewedBy(User reviewedBy) {
+        this._reviewedBy = reviewedBy;
     }
 }

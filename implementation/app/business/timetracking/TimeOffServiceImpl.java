@@ -3,9 +3,11 @@ package business.timetracking;
 import business.notification.NotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeOffRepository;
 import infrastructure.TimeTrackingRepository;
+import javassist.NotFoundException;
 import models.Notification;
 import models.TimeOff;
 import models.User;
@@ -34,35 +36,83 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = _userManagement.readUser(employee.getUserNameBoss());
 
-        TimeOff sickleave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, TimeOffState.DONE, comment);
+        TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, TimeOffState.DONE, comment);
 
-        _repository.createTimeOff(sickleave);
+        _repository.createTimeOff(sickLeave);
         _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss));
 
     }
 
     @Override
     public void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        User employee = _userManagement.readUser(userId);
+        User boss = readBoss(employee);
 
+        TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, TimeOffState.DONE, comment);
+
+        _repository.createTimeOff(businessTrip);
+        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss));
     }
 
     @Override
     public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        User employee = _userManagement.readUser(userId);
+        User boss = readBoss(employee);
 
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.REQUEST_SENT, comment);
+
+        _repository.createTimeOff(timeOff);
+        _notificationSender.sendNotification(new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss));
     }
 
     @Override
     public void requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        User employee = _userManagement.readUser(userId);
+        User boss = readBoss(employee);
 
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, comment);
+
+        _repository.createTimeOff(timeOff);
+        _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss));
     }
 
     @Override
     public void acceptHoliday(int timeOffId, int bossId) throws Exception {
+        // todo: validation and tests
+        TimeOff timeOffToAccept = _repository.readTimeOff(timeOffId);
+        User employee = timeOffToAccept.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        timeOffToAccept.setState(TimeOffState.REQUEST_ACCEPTED);
+        timeOffToAccept.setReviewedBy(boss);
+        _repository.updateTimeOff(timeOffToAccept);
+
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_ACCEPT, boss, employee);
+        _notificationSender.sendNotification(answerToEmployee);
     }
 
     @Override
     public void rejectHoliday(int timeOffId, int bossId) throws Exception {
+        // todo: validation and tests
+        TimeOff timeOffToReject = _repository.readTimeOff(timeOffId);
+        User employee = timeOffToReject.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        timeOffToReject.setState(TimeOffState.REQUEST_REJECTED);
+        timeOffToReject.setReviewedBy(boss);
+        _repository.updateTimeOff(timeOffToReject);
+
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee);
+        _notificationSender.sendNotification(answerToEmployee);
+    }
+
+    private User readBoss(User employee) throws UserException {
+        String userNameBoss;
+        try {
+            userNameBoss = employee.getUserNameBoss();
+        } catch(NotFoundException e) {
+            return employee;
+        }
+        return _userManagement.readUser(userNameBoss);
     }
 }
