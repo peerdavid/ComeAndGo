@@ -116,6 +116,8 @@ exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have a
 exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 
+exceptions.timeoff.error_clashing_timeoffs = You are not able to request timeOff because of clashing "%s"
+
 notifications.holiday_request = Holiday request from employee "%s"
 notifications.special_holiday_request = Special-holiday request from employee "%s"
 notifications.business_trip_information = Employee "%s" is on Business trip
