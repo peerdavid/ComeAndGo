@@ -60,7 +60,7 @@ public class User extends Model {
         this.setFirstName(firstname);
         this.setLastName(lastname);
         this.setRole(role);
-        this.setBoss(boss);
+        this.set_boss(boss);
         this._active = active;
     }
 
@@ -149,11 +149,12 @@ public class User extends Model {
         this._role = role;
     }
 
-    public void setBoss(User boss) {
+    // Do not rename Setter and Getter, DataBinder needs exactly this method names!!! Weird!
+    public void set_boss(User boss) {
         _boss = boss;
     }
 
-    public User getBoss() {
+    public User get_boss() {
         return _boss;
     }
 

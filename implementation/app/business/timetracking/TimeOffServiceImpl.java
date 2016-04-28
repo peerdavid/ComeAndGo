@@ -3,7 +3,6 @@ package business.timetracking;
 import business.notification.NotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
-import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeOffRepository;
 import models.Notification;
@@ -32,7 +31,7 @@ class TimeOffServiceImpl implements TimeOffService {
     // ToDo: Validation
     public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.getBoss();
+        User boss = employee.get_boss();
 
         TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, TimeOffState.DONE, comment);
 
@@ -44,7 +43,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.getBoss();
+        User boss = employee.get_boss();
 
         TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, TimeOffState.DONE, comment);
 
@@ -55,7 +54,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.getBoss();
+        User boss = employee.get_boss();
 
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.NEW, comment);
         _repository.createTimeOff(timeOff);
@@ -70,7 +69,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.getBoss();
+        User boss = employee.get_boss();
 
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.NEW, comment);
         _repository.createTimeOff(timeOff);
