@@ -237,6 +237,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String[] d = formData.get("starttime")[0].split(":");
             fromDate = fromDate.plusHours(Integer.parseInt(d[0])).plusMinutes(Integer.parseInt(d[1]));
         }
+        // TODO: FIX INVALID DATE HERE: plusMinutes() does also increase date not only time because initialized with 23:59?
         if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
             String[] d = formData.get("endtime")[0].split(":");
             toDate = toDate.plusHours(Integer.parseInt(d[0])).plusMinutes(Integer.parseInt(d[1]));
