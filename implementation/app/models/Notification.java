@@ -30,17 +30,17 @@ public class Notification extends Model {
     @Constraints.MaxLength(150)
     private String _message;
 
-    @Column(name = "sender_id")
+    @Column(name = "_sender_id")
     @ManyToOne()
     @NotNull
     private User _sender;
 
-    @Column(name = "receiver_id")
+    @Column(name = "_receiver_id")
     @ManyToOne()
     @NotNull
     private User _receiver;
 
-    @Column(name = "read")
+    @Column(name = "seen")
     private Boolean _read;
 
     @Column(name = "created", columnDefinition = "datetime")

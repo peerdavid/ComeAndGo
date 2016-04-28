@@ -1,4 +1,6 @@
+
 # --- !Ups
+/*
 insert into user values (0, 'admin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'admin', 'admin', 'admin@comego.at', 0),
 (1, 'martin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_BOSS', true, 'Martin', 'Brunner', 'martin@comego.at', 1),
 (2, 'stefan', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'Stefan', 'Haberl', 'stefan@comego.at', 1),
@@ -34,11 +36,12 @@ insert into break VALUES
 (9, 9, '11:29:09', '12:08:09'),
 (10, 10, '12:44:09', '13:15:09'),
 (11, 11, '11:15:09', '12:57:09');
-
+*/
 
 # --- !Downs
 delete * from user;
 delete * from time_track;
 delete * from break;
 delete * from notification;
+
 
