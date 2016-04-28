@@ -46,8 +46,8 @@ public class Notification extends Model {
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
 
-
-    private int referenceId;
+    @Column(name = "reference_id")
+    private int _referenceId;
 
     // Use standard messages for each Notification Type
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
@@ -119,5 +119,11 @@ public class Notification extends Model {
         return Messages.get("notifications." + type.name().toLowerCase(), sender.getFirstName() + " " + sender.getLastName());
     }
 
+    public int getReferenceId() {
+        return _referenceId;
+    }
 
+    public void setReferenceId(int referenceId) {
+        this._referenceId = referenceId;
+    }
 }
