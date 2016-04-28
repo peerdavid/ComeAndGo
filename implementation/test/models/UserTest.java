@@ -13,10 +13,12 @@ import org.junit.Test;
 public class UserTest {
 
     User _testUser;
+    User _testBoss;
 
     @Before
     public void SetUp() throws UserException {
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
+        _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null);
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss);
     }
 
     @Test(expected = UserException.class)
@@ -42,11 +44,6 @@ public class UserTest {
     @Test(expected = UserException.class)
     public void setInvalidLastName_ShouldFail() throws UserException {
         _testUser.setLastName("1");
-    }
-
-    @Test(expected = UserException.class)
-    public void setInvalidBossUserName_ShouldFail() throws UserException {
-        _testUser.setUserNameBoss("1");
     }
 
     @Test(expected = UserException.class)

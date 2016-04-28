@@ -19,7 +19,7 @@ public class TimeTrackTest {
 
     @Before
     public void setUp() throws UserException {
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, "testBoss");
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, null);
         _testFromTime = new DateTime(2016, 5, 17, 8, 0);
         _testToTime = new DateTime(2016, 5, 17, 9, 0);
     }

@@ -58,7 +58,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         }
 
         try {
-            _userRepository.readUser(newUser.getUserNameBoss());
+            _userRepository.readUser(newUser.getBoss().getId());
         } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }
@@ -153,7 +153,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         }
         // Check if boss is valid
         try {
-            _userRepository.readUser(newUserData.getUserNameBoss());
+            _userRepository.readUser(newUserData.getBoss().getId());
         } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }

@@ -3,11 +3,12 @@ package models;
 import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
-import javassist.NotFoundException;
+import com.avaje.ebean.annotation.Index;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by david on 21.03.16.
@@ -43,10 +44,13 @@ public class User extends Model {
     @Column(name = "email")
     private String _email;
 
-    @Column(name = "user_name_boss")
-    private String _userNameBoss;
+    @Column(name = "boss_id")
+    @NotNull
+    @Index
+    @ManyToOne
+    private User _boss;
 
-    public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, String bossUserName) throws UserException {
+    public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, User boss) throws UserException {
 
         // Data Validation in Setters
 
@@ -56,7 +60,7 @@ public class User extends Model {
         this.setFirstName(firstname);
         this.setLastName(lastname);
         this.setRole(role);
-        this.setUserNameBoss(bossUserName);
+        this.setBoss(boss);
         this._active = active;
     }
 
@@ -145,15 +149,12 @@ public class User extends Model {
         this._role = role;
     }
 
-    public void setUserNameBoss(String name) throws UserException {
-        if (name.length() < 4 || name.length() > 20) {
-            throw new UserException("exceptions.usermanagement.boss_username_format");
-        }
-        _userNameBoss = name;
+    public void setBoss(User boss) {
+        _boss = boss;
     }
 
-    public String getUserNameBoss() {
-        return _userNameBoss;
+    public User getBoss() {
+        return _boss;
     }
 
     public boolean getActive() {
@@ -164,5 +165,7 @@ public class User extends Model {
         _active = active;
     }
 
-
+    public void setId(Integer _id) {
+        this._id = _id;
+    }
 }

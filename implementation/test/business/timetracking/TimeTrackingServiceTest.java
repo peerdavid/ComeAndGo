@@ -40,7 +40,7 @@ public class TimeTrackingServiceTest {
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null);
         _testBreak = new Break(DateTime.now());
 
         _notificationSenderMock = mock(NotificationSender.class);

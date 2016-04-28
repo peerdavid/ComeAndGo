@@ -54,7 +54,7 @@ create table user (
   firstname                     varchar(255),
   lastname                      varchar(255),
   email                         varchar(255),
-  user_name_boss                varchar(255),
+  _boss_id                      integer not null,
   constraint uq_user_username unique (username),
   constraint pk_user primary key (id)
 );
@@ -74,6 +74,9 @@ create index ix_time_off__user_id on time_off (_user_id);
 alter table time_track add constraint fk_time_track__user_id foreign key (_user_id) references user (id) on delete restrict on update restrict;
 create index ix_time_track__user_id on time_track (_user_id);
 
+alter table user add constraint fk_user__boss_id foreign key (_boss_id) references user (id) on delete restrict on update restrict;
+create index ix_user__boss_id on user (_boss_id);
+
 
 # --- !Downs
 
@@ -91,6 +94,9 @@ drop index if exists ix_time_off__user_id;
 
 alter table time_track drop constraint if exists fk_time_track__user_id;
 drop index if exists ix_time_track__user_id;
+
+alter table user drop constraint if exists fk_user__boss_id;
+drop index if exists ix_user__boss_id;
 
 drop table if exists break;
 

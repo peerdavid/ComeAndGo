@@ -55,6 +55,7 @@ public class UserManagementController extends UserProfileController {
         String repeatPassword = form.data().get("repeat_password");
         String userNameBoss = form.data().get("usernameboss");
         String role = form.data().get("role");
+        User boss = _userManagement.readUser(userNameBoss);
 
         User changingUser = null;
 
@@ -81,7 +82,7 @@ public class UserManagementController extends UserProfileController {
             changingUser.setPassword(password);
         }
         if (userNameBoss != null) {
-            changingUser.setUserNameBoss(userNameBoss);
+            changingUser.setBoss(boss);
         }
         if (role != null) {
             changingUser.setRole(role);

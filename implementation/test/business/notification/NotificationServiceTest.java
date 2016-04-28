@@ -22,14 +22,13 @@ public class NotificationServiceTest {
     User _toTestUser;
     User _fromTestUser;
 
-
     @Before
     public void SetUp() throws Exception {
         _userRepository = mock(InternalUserManagement.class);
         _notificationRepository = mock(NotificationRepository.class);
         _testee = new NotificationService(_notificationRepository, _userRepository);
-        _toTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
-        _fromTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, "testBoss");
+        _toTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null);
+        _fromTestUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null);
         _testNotification = new Notification(NotificationType.INFORMATION, "test", _fromTestUser, _toTestUser);
 
     }

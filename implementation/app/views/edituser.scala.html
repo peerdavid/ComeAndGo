@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="input-field col s12 m6">
                                     <select id="disabled" name="usernameboss" type="text">
-                                        <option selected disabled>@u.getUserNameBoss</option>
+                                        <option selected disabled>@u.getBoss</option>
                                         <option value="admin">@Messages("views.admin.title")</option>
                                         @for(i : User <- userlist) {
                                             @if(i.getRole == SecurityRole.ROLE_BOSS) {
@@ -105,7 +105,7 @@
                                     <p>@(Messages("views.admin.edituser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@(routes.UserManagementController.deleteUser(u.getUserName))" style="float : right">@Messages("views.admin.edituser.delete")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.UserManagementController.deleteUser()" style="float : right">@Messages("views.admin.edituser.delete")</a>
                                     <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edituser.closemessage")</a>
                                 </div>
                             </div>

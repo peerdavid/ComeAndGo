@@ -53,17 +53,18 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String lastName = form.data().get("lastname");
         String role = form.data().get("role");
         String email = form.data().get("email");
-        String UserNameBoss = form.data().get("usernameboss");
+        String userNameBoss = form.data().get("usernameboss");
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;
         }
 
-        if (UserNameBoss.isEmpty()) {
-            UserNameBoss = "admin";
+        if (userNameBoss.isEmpty()) {
+            userNameBoss = "admin";
         }
+        User boss = _userManagement.readUser(userNameBoss);
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, UserNameBoss);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss);
 
         _userManagement.createUser(userToRegister);
 
