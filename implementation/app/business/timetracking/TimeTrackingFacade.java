@@ -122,4 +122,35 @@ class TimeTrackingFacade implements TimeTracking {
     public void rejectHoliday(int timeOffId, int bossId) throws Exception {
         _timeOffService.rejectHoliday(timeOffId, bossId);
     }
+
+    @Override
+    public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.takeParentalLeave(userId, from, to, comment);
+    }
+
+    @Override
+    public void requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        _timeOffService.requestEducationalLeave(userId, from, to, comment);
+    }
+
+    @Override
+    public void acceptSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        _timeOffService.acceptSpecialHoliday(timeOffId, bossId);
+
+    }
+
+    @Override
+    public void rejectSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        _timeOffService.rejectSpecialHoliday(timeOffId, bossId);
+    }
+
+    @Override
+    public void acceptEducationalLeave(int timeOffId, int bossId) throws Exception {
+        _timeOffService.acceptEducationalLeave(timeOffId, bossId);
+    }
+
+    @Override
+    public void rejectEducationalLeave(int timeOffId, int bossId) throws Exception {
+        _timeOffService.rejectEducationalLeave(timeOffId, bossId);
+    }
 }

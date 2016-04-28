@@ -110,4 +110,34 @@ class TimeOffServiceImpl implements TimeOffService {
         Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee);
         _notificationSender.sendNotification(answerToEmployee);
     }
+
+    @Override
+    public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+
+    }
+
+    @Override
+    public void requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+
+    }
+
+    @Override
+    public void acceptSpecialHoliday(int timeOffId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectSpecialHoliday(int timeOffId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void acceptEducationalLeave(int timeOffId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectEducationalLeave(int timeOffId, int bossId) throws Exception {
+
+    }
 }
