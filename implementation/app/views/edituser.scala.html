@@ -72,15 +72,15 @@
                                     <label for="role">@Messages("views.admin.signup.form.selectrole")</label>
                                 </div>
                                 <div class="input-field col s12 m6">
-                                    <select name="usernameboss" type="text">
-                                        <option selected disabled>@u.getBoss.getUserName</option>
+                                    <select name="boss" type="text">
+                                        <option selected disabled>@(u.get_boss().getFirstName) @(u.get_boss().getLastName)</option>
                                         @for(i : User <- userlist) {
                                             @if(i.getRole == SecurityRole.ROLE_BOSS) {
-                                                <option value=@i.getUserName>@(i.getUserName)</option>
+                                                <option value=@i.getUserName>@(i.getFirstName) @(i.getLastName)</option>
                                             }
                                         }
                                     </select>
-                                    <label for="bossofuser">@Messages("views.admin.edituser.bossofuser")</label>
+                                    <label for="boss">@Messages("views.admin.edituser.bossofuser")</label>
                                 </div>
                             </div>
                             <input type="hidden" name="id" value="@u.getId">

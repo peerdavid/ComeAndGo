@@ -34,7 +34,7 @@ public class UserServiceTest {
         _userRepository = mock(UserRepository.class);
         _testee = new UserServiceImpl(_userRepository);
         _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null);
-        _testBoss.setBoss(_testBoss);
+        _testBoss.set_boss(_testBoss);
         _testBoss.setId(1);
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss);
         _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, _testBoss);
@@ -56,7 +56,7 @@ public class UserServiceTest {
     public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException, NotFoundException {
         // Prepare
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
-        when(_userRepository.readUser(_testAdmin.getBoss().getUserName())).thenReturn(_testAdmin);
+        when(_userRepository.readUser(_testAdmin.get_boss().getUserName())).thenReturn(_testAdmin);
 
         _testee.createUser(_testUser);
 

@@ -1,4 +1,3 @@
-
 # --- !Ups
 
 insert into user values (1, 'david', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_BOSS', true, 'David', 'Peer', 'david@comego.at', 1);
