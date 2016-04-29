@@ -189,4 +189,9 @@ class TimeOffServiceImpl implements TimeOffService {
         Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee);
         _notificationSender.sendNotification(notification);
     }
+
+    @Override
+    public TimeOff readTimeOffById(int timeOffId) throws Exception {
+        return _repository.readTimeOff(timeOffId);
+    }
 }

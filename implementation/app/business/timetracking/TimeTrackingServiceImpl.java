@@ -28,11 +28,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Inject
-    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
+    public TimeTrackingServiceImpl(TimeTrackingRepository repository, TimeTrackingValidation validation, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
         _userManagement = userRepository;
-        _validation = new TimeTrackingValidationImpl(repository);
+        _validation = validation;
     }
 
 

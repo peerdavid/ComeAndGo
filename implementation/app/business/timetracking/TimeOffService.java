@@ -32,5 +32,5 @@ interface TimeOffService {
 
     void  rejectEducationalLeave(int timeOffId, int bossId) throws Exception;
 
-
+    TimeOff readTimeOffById(int timeOffId) throws Exception;
 }
