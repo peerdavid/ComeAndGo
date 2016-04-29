@@ -17,7 +17,7 @@ GET     /edituser                                  @controllers.UserManagementCo
 POST    /edituser                                  @controllers.UserManagementController.editUser
 GET     /deleteUser                                @controllers.UserManagementController.deleteUser(userName : String ?= null)
 
-GET     /edittimetracks/:userId                    @controllers.TimeTrackController.editTimeTracks(userId : Int, from : String ?= null, to : String ?= null)
+GET     /edittimetracks/:userId                    @controllers.TimeTrackController.readTimeTracks(userId : Int, from : String ?= null, to : String ?= null)
 POST    /edittimetracks/:userId                    @controllers.TimeTrackController.updateTimeTrack(userId : Int, from : String ?= null, to : String ?= null)
 POST    /edittimetracks/:userId/addtimetrack       @controllers.TimeTrackController.createTimeTrack(userId : Int, from : String ?= null, to : String ?= null)
 GET     /edittimetracks/:userId/deletetimetrack    @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from : String ?= null, to : String ?= null)

@@ -86,7 +86,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result editTimeTracks(int userId, String from, String to) throws Exception {
+    public Result readTimeTracks(int userId, String from, String to) throws Exception {
         CommonProfile profile = getUserProfile();
 
         DateTime dateFrom;
@@ -154,7 +154,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+        return redirect(this.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -170,7 +170,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+        return redirect(this.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -196,7 +196,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+        return redirect(this.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -230,7 +230,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.createTimeTrack(userId, fromDate, toDate);
 
-        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+        return redirect(this.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -239,6 +239,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.deleteTimeTrack(timeTrack);
 
-        return redirect(routes.TimeTrackController.editTimeTracks(userId, from, to));
+        return redirect(this.readTimeTracks(userId, from, to));
     }
 }
