@@ -30,10 +30,11 @@ class TimeOffServiceImpl implements TimeOffService {
     }
 
     @Override
-    // ToDo: Validation
     public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
+
+        _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, TimeOffState.DONE, comment);
 
@@ -47,6 +48,8 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
+        _timeOffValidation.validateTimeOff(employee, from, to);
+
         TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, TimeOffState.DONE, comment);
 
         _repository.createTimeOff(businessTrip);
@@ -57,6 +60,8 @@ class TimeOffServiceImpl implements TimeOffService {
     public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
+
+        _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
@@ -69,6 +74,8 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
+        _timeOffValidation.validateTimeOff(employee, from, to);
+
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
@@ -77,7 +84,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void acceptHoliday(int timeOffId, int bossId) throws Exception {
-        // todo: validation and tests
+        // todo: add validations from user?
         TimeOff timeOffToAccept = _repository.readTimeOff(timeOffId);
         User employee = timeOffToAccept.getUser();
         User boss = _userManagement.readUser(bossId);
@@ -92,7 +99,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void rejectHoliday(int timeOffId, int bossId) throws Exception {
-        // todo: validation and tests
+        // todo: add validations from user?
         TimeOff timeOffToReject = _repository.readTimeOff(timeOffId);
         User employee = timeOffToReject.getUser();
         User boss = _userManagement.readUser(bossId);
@@ -107,6 +114,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        // todo: add additional validation for parental leave?
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
@@ -119,6 +127,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        // todo: add additional validation for educational leave?
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
@@ -131,6 +140,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void acceptSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        // todo: add validations for user?
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
@@ -145,6 +155,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void rejectSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        // todo: add validations for user?
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
@@ -159,6 +170,8 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void acceptEducationalLeave(int timeOffId, int bossId) throws Exception {
+        // todo: add validations for user?
+
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
@@ -173,6 +186,8 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void rejectEducationalLeave(int timeOffId, int bossId) throws Exception {
+        // todo: add validations for user?
+
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
