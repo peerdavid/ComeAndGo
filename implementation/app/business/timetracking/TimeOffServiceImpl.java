@@ -164,11 +164,29 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void acceptEducationalLeave(int timeOffId, int bossId) throws Exception {
+        TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+        User employee = requestedTimeOff.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
+        requestedTimeOff.setReviewedBy(boss);
+        _repository.updateTimeOff(requestedTimeOff);
+
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_ACCEPT, boss, employee);
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
     public void rejectEducationalLeave(int timeOffId, int bossId) throws Exception {
+        TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+        User employee = requestedTimeOff.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        requestedTimeOff.setState(TimeOffState.REQUEST_REJECTED);
+        requestedTimeOff.setReviewedBy(boss);
+        _repository.updateTimeOff(requestedTimeOff);
+
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee);
+        _notificationSender.sendNotification(notification);
     }
 }
