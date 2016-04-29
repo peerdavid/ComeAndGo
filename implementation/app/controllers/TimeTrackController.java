@@ -38,12 +38,17 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         DateTime now = DateTime.now();
 
-        DateTime from = now.minusHours(now.getHourOfDay()).minusMinutes(now.getMinuteOfHour());
-        DateTime to = DateTime.now().plusDays(1);
+        DateTime from = DateTimeUtils.stringToTime("00:00", now);
+        DateTime to = now.plusDays(1);
 
         List<TimeTrack> timeTrackList = _timeTracking.readTimeTracks(userId, from, to);
 
-        return ok(views.html.index.render(profile, _timeTracking.readState(userId), progress, timeTrackList));
+        return ok(views.html.index.render(
+            profile,
+            _timeTracking.readState(userId),
+            progress,
+            timeTrackList)
+        );
     }
 
     @RequiresAuthentication(clientName = "default")
@@ -88,7 +93,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         DateTime dateTo;
 
         List<TimeTrack> timeTracks;
-        if(from == null || to == null || from.isEmpty() || to.isEmpty()) {
+        if (from == null || to == null || from.isEmpty() || to.isEmpty()) {
             dateFrom = DateTime.now();
             dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
             from = DateTimeUtils.dateTimeToDate(dateFrom);
@@ -96,11 +101,8 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             dateTo = dateFrom.plusDays(5);
             to = DateTimeUtils.dateTimeToDate(dateTo);
         } else {
-            String[] fromDate = from.split("\\.");
-            String[] toDate = to.split("\\.");
-
-            dateFrom = new DateTime(Integer.parseInt(fromDate[2]), Integer.parseInt(fromDate[1]), Integer.parseInt(fromDate[0]), 0, 0);
-            dateTo = new DateTime(Integer.parseInt(toDate[2]), Integer.parseInt(toDate[1]), Integer.parseInt(toDate[0]), 23, 59);
+            dateFrom = DateTimeUtils.stringToDateTime(from);
+            dateTo = DateTimeUtils.stringToDateTime(to);
         }
 
         timeTracks = _timeTracking.readTimeTracks(userId, dateFrom, dateTo);
@@ -109,7 +111,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result saveTimeTrack(int userId, String from, String to) throws Exception {
+    public Result updateTimeTrack(int userId, String from, String to) throws Exception {
         CommonProfile profile = getUserProfile();
 
         Map<String, String[]> formData = request().body().asFormUrlEncoded();
@@ -117,36 +119,23 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(Integer.parseInt(formData.get("id")[0]));
 
         // update timetrack dates
-        if(formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
-            String[] s = formData.get("startdate")[0].split("\\.");
-            timeTrack.setFrom(new DateTime(Integer.parseInt(s[2]), Integer.parseInt(s[1]), Integer.parseInt(s[0]), 0, 0));
+        if (formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
+            timeTrack.setFrom(DateTimeUtils.stringToDateTime(formData.get("startdate")[0]));
         }
-        if(formData.get("enddate") != null && !formData.get("enddate")[0].isEmpty()) {
-            String[] s = formData.get("enddate")[0].split("\\.");
-            timeTrack.setTo(new DateTime(Integer.parseInt(s[2]), Integer.parseInt(s[1]), Integer.parseInt(s[0]), 23, 59));
+        if (formData.get("enddate") != null && !formData.get("enddate")[0].isEmpty()) {
+            timeTrack.setTo(DateTimeUtils.stringToDateTime(formData.get("enddate")[0], 23, 59));
         }
 
         // update timetrack times
-        if(formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
+        if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
             String[] d = formData.get("starttime")[0].split(":");
             timeTrack.setFrom(
-                new DateTime(
-                    timeTrack.getFrom().getYear(),
-                    timeTrack.getFrom().getMonthOfYear(),
-                    timeTrack.getFrom().getDayOfMonth(),
-                    Integer.parseInt(d[0]),
-                    Integer.parseInt(d[1]))
+                DateTimeUtils.stringToTime(formData.get("starttime")[0], timeTrack.getFrom())
             );
         }
-        if(formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
-            String[] d = formData.get("endtime")[0].split(":");
+        if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
             timeTrack.setTo(
-                new DateTime(
-                    timeTrack.getTo().getYear(),
-                    timeTrack.getTo().getMonthOfYear(),
-                    timeTrack.getTo().getDayOfMonth(),
-                    Integer.parseInt(d[0]),
-                    Integer.parseInt(d[1]))
+                DateTimeUtils.stringToTime(formData.get("endtime")[0], timeTrack.getTo())
             );
         }
 
@@ -156,12 +145,10 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String breakEnd = "break_endtime" + b.getId();
 
             if (formData.get(breakStart) != null && !formData.get(breakStart)[0].isEmpty()) {
-                String[] d = formData.get(breakStart)[0].split(":");
-                b.setFrom(new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1])));
+                b.setFrom(DateTimeUtils.stringToTime(formData.get(breakStart)[0]));
             }
             if (formData.get(breakEnd) != null && !formData.get(breakEnd)[0].isEmpty()) {
-                String[] d = formData.get(breakEnd)[0].split(":");
-                b.setTo(new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1])));
+                b.setTo(DateTimeUtils.stringToTime(formData.get(breakEnd)[0]));
             }
         }
 
@@ -187,7 +174,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result addBreak(int timetrackId, int userId, String from, String to) throws Exception {
+    public Result createBreak(int timetrackId, int userId, String from, String to) throws Exception {
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
         Map<String, String[]> formData = request().body().asFormUrlEncoded();
@@ -196,15 +183,14 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         DateTime toDate = null;
 
         if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
-            String[] d = formData.get("starttime")[0].split(":");
-            fromDate = new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1]));
+            fromDate = DateTimeUtils.stringToTime(formData.get("starttime")[0]);
         }
         if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
-            String[] d = formData.get("endtime")[0].split(":");
-            toDate = new DateTime(0, 0, 0, Integer.parseInt(d[0]), Integer.parseInt(d[1]));
+            toDate = DateTimeUtils.stringToTime(formData.get("endtime")[0]);
         }
-        if (fromDate == null || toDate == null)
+        if (fromDate == null || toDate == null) {
             throw new UserException("exceptions.timetracking.error_in_break_form");
+        }
 
         timeTrack.getBreaks().add(new Break(fromDate, toDate));
 
@@ -214,34 +200,32 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result addTimeTrack(int userId, String from, String to) throws Exception {
+    public Result createTimeTrack(int userId, String from, String to) throws Exception {
         Map<String, String[]> formData = request().body().asFormUrlEncoded();
 
         DateTime fromDate = null;
         DateTime toDate = null;
 
         if (formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
-            String[] s = formData.get("startdate")[0].split("\\.");
-            fromDate = new DateTime(Integer.parseInt(s[2]), Integer.parseInt(s[1]), Integer.parseInt(s[0]), 0, 0);
+            fromDate = DateTimeUtils.stringToDateTime(formData.get("startdate")[0]);
         }
         if (formData.get("enddate") != null && !formData.get("enddate")[0].isEmpty()) {
-            String[] s = formData.get("enddate")[0].split("\\.");
-            toDate = new DateTime(Integer.parseInt(s[2]), Integer.parseInt(s[1]), Integer.parseInt(s[0]), 23, 59);
+            toDate = DateTimeUtils.stringToDateTime(formData.get("enddate")[0], 23, 59);
         } else if (fromDate != null) {
             toDate = fromDate;
-        } else throw new UserException("exceptions.timetracking.error_in_timetrack_form");
+        } else {
+            throw new UserException("exceptions.timetracking.error_in_timetrack_form");
+        }
 
         if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
-            String[] d = formData.get("starttime")[0].split(":");
-            fromDate = fromDate.plusHours(Integer.parseInt(d[0])).plusMinutes(Integer.parseInt(d[1]));
+            fromDate = DateTimeUtils.stringToTime(formData.get("starttime")[0], fromDate);
         }
-        // TODO: FIX INVALID DATE HERE: plusMinutes() does also increase date not only time because initialized with 23:59?
         if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
-            String[] d = formData.get("endtime")[0].split(":");
-            toDate = toDate.plusHours(Integer.parseInt(d[0])).plusMinutes(Integer.parseInt(d[1]));
+            toDate = DateTimeUtils.stringToTime(formData.get("endtime")[0], toDate);
         }
-        if (fromDate == null || toDate == null)
+        if (fromDate == null || toDate == null) {
             throw new UserException("exceptions.timetracking.error_in_timetrack_form");
+        }
 
 
         _timeTracking.createTimeTrack(userId, fromDate, toDate);
