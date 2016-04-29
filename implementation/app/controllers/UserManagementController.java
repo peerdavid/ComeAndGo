@@ -103,6 +103,6 @@ public class UserManagementController extends UserProfileController {
 
         _userManagement.deleteUser(userName);
 
-        return redirect(this.readUsers());
+        return redirect(routes.UserManagementController.readUsers());
     }
 }

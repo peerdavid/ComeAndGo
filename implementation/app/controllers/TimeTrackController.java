@@ -154,7 +154,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(this.readTimeTracks(userId, from, to));
+        return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -170,7 +170,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(this.readTimeTracks(userId, from, to));
+        return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -196,7 +196,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.updateTimeTrack(timeTrack);
 
-        return redirect(this.readTimeTracks(userId, from, to));
+        return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -230,7 +230,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.createTimeTrack(userId, fromDate, toDate);
 
-        return redirect(this.readTimeTracks(userId, from, to));
+        return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
@@ -239,6 +239,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         _timeTracking.deleteTimeTrack(timeTrack);
 
-        return redirect(this.readTimeTracks(userId, from, to));
+        return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 }
