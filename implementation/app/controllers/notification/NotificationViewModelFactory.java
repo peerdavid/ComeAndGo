@@ -9,19 +9,32 @@ import java.util.List;
 
 /**
  * Created by csaq5996 on 4/25/16.
+ *
+ * TODO: throw meaningful exceptions!
+ *
  */
 public class NotificationViewModelFactory {
 
     public static NotificationViewModel createNotificationViewModel(Notification notification, TimeTracking timeTracking) throws Exception {
 
-        switch (notification.getType()){
+        switch (notification.getType()) {
 
             case HOLIDAY_REQUEST:
                 //timeTracking.readHolidayRequest(notification.referenceId);
-                return new HolidayRequestViewModel(timeTracking, notification.getId(), 0, notification.getMessage(), new String(notification.getSender().getFirstName() + " "+ notification.getSender().getLastName()), notification.isRead());
+                return new HolidayRequestViewModel(timeTracking,
+                    notification.getId(), 0,
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                    notification.isRead()
+                );
 
             case SICK_LEAVE_INFORMATION:
-                return new SickLeaveViewModel(notification.getId(), 0, notification.getMessage(), new String(notification.getSender().getFirstName() + " "+ notification.getSender().getLastName()), notification.isRead());
+                return new SickLeaveViewModel(
+                    notification.getId(), 0,
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                    notification.isRead()
+                );
 
             default:
                 throw new Exception("Unknown notification type");
@@ -29,13 +42,13 @@ public class NotificationViewModelFactory {
     }
 
     public static List<NotificationViewModel> createNotificationViewModelList(List<Notification> notificationList, TimeTracking timeTracking) throws Exception {
-        List<NotificationViewModel> result = new ArrayList<NotificationViewModel>();
+        List<NotificationViewModel> result = new ArrayList<>();
 
-        if(notificationList.isEmpty()){
+        if (notificationList.isEmpty()) {
             throw new Exception("hallo");
         }
 
-        for(Notification n:notificationList){
+        for (Notification n:notificationList) {
             result.add(createNotificationViewModel(n,timeTracking));
         }
 

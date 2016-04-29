@@ -7,7 +7,7 @@ import play.i18n.Messages;
 /**
  * Created by csaq5996 on 4/25/16.
  */
-public class HolidayRequestViewModel extends BasicViewModel implements NotificationViewModel {
+public class HolidayRequestViewModel extends BasicViewModel {
 
     private TimeTracking _timeTracking;
 
@@ -20,7 +20,7 @@ public class HolidayRequestViewModel extends BasicViewModel implements Notificat
     private boolean read;
 
 
-    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, String sender, boolean read){
+    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, String sender, boolean read) {
 
         super(notificationId,message,sender,read);
 
