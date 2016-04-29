@@ -46,7 +46,7 @@ public class TimeTrackingValidationImplTest {
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
-        _validation = mock(TimeTrackingValidation.class);
+        _validation = new TimeTrackingValidationImpl(_timeTrackingRepository);
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _notificationSenderMock, _userRepository);
 
