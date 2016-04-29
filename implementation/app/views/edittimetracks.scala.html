@@ -7,7 +7,7 @@
     @navigation(Messages("views.admin.edittimetracks"), profile) {
 
         <div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
-            <form action="@routes.TimeTrackController.editTimeTracks(userId)" type="GET">
+            <form action="@routes.TimeTrackController.readTimeTracks(userId)" type="GET">
                 <div class="row">
                     <div class="input-field col s6 m6 l3">
                         <input id="date-from" value="@from" name="from" type="text" class="datepicker">
@@ -61,7 +61,7 @@
                             </div>
                         </div>
 
-                        <form action="@routes.TimeTrackController.editTimeTracks(userId, from, to)" method="POST">
+                        <form action="@routes.TimeTrackController.readTimeTracks(userId, from, to)" method="POST">
 
                             <!-- general info about timetrack -->
                             <input type="hidden" name="id" value="@t.getId">
