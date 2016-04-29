@@ -5,11 +5,11 @@ import play.i18n.Messages;
 /**
  * Created by csaq5996 on 4/25/16.
  */
-public class SickLeaveViewModel extends BasicViewModel implements NotificationViewModel{
+public class SickLeaveViewModel extends BasicViewModel {
 
     private int timeOffId;
 
-    public SickLeaveViewModel(int notificationId, int timeOffId, String message, String sender, boolean read){
+    public SickLeaveViewModel(int notificationId, int timeOffId, String message, String sender, boolean read) {
 
         super(notificationId, message,sender,read);
 
@@ -39,6 +39,6 @@ public class SickLeaveViewModel extends BasicViewModel implements NotificationVi
 
     @Override
     public void accept() {
-        this.read = true;
+        setRead(true);
     }
 }

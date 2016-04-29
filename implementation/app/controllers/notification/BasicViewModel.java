@@ -3,37 +3,45 @@ package controllers.notification;
 /**
  * Created by Leonhard on 26.04.2016.
  */
-public class BasicViewModel {
+public abstract class BasicViewModel implements NotificationViewModel {
 
-    protected int notificationId;
+    private int _notificationId;
 
-    protected String message;
-    protected String sender;
+    private String _message;
+    private String _sender;
 
-    protected boolean read;
+    private boolean _read;
 
-    public BasicViewModel(int notificationId, String message, String sender, boolean read){
-        this.notificationId = notificationId;
+    public BasicViewModel(int notificationId, String message, String sender, boolean read) {
+        _notificationId = notificationId;
 
-        this.message = message;
-        this.sender = sender;
+        _message = message;
+        _sender = sender;
 
-        this.read = read;
+        _read = read;
     }
 
     public int getNotificationId(){
-        return notificationId;
+        return _notificationId;
     }
 
     public String getMessage(){
-        return message;
+        return _message;
+    }
+
+    public void setMessage(String message) {
+        _message = message;
     }
 
     public String getSender(){
-        return sender;
+        return _sender;
     }
 
     public boolean hasRead(){
-        return read;
+        return _read;
+    }
+
+    public void setRead(boolean read) {
+        _read = read;
     }
 }
