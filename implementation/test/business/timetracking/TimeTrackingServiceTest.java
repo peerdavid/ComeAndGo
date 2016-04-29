@@ -33,6 +33,7 @@ public class TimeTrackingServiceTest {
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
     TimeTrackingValidation _validation;
+    TimeOffValidation _timeOffValidation;
     InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
     User _testUser;
@@ -48,8 +49,9 @@ public class TimeTrackingServiceTest {
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
         _validation = mock(TimeTrackingValidation.class);
+        _timeOffValidation = mock(TimeOffValidation.class);
 
-        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _notificationSenderMock, _userRepository);
+        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _userRepository);
     }
 
 

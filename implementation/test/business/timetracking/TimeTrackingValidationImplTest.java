@@ -4,6 +4,7 @@ import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import business.usermanagement.SecurityRole;
+import infrastructure.TimeOffRepository;
 import infrastructure.TimeTrackingRepository;
 import models.Break;
 import models.TimeTrack;
@@ -30,10 +31,12 @@ public class TimeTrackingValidationImplTest {
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
+    TimeOffRepository _timeOffRepository;
     User _testUser;
     TimeTrack _testTimeTrack;
     Break _testBreak;
     TimeTrackingValidation _validation;
+    TimeOffValidation _timeOffValidation;
     List<TimeTrack> _testList;
     DateTime _MIDNIGHT;
     DateTime _MIDDAY;
@@ -47,8 +50,10 @@ public class TimeTrackingValidationImplTest {
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
         _validation = new TimeTrackingValidationImpl(_timeTrackingRepository);
+        _timeOffRepository = mock(TimeOffRepository.class);
+        _timeOffValidation = new TimeOffValidationImpl(_timeOffRepository);
 
-        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _notificationSenderMock, _userRepository);
+        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _userRepository);
 
         _MIDNIGHT  = new DateTime(2016, 5, 3, 0, 0, 0);
         _MIDDAY = _MIDNIGHT.plusHours(12);
