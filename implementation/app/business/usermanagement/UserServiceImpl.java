@@ -69,15 +69,13 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
 
     private boolean userAlreadyExists(String userName) {
-        User alreadyExistingUser;
-
         try {
-            alreadyExistingUser = _userRepository.readUser(userName);
+            _userRepository.readUser(userName);
         } catch (UserException e) {
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
 

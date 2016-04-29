@@ -8,7 +8,6 @@ import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 /**
  * Created by david on 21.03.16.
@@ -44,10 +43,8 @@ public class User extends Model {
     @Column(name = "email")
     private String _email;
 
-    @Column(name = "boss_id")
-    @NotNull
-    @Index
-    @ManyToOne
+    @Column(name = "_boss_id")
+    @ManyToOne()
     private User _boss;
 
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, User boss) throws UserException {

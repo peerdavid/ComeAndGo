@@ -41,7 +41,8 @@ public class TimeOff {
     @Constraints.MaxLength(150)
     private String _comment;
 
-    @Column(name = "reviewed_by")
+    @Column(name = "_reviewed_by")
+    @ManyToOne
     private User _reviewedBy;
 
     public TimeOff(User user, DateTime from, DateTime to, TimeOffType type, TimeOffState state, String comment) throws TimeTrackException {

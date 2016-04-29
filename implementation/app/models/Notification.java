@@ -30,24 +30,24 @@ public class Notification extends Model {
     @Constraints.MaxLength(150)
     private String _message;
 
-    @Column(name = "sender_id")
+    @Column(name = "_sender_id")
     @ManyToOne()
     @NotNull
     private User _sender;
 
-    @Column(name = "receiver_id")
+    @Column(name = "_receiver_id")
     @ManyToOne()
     @NotNull
     private User _receiver;
 
-    @Column(name = "read")
+    @Column(name = "seen")
     private Boolean _read;
 
     @Column(name = "created", columnDefinition = "datetime")
     private DateTime _createdOn;
 
-
-    private int referenceId;
+    @Column(name = "reference_id")
+    private int _referenceId;
 
     // Use standard messages for each Notification Type
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
@@ -119,5 +119,11 @@ public class Notification extends Model {
         return Messages.get("notifications." + type.name().toLowerCase(), sender.getFirstName() + " " + sender.getLastName());
     }
 
+    public int getReferenceId() {
+        return _referenceId;
+    }
 
+    public void setReferenceId(int referenceId) {
+        this._referenceId = referenceId;
+    }
 }

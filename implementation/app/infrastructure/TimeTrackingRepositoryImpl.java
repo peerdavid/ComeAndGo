@@ -91,16 +91,18 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
    public List<TimeTrack> readTimeTracksOverlay(User user, TimeTrack timeTrack) {
       List<TimeTrack> wantedList =
           Ebean.find(TimeTrack.class)
-          .where().eq("_user_id", user.getId())             // filter for only timeTracks from given user
-          .where().or(
-                  Expr.and(
-                          Expr.ge("end", timeTrack.getFrom()),
-                          Expr.le("end", timeTrack.getTo())
-                  ),
-                  Expr.and(
-                          Expr.ge("start", timeTrack.getFrom()),
-                          Expr.le("start", timeTrack.getTo())
+          .where().and(
+              Expr.eq("_user_id", user.getId()),             // filter for only timeTracks from given user
+              Expr.or(
+                  Expr.between("start", "end", timeTrack.getFrom()),
+                  Expr.or(
+                     Expr.between("start", "end", timeTrack.getTo()),
+                     Expr.and(
+                         Expr.ge("start", timeTrack.getFrom()),
+                         Expr.le("end", timeTrack.getTo())
+                     )
                   )
+              )
           )
           .findList();
 

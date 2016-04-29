@@ -44,7 +44,7 @@ public class UserServiceTest {
     @Test
     public void registerUser_ShouldCallRepository() throws UserException, NotFoundException {
         // Prepare
-        when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
+        when(_userRepository.readUser(_testUser.getUserName())).thenThrow(UserNotFoundException.class);
 
         _testee.createUser(_testUser);
 
