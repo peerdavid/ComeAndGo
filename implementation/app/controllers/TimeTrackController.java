@@ -1,8 +1,7 @@
 package controllers;
 
-import business.usermanagement.UserException;
-import business.timetracking.TimeTrackState;
 import business.timetracking.TimeTracking;
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
@@ -12,9 +11,8 @@ import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
 import play.mvc.Result;
+import utils.DateTimeUtils;
 
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -93,10 +91,10 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         if(from == null || to == null || from.isEmpty() || to.isEmpty()) {
             dateFrom = DateTime.now();
             dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
-            from = dateFrom.dayOfMonth().get() + "." + dateFrom.monthOfYear().get() + "." + dateFrom.year().get();
+            from = DateTimeUtils.dateTimeToDate(dateFrom);
 
             dateTo = dateFrom.plusDays(5);
-            to = dateTo.dayOfMonth().get() + "." + dateTo.monthOfYear().get() + "." + dateTo.year().get();
+            to = DateTimeUtils.dateTimeToDate(dateTo);
         } else {
             String[] fromDate = from.split("\\.");
             String[] toDate = to.split("\\.");
