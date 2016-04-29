@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 import utils.DateTimeUtils;
@@ -112,30 +113,33 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result updateTimeTrack(int userId, String from, String to) throws Exception {
-        CommonProfile profile = getUserProfile();
+        Map<String, String> formData = Form.form().bindFromRequest(
+            "startdate",
+            "enddate",
+            "starttime",
+            "endtime"
+        ).data();
 
-        Map<String, String[]> formData = request().body().asFormUrlEncoded();
-
-        TimeTrack timeTrack = _timeTracking.readTimeTrackById(Integer.parseInt(formData.get("id")[0]));
+        TimeTrack timeTrack = _timeTracking.readTimeTrackById(Integer.parseInt(formData.get("id")));
 
         // update timetrack dates
-        if (formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
-            timeTrack.setFrom(DateTimeUtils.stringToDateTime(formData.get("startdate")[0]));
+        if (formData.get("startdate") != null && !formData.get("startdate").isEmpty()) {
+            timeTrack.setFrom(DateTimeUtils.stringToDateTime(formData.get("startdate")));
         }
-        if (formData.get("enddate") != null && !formData.get("enddate")[0].isEmpty()) {
-            timeTrack.setTo(DateTimeUtils.stringToDateTime(formData.get("enddate")[0], 23, 59));
+        if (formData.get("enddate") != null && !formData.get("enddate").isEmpty()) {
+            timeTrack.setTo(DateTimeUtils.stringToDateTime(formData.get("enddate"), 23, 59));
         }
 
         // update timetrack times
-        if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
-            String[] d = formData.get("starttime")[0].split(":");
+        if (formData.get("starttime") != null && !formData.get("starttime").isEmpty()) {
+            String[] d = formData.get("starttime").split(":");
             timeTrack.setFrom(
-                DateTimeUtils.stringToTime(formData.get("starttime")[0], timeTrack.getFrom())
+                DateTimeUtils.stringToTime(formData.get("starttime"), timeTrack.getFrom())
             );
         }
-        if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
+        if (formData.get("endtime") != null && !formData.get("endtime").isEmpty()) {
             timeTrack.setTo(
-                DateTimeUtils.stringToTime(formData.get("endtime")[0], timeTrack.getTo())
+                DateTimeUtils.stringToTime(formData.get("endtime"), timeTrack.getTo())
             );
         }
 
@@ -144,11 +148,16 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String breakStart = "break_starttime" + b.getId();
             String breakEnd = "break_endtime" + b.getId();
 
-            if (formData.get(breakStart) != null && !formData.get(breakStart)[0].isEmpty()) {
-                b.setFrom(DateTimeUtils.stringToTime(formData.get(breakStart)[0]));
+            DynamicForm breakFormData = Form.form().bindFromRequest(
+                breakStart,
+                breakEnd
+            );
+
+            if (formData.get(breakStart) != null && !breakFormData.get(breakStart).isEmpty()) {
+                b.setFrom(DateTimeUtils.stringToTime(breakFormData.get(breakStart)));
             }
-            if (formData.get(breakEnd) != null && !formData.get(breakEnd)[0].isEmpty()) {
-                b.setTo(DateTimeUtils.stringToTime(formData.get(breakEnd)[0]));
+            if (formData.get(breakEnd) != null && !breakFormData.get(breakEnd).isEmpty()) {
+                b.setTo(DateTimeUtils.stringToTime(breakFormData.get(breakEnd)));
             }
         }
 
@@ -177,16 +186,19 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result createBreak(int timetrackId, int userId, String from, String to) throws Exception {
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
-        Map<String, String[]> formData = request().body().asFormUrlEncoded();
+        Map<String, String> formData = Form.form().bindFromRequest(
+            "starttime",
+            "endtime"
+        ).data();
 
         DateTime fromDate = null;
         DateTime toDate = null;
 
-        if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
-            fromDate = DateTimeUtils.stringToTime(formData.get("starttime")[0]);
+        if (formData.get("starttime") != null && !formData.get("starttime").isEmpty()) {
+            fromDate = DateTimeUtils.stringToTime(formData.get("starttime"));
         }
-        if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
-            toDate = DateTimeUtils.stringToTime(formData.get("endtime")[0]);
+        if (formData.get("endtime") != null && !formData.get("endtime").isEmpty()) {
+            toDate = DateTimeUtils.stringToTime(formData.get("endtime"));
         }
         if (fromDate == null || toDate == null) {
             throw new UserException("exceptions.timetracking.error_in_break_form");
@@ -201,27 +213,32 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result createTimeTrack(int userId, String from, String to) throws Exception {
-        Map<String, String[]> formData = request().body().asFormUrlEncoded();
+        Map<String, String> formData = Form.form().bindFromRequest(
+            "startdate",
+            "enddate",
+            "starttime",
+            "endtime"
+        ).data();
 
         DateTime fromDate = null;
-        DateTime toDate = null;
+        DateTime toDate;
 
-        if (formData.get("startdate") != null && !formData.get("startdate")[0].isEmpty()) {
-            fromDate = DateTimeUtils.stringToDateTime(formData.get("startdate")[0]);
+        if (formData.get("startdate") != null && !formData.get("startdate").isEmpty()) {
+            fromDate = DateTimeUtils.stringToDateTime(formData.get("startdate"));
         }
-        if (formData.get("enddate") != null && !formData.get("enddate")[0].isEmpty()) {
-            toDate = DateTimeUtils.stringToDateTime(formData.get("enddate")[0], 23, 59);
+        if (formData.get("enddate") != null && !formData.get("enddate").isEmpty()) {
+            toDate = DateTimeUtils.stringToDateTime(formData.get("enddate"), 23, 59);
         } else if (fromDate != null) {
             toDate = fromDate;
         } else {
             throw new UserException("exceptions.timetracking.error_in_timetrack_form");
         }
 
-        if (formData.get("starttime") != null && !formData.get("starttime")[0].isEmpty()) {
-            fromDate = DateTimeUtils.stringToTime(formData.get("starttime")[0], fromDate);
+        if (formData.get("starttime") != null && !formData.get("starttime").isEmpty()) {
+            fromDate = DateTimeUtils.stringToTime(formData.get("starttime"), fromDate);
         }
-        if (formData.get("endtime") != null && !formData.get("endtime")[0].isEmpty()) {
-            toDate = DateTimeUtils.stringToTime(formData.get("endtime")[0], toDate);
+        if (formData.get("endtime") != null && !formData.get("endtime").isEmpty()) {
+            toDate = DateTimeUtils.stringToTime(formData.get("endtime"), toDate);
         }
         if (fromDate == null || toDate == null) {
             throw new UserException("exceptions.timetracking.error_in_timetrack_form");
