@@ -11,7 +11,7 @@ public class DateTimeUtils {
 
     private final static DateTime EMPTY_DATE = new DateTime(0, 1, 1, 0, 0);
 
-    public static String dateTimeToTime(DateTime dateTime) {
+    public static String dateTimeToTimeString(DateTime dateTime) {
         int hours = dateTime.getHourOfDay();
         int minutes = dateTime.getMinuteOfHour();
 
@@ -21,7 +21,7 @@ public class DateTimeUtils {
 
     }
 
-    public static String dateTimeToDate(DateTime dateTime) {
+    public static String dateTimeToDateString(DateTime dateTime) {
         int day = dateTime.getDayOfMonth();
         int month = dateTime.getMonthOfYear();
         int year = dateTime.getYear();

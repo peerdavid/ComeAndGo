@@ -71,7 +71,7 @@
                             @Messages("views.index.timetrack.tablebody.start")
                         </td>
                         <td>
-                            @(DateTimeUtils.dateTimeToTime(timeTrack.getFrom))
+                            @(DateTimeUtils.dateTimeToTimeString(timeTrack.getFrom))
                         </td>
                     </tr>
 
@@ -81,7 +81,7 @@
                                 @Messages("views.index.timetrack.tablebody.breakstart")
                             </td>
                             <td>
-                                @(DateTimeUtils.dateTimeToTime(b.getFrom))
+                                @(DateTimeUtils.dateTimeToTimeString(b.getFrom))
                             </td>
                         </tr>
 
@@ -91,7 +91,7 @@
                                     @Messages("views.index.timetrack.tablebody.breakend")
                                 </td>
                                 <td>
-                                    @(DateTimeUtils.dateTimeToTime(b.getTo))
+                                    @(DateTimeUtils.dateTimeToTimeString(b.getTo))
                                 </td>
                             </tr>
                         }
@@ -103,7 +103,7 @@
                                 @Messages("views.index.timetrack.tablebody.end")
                             </td>
                             <td>
-                                @(DateTimeUtils.dateTimeToTime(timeTrack.getTo))
+                                @(DateTimeUtils.dateTimeToTimeString(timeTrack.getTo))
                             </td>
                         </tr>
                     }

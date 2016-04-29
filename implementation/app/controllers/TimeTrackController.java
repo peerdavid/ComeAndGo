@@ -96,10 +96,10 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         if (from == null || to == null || from.isEmpty() || to.isEmpty()) {
             dateFrom = DateTime.now();
             dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
-            from = DateTimeUtils.dateTimeToDate(dateFrom);
+            from = DateTimeUtils.dateTimeToDateString(dateFrom);
 
             dateTo = dateFrom.plusDays(5);
-            to = DateTimeUtils.dateTimeToDate(dateTo);
+            to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
             dateTo = DateTimeUtils.stringToDateTime(to);

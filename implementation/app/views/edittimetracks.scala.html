@@ -38,14 +38,14 @@
                 <li>
                     <div class="collapsible-header"><i class="material-icons">schedule</i>
                         <b>
-                            @(DateTimeUtils.dateTimeToDate(t.getFrom))
+                            @(DateTimeUtils.dateTimeToDateString(t.getFrom))
                         </b>
                         <span>
-                            @(DateTimeUtils.dateTimeToTime(t.getFrom))
+                            @(DateTimeUtils.dateTimeToTimeString(t.getFrom))
                         </span>
                          -
                         <span>
-                            @(DateTimeUtils.dateTimeToTime(t.getTo))
+                            @(DateTimeUtils.dateTimeToTimeString(t.getTo))
                         </span>
                     </div>
                     <div class="collapsible-body">
@@ -67,19 +67,19 @@
                             <input type="hidden" name="id" value="@t.getId">
                             <div class="row">
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDate(t.getFrom))" name="startdate" type="text" class="datepicker">
+                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDateString(t.getFrom))" name="startdate" type="text" class="datepicker">
                                     <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTime(t.getFrom))" name="starttime" type="text" class="timepicker">
+                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(t.getFrom))" name="starttime" type="text" class="timepicker">
                                     <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDate(t.getTo))" name="enddate" type="text" class="datepicker">
+                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDateString(t.getTo))" name="enddate" type="text" class="datepicker">
                                     <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
-                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTime(t.getTo))"  name="endtime" type="text" class="timepicker">
+                                    <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(t.getTo))"  name="endtime" type="text" class="timepicker">
                                     <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
                                 </div>
                             </div>
@@ -93,11 +93,11 @@
                                             <div class="collapsible-header grey lighten-5">
                                                 <i class="material-icons">pause_circle_outline</i>
                                                 <span>
-                                                    @(DateTimeUtils.dateTimeToTime(b.getFrom))
+                                                    @(DateTimeUtils.dateTimeToTimeString(b.getFrom))
                                                 </span>
                                                  -
                                                 <span>
-                                                @(DateTimeUtils.dateTimeToTime(b.getTo))
+                                                @(DateTimeUtils.dateTimeToTimeString(b.getTo))
                                                 </span>
                                                 <button data-target="modal-delete-break@b.getId" class="btn-flat delete-break modal-trigger waves-red waves-effect text-black right">
                                                     <i class="material-icons">delete</i>
@@ -116,11 +116,11 @@
                                             <div class="collapsible-body">
                                                 <div class="row">
                                                     <div class="input-field col s6 m3">
-                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTime(b.getFrom))" name="break_starttime_@b.getId" type="text" class="timepicker">
+                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getFrom))" name="break_starttime_@b.getId" type="text" class="timepicker">
                                                         <label for="break_starttime_@b.getId">@Messages("views.admin.edittimetracks.starttime")</label>
                                                     </div>
                                                     <div id="disabled" class="input-field col s6 m3 offset-m3">
-                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTime(b.getTo))"  name="break_endtime_@b.getId" type="text" class="timepicker">
+                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getTo))"  name="break_endtime_@b.getId" type="text" class="timepicker">
                                                         <label for="break_endtime_@b.getId">@Messages("views.admin.edittimetracks.endtime")</label>
                                                     </div>
                                                 </div>
