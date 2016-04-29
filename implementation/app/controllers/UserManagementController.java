@@ -28,7 +28,7 @@ public class UserManagementController extends UserProfileController {
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result indexEditUser() throws Exception {
+    public Result readUsers() throws Exception {
         CommonProfile profile = getUserProfile();
 
         return ok(views.html.edituser.render(profile, _userManagement.readUsers()));
@@ -39,7 +39,7 @@ public class UserManagementController extends UserProfileController {
     Username remains unchangable because the authenticator
      */
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result editUser() throws Exception {
+    public Result updateUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
         List<User> userList = _userManagement.readUsers();
@@ -103,6 +103,6 @@ public class UserManagementController extends UserProfileController {
 
         _userManagement.deleteUser(userName);
 
-        return redirect(routes.UserManagementController.indexEditUser());
+        return redirect(this.readUsers());
     }
 }

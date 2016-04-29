@@ -68,6 +68,6 @@ public class AuthenticationController extends UserProfileController<CommonProfil
 
         _userManagement.createUser(userToRegister);
 
-        return redirect(routes.UserManagementController.editUser());
+        return redirect(routes.UserManagementController.updateUser());
     }
 }

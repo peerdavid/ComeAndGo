@@ -13,8 +13,8 @@ POST    /logout                                    @org.pac4j.play.ApplicationLo
 GET     /signup                                    @controllers.AuthenticationController.signUp
 POST    /signup                                    @controllers.AuthenticationController.doSignUp
 
-GET     /edituser                                  @controllers.UserManagementController.indexEditUser
-POST    /edituser                                  @controllers.UserManagementController.editUser
+GET     /edituser                                  @controllers.UserManagementController.readUsers
+POST    /edituser                                  @controllers.UserManagementController.updateUser
 GET     /deleteUser                                @controllers.UserManagementController.deleteUser(userName : String ?= null)
 
 GET     /edittimetracks/:userId                    @controllers.TimeTrackController.readTimeTracks(userId : Int, from : String ?= null, to : String ?= null)
