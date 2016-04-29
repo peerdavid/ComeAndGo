@@ -35,17 +35,20 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
     public List<TimeOff> readTimeOffFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)
-                .where().eq("_user_id", user.getId())
-                .where().or(
-                        Expr.and(
-                                Expr.le("start", from),
-                                Expr.ge("end", from)
-                        ),
-                        Expr.and(
-                                Expr.ge("end", to),
-                                Expr.le("start", to)
+                .where().
+                     and(
+                        Expr.eq("_user_id", user.getId()),
+                        Expr.or(
+                            Expr.and(
+                                Expr.ge("from", from),
+                                Expr.le("to", to)
+                            ),
+                            Expr.or(
+                                Expr.between("start", "end", from),
+                                Expr.between("start", "end", to)
+                            )
                         )
-                )
+                     )
                 .findList();
 
         if(timeOffs == null) {
