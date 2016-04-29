@@ -15,6 +15,8 @@ public enum NotificationType {
     SICK_LEAVE_INFORMATION,
     HOLIDAY_PAYOUT_REQUEST,
     OVERTIME_PAYOUT_REQUEST,
+    PARENTAL_LEAVE_REQUEST,
+    EDUCATIONAL_LEAVE_REQUEST,
 
     // Boss as sender notifications
     HOLIDAY_ACCEPT,
@@ -23,6 +25,8 @@ public enum NotificationType {
     HOLIDAY_PAYOUT_REJECT,
     OVERTIME_PAYOUT_ACCEPT,
     OVERTIME_PAYOUT_REJECT,
+    SPECIAL_HOLIDAY_ACCEPT,
+    SPECIAL_HOLIDAY_REJECT,
     FIRE_EMPLOYEE,
 
     // Personnel Manager as sender notifications

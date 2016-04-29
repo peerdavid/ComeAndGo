@@ -112,22 +112,54 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        User employee = _userManagement.readUser(userId);
+        User boss = employee.get_boss();
 
+        TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
+        _repository.createTimeOff(parentalLeave);
+
+        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, employee, boss);
+        _notificationSender.sendNotification(answerToEmployee);
     }
 
     @Override
     public void requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
+        User employee = _userManagement.readUser(userId);
+        User boss = employee.get_boss();
 
+        TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
+        _repository.createTimeOff(educationalLeave);
+
+        Notification answerToStudent = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, employee, boss);
+        _notificationSender.sendNotification(answerToStudent);
     }
 
     @Override
     public void acceptSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+        User employee = requestedTimeOff.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
+        requestedTimeOff.setReviewedBy(boss);
+        _repository.updateTimeOff(requestedTimeOff);
+
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_ACCEPT, boss, employee);
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
     public void rejectSpecialHoliday(int timeOffId, int bossId) throws Exception {
+        TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+        User employee = requestedTimeOff.getUser();
+        User boss = _userManagement.readUser(bossId);
 
+        requestedTimeOff.setState(TimeOffState.REQUEST_REJECTED);
+        requestedTimeOff.setReviewedBy(boss);
+        _repository.updateTimeOff(requestedTimeOff);
+
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REJECT, boss, employee);
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
