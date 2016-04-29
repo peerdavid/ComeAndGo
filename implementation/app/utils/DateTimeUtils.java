@@ -9,7 +9,7 @@ import java.io.PrintWriter;
  */
 public class DateTimeUtils {
 
-    private final static DateTime EMPTY_DATE = new DateTime(0, 0, 0, 0, 0);
+    private final static DateTime EMPTY_DATE = new DateTime(0, 1, 1, 0, 0);
 
     public static String dateTimeToTime(DateTime dateTime) {
         int hours = dateTime.getHourOfDay();
