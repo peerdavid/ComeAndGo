@@ -23,23 +23,38 @@ $('.enable-editing-switch').click(function () {
 /* fix for datepicker bug showing 19XX instead of 20XX */
 $('.datepicker').focus(function () {
     var value = this.value.split('.');
-    if(value.length < 3) return;
-
-    // initialize datepicker
-    $('.datepicker').pickadate({
-        selectMonths: true,
-        year: parseInt(value[2]) + 100,
-        month: parseInt(value[1]),
-        date: parseInt(value[0]),
-        selectYears: 10,
-        // translation strings
-        monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-        monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-        weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-        weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-        showMonthsShort: true,
-        showWeekdaysFull: false,
-        format: 'dd.mm.yyyy',
-        container: 'body'
-    });
+    if(value.length < 3) {
+        // initialize datepicker
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            selectYears: 10,
+            // translation strings
+            monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            showMonthsShort: true,
+            showWeekdaysFull: false,
+            format: 'dd.mm.yyyy',
+            container: 'body'
+        });
+    } else {
+        // initialize datepicker
+        $('.datepicker').pickadate({
+            selectMonths: true,
+            year: parseInt(value[2]) + 100,
+            month: parseInt(value[1]),
+            date: parseInt(value[0]),
+            selectYears: 10,
+            // translation strings
+            monthsFull: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            weekdaysFull: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            weekdaysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            showMonthsShort: true,
+            showWeekdaysFull: false,
+            format: 'dd.mm.yyyy',
+            container: 'body'
+        });
+    }
 });
