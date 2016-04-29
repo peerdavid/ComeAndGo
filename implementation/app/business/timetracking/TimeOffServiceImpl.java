@@ -16,13 +16,15 @@ import org.joda.time.DateTime;
 class TimeOffServiceImpl implements TimeOffService {
 
     private final TimeOffRepository _repository;
+    private final TimeOffValidation _timeOffValidation;
     private final NotificationSender _notificationSender;
     private final InternalUserManagement _userManagement;
 
 
     @Inject
-    public TimeOffServiceImpl(TimeOffRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
+    public TimeOffServiceImpl(TimeOffRepository repository, TimeOffValidation validation, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
+        _timeOffValidation = validation;
         _notificationSender = notificationSender;
         _userManagement = userRepository;
     }
@@ -56,14 +58,10 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.NEW, comment);
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
         _notificationSender.sendNotification(new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss));
-        timeOff.setState(TimeOffState.REQUEST_SENT);
-
-        _repository.updateTimeOff(timeOff);
-
     }
 
     @Override
@@ -71,13 +69,10 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = _userManagement.readUser(userId);
         User boss = employee.get_boss();
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.NEW, comment);
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
         _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss));
-        timeOff.setState(TimeOffState.REQUEST_SENT);
-
-        _repository.updateTimeOff(timeOff);
     }
 
     @Override
