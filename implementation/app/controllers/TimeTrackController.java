@@ -99,7 +99,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
             from = DateTimeUtils.dateTimeToDateString(dateFrom);
 
-            dateTo = dateFrom.plusDays(5);
+            dateTo = dateFrom.plusDays(6);
             to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
@@ -132,7 +132,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         // update timetrack times
         if (formData.get("starttime") != null && !formData.get("starttime").isEmpty()) {
-            String[] d = formData.get("starttime").split(":");
             timeTrack.setFrom(
                 DateTimeUtils.stringToTime(formData.get("starttime"), timeTrack.getFrom())
             );
