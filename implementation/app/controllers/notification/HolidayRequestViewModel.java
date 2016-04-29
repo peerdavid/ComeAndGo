@@ -1,7 +1,6 @@
 package controllers.notification;
 
 import business.timetracking.TimeTracking;
-import models.TimeTrack;
 import play.i18n.Messages;
 
 /**
@@ -11,20 +10,14 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     private TimeTracking _timeTracking;
 
-    private int notificationId;
-    private int timeOffId;
-
-    private String message;
-    private String sender;
-
-    private boolean read;
+    private int _timeOffId;
 
 
-    public HolidayRequestViewModel(TimeTracking timeTracking, int notificationId, int timeOffId, String message, String sender, boolean read) {
+    public HolidayRequestViewModel(TimeTracking timeTracking, int _notificationId, int _timeOffId, String message, String sender, boolean read) {
 
-        super(notificationId,message,sender,read);
+        super(_notificationId,message,sender,read);
 
-        this.timeOffId = timeOffId;
+        this._timeOffId = _timeOffId;
 
         _timeTracking = timeTracking;
 
@@ -32,7 +25,7 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public int getTimeOffId() {
-        return timeOffId;
+        return _timeOffId;
     }
 
     @Override
@@ -52,12 +45,12 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public void accept() {
-        this.read = true;
+        super.setRead(true);
         //_timeTracking.acceptHolidayRequest();
     }
 
     public void reject() {
-        this.read = true;
+        super.setRead(false);
         //_timeTracking.rejectHolidayRequest();
     }
 }

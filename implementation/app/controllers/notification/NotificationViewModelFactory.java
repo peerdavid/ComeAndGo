@@ -10,8 +10,6 @@ import java.util.List;
 /**
  * Created by csaq5996 on 4/25/16.
  *
- * TODO: throw meaningful exceptions!
- *
  */
 public class NotificationViewModelFactory {
 
@@ -27,6 +25,25 @@ public class NotificationViewModelFactory {
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     notification.isRead()
                 );
+
+            case HOLIDAY_ACCEPT:
+                return new HolidayAcceptViewModel(timeTracking,
+                    notification.getId(),
+                    notification.getReferenceId(),
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                    notification.isRead()
+                );
+
+            case HOLIDAY_REJECT:
+                return new HolidayRejectViewModel(timeTracking,
+                        notification.getId(),
+                        notification.getReferenceId(),
+                        notification.getMessage(),
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        notification.isRead()
+                );
+
 
             case SICK_LEAVE_INFORMATION:
                 return new SickLeaveViewModel(
@@ -45,7 +62,7 @@ public class NotificationViewModelFactory {
         List<NotificationViewModel> result = new ArrayList<>();
 
         if (notificationList.isEmpty()) {
-            throw new Exception("hallo");
+            throw new Exception("NotificationList empty");
         }
 
         for (Notification n:notificationList) {

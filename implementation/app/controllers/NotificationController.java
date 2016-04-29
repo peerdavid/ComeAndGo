@@ -5,10 +5,7 @@ import business.notification.NotificationType;
 import business.timetracking.TimeTracking;
 import business.usermanagement.SecurityRole;
 import com.google.inject.Inject;
-import controllers.notification.HolidayRequestViewModel;
-import controllers.notification.NotificationViewModel;
-import controllers.notification.NotificationViewModelFactory;
-import controllers.notification.SickLeaveViewModel;
+import controllers.notification.*;
 import models.Notification;
 import models.User;
 import net.sf.ehcache.search.expression.Not;
@@ -36,7 +33,7 @@ public class NotificationController extends UserProfileController {
     }
 
     @RequiresAuthentication(clientName = "default")
-    public Result index() throws Exception{
+    public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
 
         int id = Integer.parseInt(profile.getId());
@@ -51,14 +48,15 @@ public class NotificationController extends UserProfileController {
         List<NotificationViewModel> unreadNotifications = new ArrayList<>();
         unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig","sender",false));
         unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message","sender klaus",false));
+        unreadNotifications.add(new HolidayAcceptViewModel(_timeTracking,3,5,"hau o du sau","bossy mac bossface",false));
         List<NotificationViewModel> sentNotifications = new ArrayList<>();
-        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig","sender",false));
+        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig","sender",true));
 
         return ok(views.html.notification.render(profile, unreadNotifications, readNotifications, sentNotifications));
     }
 
     @RequiresAuthentication(clientName = "default")
-    public Result acceptNotification(int notificationId) throws Exception{
+    public Result acceptNotification(int notificationId) throws Exception {
 
         // _notifications.getNotification(notificationId)
 
@@ -74,7 +72,7 @@ public class NotificationController extends UserProfileController {
     }
 
     @RequiresAuthentication(clientName = "default")
-    public Result rejectNotification(int notificationId) throws Exception{
+    public Result rejectNotification(int notificationId) throws Exception {
 
 
         //_notifReader.reject(notificationId);

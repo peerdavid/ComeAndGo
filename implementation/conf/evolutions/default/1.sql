@@ -17,7 +17,7 @@ create table notification (
   message                       varchar(150),
   _sender_id                    integer not null,
   _receiver_id                  integer not null,
-  read                          boolean,
+  seen                          boolean,
   created                       datetime,
   reference_id                  integer,
   constraint ck_notification_type check (type in (0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16)),
@@ -32,6 +32,7 @@ create table time_off (
   type                          integer,
   state                         integer,
   comment                       varchar(150),
+  _reviewed_by_id               integer,
   constraint ck_time_off_type check (type in (0,1,2,3,4,5)),
   constraint ck_time_off_state check (state in (0,1,2,3,4)),
   constraint pk_time_off primary key (id)
@@ -54,7 +55,7 @@ create table user (
   firstname                     varchar(255),
   lastname                      varchar(255),
   email                         varchar(255),
-  _boss_id                      integer not null,
+  _boss_id                      integer,
   constraint uq_user_username unique (username),
   constraint pk_user primary key (id)
 );
@@ -70,6 +71,9 @@ create index ix_notification__receiver_id on notification (_receiver_id);
 
 alter table time_off add constraint fk_time_off__user_id foreign key (_user_id) references user (id) on delete restrict on update restrict;
 create index ix_time_off__user_id on time_off (_user_id);
+
+alter table time_off add constraint fk_time_off__reviewed_by_id foreign key (_reviewed_by_id) references user (id) on delete restrict on update restrict;
+create index ix_time_off__reviewed_by_id on time_off (_reviewed_by_id);
 
 alter table time_track add constraint fk_time_track__user_id foreign key (_user_id) references user (id) on delete restrict on update restrict;
 create index ix_time_track__user_id on time_track (_user_id);
@@ -91,6 +95,9 @@ drop index if exists ix_notification__receiver_id;
 
 alter table time_off drop constraint if exists fk_time_off__user_id;
 drop index if exists ix_time_off__user_id;
+
+alter table time_off drop constraint if exists fk_time_off__reviewed_by_id;
+drop index if exists ix_time_off__reviewed_by_id;
 
 alter table time_track drop constraint if exists fk_time_track__user_id;
 drop index if exists ix_time_track__user_id;
