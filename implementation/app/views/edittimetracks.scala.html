@@ -160,7 +160,7 @@
                                     <h4>@Messages("views.admin.edittimetracks.addbreak")</h4>
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="@routes.TimeTrackController.addBreak(t.getId, userId, from, to)" method="POST">
+                                    <form action="@routes.TimeTrackController.createBreak(t.getId, userId, from, to)" method="POST">
                                         <div class="row">
                                             <div class="input-field col s6 m3">
                                                 <input name="from" type="text" class="timepicker">
@@ -192,7 +192,7 @@
                 <h4>@Messages("views.admin.edittimetracks.addtimetrack")</h4>
             </div>
             <div class="modal-footer">
-                <form action="@routes.TimeTrackController.addTimeTrack(userId, from, to)" method="POST">
+                <form action="@routes.TimeTrackController.createTimeTrack(userId, from, to)" method="POST">
                     <div class="row">
                         <div class="input-field col s6 m3">
                             <input name="startdate" type="text" class="datepicker">
