@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import business.usermanagement.UserException;
+import com.google.inject.Inject;
 import infrastructure.TimeOffRepository;
 import models.TimeOff;
 import models.User;
@@ -15,12 +16,13 @@ import java.util.List;
 class TimeOffValidationImpl implements TimeOffValidation {
     TimeOffRepository _repository;
 
+    @Inject
     TimeOffValidationImpl(TimeOffRepository repository) {
         _repository = repository;
     }
 
     @Override
-    public void validateTimeOffRequest(User user, DateTime from, DateTime to) throws UserException {
+    public void validateTimeOff(User user, DateTime from, DateTime to) throws UserException {
         List<TimeOff> timeOffsFromUser = null;
         try {
             _repository.readTimeOffFromUser(user, from, to);

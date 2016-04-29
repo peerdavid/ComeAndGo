@@ -33,6 +33,8 @@ public interface TimeTracking extends UseCases {
 
     void updateTimeTrack(TimeTrack timeTrack) throws Exception;
 
+    TimeOff readTimeOffById(int timeOffId) throws Exception;
+
     void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception;
 
     void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception;

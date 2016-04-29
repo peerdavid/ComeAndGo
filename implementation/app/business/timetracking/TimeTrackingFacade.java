@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import com.google.inject.Inject;
+import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 
@@ -152,5 +153,10 @@ class TimeTrackingFacade implements TimeTracking {
     @Override
     public void rejectEducationalLeave(int timeOffId, int bossId) throws Exception {
         _timeOffService.rejectEducationalLeave(timeOffId, bossId);
+    }
+
+    @Override
+    public TimeOff readTimeOffById(int timeOffId) throws Exception {
+        return _timeOffService.readTimeOffById(timeOffId);
     }
 }

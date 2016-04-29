@@ -24,15 +24,17 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     private final TimeTrackingRepository _repository;
     private final NotificationSender _notificationSender;
     private final InternalUserManagement _userManagement;
-    private final TimeTrackingValidation _validation;
+    private final TimeTrackingValidation _timeTrackValidation;
+    private final TimeOffValidation _timeOffValidation;
 
 
     @Inject
-    public TimeTrackingServiceImpl(TimeTrackingRepository repository, NotificationSender notificationSender, InternalUserManagement userRepository) {
+    public TimeTrackingServiceImpl(TimeTrackingRepository repository, TimeTrackingValidation validation, TimeOffValidation timeOffValidation, NotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
         _userManagement = userRepository;
-        _validation = new TimeTrackingValidationImpl(repository);
+        _timeTrackValidation = validation;
+        _timeOffValidation = timeOffValidation;
     }
 
 
@@ -138,7 +140,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void createTimeTrack(TimeTrack timeTrack) throws UserException {
-        _validation.validateTimeTrackInsert(timeTrack);
+        _timeTrackValidation.validateTimeTrackInsert(timeTrack);
+        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.createTimeTrack(timeTrack);
     }
 
@@ -157,7 +160,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
-        _validation.validateTimeTrackUpdate(timeTrack);
+        _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
+        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.updateTimeTrack(timeTrack);
     }
 

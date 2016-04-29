@@ -32,6 +32,8 @@ public class TimeTrackingServiceTest {
 
     NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
+    TimeTrackingValidation _validation;
+    TimeOffValidation _timeOffValidation;
     InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
     User _testUser;
@@ -46,8 +48,10 @@ public class TimeTrackingServiceTest {
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
+        _validation = mock(TimeTrackingValidation.class);
+        _timeOffValidation = mock(TimeOffValidation.class);
 
-        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _notificationSenderMock, _userRepository);
+        _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _userRepository);
     }
 
 
@@ -409,18 +413,13 @@ public class TimeTrackingServiceTest {
 
     }
 
-    @Test(expected = UserException.class)
-    public void addTimeTrack_whichOverlaysToAnother_ShouldThrowUserException() throws UserException {
+    @Test
+    public void addTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException {
         // init
-        List<TimeTrack> storedList = new ArrayList();
-        storedList.add(new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusDays(1), null));
-        storedList.add(new TimeTrack(_testUser, DateTime.now().plusDays(3), DateTime.now().plusDays(4), null));
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(23), DateTime.now().plusHours(50), null);
 
-        // prepare
-        when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(storedList);
-
         _timeTrackService.createTimeTrack(timeTrackToInsert);
+        Mockito.verify(_validation, times(1)).validateTimeTrackInsert(any(TimeTrack.class));
     }
 
     @Test
@@ -434,7 +433,6 @@ public class TimeTrackingServiceTest {
 
         _timeTrackService.createTimeTrack(timeTrackToInsert);
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(timeTrackToInsert);
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracksOverlay(any(User.class), any(TimeTrack.class));
     }
 
     @Test
@@ -445,6 +443,14 @@ public class TimeTrackingServiceTest {
 
         _timeTrackingRepository.createTimeTrack(timeTrack);
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(timeTrack);
+    }
+
+    @Test
+    public void updateTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException {
+        TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
+
+        _timeTrackService.updateTimeTrack(timeTrack);
+        Mockito.verify(_validation, times(1)).validateTimeTrackUpdate(any(TimeTrack.class));
     }
 
     @Test

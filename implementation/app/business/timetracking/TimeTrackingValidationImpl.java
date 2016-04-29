@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import business.usermanagement.UserException;
+import com.google.inject.Inject;
 import infrastructure.TimeTrackingRepository;
 import models.Break;
 import models.TimeTrack;
@@ -16,8 +17,9 @@ import java.util.List;
  * I know this class looks weird, but I gave my best to not confuse you :-)
  */
 class TimeTrackingValidationImpl implements TimeTrackingValidation {
-   private TimeTrackingRepository _repository;
+   private final TimeTrackingRepository _repository;
 
+   @Inject
    public TimeTrackingValidationImpl(TimeTrackingRepository repository) {
       _repository = repository;
    }

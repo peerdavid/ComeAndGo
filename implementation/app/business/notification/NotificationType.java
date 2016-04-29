@@ -27,6 +27,8 @@ public enum NotificationType {
     OVERTIME_PAYOUT_REJECT,
     SPECIAL_HOLIDAY_ACCEPT,
     SPECIAL_HOLIDAY_REJECT,
+    EDUCATIONAL_LEAVE_ACCEPT,
+    EDUCATIONAL_LEAVE_REJECT,
     FIRE_EMPLOYEE,
 
     // Personnel Manager as sender notifications
