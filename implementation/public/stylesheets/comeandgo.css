@@ -183,19 +183,29 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color: inherit;
 }
 
-.primary-btn{
+.primary-btn {
     background-color: #4CAF50 !important;
 }
 
-.secondary-btn{
+.primary-btn:hover {
+    background-color: #43a047 !important;
+}
+
+.secondary-btn {
     background-color: #00bcd4 !important;
 }
 
-.negative-btn{
-    background-color: #ff5252;
+.secondary-btn:hover {
+    background-color: #00acc1 !important;
 }
 
+.negative-btn {
+    background-color: #ff5252 !important;
+}
 
+.negative-btn:hover {
+    background-color: #f44336 !important;
+}
 
 /* fix for labels (click through) */
 .input-field > label {
