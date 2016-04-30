@@ -15,7 +15,7 @@ POST    /signup                                    @controllers.AuthenticationCo
 
 GET     /edituser                                  @controllers.UserManagementController.readUsers
 POST    /edituser                                  @controllers.UserManagementController.updateUser
-GET     /deleteUser                                @controllers.UserManagementController.deleteUser(userName : String ?= null)
+GET     /deleteUser                                @controllers.UserManagementController.deleteUser(userName : String)
 
 GET     /edittimetracks/:userId                    @controllers.TimeTrackController.readTimeTracks(userId : Int, from : String ?= null, to : String ?= null)
 POST    /edittimetracks/:userId                    @controllers.TimeTrackController.updateTimeTrack(userId : Int, from : String ?= null, to : String ?= null)

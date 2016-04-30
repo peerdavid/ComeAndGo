@@ -89,7 +89,7 @@ public class UserManagementController extends UserProfileController {
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result deleteUser(String userName) throws Exception {
-        CommonProfile profile = getUserProfile();
+//        CommonProfile profile = getUserProfile();
 
         if (userName.isEmpty()) {
             throw new Exception("Empty Username");

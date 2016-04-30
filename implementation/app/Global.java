@@ -32,7 +32,7 @@ public class Global extends GlobalSettings {
         Logger.info("Stopping application");
     }
 
-    @Override
+    /*@Override
     public F.Promise<Result> onError(Http.RequestHeader request, Throwable throwable) {
 
         if (throwable instanceof UserException) {
@@ -40,5 +40,5 @@ public class Global extends GlobalSettings {
         }
 
         return F.Promise.<Result>pure(internalServerError(views.html.error.render(throwable)));
-    }
+    }*/
 }
