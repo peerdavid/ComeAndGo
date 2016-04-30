@@ -41,13 +41,13 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
        if(from.isAfter(to))
           return Collections.emptyList();
 
-        List<TimeTrack> _timeTracks =
-            Ebean.find(TimeTrack.class)
-            .where().eq("_user_id", user.getId())
-            .where().ge("start", from)
-            .where().le("end", to)
-            .setOrderBy("start")
-            .findList();
+       List<TimeTrack> _timeTracks =
+           Ebean.find(TimeTrack.class)
+           .where().eq("_user_id", user.getId())
+           .where().ge("start", from)
+           .where().le("end", to)
+           .setOrderBy("start")
+           .findList();
 
         // if we have the case that there was nothing found
        if(_timeTracks == null) {
