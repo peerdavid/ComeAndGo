@@ -95,6 +95,7 @@ exceptions.usermanagement.email_format = Wrong Email Format
 exceptions.usermanagement.username_format = Wrong Username Format
 exceptions.usermanagement.no_such_user = No such user found
 exceptions.usermanagement.different_ids = User to change has different ID to existing user
+exceptions.usermanagement.repeat_password_different = Password and repeat password are different
 exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist

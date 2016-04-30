@@ -1,11 +1,13 @@
 package controllers;
 
+import business.usermanagement.UserException;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
 import models.User;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
+import play.api.i18n.Messages;
 import play.data.Form;
 import play.mvc.Result;
 
@@ -42,11 +44,8 @@ public class UserManagementController extends UserProfileController {
     public Result updateUser() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        List<User> userList = _userManagement.readUsers();
-
         Form<User> form = FORM.bindFromRequest();
 
-        int userId = Integer.parseInt(form.data().get("id"));
         String userName = form.data().get("username");
         String firstName = form.data().get("firstname");
         String lastName = form.data().get("lastname");
@@ -56,22 +55,18 @@ public class UserManagementController extends UserProfileController {
         String userNameBoss = form.data().get("boss");
         String role = form.data().get("role");
 
-        User changingUser = _userManagement.readUser(userName);
+        // Password check
+        if(password != null && !password.equals(repeatPassword)) {
+            throw new UserException("exceptions.usermanagement.repeat_password_different");
+        }
 
-        // should we edit userName?
-        if (userName != null) {
-            changingUser.setUserName(userName);
-        }
-        if (firstName != null) {
-            changingUser.setFirstName(firstName);
-        }
-        if (lastName != null) {
-            changingUser.setLastName(lastName);
-        }
-        if (email != null) {
-            changingUser.setEmail(email);
-        }
-        if (password != null && repeatPassword != null && (!password.isEmpty()) && (!repeatPassword.isEmpty()) && password.equals(repeatPassword)) {
+        // Set new user settings
+        User changingUser = _userManagement.readUser(userName);
+        changingUser.setFirstName(firstName);
+        changingUser.setLastName(lastName);
+        changingUser.setEmail(email);
+
+        if (password != null && !password.isEmpty()) {
             changingUser.setPassword(password);
         }
         if (userNameBoss != null) {
