@@ -3,7 +3,20 @@
 @import utils.DateTimeUtils
 @(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTracks: java.util.List[TimeTrack])
 
-@main(Messages("views.index.title")) {
+@scripts = {
+    <script type="text/javascript">
+            $(window).load( function() {
+                $('#timeoff-calendar').monthly({
+                    weekStart: 'Mon',
+                    mode: 'event',
+                    xmlUrl: '@routes.TimeTrackController.readTimeOffs()'
+                });
+
+            });
+    </script>
+}
+
+@main(Messages("views.index.title"), scripts) {
 
     @navigation(Messages("views.index.title"), profile) {
 
@@ -53,7 +66,11 @@
         <br />
         <br />
 
+        <!-- Calendar for off time -->
+        <div id="timeoff-calendar" class="monthly" style="width: 500px; height: 500px;"></div>
 
+        <br />
+        <br />
 
         @if(!timeTracks.isEmpty) {
             <table>

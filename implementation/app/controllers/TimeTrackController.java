@@ -258,4 +258,34 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
+
+    @RequiresAuthentication(clientName = "default")
+    public Result readTimeOffs(){
+
+        // Testing only -> get from business
+        return ok("<?xml version=\"1.0\"?>\n" +
+                "<monthly>\n" +
+                "\t<event>\n" +
+                "\t\t<id>1</id>\n" +
+                "\t\t<name>Holiday</name>\n" +
+                "\t\t<startdate>2016-4-29</startdate>\n" +
+                "\t\t<enddate>2016-5-5</enddate>\n" +
+                "\t\t<starttime></starttime>\n" +
+                "\t\t<endtime></endtime>\n" +
+                "\t\t<color>#ffb128</color>\n" +
+                "\t\t<url>/notification</url>\n" +
+                "\t</event>\n" +
+                "\t<event>\n" +
+                "\t\t<id>3</id>\n" +
+                "\t\t<name>Sick Leave</name>\n" +
+                "\t\t<startdate>2016-5-12</startdate>\n" +
+                "\t\t<enddate>2016-5-12</enddate>\n" +
+                "\t\t<starttime></starttime>\n" +
+                "\t\t<endtime></endtime>\n" +
+                "\t\t<color>#e94b35</color>\n" +
+                "\t\t<url>/notification</url>\n" +
+                "\t</event>\n" +
+                "\n" +
+                "</monthly>\n").as("application/xml");
+    }
 }
