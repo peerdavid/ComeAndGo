@@ -9,6 +9,7 @@ import models.User;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import play.Logger;
 
 /**
  * Created by paz on 25.04.16.
@@ -33,25 +34,15 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
 
     @Override
     public List<TimeOff> readTimeOffFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
+
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)
-                .where().
-                     and(
-                        Expr.eq("_user_id", user.getId()),
-                        Expr.or(
-                            Expr.and(
-                                Expr.ge("from", from),
-                                Expr.le("to", to)
-                            ),
-                            Expr.or(
-                                Expr.between("start", "end", from),
-                                Expr.between("start", "end", to)
-                            )
-                        )
-                     )
+                .where().eq("_user_id", user.getId())
+                .where().ge("start", from)
+                .where().le("end", to)
                 .findList();
 
-        if(timeOffs == null) {
+        if(timeOffs == null || timeOffs.isEmpty()) {
             throw new TimeOffNullPointerException("no such timeOffs found");
         }
         return timeOffs;
