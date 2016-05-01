@@ -41,8 +41,8 @@
                             <label for="from">@Messages("views.timeoff.create.from")</label>
                         </div>
                         <div class="input-field col s6 m5">
-                            <input name="from" type="text" class="datepicker">
-                            <label for="from">@Messages("views.timeoff.create.to")</label>
+                            <input name="to" type="text" class="datepicker">
+                            <label for="to">@Messages("views.timeoff.create.to")</label>
                         </div>
                     </div>
 
@@ -50,7 +50,11 @@
                         <div class="input-field col s6 m5">
                             <select name="type" type="text">
                                 <option selected value="HOLIDAY">HOLIDAY</option>
-                                <option value="SICK">SICK</option>
+                                <option value="SPECIAL_HOLIDAY">SPECIAL_HOLIDAY</option>
+                                <option value="SICK_LEAVE">SICK_LEAVE</option>
+                                <option value="PARENTAL_LEAVE">PARENTAL_LEAVE</option>
+                                <option value="EDUCATIONAL_LEAVE">EDUCATIONAL_LEAVE</option>
+                                <option value="BUSINESS_TRIP">BUSINESS_TRIP</option>
                             </select>
                             <label for="type">Type</label>
                         </div>
@@ -63,12 +67,11 @@
 
             <!-- Modal footer -->
             <footer class="modal-footer">
-                <a class="waves-effect modal-action modal-close waves-light btn primary-btn"
-                    href="#"
+                <button class="waves-effect modal-close waves-light btn right primary-btn"
                     style="float : right">
                     @Messages("views.timeoff.btn.request")
                     <i class="material-icons right">send</i>
-                </a>
+                </button>
 
                 <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
                     @Messages("views.btn.close")

@@ -3,6 +3,7 @@ package infrastructure;
 import business.timetracking.TimeOffNotFoundException;
 import business.timetracking.TimeTrackException;
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Expr;
 import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
@@ -37,9 +38,19 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
 
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)
-                        .where().eq("_user_id", user.getId())
-                        .where().ge("start", from)
-                        .where().le("end", to)
+                        .where().and(
+                        Expr.eq("_user_id", user.getId()),
+                        Expr.or(
+                                Expr.between("start", "end", from),
+                                Expr.or(
+                                        Expr.between("start", "end", to),
+                                        Expr.and(
+                                                Expr.ge("start", from),
+                                                Expr.le("end", to)
+                                        )
+                                )
+                        )
+                )
                         .findList();
 
         if(timeOffs == null || timeOffs.isEmpty()) {

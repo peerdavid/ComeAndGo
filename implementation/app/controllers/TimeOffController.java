@@ -1,20 +1,22 @@
 package controllers;
 
+import business.timetracking.TimeOffType;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import controllers.timeoff.TimeOffToXmlConverter;
 import models.TimeOff;
-import models.User;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
+import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 
 import java.util.List;
 
-import static play.data.Form.form;
 
 /**
  * Created by david on 01.05.16.
@@ -31,14 +33,16 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default")
     public Result index(){
-        return ok(views.html.timeoff.render(getUserProfile()));
+        CommonProfile profile = getUserProfile();
+        return ok(views.html.timeoff.render(profile));
     }
 
 
     @RequiresAuthentication(clientName = "default")
     public Result readTimeOffCalendar() throws Exception{
-
-        List<TimeOff> timeOffs = _timeTracking.readTimeOffs(Integer.valueOf(getUserProfile().getId()));
+        CommonProfile profile = getUserProfile();
+        int userId = Integer.parseInt(profile.getId());
+        List<TimeOff> timeOffs = _timeTracking.readTimeOffs(userId);
 
         String timeOffString = "";
         for(TimeOff t : timeOffs){
@@ -54,9 +58,56 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result createTimeOff(String comment) throws Exception {
-        int userId = Integer.getInteger(getUserProfile().getId());
-        _timeTracking.requestHoliday(userId, DateTime.now(), DateTime.now(), comment);
+    public Result createTimeOff() throws Exception {
+
+        // Load user from session
+        CommonProfile profile = getUserProfile();
+        int userId = Integer.parseInt(profile.getId());
+
+        // Bind request parameters
+        DynamicForm form = Form.form().bindFromRequest();
+        String comment = form.get("comment");
+        TimeOffType type = TimeOffType.valueOf(form.get("type"));
+
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
+        DateTime from = dtf.parseDateTime(form.get("from"));
+        DateTime to = dtf.parseDateTime(form.get("to"));
+
+        // Call business logic
+        createTimeOffForGivenType(userId, type, from, to, comment);
         return redirect(routes.TimeOffController.index());
+    }
+
+
+    private void createTimeOffForGivenType(int userId, TimeOffType type, DateTime from, DateTime to, String comment) throws Exception {
+
+        switch(type){
+            case HOLIDAY:
+                _timeTracking.requestHoliday(userId, from, to, comment);
+                break;
+
+            case BUSINESS_TRIP:
+                _timeTracking.takeBusinessTrip(userId, from, to, comment);
+                break;
+
+            case EDUCATIONAL_LEAVE:
+                _timeTracking.requestEducationalLeave(userId, from, to, comment);
+                break;
+
+            case PARENTAL_LEAVE:
+                _timeTracking.takeParentalLeave(userId, from, to, comment);
+                break;
+
+            case SICK_LEAVE:
+                _timeTracking.takeSickLeave(userId, from, to, comment);
+                break;
+
+            case SPECIAL_HOLIDAY:
+                _timeTracking.requestSpecialHoliday(userId, from, to, comment);
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unknown timeoff type " + type);
+        }
     }
 }
