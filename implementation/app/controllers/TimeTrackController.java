@@ -100,7 +100,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
-            dateTo = DateTimeUtils.stringToDateTime(to);
+            dateTo = DateTimeUtils.stringToDateTime(to, 23, 59);
         }
 
         timeTracks = _timeTracking.readTimeTracks(userId, dateFrom, dateTo);
