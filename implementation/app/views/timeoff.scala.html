@@ -1,0 +1,134 @@
+@import org.pac4j.core.profile.CommonProfile
+
+@(profile: CommonProfile, timeOffToDelete: TimeOff)
+
+
+@scripts = {
+    <!-- Load all calendar entries async -->
+    <script type="text/javascript">
+            $(document).ready(function(){
+                $('#timeoff-calendar').monthly({
+                    weekStart: 'Mon',
+                    mode: 'event',
+                    xmlUrl: '@routes.TimeOffController.readTimeOffCalendar()'
+                });
+
+            });
+    </script>
+
+    <!-- If the user wants to delete a time off, we show the modal -->
+    <script type="text/javascript">
+        @if(timeOffToDelete != null) {
+            $(document).ready(function(){
+                $('#modal-delete-timeoff').openModal();
+            });
+        }
+    </script>
+}
+
+
+@main(Messages("views.timeoff.title"), scripts) {
+
+    @navigation(Messages("views.timeoff.title"), profile) {
+
+        <!-- Calendar for off time -->
+        <div class="row">
+            <div id="timeoff-calendar" class="monthly col s12 m11"></div>
+        </div>
+
+        <!-- Modal to send a new time off request -->
+        <div id="modal-create-timeoff" class="modal">
+            <!-- header of modal -->
+            <header class="modal-content">
+                <h4>@Messages("views.timeoff.modal.create")</h4>
+            </header>
+
+            <form action="@routes.TimeOffController.createTimeOff()" method="POST">
+                <!-- Content of modal -->
+                <div class="modal-content">
+                        <div class="row">
+                            <div class="input-field col s6 m5">
+                                <input name="from" required="required" type="text" class="datepicker">
+                                <label for="from">@Messages("views.timeoff.create.from")</label>
+                            </div>
+                            <div class="input-field col s6 m5">
+                                <input name="to" required="required" type="text" class="datepicker">
+                                <label for="to">@Messages("views.timeoff.create.to")</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s6 m5">
+                                <select name="type" type="text">
+                                    <option selected value="HOLIDAY">@Messages("views.timeoff.create.holiday")</option>
+                                    <option value="SPECIAL_HOLIDAY">@Messages("views.timeoff.create.specialholiday")</option>
+                                    <option value="SICK_LEAVE">@Messages("views.timeoff.create.sickleave")</option>
+                                    <option value="PARENTAL_LEAVE">@Messages("views.timeoff.create.parentalleave")</option>
+                                    <option value="EDUCATIONAL_LEAVE">@Messages("views.timeoff.create.educationalleave")</option>
+                                    <option value="BUSINESS_TRIP">@Messages("views.timeoff.create.businesstrip")</option>
+                                </select>
+                                <label for="type">Type</label>
+                            </div>
+                            <div class="input-field col s6 m5">
+                                <input name="comment" required="required" type="text">
+                                <label for="comment">Comment</label>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- Modal footer -->
+                <footer class="modal-footer">
+                    <button class="waves-effect modal-close waves-light btn right primary-btn"
+                        style="float : right">
+                        @Messages("views.timeoff.btn.request")
+                        <i class="material-icons right">send</i>
+                    </button>
+
+                    <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                        @Messages("views.btn.close")
+                    </button>
+                </footer>
+            </form>
+        </div>
+
+        <!-- Send button -->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <button data-target="modal-create-timeoff" class="btn-floating modal-trigger btn-large waves-light primary-btn">
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+
+        <!-- Modal to delete a time off -->
+        @if(timeOffToDelete != null){
+            <div id="modal-delete-timeoff" class="modal">
+                <!-- header of modal -->
+                <header class="modal-content">
+                    <h4>@Messages("views.timeoff.modal.details")</h4>
+                </header>
+
+                <div class="modal-content">
+                    <h5>@Messages("views.timeoff.modal.details.infos")</h5>
+                    <p>
+                        @timeOffToDelete.getType <br />
+                        @timeOffToDelete.getFrom().toString("dd.MM.yyyy") - @timeOffToDelete.getTo().toString("dd.MM.yyyy") <br />
+                        @timeOffToDelete.getComment                       <br />
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <footer class="modal-footer">
+                    <a class="waves-effect modal-close waves-light btn right negative-btn"
+                        href="@routes.TimeOffController.deleteTimeOff(timeOffToDelete.getId)"
+                    style="float : right">
+                        @Messages("views.timeoff.btn.delete")
+                        <i class="material-icons right">delete</i>
+                    </a>
+
+                    <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                    @Messages("views.btn.close")
+                    </button>
+                </footer>
+            </div>
+        }
+    }
+}

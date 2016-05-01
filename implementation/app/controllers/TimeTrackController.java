@@ -22,9 +22,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     private TimeTracking _timeTracking;
 
-    public static final Form<TimeTrack> FORM = Form.form(TimeTrack.class);
-
-
     @Inject
     public TimeTrackController(TimeTracking timeTracking) {
         _timeTracking = timeTracking;
@@ -248,6 +245,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
+
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result deleteTimeTrack(int timetrackId, int userId, String from, String to) throws Exception {

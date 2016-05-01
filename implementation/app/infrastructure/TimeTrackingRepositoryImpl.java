@@ -1,6 +1,5 @@
 package infrastructure;
 
-import business.timetracking.TimeTrackException;
 import business.usermanagement.UserException;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
@@ -16,8 +15,6 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public List<TimeTrack> readTimeTracks(User user) {
-        // user should not be null at that point
-
         List<TimeTrack> _timeTracks =
             Ebean.find(TimeTrack.class)
                 .where().eq("_user_id", user.getId())
@@ -44,13 +41,13 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
        if(from.isAfter(to))
           return Collections.emptyList();
 
-        List<TimeTrack> _timeTracks =
-            Ebean.find(TimeTrack.class)
-            .where().eq("_user_id", user.getId())
-            .where().ge("start", from)
-            .where().le("end", to)
-            .setOrderBy("start")
-            .findList();
+       List<TimeTrack> _timeTracks =
+           Ebean.find(TimeTrack.class)
+           .where().eq("_user_id", user.getId())
+           .where().ge("start", from)
+           .where().le("end", to)
+           .setOrderBy("start")
+           .findList();
 
         // if we have the case that there was nothing found
        if(_timeTracks == null) {
@@ -67,19 +64,22 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
        return _timeTracks;
     }
 
+
     @Override
     public TimeTrack readTimeTrack(int id) throws NotFoundException {
-        TimeTrack wantedTimeTrack =
-            Ebean.find(TimeTrack.class)
-                .where().eq("id", id).findUnique();
+        TimeTrack timeTrack =
+                Ebean.find(TimeTrack.class)
+                        .where()
+                        .eq("id", id)
+                        .findUnique();
 
-        if (wantedTimeTrack != null) {
-            return wantedTimeTrack;
+        if (timeTrack == null) {
+            throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
         }
 
-        // We should never return null
-        throw new NotFoundException("exceptions.timetracking.could_not_find_timetrack");
+        return timeTrack;
     }
+
 
     /**
      * get all timeTracks which are overlapping to given timeTrack

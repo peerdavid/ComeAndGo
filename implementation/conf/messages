@@ -1,5 +1,9 @@
 
 
+
+views.btn.close = Close
+
+
 views.login.title = Login
 views.login.username = Username
 views.login.password = Password
@@ -25,6 +29,23 @@ views.index.timetrack.tablehead.time = Time
 views.index.state.active = Active
 views.index.state.inactive = Inactive
 views.index.state.pause = Pause
+
+views.timeoff.title = Time Off
+views.timeoff.modal.create = Send new time off request
+views.timeoff.btn.request = Send
+views.timeoff.create.from = From
+views.timeoff.create.to = To
+views.timeoff.create.holiday = Holiday
+views.timeoff.create.specialholiday = Special Holiday
+views.timeoff.create.parentalleave = Parental Leave
+views.timeoff.create.sickleave = Sick leave
+views.timeoff.create.educationalleave = Educational Leave
+views.timeoff.create.businesstrip = Business Trip
+
+views.timeoff.btn.delete = Delete
+views.timeoff.modal.details = Time Off - Details
+views.timeoff.modal.details.infos = Informations:
+
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
@@ -58,7 +79,7 @@ views.admin.edittimetracks.addbreak = Add Break
 views.admin.edittimetracks.addtimetrack = Add Timetrack
 views.admin.edittimetracks.deletebreak = Delete Break
 views.admin.edittimetracks.deletebreakmessage = Do you really want to remove this break?
-views.admin.edittimetracks.closemessage = Close
+
 views.admin.edittimetracks.deletetimetrack = Delete Timetrack
 views.admin.edittimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?
 
@@ -68,7 +89,6 @@ views.admin.edituser.savechanges = Save Changes
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
 views.admin.edituser.deletemessage = Do you really want to remove this user?
-views.admin.edituser.closemessage = Close
 views.admin.edituser.bossofuser = Boss
 
 views.notification.title = Notifications
@@ -95,6 +115,7 @@ exceptions.usermanagement.email_format = Wrong Email Format
 exceptions.usermanagement.username_format = Wrong Username Format
 exceptions.usermanagement.no_such_user = No such user found
 exceptions.usermanagement.different_ids = User to change has different ID to existing user
+exceptions.usermanagement.repeat_password_different = Password and repeat password are different
 exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
@@ -116,23 +137,26 @@ exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have a
 exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 
-exceptions.timeoff.error_clashing_timeoffs = You are not able to request timeOff because of clashing "%s"
 
-notifications.holiday_request = Holiday request from employee "%s"
-notifications.special_holiday_request = Special-holiday request from employee "%s"
-notifications.business_trip_information = Employee "%s" is on Business trip
-notifications.sick_leave_information = Employee "%s" is sick
-notifications.holiday_payout_request = Employee "%s" requested holiday payout
-notifications.overtime_payout_request = Employee "%s" requested overtime payout
-notifications.holiday_accept = Boss "%s" accepted holiday
-notifications.holiday_reject = Boss "%s" rejected holiday
-notifications.holiday_payout_accept = Boss "%s" accepted holiday payout
-notifications.holiday_payout_reject = Boss "%s" rejected holiday payout
-notifications.overtime_payout_accept = Boss "%s" accepted overtime payout
-notifications.overtime_payout_reject = Boss "%s" rejected overtime payout
-notifications.fire_employee = Boss "%s" fired you
-notifications.changed_timetrack = Personnel Manager "%s" changed a timetrack
-notifications.deleted_timetrack = Personnel Manager "%s" deleted a timetrack
+
+exceptions.timeoff.error_clashing_timeoffs = You are not able to request time off because of clashing "{0}"
+exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
+
+notifications.holiday_request = Holiday request from employee "{0}"
+notifications.special_holiday_request = Special-holiday request from employee "{0}"
+notifications.business_trip_information = Employee "{0}" is on Business trip
+notifications.sick_leave_information = Employee "{0}" is sick
+notifications.holiday_payout_request = Employee "{0}" requested holiday payout
+notifications.overtime_payout_request = Employee "{0}" requested overtime payout
+notifications.holiday_accept = Boss "{0}" accepted holiday
+notifications.holiday_reject = Boss "{0}" rejected holiday
+notifications.holiday_payout_accept = Boss "{0}" accepted holiday payout
+notifications.holiday_payout_reject = Boss "{0}" rejected holiday payout
+notifications.overtime_payout_accept = Boss "{0}" accepted overtime payout
+notifications.overtime_payout_reject = Boss "{0}" rejected overtime payout
+notifications.fire_employee = Boss "{0}" fired you
+notifications.changed_timetrack = Personnel Manager "{0}" changed a timetrack
+notifications.deleted_timetrack = Personnel Manager "{0}" deleted a timetrack
 
 notifications.holiday = Holiday
 notifications.holidaypayout = Holiday Payout

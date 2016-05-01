@@ -3,7 +3,6 @@ package models;
 import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
-import com.avaje.ebean.annotation.Index;
 import org.mindrot.jbcrypt.BCrypt;
 import play.data.validation.Constraints;
 

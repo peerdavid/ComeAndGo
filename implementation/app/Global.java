@@ -36,7 +36,8 @@ public class Global extends GlobalSettings {
     public F.Promise<Result> onError(Http.RequestHeader request, Throwable throwable) {
 
         if (throwable instanceof UserException) {
-            return F.Promise.<Result>pure(ok(request.uri()));
+            // ToDo: Message box
+            return F.Promise.<Result>pure(internalServerError(views.html.error.render(throwable)));
         }
 
         return F.Promise.<Result>pure(internalServerError(views.html.error.render(throwable)));

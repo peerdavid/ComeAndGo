@@ -2,7 +2,6 @@ package business.notification;
 
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
-import business.usermanagement.UserNotFoundException;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
 import models.Notification;

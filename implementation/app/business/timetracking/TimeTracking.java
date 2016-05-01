@@ -35,6 +35,10 @@ public interface TimeTracking extends UseCases {
 
     TimeOff readTimeOffById(int timeOffId) throws Exception;
 
+    List<TimeOff> readTimeOffs(int userId) throws Exception;
+
+    void deleteTimeOff(int userId, int id) throws Exception;
+
     void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception;
 
     void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception;

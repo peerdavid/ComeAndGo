@@ -23,20 +23,21 @@ class TimeOffValidationImpl implements TimeOffValidation {
 
     @Override
     public void validateTimeOff(User user, DateTime from, DateTime to) throws UserException {
-        List<TimeOff> timeOffsFromUser = null;
+
         try {
-            _repository.readTimeOffFromUser(user, from, to);
+            List<TimeOff> timeOffsFromUser = _repository.readTimeOffFromUser(user, from, to);
+
+            // at this point user has timeOff(s) in conflict
+            StringBuilder sb = new StringBuilder();
+            for(TimeOff actual : timeOffsFromUser) {
+                sb.append(String.format("%s - (%s), ", actual.getType(), actual.getComment()));
+            }
+
+            throw new UserException(Messages.get("exceptions.timeoff.error_clashing_timeoffs", sb.toString()));
+
         } catch (TimeTrackException e) {
             // request is in no conflict to others
             return;
         }
-
-        // at this point user has timeOff(s) in conflict
-        StringBuilder sb = new StringBuilder();
-        for(TimeOff actual : timeOffsFromUser) {
-            sb.append(actual.getType().toString() + ", ");
-        }
-
-        throw new UserException(Messages.get("exceptions.timeoff.error_clashing_timeoffs", sb.toString()));
     }
 }

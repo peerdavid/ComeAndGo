@@ -3,12 +3,18 @@ package business.timetracking;
 import business.notification.NotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
+import business.usermanagement.NotAuthorizedException;
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeOffRepository;
 import models.Notification;
 import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by paz on 24.04.16.
@@ -160,7 +166,7 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_REJECTED);
+        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
@@ -200,8 +206,36 @@ class TimeOffServiceImpl implements TimeOffService {
         _notificationSender.sendNotification(notification);
     }
 
+
     @Override
     public TimeOff readTimeOffById(int timeOffId) throws Exception {
         return _repository.readTimeOff(timeOffId);
+    }
+
+
+    @Override
+    public List<TimeOff> readTimeOffs(int userId) throws Exception {
+        User user = _userManagement.readUser(userId);
+        return _repository.readTimeOffs(user);
+    }
+
+    @Override
+    public void deleteTimeTrack(int userId, int id) throws Exception {
+        TimeOff timeOffToDelete = _repository.readTimeOff(id);
+
+        if(timeOffToDelete.getUser().getId() != userId){
+            throw new NotAuthorizedException("User " + userId + " is not allowed to delete time off " + id);
+        }
+
+        if(timeOffToDelete.getFrom().isBeforeNow()){
+            throw new UserException("exceptions.timeoff.error_delete_timoff_in_past");
+        }
+
+        User employee = timeOffToDelete.getUser();
+        User boss = employee.get_boss();
+        Notification notification = new Notification(NotificationType.INFORMATION, "Deleted time off", employee, boss);
+
+        _notificationSender.sendNotification(notification);
+        _repository.deleteTimeOff(timeOffToDelete);
     }
 }

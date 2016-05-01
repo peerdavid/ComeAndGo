@@ -50,13 +50,13 @@ public class TimeOff {
         setTo(to);
 
         if(user == null) {
-            throw new TimeOffNullPointerException("user is null");
+            throw new TimeOffNotFoundException("user is null");
         }
         if(type == null) {
-            throw new TimeOffNullPointerException("type is null");
+            throw new TimeOffNotFoundException("type is null");
         }
         if(state == null) {
-            throw new TimeOffNullPointerException("state is null");
+            throw new TimeOffNotFoundException("state is null");
         }
 
         this._user = user;

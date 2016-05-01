@@ -15,14 +15,12 @@ class UserManagementFacade implements UserManagement {
 
     @Inject
     public UserManagementFacade(UserService userService) {
-
         _userService = userService;
     }
 
 
     @Override
     public void createUser(User userToRegister) throws UserException {
-
         _userService.createUser(userToRegister);
     }
 

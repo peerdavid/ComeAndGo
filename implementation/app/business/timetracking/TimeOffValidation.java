@@ -1,5 +1,6 @@
 package business.timetracking;
 
+
 import business.usermanagement.UserException;
 import models.User;
 import org.joda.time.DateTime;

@@ -49,18 +49,17 @@ insert into notification VALUES
 (4, 6, 'hallo david', 5, 1, 0, '2016-04-23 08:10:09', 23),
 (5, 7, 'hallo david', 2, 1, 0, '2016-04-23 08:10:09', 14);
 
-insert into time_off VALUES
-(1, 1, '2016-06-23 08:10:09', '2016-06-25 08:10:09', 0, 0, 'please give me holiday', NULL),
-(2, 2, '2016-07-23 08:10:09', '2016-07-25 08:10:09', 1, 1, 'i dont want to work here', NULL),
-(3, 3, '2016-08-23 08:10:09', '2016-08-25 08:10:09', 2, 2, 'holiday <3', NULL),
-(4, 4, '2016-09-23 08:10:09', '2016-09-25 08:10:09', 3, 3, 'please boss give me holiday', NULL),
-(5, 5, '2016-10-23 08:10:09', '2016-10-25 08:10:09', 4, 4, 'travel to the usa', NULL);
+insert into time_off  VALUES
+(1, 5, '2016-05-18 08:10:09', '2016-05-25 08:10:09', 0, 0, 'Please give me holiday', NULL),
+(2, 5, '2016-05-01 08:10:09', '2016-05-01 08:10:09', 1, 2, 'I dont want to work here', NULL),
+(3, 5, '2016-05-25 08:10:09', '2016-05-28 08:10:09', 2, 3, 'Holiday <3', NULL),
+(4, 5, '2016-06-23 08:10:09', '2016-06-25 08:10:09', 3, 4, 'Please boss give me holiday', NULL),
+(5, 5, '2016-06-01 08:10:09', '2016-06-02 08:10:09', 4, 2, 'Travel to the usa', NULL);
 
 # --- !Downs
-delete from user;
-delete from time_track;
 delete from break;
+delete from time_track;
 delete from notification;
 delete from time_off;
-
+delete from user;
 

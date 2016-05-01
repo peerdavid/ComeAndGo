@@ -138,12 +138,6 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
        return _repository.readTimeTracks(user, from, to);
     }
 
-    @Override
-    public void createTimeTrack(TimeTrack timeTrack) throws UserException {
-        _timeTrackValidation.validateTimeTrackInsert(timeTrack);
-        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
-        _repository.createTimeTrack(timeTrack);
-    }
 
     @Override
     public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
@@ -151,6 +145,15 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
         createTimeTrack(timeTrack);
     }
+
+
+    @Override
+    public void createTimeTrack(TimeTrack timeTrack) throws UserException {
+        _timeTrackValidation.validateTimeTrackInsert(timeTrack);
+        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
+        _repository.createTimeTrack(timeTrack);
+    }
+
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
