@@ -7,11 +7,8 @@ import models.User;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
-import play.api.i18n.Messages;
 import play.data.Form;
 import play.mvc.Result;
-
-import java.util.List;
 
 
 import static play.mvc.Results.ok;

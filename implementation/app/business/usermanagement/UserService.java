@@ -1,6 +1,5 @@
 package business.usermanagement;
 
-import javassist.NotFoundException;
 import models.User;
 import org.pac4j.http.credentials.authenticator.UsernamePasswordAuthenticator;
 

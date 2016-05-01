@@ -79,7 +79,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void readUser_ForNotExistingUser_ShouldFail() throws  UserException {
+    public void readUser_ForNotExistingUser_ShouldFail() throws UserException {
         // Prepare
         String notExistingUsername = "abc";
         when(_userRepository.readUser(notExistingUsername)).thenReturn(null);
@@ -92,7 +92,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkUserCredentials_ForWrongPassword_ShouldSucceed() throws  UserException {
+    public void checkUserCredentials_ForWrongPassword_ShouldSucceed() throws UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = false;
@@ -103,7 +103,7 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void checkUserCredentials_ForUnregisteredUser_ShouldFail() throws  UserException {
+    public void checkUserCredentials_ForUnregisteredUser_ShouldFail() throws UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(null);
 
         boolean expected = false;
@@ -114,7 +114,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void checkUserCredentials_WithActualPassword_ShouldSucceed() throws  UserException {
+    public void checkUserCredentials_WithActualPassword_ShouldSucceed() throws UserException {
         when(_userRepository.readUser(_testUser.getUserName())).thenReturn(_testUser);
 
         boolean expected = true;
