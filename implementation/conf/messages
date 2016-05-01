@@ -26,6 +26,8 @@ views.index.state.active = Active
 views.index.state.inactive = Inactive
 views.index.state.pause = Pause
 
+views.timeoff.title = Time Off
+
 views.admin.title = Admin
 views.admin.enableediting = Edit
 

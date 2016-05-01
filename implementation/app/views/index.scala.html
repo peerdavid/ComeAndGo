@@ -3,75 +3,64 @@
 @import utils.DateTimeUtils
 @(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTracks: java.util.List[TimeTrack])
 
-@scripts = {
-    <script type="text/javascript">
-            $(window).load( function() {
-                $('#timeoff-calendar').monthly({
-                    weekStart: 'Mon',
-                    mode: 'event',
-                    xmlUrl: '@routes.TimeTrackController.readTimeOffCalendar()'
-                });
-
-            });
-    </script>
-}
-
-@main(Messages("views.index.title"), scripts) {
+@main(Messages("views.index.title")) {
 
     @navigation(Messages("views.index.title"), profile) {
 
-        <div id = "index-welcome-status">
-            <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
+        <!-- Title -->
+        <div id = "index-welcome-status" class="row">
+            <div class="s12">
+                <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
 
-            @if(userState == TimeTrackState.INACTIVE) {
-                <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.inactive"))</h4>
-            }
-            @if(userState == TimeTrackState.ACTIVE) {
-                <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.active"))</h4>
-            }
-            @if(userState == TimeTrackState.PAUSE) {
-                <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.pause"))</h4>
-            }
+                @if(userState == TimeTrackState.INACTIVE) {
+                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.inactive"))</h4>
+                }
+                @if(userState == TimeTrackState.ACTIVE) {
+                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.active"))</h4>
+                }
+                @if(userState == TimeTrackState.PAUSE) {
+                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.pause"))</h4>
+                }
+            </div>
         </div>
 
-        <br/>
+        <!-- Progress bar -->
         <div id="active_progress" class="progress row">
             <div class="determinate green col s12 l12" style="width : @(progress)%"></div>
         </div>
 
-        @if(userState == TimeTrackState.INACTIVE) {
-            <div id="index-time-track-buttons" class="row">
-                <a class="waves-effect waves-light btn secondary-btn col s12 m4 l2" href="@routes.TimeTrackController.come()"> @Messages("views.index.come")</a>
-                <button class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3" disabled="disabled">@Messages("views.index.startbreak")</button>
-                <button class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3" disabled="disabled">@Messages("views.index.go")</button>
+        <!-- Current state -->
+        <div class="row">
+            <div class="s12">
+                @if(userState == TimeTrackState.INACTIVE) {
+                    <div id="index-time-track-buttons" class="row">
+                        <a class="waves-effect waves-light btn secondary-btn col s12 m4 l2" href="@routes.TimeTrackController.come()"> @Messages("views.index.come")</a>
+                        <button class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3" disabled="disabled">@Messages("views.index.startbreak")</button>
+                        <button class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3" disabled="disabled">@Messages("views.index.go")</button>
+                    </div>
+                }
+
+                @if(userState == TimeTrackState.ACTIVE) {
+                    <div id="index-time-track-buttons" class="row">
+                        <button class="waves-effect waves-light btn secondary-btn col s2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                        <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
+                        <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
+                    </div>
+                }
+
+                @if(userState == TimeTrackState.PAUSE) {
+                    <div id="index-time-track-buttons" class="row">
+                        <button class="waves-effect waves-light btn secondary-btn col s2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                        <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
+                        <button class="waves-effect waves-light btn secondary-btn col s2 offset-l3" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
+                    </div>
+                }
             </div>
-        }
+        </div>
 
-        @if(userState == TimeTrackState.ACTIVE) {
-            <div id="index-time-track-buttons" class="row">
-                <button class="waves-effect waves-light btn secondary-btn col s2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.pause()">@Messages("views.index.startbreak")</a>
-                <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.go()" style="float : right">@Messages("views.index.go")</a>
-            </div>
-        }
-
-        @if(userState == TimeTrackState.PAUSE) {
-            <div id="index-time-track-buttons" class="row">
-                <button class="waves-effect waves-light btn secondary-btn col s2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
-                <a class="waves-effect waves-light btn secondary-btn col s2 offset-l3" href="@routes.TimeTrackController.pause()">@Messages("views.index.stopbreak")</a>
-                <button class="waves-effect waves-light btn secondary-btn col s2 offset-l3" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
-            </div>
-        }
-
-        <br />
-        <br />
-
-        <!-- Calendar for off time -->
-        <div id="timeoff-calendar" class="monthly" style="width: 500px; height: 500px;"></div>
-
-        <br />
-        <br />
-
+        <!-- Todays time trackings -->
+        <div class="row">
+            <div class="s12">
         @if(!timeTracks.isEmpty) {
             <table>
                 <tr>
@@ -129,7 +118,8 @@
             </table>
 
         }
-
+            </div>
+        </div>
     }
 
 }

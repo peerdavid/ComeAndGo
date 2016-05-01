@@ -24,9 +24,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     private TimeTracking _timeTracking;
 
-    public static final Form<TimeTrack> FORM = Form.form(TimeTrack.class);
-
-
     @Inject
     public TimeTrackController(TimeTracking timeTracking) {
         _timeTracking = timeTracking;
@@ -260,23 +257,5 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         _timeTracking.deleteTimeTrack(timeTrack);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
-    }
-
-
-    @RequiresAuthentication(clientName = "default")
-    public Result readTimeOffCalendar() throws Exception{
-        CommonProfile profile = getUserProfile();
-        List<TimeOff> timeOffs = _timeTracking.readTimeOffs(Integer.valueOf(profile.getId()));
-
-        String timeOffString = "";
-        for(TimeOff t : timeOffs){
-            timeOffString += TimeOffToXmlConverter.timeOffToXml(t);
-        }
-
-        // Testing only -> get from business
-        return ok("<?xml version=\"1.0\"?>\n" +
-                "<monthly>\n" +
-                timeOffString + "\n" +
-                "</monthly>\n").as("application/xml");
     }
 }

@@ -1,0 +1,30 @@
+@import org.pac4j.core.profile.CommonProfile
+
+@(profile: CommonProfile)
+
+
+@scripts = {
+    <script type="text/javascript">
+            $(window).load( function() {
+                $('#timeoff-calendar').monthly({
+                    weekStart: 'Mon',
+                    mode: 'event',
+                    xmlUrl: '@routes.TimeOffController.readTimeOffCalendar()'
+                });
+
+            });
+    </script>
+}
+
+
+@main(Messages("views.timeoff.title"), scripts) {
+
+    @navigation(Messages("views.timeoff.title"), profile) {
+            <!-- Calendar for off time -->
+        <div class="row">
+            <div class="s12">
+                <div id="timeoff-calendar" class="monthly"></div>
+            </div>
+        </div>
+    }
+}
