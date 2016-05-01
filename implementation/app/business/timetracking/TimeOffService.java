@@ -37,4 +37,6 @@ interface TimeOffService {
     TimeOff readTimeOffById(int timeOffId) throws Exception;
 
     List<TimeOff> readTimeOffs(int userId) throws Exception;
+
+    void deleteTimeTrack(int userId, int id) throws TimeTrackException, Exception;
 }

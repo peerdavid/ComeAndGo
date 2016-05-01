@@ -215,4 +215,19 @@ class TimeOffServiceImpl implements TimeOffService {
         User user = _userManagement.readUser(userId);
         return _repository.readTimeOffs(user);
     }
+
+    @Override
+    public void deleteTimeTrack(int userId, int id) throws Exception {
+        TimeOff timeOffToDelete = _repository.readTimeOff(id);
+        if(timeOffToDelete.getUser().getId() != userId){
+            throw new Exception("Not allwoed");
+        }
+
+        User employee = timeOffToDelete.getUser();
+        User boss = employee.get_boss();
+        Notification ntification = new Notification(NotificationType.INFORMATION, "Deleted time off", employee, boss);
+
+        _notificationSender.sendNotification(ntification);
+        _repository.deleteTimeOff(timeOffToDelete);
+    }
 }

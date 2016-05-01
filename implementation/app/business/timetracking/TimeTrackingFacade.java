@@ -96,6 +96,11 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
+    public void deleteTimeOff(int userId, int id) throws Exception {
+        _timeOffService.deleteTimeTrack(userId, id);
+    }
+
+    @Override
     public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         _timeOffService.takeSickLeave(userId, from, to, comment);
     }

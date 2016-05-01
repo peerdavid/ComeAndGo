@@ -2,6 +2,7 @@ package controllers.timeoff;
 
 import business.timetracking.TimeOffState;
 import business.timetracking.TimeOffType;
+import controllers.routes;
 import models.TimeOff;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -15,7 +16,7 @@ import java.text.SimpleDateFormat;
 public class TimeOffToXmlConverter {
 
     public static String timeOffToXml(TimeOff timeOff){
-        int id = 7;//timeOff.getId();
+        int id = timeOff.getId();
         String name = StringEscapeUtils.escapeXml10(timeOff.getType().toString());
         String comment = StringEscapeUtils.escapeXml10(timeOff.getComment());
 
@@ -23,6 +24,7 @@ public class TimeOffToXmlConverter {
         String to = StringEscapeUtils.escapeXml10(timeOff.getTo().toString("yyyy-MM-dd"));
 
         String color = StringEscapeUtils.escapeXml10(timeOffToColor(timeOff));
+        String url = routes.TimeOffController.showDeleteTimeOff(timeOff.getId()).url();
 
         return  String.format("\t<event>\n" +
                 "\t\t<id>%d</id>\n" +
@@ -32,8 +34,8 @@ public class TimeOffToXmlConverter {
                 "\t\t<starttime></starttime>\n" +
                 "\t\t<endtime></endtime>\n" +
                 "\t\t<color>%s</color>\n" +
-                "\t\t<url>/notification</url>\n" +
-                "\t</event>\n", id, name, comment, from, to, color);
+                "\t\t<url>%s</url>\n" +
+                "\t</event>\n", id, name, comment, from, to, color, url);
     }
 
     private static String timeOffToColor(TimeOff timeOff){

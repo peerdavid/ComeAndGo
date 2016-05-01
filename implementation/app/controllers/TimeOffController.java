@@ -32,9 +32,26 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result index(){
+    public Result index() throws Exception{
         CommonProfile profile = getUserProfile();
-        return ok(views.html.timeoff.render(profile));
+        return ok(views.html.timeoff.render(profile, null));
+    }
+
+
+    @RequiresAuthentication(clientName = "default")
+    public Result showDeleteTimeOff(int id) throws Exception{
+        CommonProfile profile = getUserProfile();
+        TimeOff timeOffToDelete = _timeTracking.readTimeOffById(id);
+        return ok(views.html.timeoff.render(profile, timeOffToDelete));
+    }
+
+
+    @RequiresAuthentication(clientName = "default")
+    public Result deleteTimeOff(int id) throws Exception{
+        CommonProfile profile = getUserProfile();
+
+        _timeTracking.deleteTimeOff(Integer.parseInt(profile.getId()), id);
+        return redirect(routes.TimeOffController.index());
     }
 
 

@@ -31,10 +31,21 @@ views.index.state.inactive = Inactive
 views.index.state.pause = Pause
 
 views.timeoff.title = Time Off
-view.timeoff.modal.create = Send new time off request
-views.timeoff.btn.request = Send Request
+views.timeoff.modal.create = Send new time off request
+views.timeoff.btn.request = Send
 views.timeoff.create.from = From
 views.timeoff.create.to = To
+views.timeoff.create.holiday = Holiday
+views.timeoff.create.specialholiday = Special Holiday
+views.timeoff.create.parentalleave = Parental Leave
+views.timeoff.create.sickleave = Sick leave
+views.timeoff.create.educationalleave = Educational Leave
+views.timeoff.create.businesstrip = Business Trip
+
+views.timeoff.btn.delete = Delete
+views.timeoff.modal.delete = Do you really want to delete this time off?
+views.timeoff.modal.delete.infos = Informations:
+
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
