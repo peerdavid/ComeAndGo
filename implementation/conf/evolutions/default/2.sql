@@ -50,10 +50,10 @@ insert into notification VALUES
 (5, 7, 'hallo david', 2, 1, 0, '2016-04-23 08:10:09', 14);
 
 insert into time_off  VALUES
-(1, 5, '2016-05-18 08:10:09', '2016-05-25 08:10:09', 0, 2, 'Please give me holiday', NULL),
+(1, 5, '2016-05-18 08:10:09', '2016-05-25 08:10:09', 0, 0, 'Please give me holiday', NULL),
 (2, 5, '2016-05-01 08:10:09', '2016-05-01 08:10:09', 1, 2, 'I dont want to work here', NULL),
-(3, 5, '2016-05-25 08:10:09', '2016-05-28 08:10:09', 2, 2, 'Holiday <3', NULL),
-(4, 5, '2016-06-23 08:10:09', '2016-06-25 08:10:09', 3, 2, 'Please boss give me holiday', NULL),
+(3, 5, '2016-05-25 08:10:09', '2016-05-28 08:10:09', 2, 3, 'Holiday <3', NULL),
+(4, 5, '2016-06-23 08:10:09', '2016-06-25 08:10:09', 3, 4, 'Please boss give me holiday', NULL),
 (5, 5, '2016-06-01 08:10:09', '2016-06-02 08:10:09', 4, 2, 'Travel to the usa', NULL);
 
 # --- !Downs

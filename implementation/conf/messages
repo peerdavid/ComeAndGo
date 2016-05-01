@@ -1,5 +1,9 @@
 
 
+
+views.btn.close = Close
+
+
 views.login.title = Login
 views.login.username = Username
 views.login.password = Password
@@ -27,6 +31,8 @@ views.index.state.inactive = Inactive
 views.index.state.pause = Pause
 
 views.timeoff.title = Time Off
+view.timeoff.modal.create = Send new time off request
+views.timeoff.btn.request = Send Request
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
@@ -60,7 +66,7 @@ views.admin.edittimetracks.addbreak = Add Break
 views.admin.edittimetracks.addtimetrack = Add Timetrack
 views.admin.edittimetracks.deletebreak = Delete Break
 views.admin.edittimetracks.deletebreakmessage = Do you really want to remove this break?
-views.admin.edittimetracks.closemessage = Close
+
 views.admin.edittimetracks.deletetimetrack = Delete Timetrack
 views.admin.edittimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?
 
@@ -70,7 +76,6 @@ views.admin.edituser.savechanges = Save Changes
 views.admin.edituser.deleteuser = Delete User
 views.admin.edituser.delete = Delete
 views.admin.edituser.deletemessage = Do you really want to remove this user?
-views.admin.edituser.closemessage = Close
 views.admin.edituser.bossofuser = Boss
 
 views.notification.title = Notifications
