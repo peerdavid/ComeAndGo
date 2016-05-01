@@ -33,6 +33,8 @@ views.index.state.pause = Pause
 views.timeoff.title = Time Off
 view.timeoff.modal.create = Send new time off request
 views.timeoff.btn.request = Send Request
+views.timeoff.create.from = From
+views.timeoff.create.to = To
 
 views.admin.title = Admin
 views.admin.enableediting = Edit

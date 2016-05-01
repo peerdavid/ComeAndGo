@@ -22,31 +22,59 @@
     @navigation(Messages("views.timeoff.title"), profile) {
         <!-- Calendar for off time -->
         <div class="row">
-            <div id="timeoff-calendar" style="width: 80%; height: 80%" class="monthly s12"></div>
+            <div id="timeoff-calendar" class="monthly col s12 m11"></div>
         </div>
 
         <!-- Modal to send a new time off request -->
         <div id="modal-create-timeoff" class="modal">
-            <div class="modal-content">
+            <!-- header of modal -->
+            <header class="modal-content">
                 <h4>@Messages("view.timeoff.modal.create")</h4>
-            </div>
+            </header>
 
+            <form action="@routes.TimeOffController.createTimeOff()" method="POST">
+            <!-- Content of modal -->
             <div class="modal-content">
-                CONTENT
+                    <div class="row">
+                        <div class="input-field col s6 m5">
+                            <input name="from" type="text" class="datepicker">
+                            <label for="from">@Messages("views.timeoff.create.from")</label>
+                        </div>
+                        <div class="input-field col s6 m5">
+                            <input name="from" type="text" class="datepicker">
+                            <label for="from">@Messages("views.timeoff.create.to")</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s6 m5">
+                            <select name="type" type="text">
+                                <option selected value="HOLIDAY">HOLIDAY</option>
+                                <option value="SICK">SICK</option>
+                            </select>
+                            <label for="type">Type</label>
+                        </div>
+                        <div class="input-field col s6 m5">
+                            <input name="comment" type="text">
+                            <label for="comment">Comment</label>
+                        </div>
+                    </div>
             </div>
 
-            <div class="modal-footer">
+            <!-- Modal footer -->
+            <footer class="modal-footer">
                 <a class="waves-effect modal-action modal-close waves-light btn primary-btn"
                     href="#"
                     style="float : right">
-
                     @Messages("views.timeoff.btn.request")
+                    <i class="material-icons right">send</i>
                 </a>
 
-                <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">
+                <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
                     @Messages("views.btn.close")
-                </a>
-            </div>
+                </button>
+            </footer>
+            </form>
         </div>
 
         <!-- Send button -->

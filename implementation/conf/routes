@@ -26,6 +26,7 @@ GET     /edittimetracks/:userId/deletebreak/       @controllers.TimeTrackControl
 
 GET     /timeoff                                   @controllers.TimeOffController.index
 GET     /timeoff/calendar                          @controllers.TimeOffController.readTimeOffCalendar
+POST    /timeoff/createTimeOff                     @controllers.TimeOffController.createTimeOff(comment: String ?= null)
 
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
