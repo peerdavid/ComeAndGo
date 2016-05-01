@@ -3,6 +3,8 @@ package business.timetracking;
 import models.TimeOff;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 /**
  * Created by paz on 24.04.16.
  */
@@ -33,4 +35,6 @@ interface TimeOffService {
     void  rejectEducationalLeave(int timeOffId, int bossId) throws Exception;
 
     TimeOff readTimeOffById(int timeOffId) throws Exception;
+
+    List<TimeOff> readTimeOffs(int userId) throws Exception;
 }

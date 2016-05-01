@@ -10,6 +10,9 @@ import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by paz on 24.04.16.
  */
@@ -200,8 +203,16 @@ class TimeOffServiceImpl implements TimeOffService {
         _notificationSender.sendNotification(notification);
     }
 
+
     @Override
     public TimeOff readTimeOffById(int timeOffId) throws Exception {
         return _repository.readTimeOff(timeOffId);
+    }
+
+
+    @Override
+    public List<TimeOff> readTimeOffs(int userId) throws Exception {
+        User user = _userManagement.readUser(userId);
+        return _repository.readTimeOffs(user);
     }
 }

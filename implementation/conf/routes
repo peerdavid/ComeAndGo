@@ -24,7 +24,7 @@ GET     /edittimetracks/:userId/deletetimetrack    @controllers.TimeTrackControl
 POST    /edittimetracks/:userId/addbreak/          @controllers.TimeTrackController.createBreak(timetrackId: Int, userId : Int, from : String ?= null, to : String ?= null)
 GET     /edittimetracks/:userId/deletebreak/       @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from : String ?= null, to : String ?= null)
 
-GET     /events.xml                                @controllers.TimeTrackController.readTimeOffs
+GET     /timeoff/calendar                          @controllers.TimeTrackController.readTimeOffCalendar
 
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)

@@ -3,7 +3,9 @@ package controllers;
 import business.timetracking.TimeTracking;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
+import controllers.timeoff.TimeOffToXmlConverter;
 import models.Break;
+import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 import org.pac4j.core.profile.CommonProfile;
@@ -250,6 +252,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
+
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result deleteTimeTrack(int timetrackId, int userId, String from, String to) throws Exception {
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
@@ -259,33 +262,21 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
+
     @RequiresAuthentication(clientName = "default")
-    public Result readTimeOffs(){
+    public Result readTimeOffCalendar() throws Exception{
+        CommonProfile profile = getUserProfile();
+        List<TimeOff> timeOffs = _timeTracking.readTimeOffs(Integer.valueOf(profile.getId()));
+
+        String timeOffString = "";
+        for(TimeOff t : timeOffs){
+            timeOffString += TimeOffToXmlConverter.timeOffToXml(t);
+        }
 
         // Testing only -> get from business
         return ok("<?xml version=\"1.0\"?>\n" +
                 "<monthly>\n" +
-                "\t<event>\n" +
-                "\t\t<id>1</id>\n" +
-                "\t\t<name>Holiday</name>\n" +
-                "\t\t<startdate>2016-4-29</startdate>\n" +
-                "\t\t<enddate>2016-5-5</enddate>\n" +
-                "\t\t<starttime></starttime>\n" +
-                "\t\t<endtime></endtime>\n" +
-                "\t\t<color>#ffb128</color>\n" +
-                "\t\t<url>/notification</url>\n" +
-                "\t</event>\n" +
-                "\t<event>\n" +
-                "\t\t<id>3</id>\n" +
-                "\t\t<name>Sick Leave</name>\n" +
-                "\t\t<startdate>2016-5-12</startdate>\n" +
-                "\t\t<enddate>2016-5-12</enddate>\n" +
-                "\t\t<starttime></starttime>\n" +
-                "\t\t<endtime></endtime>\n" +
-                "\t\t<color>#e94b35</color>\n" +
-                "\t\t<url>/notification</url>\n" +
-                "\t</event>\n" +
-                "\n" +
+                timeOffString + "\n" +
                 "</monthly>\n").as("application/xml");
     }
 }

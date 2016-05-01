@@ -33,12 +33,12 @@ libraryDependencies ++= Seq(
 
 
 
-unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )  
-
+unmanagedResourceDirectories in Test <+=  baseDirectory ( _ /"target/web/public/test" )
 resolvers += "scalaz-bintray" at "https://dl.bintray.com/scalaz/releases"
 
-// setting a maintainer which is used for all packaging types
-maintainer := "ComeAndGo"
 
-// exposing the play ports
+//
+// Docker Settings
+//
+maintainer := "ComeAndGo"
 dockerExposedPorts in Docker := Seq(9000, 9443)

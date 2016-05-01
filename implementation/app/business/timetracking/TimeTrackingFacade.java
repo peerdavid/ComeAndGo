@@ -5,6 +5,7 @@ import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -158,5 +159,10 @@ class TimeTrackingFacade implements TimeTracking {
     @Override
     public TimeOff readTimeOffById(int timeOffId) throws Exception {
         return _timeOffService.readTimeOffById(timeOffId);
+    }
+
+    @Override
+    public List<TimeOff> readTimeOffs(int userId) throws Exception {
+        return _timeOffService.readTimeOffs(userId);
     }
 }
