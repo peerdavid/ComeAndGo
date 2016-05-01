@@ -47,6 +47,7 @@ public class TimeOffToXmlConverter {
 
         switch (timeOff.getState()){
             case NEW:
+            case REQUEST_SENT:
                 return grey;
 
             case REQUEST_REJECTED:

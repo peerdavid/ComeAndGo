@@ -33,6 +33,28 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
     }
 
 
+    /**
+     * The following things can happen, when reading timetracks from the db which are in range:
+     *
+     *      +-------------+
+     *      |Request range|
+     *      +-------------+
+     *      .             .
+     *  +---------+       .
+     *  |  Case1  |       .
+     *  +---------+       .
+     *      .        +--------+
+     *      .        | Case2  |
+     *      .        +--------+
+     *      .             .
+     * +-----------------------+
+     * |       Case3           |
+     * +-----------------------+
+     *      .             .
+     *      . +---------+ .
+     *      . |  Case4  | .
+     *      . +---------+ .
+     */
     @Override
     public List<TimeOff> readTimeOffFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
 
@@ -41,17 +63,21 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
                         .where().and(
                         Expr.eq("_user_id", user.getId()),
                         Expr.or(
-                                Expr.between("start", "end", from),
                                 Expr.or(
-                                        Expr.between("start", "end", to),
-                                        Expr.and(
-                                                Expr.ge("start", from),
-                                                Expr.le("end", to)
+                                        Expr.between("start", "end", from),     // Case 1
+                                        Expr.between("start", "end", to)),      // Case 2
+                                Expr.or(
+                                        Expr.and(                               // Case 3
+                                                Expr.lt("start", from),
+                                                Expr.gt("end", to)
+                                        ),
+                                        Expr.and(                               // Case 4
+                                                Expr.gt("start", from),
+                                                Expr.lt("end", to)
                                         )
                                 )
                         )
-                )
-                        .findList();
+                ).findList();
 
         if(timeOffs == null || timeOffs.isEmpty()) {
             throw new TimeOffNotFoundException("no such timeOffs found");

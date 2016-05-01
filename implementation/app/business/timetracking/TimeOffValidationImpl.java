@@ -30,7 +30,7 @@ class TimeOffValidationImpl implements TimeOffValidation {
             // at this point user has timeOff(s) in conflict
             StringBuilder sb = new StringBuilder();
             for(TimeOff actual : timeOffsFromUser) {
-                sb.append(actual.getType().toString() + ", ");
+                sb.append(String.format("%s - (%s), ", actual.getType(), actual.getComment()));
             }
 
             throw new UserException(Messages.get("exceptions.timeoff.error_clashing_timeoffs", sb.toString()));

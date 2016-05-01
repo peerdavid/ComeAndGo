@@ -163,7 +163,7 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = requestedTimeOff.getUser();
         User boss = _userManagement.readUser(bossId);
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_REJECTED);
+        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
