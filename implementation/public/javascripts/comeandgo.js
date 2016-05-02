@@ -14,6 +14,7 @@ $( document ).ready(function() {
     });
 
     // Poll new notifications every second
+    updateNewNotificationBadge()    // Do it immediately
     setInterval(updateNewNotificationBadge, 1000);
 });
 

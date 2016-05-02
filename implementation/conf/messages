@@ -102,7 +102,7 @@ views.holiday.title = Holiday
 
 views.personal.title = Company Report
 
-views.report.title = Calculation
+views.report.title = My Report
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
