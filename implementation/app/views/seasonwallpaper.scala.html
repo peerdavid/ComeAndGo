@@ -1,6 +1,6 @@
 @import org.joda.time.DateTime
 
-@(season: Int = ((DateTime.now().getMonthOfYear() + 10) % 12) / 3)
+@(season: Int = ((DateTime.now().getMonthOfYear() + 9) % 12) / 3)
 
     @if(season == 0) {
         <div id="login_background" style="background : url('  @routes.Assets.at("images/login_background_spring.png") ') center center ;"></div>
