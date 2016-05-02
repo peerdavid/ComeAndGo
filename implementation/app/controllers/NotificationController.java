@@ -1,21 +1,16 @@
 package controllers;
 
 import business.notification.NotificationReader;
-import business.notification.NotificationType;
 import business.timetracking.TimeTracking;
-import business.usermanagement.SecurityRole;
 import com.google.inject.Inject;
-import controllers.notification.*;
+import controllers.notification.NotificationViewModel;
+import controllers.notification.NotificationViewModelFactory;
 import models.Notification;
-import models.User;
-import net.sf.ehcache.search.expression.Not;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
-import play.i18n.Messages;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -56,8 +51,13 @@ public class NotificationController extends UserProfileController {
 
         int id = Integer.parseInt(profile.getId());
 
+
+        Notification temp = _notifReader.readNotification(notificationId);
+
         NotificationViewModelFactory
-                .createNotificationViewModel(_notifReader.readNotification(notificationId)).accept(id);
+                .createNotificationViewModel(temp).accept(id);
+
+        _notifReader.updateNotificationAsRead(notificationId);
 
         return redirect(routes.NotificationController.index());
     }
@@ -68,15 +68,18 @@ public class NotificationController extends UserProfileController {
 
         int id = Integer.parseInt(profile.getId());
 
+
         NotificationViewModelFactory
                 .createNotificationViewModel(_notifReader.readNotification(notificationId)).reject(id);
+
+        _notifReader.updateNotificationAsRead(notificationId);
 
         return redirect(routes.NotificationController.index());
     }
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result readNumberNewNotifications() throws Exception{
+    public Result readNumberNewNotifications() throws Exception {
         CommonProfile profile = getUserProfile();
         int id = Integer.parseInt(profile.getId());
 

@@ -67,10 +67,24 @@ public class NotificationViewModelFactory {
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
                 );
 
+            case INFORMATION:
+                return new InformationViewModel(
+                    notification.getId(),
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                );
+
+            case ERROR:
+                return new ErrorViewModel(
+                    notification.getId(),
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                );
+
+
+
             default:
                 return null;
-                //break;
-                //throw new Exception("Unknown notification type");
         }
     }
 
@@ -82,7 +96,11 @@ public class NotificationViewModelFactory {
         }*/
 
         for (Notification n:notificationList) {
-            result.add(createNotificationViewModel(n));
+            NotificationViewModel temp = createNotificationViewModel(n);
+
+            if (temp != null) {
+                result.add(createNotificationViewModel(n));
+            }
         }
 
         return result;

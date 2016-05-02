@@ -32,10 +32,10 @@ public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public void accept(int userId) throws Exception {
-        timeTracking.acceptSpecialHoliday(_referenceId,userId);
+        timeTracking.acceptSpecialHoliday(_referenceId, userId);
     }
 
     public void reject(int userId) throws Exception {
-        timeTracking.rejectSpecialHoliday(_referenceId,userId);
+        timeTracking.rejectSpecialHoliday(_referenceId, userId);
     }
 }
