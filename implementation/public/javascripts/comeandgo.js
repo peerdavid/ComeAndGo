@@ -13,7 +13,8 @@ $( document ).ready(function() {
         container: 'body'
     });
 
-    updateNewNotificationBadge();
+    // Poll new notifications every second
+    setInterval(updateNewNotificationBadge, 1000);
 });
 
 /*
