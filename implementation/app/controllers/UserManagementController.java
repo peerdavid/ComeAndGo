@@ -30,7 +30,7 @@ public class UserManagementController extends UserProfileController {
     public Result readUsers() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        return ok(views.html.updateuser.render(profile, _userManagement.readUsers()));
+        return ok(views.html.users.render(profile, _userManagement.readUsers()));
     }
 
 
@@ -76,7 +76,7 @@ public class UserManagementController extends UserProfileController {
 
         _userManagement.updateUser(changingUser.getUserName(), changingUser);
 
-        return ok(views.html.updateuser.render(profile, _userManagement.readUsers()));
+        return redirect(routes.UserManagementController.readUsers());
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
