@@ -29,8 +29,16 @@ class TimeOffValidationImpl implements TimeOffValidation {
 
             // at this point user has timeOff(s) in conflict
             StringBuilder sb = new StringBuilder();
+
             for(TimeOff actual : timeOffsFromUser) {
-                sb.append(String.format("%s - (%s), ", actual.getType(), actual.getComment()));
+                if(actual.getState() == TimeOffState.REQUEST_ACCEPTED) {
+                    sb.append(String.format("%s - (%s), ", actual.getType(), actual.getComment()));
+                }
+            }
+
+            if(sb.toString().isEmpty()) {
+                // if there are only REQUEST_REJECTED and REQUEST_SENT ,... there is no need to throw exception
+                return;
             }
 
             throw new UserException(Messages.get("exceptions.timeoff.error_clashing_timeoffs", sb.toString()));

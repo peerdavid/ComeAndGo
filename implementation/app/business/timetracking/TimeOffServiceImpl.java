@@ -89,6 +89,10 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void acceptHoliday(int timeOffId, int bossId) throws Exception {
         TimeOff timeOffToAccept = _repository.readTimeOff(timeOffId);
+
+        // before accepting holiday see if there is no other already accepted timeOff
+        _timeOffValidation.validateTimeOff(timeOffToAccept.getUser(), timeOffToAccept.getFrom(), timeOffToAccept.getTo());
+
         User employee = timeOffToAccept.getUser();
         User boss = employee.getBoss();
 
@@ -124,7 +128,6 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
-        // todo: add additional validation for parental leave?
         User employee = _userManagement.readUser(userId);
         User boss = employee.getBoss();
 
@@ -154,6 +157,10 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void acceptSpecialHoliday(int timeOffId, int bossId) throws Exception {
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+
+        // before accepting special holiday see if there is no other already accepted timeOff
+        _timeOffValidation.validateTimeOff(requestedTimeOff.getUser(), requestedTimeOff.getFrom(), requestedTimeOff.getTo());
+
         User employee = requestedTimeOff.getUser();
         User boss = employee.getBoss();
 
@@ -190,6 +197,10 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void acceptEducationalLeave(int timeOffId, int bossId) throws Exception {
         TimeOff requestedTimeOff = _repository.readTimeOff(timeOffId);
+
+        // before accepting educational leave see if there is no other already accepted timeOff
+        _timeOffValidation.validateTimeOff(requestedTimeOff.getUser(), requestedTimeOff.getFrom(), requestedTimeOff.getTo());
+
         User employee = requestedTimeOff.getUser();
         User boss = employee.getBoss();
 
