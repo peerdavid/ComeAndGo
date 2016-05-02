@@ -7,19 +7,10 @@ import play.i18n.Messages;
  */
 public class SickLeaveViewModel extends BasicViewModel {
 
-    private int timeOffId;
+    public SickLeaveViewModel(int notificationId, String message, String sender) {
 
-    public SickLeaveViewModel(int notificationId, int timeOffId, String message, String sender, boolean read) {
+        super(notificationId, message,sender);
 
-        super(notificationId, message,sender,read);
-
-        this.timeOffId = timeOffId;
-
-    }
-
-    @Override
-    public int getTimeOffId() {
-        return timeOffId;
     }
 
     @Override
@@ -37,8 +28,7 @@ public class SickLeaveViewModel extends BasicViewModel {
         return false;
     }
 
-    @Override
-    public void accept() {
-        setRead(true);
+    public void accept(int userId) {
+
     }
 }
