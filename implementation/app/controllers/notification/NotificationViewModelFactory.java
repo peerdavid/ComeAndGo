@@ -54,16 +54,18 @@ public class NotificationViewModelFactory {
                 );
 
             default:
-                throw new Exception("Unknown notification type");
+                return null;
+                //break;
+                //throw new Exception("Unknown notification type");
         }
     }
 
     public static List<NotificationViewModel> createNotificationViewModelList(List<Notification> notificationList, TimeTracking timeTracking) throws Exception {
         List<NotificationViewModel> result = new ArrayList<>();
 
-        if (notificationList.isEmpty()) {
+        /*if (notificationList.isEmpty()) {
             throw new Exception("NotificationList empty");
-        }
+        }*/
 
         for (Notification n:notificationList) {
             result.add(createNotificationViewModel(n,timeTracking));

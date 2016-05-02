@@ -105,10 +105,13 @@ class TimeOffServiceImpl implements TimeOffService {
 
     @Override
     public void rejectHoliday(int timeOffId, int bossId) throws Exception {
-        // todo: add validations from user?
         TimeOff timeOffToReject = _repository.readTimeOff(timeOffId);
         User employee = timeOffToReject.getUser();
-        User boss = _userManagement.readUser(bossId);
+        User boss = employee.get_boss();
+
+        if(bossId != boss.getId()){
+            throw new NotAuthorizedException("Boss is not boss of employee.");
+        }
 
         timeOffToReject.setState(TimeOffState.REQUEST_REJECTED);
         timeOffToReject.setReviewedBy(boss);
