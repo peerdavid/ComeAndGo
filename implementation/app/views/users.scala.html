@@ -65,20 +65,38 @@
                                 <div class="input-field col s12 m6">
 
                                     <select name="role" type="text">
-                                        <option selected disabled>@u.getRole</option>
-                                        <option value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
-                                        <option value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
-                                        <option value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
-                                        <option value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+                                        @if(u.getRole()==SecurityRole.ROLE_USER) {
+                                            <option selected value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
+                                        } else {
+                                            <option value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
+                                        }
+                                        @if(u.getRole()==SecurityRole.ROLE_PERSONNEL_MANAGER) {
+                                            <option selected value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                                        } else {
+                                            <option value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                                        }
+                                        @if(u.getRole()==SecurityRole.ROLE_BOSS) {
+                                            <option selected value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                                        } else {
+                                            <option value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                                        }
+                                        @if(u.getRole()==SecurityRole.ROLE_ADMIN) {
+                                            <option selected value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+                                        } else {
+                                            <option value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+                                        }
                                     </select>
                                     <label for="role">@Messages("views.admin.createuser.form.selectrole")</label>
                                 </div>
                                 <div class="input-field col s12 m6">
                                     <select name="boss" type="text">
-                                        <option selected disabled>@(u.getBoss().getFirstName) @(u.getBoss().getLastName)</option>
                                         @for(i : User <- userlist) {
                                             @if(i.getRole == SecurityRole.ROLE_BOSS) {
-                                                <option value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
+                                                @if(u.getBoss.getUsername==i.getUsername) {
+                                                    <option selected value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
+                                                } else {
+                                                    <option value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
+                                                }
                                             }
                                         }
                                     </select>
