@@ -277,6 +277,17 @@ span.badge.new:after{
         height: 290px;
         right: auto;
     }
+
+    nav.top-nav {
+        height: 60px;
+    }
+
+    nav.top-nav .page-title {
+        line-height: 60px;
+        font-size: 36px;
+        position: relative;
+        left: 100px;
+    }
 }
 
 /* tablets */
