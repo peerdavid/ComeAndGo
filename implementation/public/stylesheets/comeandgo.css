@@ -10,6 +10,20 @@ nav.top-nav .page-title {
     margin-top: 0px;
 }
 
+nav .navbar-buttons {
+    height: 120px;
+    position: absolute;
+    right: 0;
+}
+
+nav .navbar-buttons li, nav .navbar-buttons a {
+    height: 100%;
+}
+
+nav .navbar-buttons a {
+    padding-top: 44%;
+}
+
 .side-nav {
     overflow: hidden;
     height: 100%;
@@ -280,13 +294,26 @@ span.badge.new:after{
 
     nav.top-nav {
         height: 60px;
+        overflow: hidden;
     }
 
     nav.top-nav .page-title {
         line-height: 60px;
         font-size: 36px;
         position: relative;
-        left: 100px;
+        left: 20%;
+        max-width: 38%;
+    }
+
+    nav .navbar-buttons {
+        height: 60px;
+        position: relative;
+        overflow: hidden;
+        max-width: 50%;
+    }
+
+    nav .navbar-buttons a {
+        padding-top: 0;
     }
 }
 
