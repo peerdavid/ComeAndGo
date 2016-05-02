@@ -1,5 +1,6 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
@@ -7,9 +8,9 @@ import play.i18n.Messages;
  */
 public class SickLeaveViewModel extends BasicViewModel {
 
-    public SickLeaveViewModel(int notificationId, String message, String sender) {
+    public SickLeaveViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
 
-        super(notificationId, message,sender);
+        super(notificationId, message, sender, timeTracking);
 
     }
 

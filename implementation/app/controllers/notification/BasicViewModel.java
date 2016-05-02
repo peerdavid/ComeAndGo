@@ -1,7 +1,6 @@
 package controllers.notification;
 
 import business.timetracking.TimeTracking;
-import com.google.inject.Inject;
 import play.i18n.Messages;
 
 /**
@@ -14,16 +13,15 @@ public abstract class BasicViewModel implements NotificationViewModel {
     private String _message;
     private String _sender;
 
-    protected TimeTracking timeTracking;
+    protected TimeTracking _timeTracking;
 
-    @Inject
-    public BasicViewModel(int notificationId, String message, String sender) {
+    public BasicViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
         _notificationId = notificationId;
 
         _message = message;
         _sender = sender;
 
-        this.timeTracking = timeTracking;
+        _timeTracking = timeTracking;
     }
 
     public int getNotificationId(){

@@ -18,13 +18,16 @@ import java.util.List;
  */
 public class NotificationController extends UserProfileController {
 
+    private NotificationViewModelFactory _notificationFactory;
     private TimeTracking _timeTracking;
     private NotificationReader _notifReader;
 
     @Inject
-    public NotificationController(TimeTracking timeTracking, NotificationReader notifReader) {
+    public NotificationController(TimeTracking timeTracking, NotificationReader notifReader,
+                                  NotificationViewModelFactory factory) {
         _timeTracking = timeTracking;
         _notifReader = notifReader;
+        _notificationFactory = factory;
     }
 
     @RequiresAuthentication(clientName = "default")
@@ -34,11 +37,11 @@ public class NotificationController extends UserProfileController {
         int id = Integer.parseInt(profile.getId());
 
 
-        List<NotificationViewModel> readNotifications = NotificationViewModelFactory
+        List<NotificationViewModel> readNotifications = _notificationFactory
                 .createNotificationViewModelList(_notifReader.readSeenNotifications(id, 10));
-        List<NotificationViewModel> unreadNotifications = NotificationViewModelFactory
+        List<NotificationViewModel> unreadNotifications = _notificationFactory
                 .createNotificationViewModelList(_notifReader.readUnseenNotifications(id));
-        List<NotificationViewModel> sentNotifications = NotificationViewModelFactory
+        List<NotificationViewModel> sentNotifications = _notificationFactory
                 .createNotificationViewModelList(_notifReader.readSentNotifications(id, 10));
 
 
@@ -54,8 +57,7 @@ public class NotificationController extends UserProfileController {
 
         Notification temp = _notifReader.readNotification(notificationId);
 
-        NotificationViewModelFactory
-                .createNotificationViewModel(temp).accept(id);
+        _notificationFactory.createNotificationViewModel(temp).accept(id);
 
         _notifReader.updateNotificationAsRead(notificationId);
 
@@ -69,8 +71,7 @@ public class NotificationController extends UserProfileController {
         int id = Integer.parseInt(profile.getId());
 
 
-        NotificationViewModelFactory
-                .createNotificationViewModel(_notifReader.readNotification(notificationId)).reject(id);
+        _notificationFactory.createNotificationViewModel(_notifReader.readNotification(notificationId)).reject(id);
 
         _notifReader.updateNotificationAsRead(notificationId);
 

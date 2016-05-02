@@ -1,5 +1,7 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
+import com.google.inject.Inject;
 import models.Notification;
 
 import java.util.ArrayList;
@@ -11,30 +13,40 @@ import java.util.List;
  */
 public class NotificationViewModelFactory {
 
-    public static NotificationViewModel createNotificationViewModel(Notification notification) throws Exception {
+    private TimeTracking _timeTracking;
+
+    @Inject
+    public NotificationViewModelFactory(TimeTracking timeTracking) {
+        _timeTracking = timeTracking;
+    }
+
+    public NotificationViewModel createNotificationViewModel(Notification notification) throws Exception {
 
         switch (notification.getType()) {
 
             case HOLIDAY_REQUEST:
                 return new HolidayRequestViewModel(
-                    notification.getId(),
-                    notification.getReferenceId(),
-                    notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                        notification.getId(),
+                        notification.getReferenceId(),
+                        notification.getMessage(),
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case HOLIDAY_ACCEPT:
                 return new HolidayAcceptViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case HOLIDAY_REJECT:
                 return new HolidayRejectViewModel(
                         notification.getId(),
                         notification.getMessage(),
-                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
 
@@ -42,7 +54,8 @@ public class NotificationViewModelFactory {
                 return new SickLeaveViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case SPECIAL_HOLIDAY_REQUEST:
@@ -50,35 +63,40 @@ public class NotificationViewModelFactory {
                     notification.getId(),
                     notification.getReferenceId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case SPECIAL_HOLIDAY_ACCEPT:
                 return new SpecialHolidayAcceptViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case SPECIAL_HOLIDAY_REJECT:
                 return new SpecialHolidayRejectViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case INFORMATION:
                 return new InformationViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
             case ERROR:
                 return new ErrorViewModel(
                     notification.getId(),
                     notification.getMessage(),
-                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName()
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
                 );
 
 
@@ -88,7 +106,7 @@ public class NotificationViewModelFactory {
         }
     }
 
-    public static List<NotificationViewModel> createNotificationViewModelList(List<Notification> notificationList) throws Exception {
+    public List<NotificationViewModel> createNotificationViewModelList(List<Notification> notificationList) throws Exception {
         List<NotificationViewModel> result = new ArrayList<>();
 
         /*if (notificationList.isEmpty()) {

@@ -1,5 +1,6 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
@@ -9,8 +10,8 @@ public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
     private int _referenceId;
 
-    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender) {
-        super(id,message,sender);
+    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender, TimeTracking timeTracking) {
+        super(id, message, sender, timeTracking);
         this._referenceId = referenceId;
 
     }
@@ -32,10 +33,10 @@ public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public void accept(int userId) throws Exception {
-        timeTracking.acceptSpecialHoliday(_referenceId, userId);
+        _timeTracking.acceptSpecialHoliday(_referenceId, userId);
     }
 
     public void reject(int userId) throws Exception {
-        timeTracking.rejectSpecialHoliday(_referenceId, userId);
+        _timeTracking.rejectSpecialHoliday(_referenceId, userId);
     }
 }

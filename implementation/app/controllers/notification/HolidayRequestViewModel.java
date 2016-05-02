@@ -10,10 +10,9 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     private int _timeOffId;
 
+    public HolidayRequestViewModel(int _notificationId, int _timeOffId, String message, String sender, TimeTracking timeTracking) {
 
-    public HolidayRequestViewModel(int _notificationId, int _timeOffId, String message, String sender) {
-
-        super(_notificationId,message,sender);
+        super(_notificationId, message, sender, timeTracking);
 
         this._timeOffId = _timeOffId;
 
@@ -36,10 +35,10 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public void accept(int userId) throws Exception {
-        timeTracking.acceptHoliday(_timeOffId, userId);
+        _timeTracking.acceptHoliday(_timeOffId, userId);
     }
 
     public void reject(int userId) throws Exception {
-        timeTracking.rejectHoliday(_timeOffId, userId);
+        _timeTracking.rejectHoliday(_timeOffId, userId);
     }
 }

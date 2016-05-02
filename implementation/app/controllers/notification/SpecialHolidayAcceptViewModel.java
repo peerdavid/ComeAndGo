@@ -1,5 +1,6 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
@@ -7,8 +8,8 @@ import play.i18n.Messages;
  */
 public class SpecialHolidayAcceptViewModel extends BasicViewModel {
 
-    public SpecialHolidayAcceptViewModel(int id, String message, String sender) {
-        super(id,message,sender);
+    public SpecialHolidayAcceptViewModel(int id, String message, String sender, TimeTracking timeTracking) {
+        super(id, message, sender, timeTracking);
 
     }
 

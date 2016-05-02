@@ -1,5 +1,6 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
@@ -7,8 +8,8 @@ import play.i18n.Messages;
  */
 public class InformationViewModel extends BasicViewModel {
 
-    public InformationViewModel(int notificationId, String message, String sender) {
-        super(notificationId, message, sender);
+    public InformationViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+        super(notificationId, message, sender, timeTracking);
     }
 
     @Override
