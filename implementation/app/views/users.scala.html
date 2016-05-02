@@ -63,24 +63,23 @@
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
-
                                     <select name="role" type="text">
-                                        @if(u.getRole()==SecurityRole.ROLE_USER) {
+                                        @if(u.getRole == SecurityRole.ROLE_USER) {
                                             <option selected value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
                                         } else {
                                             <option value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
                                         }
-                                        @if(u.getRole()==SecurityRole.ROLE_PERSONNEL_MANAGER) {
+                                        @if(u.getRole == SecurityRole.ROLE_PERSONNEL_MANAGER) {
                                             <option selected value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
                                         } else {
                                             <option value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
                                         }
-                                        @if(u.getRole()==SecurityRole.ROLE_BOSS) {
+                                        @if(u.getRole == SecurityRole.ROLE_BOSS) {
                                             <option selected value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
                                         } else {
                                             <option value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
                                         }
-                                        @if(u.getRole()==SecurityRole.ROLE_ADMIN) {
+                                        @if(u.getRole == SecurityRole.ROLE_ADMIN) {
                                             <option selected value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
                                         } else {
                                             <option value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
@@ -92,7 +91,7 @@
                                     <select name="boss" type="text">
                                         @for(i : User <- userlist) {
                                             @if(i.getRole == SecurityRole.ROLE_BOSS) {
-                                                @if(u.getBoss.getUsername==i.getUsername) {
+                                                @if(u.getBoss.getUsername == i.getUsername) {
                                                     <option selected value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
                                                 } else {
                                                     <option value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
