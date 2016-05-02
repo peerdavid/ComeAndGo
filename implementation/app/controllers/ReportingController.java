@@ -24,7 +24,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
     }
 
 
-    @RequiresAuthentication(clientName = "default")
+    @RequiresAuthentication(clientName = "default", authorizerName = "personal")
     public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
 

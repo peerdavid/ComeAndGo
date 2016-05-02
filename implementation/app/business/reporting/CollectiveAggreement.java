@@ -10,4 +10,6 @@ import java.util.List;
 interface CollectiveAggreement {
 
     ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
+
+    List<Notification> createForbiddenWorkTimeNotifications(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
 }
