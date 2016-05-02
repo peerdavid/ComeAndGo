@@ -105,7 +105,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         timeTracks = _timeTracking.readTimeTracks(userId, dateFrom, dateTo);
 
-        return ok(views.html.edittimetracks.render(profile, userId, from, to, timeTracks));
+        return ok(views.html.updatetimetracks.render(profile, userId, from, to, timeTracks));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")

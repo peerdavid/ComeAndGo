@@ -11,15 +11,15 @@
                 <div class="row">
                     <div class="input-field col s6 m6 l3">
                         <input id="date-from" value="@from" name="from" type="text" class="datepicker">
-                        <label for="date-from">@Messages("views.admin.edittimetracks.from")</label>
+                        <label for="date-from">@Messages("views.admin.updatetimetracks.from")</label>
                     </div>
                     <div class="input-field col s6 m6 offset-l1 l3">
                         <input id="date-to" value="@to" name="to" type="text" class="datepicker">
-                        <label for="date-from">@Messages("views.admin.edittimetracks.to")</label>
+                        <label for="date-from">@Messages("views.admin.updatetimetracks.to")</label>
                     </div>
                     <div class="input-field col s12 m12 l5">
                         <button class="btn waves-effect waves-light right cyan" type="submit">
-                            @Messages("views.admin.edittimetracks.loadtimetracks")
+                            @Messages("views.admin.updatetimetracks.loadtimetracks")
                             <i class="material-icons right">send</i>
                         </button>
                     </div>
@@ -29,7 +29,7 @@
 
         @if(timetracklist.isEmpty) {
 
-            <h4>@Messages("views.admin.edittimetracks.empty")</h4>
+            <h4>@Messages("views.admin.updatetimetracks.empty")</h4>
 
         } else {
 
@@ -68,19 +68,19 @@
                             <div class="row">
                                 <div class="input-field col s6 m3">
                                     <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDateString(t.getFrom))" name="startdate" type="text" class="datepicker">
-                                    <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
+                                    <label for="startdate">@Messages("views.admin.updatetimetracks.startdate")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
                                     <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(t.getFrom))" name="starttime" type="text" class="timepicker">
-                                    <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
+                                    <label for="starttime">@Messages("views.admin.updatetimetracks.starttime")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
                                     <input disabled="disabled" value="@(DateTimeUtils.dateTimeToDateString(t.getTo))" name="enddate" type="text" class="datepicker">
-                                    <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
+                                    <label for="enddate">@Messages("views.admin.updatetimetracks.enddate")</label>
                                 </div>
                                 <div class="input-field col s6 m3">
                                     <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(t.getTo))"  name="endtime" type="text" class="timepicker">
-                                    <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
+                                    <label for="endtime">@Messages("views.admin.updatetimetracks.endtime")</label>
                                 </div>
                             </div>
 
@@ -104,12 +104,12 @@
                                                 </button>
                                                 <div id="modal-delete-break@b.getId" class="modal">
                                                     <div class="modal-content">
-                                                        <h4>@Messages("views.admin.edittimetracks.deletebreak")</h4>
-                                                        <p>@Messages("views.admin.edittimetracks.deletebreakmessage")</p>
+                                                        <h4>@Messages("views.admin.updatetimetracks.deletebreak")</h4>
+                                                        <p>@Messages("views.admin.updatetimetracks.deletebreakmessage")</p>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteBreak(b.getId, t.getId, userId, from, to)" style="float : right">@Messages("views.admin.edittimetracks.deletebreak")</a>
-                                                        <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.edittimetracks.closemessage")</a>
+                                                        <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteBreak(b.getId, t.getId, userId, from, to)" style="float : right">@Messages("views.admin.updatetimetracks.deletebreak")</a>
+                                                        <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.updatetimetracks.closemessage")</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -117,11 +117,11 @@
                                                 <div class="row">
                                                     <div class="input-field col s6 m3">
                                                         <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getFrom))" name="break_starttime_@b.getId" type="text" class="timepicker">
-                                                        <label for="break_starttime_@b.getId">@Messages("views.admin.edittimetracks.starttime")</label>
+                                                        <label for="break_starttime_@b.getId">@Messages("views.admin.updatetimetracks.starttime")</label>
                                                     </div>
                                                     <div id="disabled" class="input-field col s6 m3 offset-m3">
                                                         <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getTo))"  name="break_endtime_@b.getId" type="text" class="timepicker">
-                                                        <label for="break_endtime_@b.getId">@Messages("views.admin.edittimetracks.endtime")</label>
+                                                        <label for="break_endtime_@b.getId">@Messages("views.admin.updatetimetracks.endtime")</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,23 +133,23 @@
 
                             <!-- buttons -->
                             <div class="row">
-                                <button class="btn waves-effect waves-light primary-btn right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.edittimetracks.savechanges")
+                                <button class="btn waves-effect waves-light primary-btn right ghost" type="submit" name="action" style="display: none;">@Messages("views.admin.updatetimetracks.savechanges")
                                     <i class="material-icons right">done</i>
                                 </button>
-                                <button data-target="modal-delete-timetrack@t.getId" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edittimetracks.deletetimetrack")
+                                <button data-target="modal-delete-timetrack@t.getId" class="btn modal-trigger right secondary-btn">@Messages("views.admin.updatetimetracks.deletetimetrack")
                                     <i class="material-icons right">delete</i>
                                 </button>
-                                <button data-target="modal-add-break@t.getId" class="btn modal-trigger secondary-btn">@Messages("views.admin.edittimetracks.addbreak")</button>
+                                <button data-target="modal-add-break@t.getId" class="btn modal-trigger secondary-btn">@Messages("views.admin.updatetimetracks.addbreak")</button>
                             </div>
 
                             <!-- delete timetrack -->
                             <div id="modal-delete-timetrack@t.getId" class="modal">
                                 <div class="modal-content">
-                                    <h4>@Messages("views.admin.edittimetracks.deletetimetrack")</h4>
-                                    <p>@Messages("views.admin.edittimetracks.deletetimetrackmessage")</p>
+                                    <h4>@Messages("views.admin.updatetimetracks.deletetimetrack")</h4>
+                                    <p>@Messages("views.admin.updatetimetracks.deletetimetrackmessage")</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteTimeTrack(t.getId, userId, from, to)" style="float : right">@Messages("views.admin.edittimetracks.deletetimetrack")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteTimeTrack(t.getId, userId, from, to)" style="float : right">@Messages("views.admin.updatetimetracks.deletetimetrack")</a>
                                     <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.btn.close")</a>
                                 </div>
                             </div>
@@ -157,20 +157,20 @@
                             <!-- add break -->
                             <div id="modal-add-break@t.getId" class="modal">
                                 <div class="modal-content">
-                                    <h4>@Messages("views.admin.edittimetracks.addbreak")</h4>
+                                    <h4>@Messages("views.admin.updatetimetracks.addbreak")</h4>
                                 </div>
                                 <div class="modal-footer">
                                     <form action="@routes.TimeTrackController.createBreak(t.getId, userId, from, to)" method="POST">
                                         <div class="row">
                                             <div class="input-field col s6 m3">
                                                 <input name="from" type="text" class="timepicker">
-                                                <label for="from">@Messages("views.admin.edittimetracks.starttime")</label>
+                                                <label for="from">@Messages("views.admin.updatetimetracks.starttime")</label>
                                             </div>
                                             <div class="input-field col s6 m3 offset-m3">
                                                 <input name="to" type="text" class="timepicker">
-                                                <label for="to">@Messages("views.admin.edittimetracks.endtime")</label>
+                                                <label for="to">@Messages("views.admin.updatetimetracks.endtime")</label>
                                             </div>
-                                            <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addbreak")
+                                            <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.updatetimetracks.addbreak")
                                                 <i class="material-icons right">add</i>
                                             </button>
                                         </div>
@@ -189,28 +189,28 @@
             <!-- add timetrack -->
         <div id="modal-add-timetrack" class="modal">
             <div class="modal-content">
-                <h4>@Messages("views.admin.edittimetracks.addtimetrack")</h4>
+                <h4>@Messages("views.admin.updatetimetracks.addtimetrack")</h4>
             </div>
             <div class="modal-footer">
                 <form action="@routes.TimeTrackController.createTimeTrack(userId, from, to)" method="POST">
                     <div class="row">
                         <div class="input-field col s6 m3">
                             <input name="startdate" type="text" class="datepicker">
-                            <label for="startdate">@Messages("views.admin.edittimetracks.startdate")</label>
+                            <label for="startdate">@Messages("views.admin.updatetimetracks.startdate")</label>
                         </div>
                         <div class="input-field col s6 m3">
                             <input name="starttime" type="text" class="timepicker">
-                            <label for="starttime">@Messages("views.admin.edittimetracks.starttime")</label>
+                            <label for="starttime">@Messages("views.admin.updatetimetracks.starttime")</label>
                         </div>
                         <div class="input-field col s6 m3">
                             <input name="enddate" type="text" class="datepicker">
-                            <label for="enddate">@Messages("views.admin.edittimetracks.enddate")</label>
+                            <label for="enddate">@Messages("views.admin.updatetimetracks.enddate")</label>
                         </div>
                         <div class="input-field col s6 m3">
                             <input  name="endtime" type="text" class="timepicker">
-                            <label for="endtime">@Messages("views.admin.edittimetracks.endtime")</label>
+                            <label for="endtime">@Messages("views.admin.updatetimetracks.endtime")</label>
                         </div>
-                        <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.edittimetracks.addtimetrack")
+                        <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.updatetimetracks.addtimetrack")
                             <i class="material-icons right">add</i>
                         </button>
                     </div>
