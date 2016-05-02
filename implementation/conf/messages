@@ -127,6 +127,7 @@ exceptions.timetracking.user_timetrack_error = There was an error with specified
 exceptions.timetracking.user_break_error = There was an error with specified times of break
 exceptions.timetracking.user_not_working_and_break = You have no permissions to manipulate your break without working state ACTIVE
 exceptions.notification.message_length = Message is too long for Notification
+exceptions.notifications.invalid_action = Action not specified for this object
 exceptions.timetracking.validate_clashing_timetracks = This timetrack is clashing with another one
 exceptions.timetracking.validate_clashing_breaks = There are some breaks clashing
 exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to be inside a timetrack
@@ -135,7 +136,6 @@ exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong tim
 exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have an error
 exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
-
 
 
 exceptions.timeoff.error_clashing_timeoffs = You are not able to request time off because of clashing "{0}"

@@ -39,43 +39,37 @@ public class NotificationController extends UserProfileController {
         int id = Integer.parseInt(profile.getId());
 
 
-        List<NotificationViewModel> readNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.readSeenNotifications(id,10), _timeTracking);
-        List<NotificationViewModel> unreadNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.readUnseenNotifications(id), _timeTracking);
-        List<NotificationViewModel> sentNotifications = NotificationViewModelFactory.createNotificationViewModelList(_notifReader.readSentNotifications(id,10), _timeTracking);
+        List<NotificationViewModel> readNotifications = NotificationViewModelFactory
+                .createNotificationViewModelList(_notifReader.readSeenNotifications(id, 10));
+        List<NotificationViewModel> unreadNotifications = NotificationViewModelFactory
+                .createNotificationViewModelList(_notifReader.readUnseenNotifications(id));
+        List<NotificationViewModel> sentNotifications = NotificationViewModelFactory
+                .createNotificationViewModelList(_notifReader.readSentNotifications(id, 10));
 
 
-        /*List<NotificationViewModel> readNotifications = new ArrayList<>();
-        List<NotificationViewModel> unreadNotifications = new ArrayList<>();
-        unreadNotifications.add(new SickLeaveViewModel(4,2,"i bin immerno hinig","sender",false));
-        unreadNotifications.add(new HolidayRequestViewModel(_timeTracking,4,2,"ich bin die message","sender klaus",false));
-        unreadNotifications.add(new HolidayAcceptViewModel(_timeTracking,3,5,"hau o du sau","bossy mac bossface",false));
-        List<NotificationViewModel> sentNotifications = new ArrayList<>();
-        readNotifications.add(new SickLeaveViewModel(6,3,"i bin hinig","sender",true));
-*/
         return ok(views.html.notification.render(profile, unreadNotifications, readNotifications, sentNotifications));
     }
 
     @RequiresAuthentication(clientName = "default")
     public Result acceptNotification(int notificationId) throws Exception {
+        CommonProfile profile = getUserProfile();
 
-        // _notifications.getNotification(notificationId)
+        int id = Integer.parseInt(profile.getId());
 
-        /*
-        Notification not = null;
-        NotificationViewModel notViewModel = NotificationViewModelFactory.createNotificationViewModel(not, _timeTracking);
-        notViewModel.accept();
-        */
-
-        //_notifReader.accept(notificationId);
+        NotificationViewModelFactory
+                .createNotificationViewModel(_notifReader.readNotification(notificationId)).accept(id);
 
         return redirect(routes.NotificationController.index());
     }
 
     @RequiresAuthentication(clientName = "default")
     public Result rejectNotification(int notificationId) throws Exception {
+        CommonProfile profile = getUserProfile();
 
+        int id = Integer.parseInt(profile.getId());
 
-        //_notifReader.reject(notificationId);
+        NotificationViewModelFactory
+                .createNotificationViewModel(_notifReader.readNotification(notificationId)).reject(id);
 
 
 
