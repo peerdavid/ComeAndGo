@@ -109,15 +109,11 @@ public class NotificationViewModelFactory {
     public List<NotificationViewModel> createNotificationViewModelList(List<Notification> notificationList) throws Exception {
         List<NotificationViewModel> result = new ArrayList<>();
 
-        /*if (notificationList.isEmpty()) {
-            throw new Exception("NotificationList empty");
-        }*/
-
         for (Notification n:notificationList) {
             NotificationViewModel temp = createNotificationViewModel(n);
 
             if (temp != null) {
-                result.add(createNotificationViewModel(n));
+                result.add(temp);
             }
         }
 

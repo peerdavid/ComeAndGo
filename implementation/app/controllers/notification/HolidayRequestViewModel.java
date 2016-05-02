@@ -38,6 +38,7 @@ public class HolidayRequestViewModel extends BasicViewModel {
         _timeTracking.acceptHoliday(_timeOffId, userId);
     }
 
+    @Override
     public void reject(int userId) throws Exception {
         _timeTracking.rejectHoliday(_timeOffId, userId);
     }

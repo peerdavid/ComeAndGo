@@ -27,6 +27,7 @@ public class HolidayRejectViewModel extends BasicViewModel {
         return false;
     }
 
+    @Override
     public void accept(int userId) {
 
     }

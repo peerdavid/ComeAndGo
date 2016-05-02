@@ -29,6 +29,7 @@ public class SickLeaveViewModel extends BasicViewModel {
         return false;
     }
 
+    @Override
     public void accept(int userId) {
 
     }
