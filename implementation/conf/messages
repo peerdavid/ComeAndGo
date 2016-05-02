@@ -49,7 +49,7 @@ views.timeoff.modal.details.infos = Informations:
 
 views.admin.title = Admin
 views.admin.enableupdating = Update
-views.admin.createuser = Create new user
+views.admin.createuser = Sign up new User
 views.admin.createuser.form.firstname = Firstname
 views.admin.createuser.form.lastname = Lastname
 views.admin.createuser.form.username = Username
@@ -62,9 +62,9 @@ views.admin.createuser.form.roles.user = User
 views.admin.createuser.form.roles.admin = Admin
 views.admin.createuser.form.roles.boss = Boss
 views.admin.createuser.form.roles.persman = Personnel Manager
-views.admin.createuser.title = Create User
+views.admin.createuser.title = Sign up new User
 
-views.admin.updatetimetracks = update Timetracks
+views.admin.updatetimetracks = Timetracks
 views.admin.updatetimetracks.empty = no timetracks found
 views.admin.updatetimetracks.loadtimetracks = load timetracks
 views.admin.updatetimetracks.starttime = starting time
