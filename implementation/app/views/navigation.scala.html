@@ -14,7 +14,7 @@
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
         <li><a class="hide-on-large-only" href="@routes.NotificationController.index()">@Messages("views.notification.title")</a></li>
         @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)||profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
-            <li id="nav_pers_sidebar_button"><a href="@routes.TimeTrackController.index()">@Messages("views.personal.title")</a></li>
+            <li id="nav_pers_sidebar_button"><a href="@routes.ReportingController.index()">@Messages("views.personal.title")</a></li>
         }
         <!-- if user is admin -> add admin menu -->
         @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
@@ -59,7 +59,7 @@
                 <div class="nav-wrapper">
                     <a href="#" data-activates="slide-out" class="button-collapse "><i class="mdi-navigation-menu"></i></a>
                     <h1 class="brand-logo page-title truncate">@title</h1>
-                    <ul class="right hide-on-med-and-down">
+                    <ul class="right navbar-buttons">
                         <li><a href="@routes.TimeTrackController.index()"><i class="material-icons">home</i></a></li>
                         <li><a href="@routes.NotificationController.index()"><i class="material-icons">email</i>
                             <span style="top: -50px; right: -20px; position: relative" id="span-new-notifcations"></span>

@@ -1,15 +1,15 @@
 package controllers.notification;
 
-import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
- * Created by csaq5996 on 4/29/16.
+ * Created by csaq5996 on 5/2/16.
  */
-public class HolidayAcceptViewModel extends BasicViewModel {
+public class SpecialHolidayAcceptViewModel extends BasicViewModel {
 
-    public HolidayAcceptViewModel(int id, String message, String sender) {
+    public SpecialHolidayAcceptViewModel(int id, String message, String sender) {
         super(id,message,sender);
+
     }
 
     @Override
@@ -19,7 +19,7 @@ public class HolidayAcceptViewModel extends BasicViewModel {
 
     @Override
     public String getHeader() {
-        return Messages.get("notifications.holiday");
+        return Messages.get("notifications.specialholiday");
     }
 
     @Override
@@ -29,5 +29,6 @@ public class HolidayAcceptViewModel extends BasicViewModel {
 
     @Override
     public void accept(int userId) {
+
     }
 }
