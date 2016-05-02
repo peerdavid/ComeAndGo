@@ -17,12 +17,13 @@ GET     /edituser                                  @controllers.UserManagementCo
 POST    /edituser                                  @controllers.UserManagementController.updateUser
 GET     /deleteUser                                @controllers.UserManagementController.deleteUser(userName : String)
 
-GET     /edittimetracks/:userId                    @controllers.TimeTrackController.readTimeTracks(userId : Int, from ?= null, to ?= null)
-POST    /edittimetracks/:userId                    @controllers.TimeTrackController.updateTimeTrack(userId : Int, from ?= null, to ?= null)
-POST    /edittimetracks/:userId/addtimetrack       @controllers.TimeTrackController.createTimeTrack(userId : Int, from ?= null, to ?= null)
-GET     /edittimetracks/:userId/deletetimetrack    @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from ?= null, to ?= null)
-POST    /edittimetracks/:userId/createbreak/       @controllers.TimeTrackController.createBreak(timetrackId: Int, userId : Int, from ?= null, to ?= null)
-GET     /edittimetracks/:userId/deletebreak/       @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from ?= null, to ?= null)
+#timetracks
+GET     /timetracks/:userId                        @controllers.TimeTrackController.readTimeTracks(userId : Int, from ?= null, to ?= null)
+POST    /timetracks/:userId                        @controllers.TimeTrackController.updateTimeTrack(userId : Int, from ?= null, to ?= null)
+POST    /timetracks/:userId/addtimetrack           @controllers.TimeTrackController.createTimeTrack(userId : Int, from ?= null, to ?= null)
+GET     /timetracks/:userId/deletetimetrack        @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from ?= null, to ?= null)
+POST    /timetracks/:userId/createbreak/           @controllers.TimeTrackController.createBreak(timetrackId: Int, userId : Int, from ?= null, to ?= null)
+GET     /timetracks/:userId/deletebreak/           @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from ?= null, to ?= null)
 
 GET     /timeoff                                   @controllers.TimeOffController.index
 POST    /timeoff/createTimeOff                     @controllers.TimeOffController.createTimeOff
