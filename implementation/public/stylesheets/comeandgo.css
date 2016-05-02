@@ -21,7 +21,7 @@ nav .navbar-buttons li, nav .navbar-buttons a {
 }
 
 nav .navbar-buttons a {
-    padding-top: 44%;
+    padding-top: 26px;
 }
 
 .side-nav {
@@ -319,6 +319,17 @@ span.badge.new:after{
 
 /* tablets */
 @media (min-width: 600px) and (max-width: 991px) {
+    nav.top-nav .page-title {
+        left: 190px;
+    }
+
+    nav.top-nav .page-title {
+        max-width: 50%;
+    }
+
+    .button-collapse {
+        padding-top: 26px;
+    }
 }
 
 /* tablets & phones */
