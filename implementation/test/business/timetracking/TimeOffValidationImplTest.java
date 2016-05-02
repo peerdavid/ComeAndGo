@@ -62,8 +62,8 @@ public class TimeOffValidationImplTest {
     @Test (expected = UserException.class)
     public void validateTimeOffInsert_WithAlreadyACCEPTEDTimeOffsAtSameTime_ShouldThrowUserException() throws UserException, TimeTrackException {
         // prepare
-        TimeOff _firstTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(5), TimeOffType.HOLIDAY, TimeOffState.REQUEST_ACCEPTED, "nothing to say");
-        TimeOff _secondTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(5), TimeOffType.PARENTAL_LEAVE, TimeOffState.REQUEST_REJECTED, "nothing to say");
+        TimeOff _firstTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(5), TimeOffType.HOLIDAY, RequestState.REQUEST_ACCEPTED, "nothing to say");
+        TimeOff _secondTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(5), TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_REJECTED, "nothing to say");
         List<TimeOff> list = new ArrayList<>();
         list.add(_firstTimeOff);
         list.add(_secondTimeOff);
@@ -75,8 +75,8 @@ public class TimeOffValidationImplTest {
     @Test
     public void validateTimeOffInsert_WithNoOtherACCEPTEDTimeOffsAtSameTime_ShouldSucceed() throws UserException, TimeTrackException {
         // prepare
-        TimeOff _firstTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(6), TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, "nothing to say");
-        TimeOff _secondTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(6), TimeOffType.PARENTAL_LEAVE, TimeOffState.REQUEST_REJECTED, "nothing to say");
+        TimeOff _firstTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(6), TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_SENT, "nothing to say");
+        TimeOff _secondTimeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(6), TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_REJECTED, "nothing to say");
         List<TimeOff> testList = new ArrayList<>();
         testList.add(_firstTimeOff);
         testList.add(_secondTimeOff);
@@ -88,7 +88,7 @@ public class TimeOffValidationImplTest {
 
     @Test(expected = UserException.class)
     public void validateTimeOffInsert_WithAlreadyDONETimeOffAtSameTime_ShouldThrowUserException() throws UserException, TimeTrackException {
-        TimeOff timeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(3), TimeOffType.PARENTAL_LEAVE, TimeOffState.DONE, "");
+        TimeOff timeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(3), TimeOffType.PARENTAL_LEAVE, RequestState.DONE, "");
         List<TimeOff> testList = new ArrayList<>();
         testList.add(timeOff);
         when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);

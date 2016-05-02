@@ -31,7 +31,7 @@ class TimeOffValidationImpl implements TimeOffValidation {
             StringBuilder sb = new StringBuilder("");
 
             for(TimeOff actual : timeOffsFromUser) {
-                if(actual.getState() == TimeOffState.REQUEST_ACCEPTED || actual.getState() == TimeOffState.DONE) {
+                if(actual.getState() == RequestState.REQUEST_ACCEPTED || actual.getState() == RequestState.DONE) {
                     sb.append(String.format("%s - (%s), ", actual.getType(), actual.getComment()));
                 }
             }
