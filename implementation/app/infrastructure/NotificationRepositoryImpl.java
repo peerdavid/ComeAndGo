@@ -46,7 +46,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         List<Notification> result =
                 Ebean.find(Notification.class)
                 .where().eq("_receiver_id", user.getId())   // filter notifications for user
-                .where().eq("read", false)              // filter for only unread notes
+                .where().eq("seen", false)              // filter for only unread notes
                 .orderBy("created desc")                    // the newer the higher in the list
                 .findList();
         if(result != null) {
@@ -60,7 +60,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         List<Notification> result =
                 Ebean.find(Notification.class)
                         .where().eq("_receiver_id", user.getId())
-                        .where().eq("read", true)
+                        .where().eq("seen", true)
                         .orderBy("created desc")
                         .setMaxRows(amount)
                         .findList();
@@ -98,7 +98,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public int readNumberOfUnseenNotifications(User user) throws NotificationException {
         return Ebean.find(Notification.class)
             .where().eq("_receiver_id", user.getId())
-            .where().eq("read", false)
+            .where().eq("seen", false)
             .findRowCount();
     }
 }
