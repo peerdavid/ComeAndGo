@@ -254,6 +254,12 @@ span.badge.new:after{
     content: ""
 }
 
+td.result{
+    border-top: 1px solid #727272;
+    font-weight: 600;
+    background-color: #FFFFFF;
+}
+
 /* fix date and time pickers in modals */
 .picker__holder, .modal {
     overflow: visible !important;

@@ -1,5 +1,9 @@
 package controllers.notification;
 
+import business.timetracking.TimeTracking;
+import com.google.inject.Inject;
+import play.i18n.Messages;
+
 /**
  * Created by Leonhard on 26.04.2016.
  */
@@ -10,15 +14,16 @@ public abstract class BasicViewModel implements NotificationViewModel {
     private String _message;
     private String _sender;
 
-    private boolean _read;
+    protected TimeTracking timeTracking;
 
-    public BasicViewModel(int notificationId, String message, String sender, boolean read) {
+    @Inject
+    public BasicViewModel(int notificationId, String message, String sender) {
         _notificationId = notificationId;
 
         _message = message;
         _sender = sender;
 
-        _read = read;
+        this.timeTracking = timeTracking;
     }
 
     public int getNotificationId(){
@@ -33,15 +38,12 @@ public abstract class BasicViewModel implements NotificationViewModel {
         _message = message;
     }
 
-    public String getSender(){
+    public String getSender() {
         return _sender;
     }
 
-    public boolean hasRead(){
-        return _read;
+    public void reject(int userId) throws Exception {
+        throw new Exception(Messages.get("exceptions.notifications.invalid_action"));
     }
 
-    public void setRead(boolean read) {
-        _read = read;
-    }
 }

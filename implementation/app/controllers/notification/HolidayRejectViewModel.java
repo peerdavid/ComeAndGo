@@ -1,6 +1,5 @@
 package controllers.notification;
 
-import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
@@ -8,14 +7,8 @@ import play.i18n.Messages;
  */
 public class HolidayRejectViewModel extends BasicViewModel {
 
-
-    public HolidayRejectViewModel(TimeTracking timeTracking, int id, int referenceId, String message, String sender, boolean read) {
-        super(id,message,sender,read);
-    }
-
-    @Override
-    public int getTimeOffId() {
-        return 0;
+    public HolidayRejectViewModel(int id, String message, String sender) {
+        super(id,message,sender);
     }
 
     @Override
@@ -33,8 +26,7 @@ public class HolidayRejectViewModel extends BasicViewModel {
         return false;
     }
 
-    @Override
-    public void accept() {
-        setRead(true);
+    public void accept(int userId) {
+
     }
 }

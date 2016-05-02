@@ -45,11 +45,15 @@ public class Notification extends Model {
     private DateTime createdOn;
 
     @Column(name = "reference_id")
-    private int referenceId;
+    private Integer referenceId;
 
-    // Use standard messages for each Notification Type
+
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
-        this(type, "", sender, receiver);
+        this(type, "", sender, receiver, 0);
+    }
+
+    public Notification(NotificationType type, User sender, User receiver, Integer referenceId) throws NotificationException {
+        this(type, "", sender, receiver, referenceId);
     }
 
     public Notification(NotificationType type, String message, User sender, User receiver) throws NotificationException {
@@ -58,6 +62,16 @@ public class Notification extends Model {
         setSender(sender);
         setReceiver(receiver);
         setRead(false);
+        createdOn = DateTime.now();
+    }
+
+    public Notification(NotificationType type, String message, User sender, User receiver, Integer referenceId) throws NotificationException {
+        setType(type);
+        setMessage(message);
+        setSender(sender);
+        setReceiver(receiver);
+        setRead(false);
+        setReferenceId(referenceId);
         createdOn = DateTime.now();
     }
 
@@ -112,11 +126,11 @@ public class Notification extends Model {
         this.read = read;
     }
 
-    public int getReferenceId() {
+    public Integer getReferenceId() {
         return referenceId;
     }
 
-    public void setReferenceId(int referenceId) {
+    public void setReferenceId(Integer referenceId) {
         this.referenceId = referenceId;
     }
 }
