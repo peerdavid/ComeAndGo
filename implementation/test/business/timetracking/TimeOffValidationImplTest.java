@@ -1,6 +1,5 @@
 package business.timetracking;
 
-import business.notification.NotificationSender;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserException;
@@ -27,7 +26,6 @@ import static org.mockito.Mockito.when;
  * Created by Stefan on 02.05.2016.
  */
 public class TimeOffValidationImplTest {
-    NotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;
@@ -40,7 +38,6 @@ public class TimeOffValidationImplTest {
     List<TimeTrack> _testList;
     DateTime _MIDNIGHT;
     DateTime _MIDDAY;
-    Messages _messages;
 
     @Before
     public void setUp() throws UserException {
@@ -54,8 +51,6 @@ public class TimeOffValidationImplTest {
 
         _MIDNIGHT  = new DateTime(2016, 5, 3, 0, 0, 0);
         _MIDDAY = _MIDNIGHT.plusHours(12);
-
-        _messages = mock(Messages.class);
     }
 
     @Test
@@ -73,7 +68,6 @@ public class TimeOffValidationImplTest {
         list.add(_firstTimeOff);
         list.add(_secondTimeOff);
         when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(list);
-        when(_messages.get("exceptions.timeoff.error_clashing_timeoffs", any(String.class))).thenReturn("hallo");
 
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }

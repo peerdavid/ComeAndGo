@@ -28,7 +28,7 @@ class TimeOffValidationImpl implements TimeOffValidation {
             List<TimeOff> timeOffsFromUser = _repository.readTimeOffFromUser(user, from, to);
 
             // at this point user has timeOff(s) in conflict
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder("");
 
             for(TimeOff actual : timeOffsFromUser) {
                 if(actual.getState() == TimeOffState.REQUEST_ACCEPTED) {
@@ -36,12 +36,12 @@ class TimeOffValidationImpl implements TimeOffValidation {
                 }
             }
 
-            if(sb.toString().isEmpty()) {
+            if(sb.toString().equals("")) {
                 // if there are only REQUEST_REJECTED and REQUEST_SENT ,... there is no need to throw exception
                 return;
             }
 
-            throw new UserException(Messages.get("exceptions.timeoff.error_clashing_timeoffs", sb.toString()));
+            throw new UserException("exceptions.timeoff.error_clashing_timeoffs", sb.toString());
 
         } catch (TimeTrackException e) {
             // request is in no conflict to others
