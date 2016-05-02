@@ -17,7 +17,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public List<TimeTrack> readTimeTracks(User user) {
         List<TimeTrack> _timeTracks =
             Ebean.find(TimeTrack.class)
-                .where().eq("_user_id", user.getId())
+                .where().eq("user_id", user.getId())
                 .findList();
 
        if(_timeTracks == null) {
@@ -43,7 +43,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
        List<TimeTrack> _timeTracks =
            Ebean.find(TimeTrack.class)
-           .where().eq("_user_id", user.getId())
+           .where().eq("user_id", user.getId())
            .where().ge("start", from)
            .where().le("end", to)
            .setOrderBy("start")
@@ -92,7 +92,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
       List<TimeTrack> wantedList =
           Ebean.find(TimeTrack.class)
           .where().and(
-              Expr.eq("_user_id", user.getId()),             // filter for only timeTracks from given user
+              Expr.eq("user_id", user.getId()),             // filter for only timeTracks from given user
               Expr.or(
                   Expr.between("start", "end", timeTrack.getFrom()),
                   Expr.or(
@@ -116,7 +116,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     @Override
     public TimeTrack readActiveTimeTrack(User user) throws NotFoundException {
         TimeTrack actualTimeTrack = Ebean.find(TimeTrack.class)
-            .where().eq("_user_id", user.getId())
+            .where().eq("user_id", user.getId())
             .where().isNull("end")
             .findUnique();
         if (actualTimeTrack != null) {

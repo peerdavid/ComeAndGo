@@ -68,13 +68,13 @@ public class UserManagementController extends UserProfileController {
         }
         if (userNameBoss != null) {
             User boss = _userManagement.readUser(userNameBoss);
-            changingUser.set_boss(boss);
+            changingUser.setBoss(boss);
         }
         if (role != null) {
             changingUser.setRole(role);
         }
 
-        _userManagement.updateUser(changingUser.getUserName(), changingUser);
+        _userManagement.updateUser(changingUser.getUsername(), changingUser);
 
         return redirect(routes.UserManagementController.readUsers());
     }

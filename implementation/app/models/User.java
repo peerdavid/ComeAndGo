@@ -17,89 +17,89 @@ public class User extends Model {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
 
     @Column(name = "username", unique = true)
     @Constraints.MinLength(4)
-    private String _userName;
+    private String username;
 
     @Column(name = "password")
     @Constraints.MinLength(8)
-    private String _password;
+    private String password;
 
     @Column(name = "role")
-    private String _role;
+    private String role;
 
     @Column(name = "active")
-    private boolean _active;
+    private boolean active;
 
     @Column(name = "firstname")
-    private String _firstName;
+    private String firstname;
 
     @Column(name = "lastname")
-    private String _lastName;
+    private String lastname;
 
     @Column(name = "email")
-    private String _email;
+    private String email;
 
     @Column(name = "_boss_id")
     @ManyToOne()
-    private User _boss;
+    private User boss;
 
     public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, User boss) throws UserException {
 
         // Data Validation in Setters
 
-        this.setUserName(username);
+        this.setUsername(username);
         this.setPassword(password);
         this.setEmail(email);
         this.setFirstName(firstname);
         this.setLastName(lastname);
         this.setRole(role);
-        this.set_boss(boss);
-        this._active = active;
+        this.setBoss(boss);
+        this.active = active;
     }
 
     public String getPassword() {
-        return _password;
+        return password;
     }
 
     public void setPassword(String password) throws UserException {
         if (password.length() < 8) {
             throw new UserException("exceptions.usermanagement.short_password");
         }
-        this._password = generatePwd(password);
+        this.password = generatePwd(password);
     }
 
     public int getId() {
-        return _id;
+        return id;
     }
 
-    public String getUserName() {
-        return _userName;
+    public String getUsername() {
+        return username;
     }
 
     public String getRole() {
-        return _role;
+        return role;
     }
 
     public String getFirstName() {
-        return _firstName;
+        return firstname;
     }
 
     public String getLastName() {
-        return _lastName;
+        return lastname;
     }
 
     public String getEmail() {
-        return _email;
+        return email;
     }
 
-    public void setUserName(String username) throws UserException {
+    public void setUsername(String username) throws UserException {
         if (username.length() < 4 || username.length() > 20) {
             throw new UserException("exceptions.usermanagement.username_format");
         }
-        this._userName = username;
+        this.username = username;
     }
 
     public void setFirstName(String name) throws UserException {
@@ -107,7 +107,7 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.name_format");
         }
 
-        this._firstName = name;
+        this.firstname = name;
     }
 
     public void setLastName(String name) throws UserException {
@@ -115,7 +115,7 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.name_format");
         }
 
-        this._lastName = name;
+        this.lastname = name;
     }
 
     public void setEmail(String email) throws UserException {
@@ -123,7 +123,7 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.email_format");
         }
 
-        this._email = email;
+        this.email = email;
     }
 
     private String generatePwd(String password) {
@@ -142,27 +142,27 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.invalid_role");
         }
 
-        this._role = role;
+        this.role = role;
     }
 
     // Do not rename Setter and Getter, DataBinder needs exactly this method names!!! Weird!
-    public void set_boss(User boss) {
-        _boss = boss;
+    public void setBoss(User boss) {
+        this.boss = boss;
     }
 
-    public User get_boss() {
-        return _boss;
+    public User getBoss() {
+        return boss;
     }
 
     public boolean getActive() {
-        return _active;
+        return active;
     }
 
     public void setActive(boolean active) {
-        _active = active;
+        this.active = active;
     }
 
     public void setId(Integer _id) {
-        this._id = _id;
+        this.id = _id;
     }
 }

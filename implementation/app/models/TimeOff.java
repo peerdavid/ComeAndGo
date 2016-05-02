@@ -17,33 +17,33 @@ public class TimeOff {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
 
     @Column(name = "_user_id")
     @NotNull
     @Index
     @ManyToOne()
-    private User _user;
+    private User user;
 
     @Column(name = "start", columnDefinition = "datetime")
-    private DateTime _from;
+    private DateTime from;
 
     @Column(name = "end", columnDefinition = "datetime")
-    private DateTime _to;
+    private DateTime to;
 
     @Column(name = "type")
-    private TimeOffType _type;
+    private TimeOffType type;
 
     @Column(name = "state")
-    private TimeOffState _state;
+    private TimeOffState state;
 
     @Column(name = "comment", columnDefinition = "varchar(150)")
     @Constraints.MaxLength(150)
-    private String _comment;
+    private String comment;
 
     @Column(name = "_reviewed_by")
     @ManyToOne
-    private User _reviewedBy;
+    private User reviewedBy;
 
     public TimeOff(User user, DateTime from, DateTime to, TimeOffType type, TimeOffState state, String comment) throws TimeTrackException {
         setFrom(from);
@@ -59,67 +59,67 @@ public class TimeOff {
             throw new TimeOffNotFoundException("state is null");
         }
 
-        this._user = user;
-        this._type = type;
-        this._state = state;
-        this._comment = comment;
+        this.user = user;
+        this.type = type;
+        this.state = state;
+        this.comment = comment;
     }
 
     public void setFrom(DateTime from) throws TimeOffInvalidDateException {
-        if(_to != null && from.isAfter(_to)) {
+        if(to != null && from.isAfter(to)) {
             throw new TimeOffInvalidDateException("from date is after to date");
         }
-        this._from = from;
+        this.from = from;
     }
 
     public void setTo(DateTime to) throws TimeOffInvalidDateException {
-        if(_from != null && to.isBefore(_from)) {
+        if(from != null && to.isBefore(from)) {
             throw new TimeOffInvalidDateException("to date is before from date");
         }
-        this._to = to;
+        this.to = to;
     }
 
     public TimeOffType getType() {
-        return _type;
+        return type;
     }
 
     public Integer getId() {
-        return _id;
+        return id;
     }
 
     public User getUser() {
-        return _user;
+        return user;
     }
 
     public DateTime getFrom() {
-        return _from;
+        return from;
     }
 
     public DateTime getTo() {
-        return _to;
+        return to;
     }
 
     public TimeOffState getState() {
-        return _state;
+        return state;
     }
 
     public String getComment() {
-        return _comment;
+        return comment;
     }
 
     public User getReviewedBy() {
-        return _reviewedBy;
+        return reviewedBy;
     }
 
     public void setState(TimeOffState state) {
-        this._state = state;
+        this.state = state;
     }
 
     public void setType(TimeOffType type) {
-        this._type = type;
+        this.type = type;
     }
 
     public void setReviewedBy(User reviewedBy) {
-        this._reviewedBy = reviewedBy;
+        this.reviewedBy = reviewedBy;
     }
 }

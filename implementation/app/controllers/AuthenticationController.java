@@ -53,7 +53,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String lastName = form.data().get("lastname");
         String role = form.data().get("role");
         String email = form.data().get("email");
-        String userNameBoss = form.data().get("usernameboss");
+        String userNameBoss = form.data().get("boss");
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;

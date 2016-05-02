@@ -49,7 +49,7 @@ public class TimeOffServiceImplTest {
 
         _testEmployeeMock = mock(User.class);
         when(_testEmployeeMock.getId()).thenReturn(_testEmployeeId);
-        when(_testEmployeeMock.get_boss()).thenReturn(_testBossMock);
+        when(_testEmployeeMock.getBoss()).thenReturn(_testBossMock);
         _internalUserManagementMock = mock(InternalUserManagement.class);
         when(_internalUserManagementMock.readUser(_testEmployeeId)).thenReturn(_testEmployeeMock);
         when(_internalUserManagementMock.readUser(_testBossId)).thenReturn(_testBossMock);
