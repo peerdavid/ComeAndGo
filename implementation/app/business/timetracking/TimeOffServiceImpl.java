@@ -85,7 +85,8 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
-        _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId()));
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
