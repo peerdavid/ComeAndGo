@@ -9,6 +9,9 @@ import java.util.List;
  * Created by david on 22.03.16.
  */
 public interface NotificationReader extends UseCases {
+
+    Notification readNotification(int notificationId) throws NotificationException;
+
     List<Notification> readUnseenNotifications(int userId) throws NotificationException;
 
    /**

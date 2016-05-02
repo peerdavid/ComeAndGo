@@ -23,6 +23,11 @@ class NotificationReaderFacade implements NotificationReader {
         _userManagement = userRepository;
     }
 
+    @Override
+    public Notification readNotification(int notificationId) throws NotificationException {
+        return _notificationRepository.readNotification(notificationId);
+    }
+
     public List<Notification> readUnseenNotifications(int userId) throws NotificationException {
         User user;
         try {

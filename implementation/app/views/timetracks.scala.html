@@ -109,7 +109,7 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.TimeTrackController.deleteBreak(b.getId, t.getId, userId, from, to)" style="float : right">@Messages("views.admin.updatetimetracks.deletebreak")</a>
-                                                        <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.updatetimetracks.closemessage")</a>
+                                                        <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.admin.timetracks.closemessage")</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -154,31 +154,33 @@
                                 </div>
                             </div>
 
-                            <!-- add break -->
-                            <div id="modal-add-break@t.getId" class="modal">
-                                <div class="modal-content">
-                                    <h4>@Messages("views.admin.updatetimetracks.addbreak")</h4>
-                                </div>
-                                <div class="modal-footer">
-                                    <form action="@routes.TimeTrackController.createBreak(t.getId, userId, from, to)" method="POST">
-                                        <div class="row">
-                                            <div class="input-field col s6 m3">
-                                                <input name="from" type="text" class="timepicker">
-                                                <label for="from">@Messages("views.admin.updatetimetracks.starttime")</label>
-                                            </div>
-                                            <div class="input-field col s6 m3 offset-m3">
-                                                <input name="to" type="text" class="timepicker">
-                                                <label for="to">@Messages("views.admin.updatetimetracks.endtime")</label>
-                                            </div>
-                                            <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">@Messages("views.admin.updatetimetracks.addbreak")
-                                                <i class="material-icons right">add</i>
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-
                         </form>
+
+                            <!-- add break -->
+                        <div id="modal-add-break@t.getId" class="modal">
+                            <div class="modal-content">
+                                <h4>@Messages("views.admin.updatetimetracks.addbreak")</h4>
+                            </div>
+                            <div class="modal-footer">
+                                <form action="@routes.TimeTrackController.createBreak(t.getId, userId, from, to)" method="POST">
+                                    <div class="row">
+                                        <div class="input-field col s6 m3">
+                                            <input name="starttime" type="text" class="timepicker">
+                                            <label for="starttime">@Messages("views.admin.updatetimetracks.starttime")</label>
+                                        </div>
+                                        <div class="input-field col s6 m3 offset-m3">
+                                            <input name="endtime" type="text" class="timepicker">
+                                            <label for="endtime">@Messages("views.admin.updatetimetracks.endtime")</label>
+                                        </div>
+                                        <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit" name="action">
+                                            @Messages("views.admin.updatetimetracks.addbreak")
+                                        <i class="material-icons right">add</i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </li>
             }

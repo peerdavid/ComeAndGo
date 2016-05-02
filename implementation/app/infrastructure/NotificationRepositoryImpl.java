@@ -45,7 +45,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public List<Notification> readUnseenNotifications(User user) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
-                .where().eq("_receiver_id", user.getId())   // filter notifications for user
+                .where().eq("receiver_id", user.getId())   // filter notifications for user
                 .where().eq("seen", false)              // filter for only unread notes
                 .orderBy("created desc")                    // the newer the higher in the list
                 .findList();
@@ -59,7 +59,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public List<Notification> readSeenNotifications(User user, int amount) throws NotificationException {
         List<Notification> result =
                 Ebean.find(Notification.class)
-                        .where().eq("_receiver_id", user.getId())
+                        .where().eq("receiver_id", user.getId())
                         .where().eq("seen", true)
                         .orderBy("created desc")
                         .setMaxRows(amount)
@@ -75,7 +75,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public List<Notification> readSentNotifications(User user, int amount) throws NotificationException {
         List<Notification> result =
             Ebean.find(Notification.class)
-            .where().eq("_sender_id", user.getId())
+            .where().eq("sender_id", user.getId())
             .orderBy("created desc")
             .setMaxRows(amount)
             .findList();
@@ -97,7 +97,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     @Override
     public int readNumberOfUnseenNotifications(User user) throws NotificationException {
         return Ebean.find(Notification.class)
-            .where().eq("_receiver_id", user.getId())
+            .where().eq("receiver_id", user.getId())
             .where().eq("seen", false)
             .findRowCount();
     }

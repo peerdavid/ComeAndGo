@@ -15,13 +15,13 @@ public class Break extends Model {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int _id;
+    private int id;
 
    @Column(name = "start", columnDefinition = "time")
-   private DateTime _from;
+   private DateTime from;
 
    @Column(name = "end", columnDefinition = "time")
-   private DateTime _to;
+   private DateTime to;
 
 
     /**
@@ -37,13 +37,13 @@ public class Break extends Model {
     * @param from
     */
     public Break(DateTime from) {
-        _from = from;
-        _to = null;
+        this.from = from;
+        to = null;
     }
 
 
     public int getId() {
-        return _id;
+        return id;
     }
 
 
@@ -52,7 +52,7 @@ public class Break extends Model {
      * @return FROM time
      */
     public DateTime getFrom() {
-        return _from;
+        return from;
     }
 
 
@@ -62,10 +62,10 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setFrom(DateTime from) throws UserException {
-       if (_to != null && from.isAfter(_to)) {
+       if (to != null && from.isAfter(to)) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
-       this._from = from;
+       this.from = from;
     }
 
 
@@ -74,7 +74,7 @@ public class Break extends Model {
      * @return TO time
      */
     public DateTime getTo() {
-        return _to;
+        return to;
     }
 
 
@@ -84,9 +84,9 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setTo(DateTime to) throws UserException {
-       if(to.isBefore(_from)) {
+       if(to.isBefore(from)) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
-       _to = to;
+       this.to = to;
     }
 }
