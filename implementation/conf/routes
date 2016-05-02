@@ -34,7 +34,9 @@ GET     /timeoff/details/:id                       @controllers.TimeOffControlle
 GET     /timeoff/delete/:id                        @controllers.TimeOffController.deleteTimeOff(id: Int)
 
 # Reporting
-GET     /reporting                                 @controllers.ReportingController.index
+GET     /reporting/company                         @controllers.ReportingController.companyReport
+GET     /reporting/boss                            @controllers.ReportingController.bossReport
+GET     /reporting/employee                        @controllers.ReportingController.employeeReport
 
 # Notifications
 GET     /notification                              @controllers.NotificationController.index

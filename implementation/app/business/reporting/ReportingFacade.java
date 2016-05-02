@@ -1,13 +1,7 @@
 package business.reporting;
 
-import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
-import models.CompanyReport;
-import models.ReportEntry;
-import models.User;
-
-import java.util.ArrayList;
-import java.util.List;
+import models.Report;
 
 /**
  * Created by david on 02.05.16.
@@ -24,7 +18,17 @@ class ReportingFacade implements Reporting {
 
 
     @Override
-    public CompanyReport createCompanyReport() throws Exception {
+    public Report createCompanyReport() throws Exception {
         return _reportingService.getCompanyReport();
+    }
+
+    @Override
+    public Report createEmployeeReport(int userId) throws Exception {
+        return _reportingService.createEmployeeReport(userId);
+    }
+
+    @Override
+    public Report createBossReport(int userId) throws Exception {
+        return _reportingService.createBossReport(userId);
     }
 }

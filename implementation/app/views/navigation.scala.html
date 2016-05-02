@@ -10,11 +10,15 @@
     <ul>
         <li><a href="@routes.TimeTrackController.index()">@Messages("views.index.home")</a></li>
         <li><a href="@routes.TimeOffController.index()">@Messages("views.timeoff.title")</a></li>
-        <li><a href="@routes.TimeTrackController.index()">@Messages("views.report.title")</a></li>
         <li><a class="hide-on-large-only" href="@routes.NotificationController.index()">@Messages("views.notification.title")</a></li>
-        @if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
-            <li id="nav_pers_sidebar_button"><a href="@routes.ReportingController.index()">@Messages("views.personal.title")</a></li>
+        <li><a href="@routes.ReportingController.employeeReport()">@Messages("views.report.employee.title")</a></li>
+        @if(profile.getRoles().contains(SecurityRole.ROLE_BOSS)) {
+            <li id="nav_pers_sidebar_button"><a href="@routes.ReportingController.bossReport()">@Messages("views.report.boss.title")</a></li>
         }
+        @if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            <li id="nav_pers_sidebar_button"><a href="@routes.ReportingController.companyReport()">@Messages("views.report.company.title")</a></li>
+        }
+
         <!-- if user is admin -> add admin menu -->
         @if(profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
             <li id="admin_dropdown" class="no-padding">

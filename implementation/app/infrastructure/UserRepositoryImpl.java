@@ -33,12 +33,13 @@ class UserRepositoryImpl implements UserRepository {
         throw new UserNotFoundException("exceptions.usermanagement.could_not_find_timetrack");
     }
 
+
     @Override
     public User readUser(int userId) throws UserNotFoundException {
         User result = Ebean.find(User.class)
-            .where().eq("id", userId)
-            .where().eq("active", true)
-            .findUnique();
+                .where().eq("id", userId)
+                .where().eq("active", true)
+                .findUnique();
 
         if (result != null) {
             return result;
@@ -48,16 +49,6 @@ class UserRepositoryImpl implements UserRepository {
         throw new UserNotFoundException("exceptions.usermanagement.could_not_find_timetrack");
     }
 
-    @Override
-    public void deleteUser(User user) {
-        user.setActive(false);
-        updateUser(user);
-    }
-
-    @Override
-    public void updateUser(User user) {
-      Ebean.update(user);
-    }
 
     @Override
     public List<User> readUsers() {
@@ -66,8 +57,32 @@ class UserRepositoryImpl implements UserRepository {
                         .where().eq("active", true)
                         .findList();
 
+        return userList;
+    }
+
+
+    @Override
+    public List<User> readUsersOfBoss(int userId) throws UserNotFoundException {
+        List<User> userList =
+                Ebean.find(User.class)
+                        .where().eq("active", true)
+                        .where().eq("boss_id", userId)
+                        .findList();
 
         return userList;
+    }
+
+
+    @Override
+    public void deleteUser(User user) {
+        user.setActive(false);
+        updateUser(user);
+    }
+
+
+    @Override
+    public void updateUser(User user) {
+      Ebean.update(user);
     }
 
 }
