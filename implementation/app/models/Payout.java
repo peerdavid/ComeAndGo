@@ -1,6 +1,8 @@
 package models;
 
-import business.timetracking.*;
+import business.timetracking.PayoutType;
+import business.timetracking.RequestState;
+import business.timetracking.TimeTrackException;
 import com.avaje.ebean.annotation.Index;
 import org.joda.time.DateTime;
 import play.data.validation.Constraints;
@@ -9,11 +11,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by paz on 24.04.16.
- * Renamed SpecialDay to TimeOff
+ * Created by paz on 02.05.16.
  */
 @Entity
-public class TimeOff {
+public class Payout {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,14 +26,12 @@ public class TimeOff {
     @ManyToOne()
     private User user;
 
-    @Column(name = "start", columnDefinition = "datetime")
-    private DateTime from;
-
-    @Column(name = "end", columnDefinition = "datetime")
-    private DateTime to;
+    // Amount can be hours for Overtime or days for holiday
+    @Column(name = "amount")
+    int amount;
 
     @Column(name = "type")
-    private TimeOffType type;
+    private PayoutType type;
 
     @Column(name = "state")
     private RequestState state;
@@ -45,18 +44,17 @@ public class TimeOff {
     @ManyToOne
     private User reviewedBy;
 
-    public TimeOff(User user, DateTime from, DateTime to, TimeOffType type, RequestState state, String comment) throws TimeTrackException {
-        setFrom(from);
-        setTo(to);
+    public Payout(User user, PayoutType type, int amount, RequestState state, String comment) throws TimeTrackException {
+        setAmount(amount);
 
         if(user == null) {
-            throw new TimeOffNotFoundException("user is null");
+            throw new TimeTrackException("user is null");
         }
         if(type == null) {
-            throw new TimeOffNotFoundException("type is null");
+            throw new TimeTrackException("type is null");
         }
         if(state == null) {
-            throw new TimeOffNotFoundException("state is null");
+            throw new TimeTrackException("state is null");
         }
 
         this.user = user;
@@ -65,21 +63,15 @@ public class TimeOff {
         this.comment = comment;
     }
 
-    public void setFrom(DateTime from) throws TimeOffInvalidDateException {
-        if(to != null && from.isAfter(to)) {
-            throw new TimeOffInvalidDateException("from date is after to date");
+    public void setAmount(int amount) throws TimeTrackException {
+        if(amount < 0) {
+            throw new TimeTrackException("Invalid amount of time");
         }
-        this.from = from;
+        this.amount = amount;
     }
 
-    public void setTo(DateTime to) throws TimeOffInvalidDateException {
-        if(from != null && to.isBefore(from)) {
-            throw new TimeOffInvalidDateException("to date is before from date");
-        }
-        this.to = to;
-    }
 
-    public TimeOffType getType() {
+    public PayoutType getType() {
         return type;
     }
 
@@ -91,12 +83,8 @@ public class TimeOff {
         return user;
     }
 
-    public DateTime getFrom() {
-        return from;
-    }
-
-    public DateTime getTo() {
-        return to;
+    public int getAmount() {
+        return amount;
     }
 
     public RequestState getState() {
@@ -115,11 +103,12 @@ public class TimeOff {
         this.state = state;
     }
 
-    public void setType(TimeOffType type) {
+    public void setType(PayoutType type) {
         this.type = type;
     }
 
     public void setReviewedBy(User reviewedBy) {
         this.reviewedBy = reviewedBy;
     }
+
 }

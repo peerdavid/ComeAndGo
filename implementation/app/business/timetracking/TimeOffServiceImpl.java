@@ -40,10 +40,10 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, TimeOffState.DONE, comment);
+        TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, RequestState.DONE, comment);
 
         _repository.createTimeOff(sickLeave);
-        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss));
+        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss, sickLeave.getId()));
 
     }
 
@@ -54,10 +54,10 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, TimeOffState.DONE, comment);
+        TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, RequestState.DONE, comment);
 
         _repository.createTimeOff(businessTrip);
-        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss));
+        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss, businessTrip.getId()));
     }
 
     @Override
@@ -67,10 +67,12 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, TimeOffState.REQUEST_SENT, comment);
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
-        _notificationSender.sendNotification(new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss));
+        Notification notification = new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
@@ -80,10 +82,11 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, TimeOffState.REQUEST_SENT, comment);
+        TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
-        _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss));
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
@@ -100,11 +103,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        timeOffToAccept.setState(TimeOffState.REQUEST_ACCEPTED);
+        timeOffToAccept.setState(RequestState.REQUEST_ACCEPTED);
         timeOffToAccept.setReviewedBy(boss);
         _repository.updateTimeOff(timeOffToAccept);
 
-        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_ACCEPT, boss, employee);
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_ACCEPT, boss, employee, timeOffToAccept.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -118,11 +121,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        timeOffToReject.setState(TimeOffState.REQUEST_REJECTED);
+        timeOffToReject.setState(RequestState.REQUEST_REJECTED);
         timeOffToReject.setReviewedBy(boss);
         _repository.updateTimeOff(timeOffToReject);
 
-        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee);
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee, timeOffToReject.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -133,10 +136,10 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
+        TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(parentalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, employee, boss);
+        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, comment, employee, boss, parentalLeave.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -147,10 +150,10 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
+        TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(educationalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, employee, boss);
+        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, comment, employee, boss, educationalLeave.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -168,11 +171,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
+        requestedTimeOff.setState(RequestState.REQUEST_ACCEPTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_ACCEPT, boss, employee);
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_ACCEPT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -186,11 +189,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
+        requestedTimeOff.setState(RequestState.REQUEST_ACCEPTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REJECT, boss, employee);
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REJECT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -208,11 +211,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_ACCEPTED);
+        requestedTimeOff.setState(RequestState.REQUEST_ACCEPTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_ACCEPT, boss, employee);
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_ACCEPT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -226,11 +229,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(TimeOffState.REQUEST_REJECTED);
+        requestedTimeOff.setState(RequestState.REQUEST_REJECTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee);
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -262,6 +265,7 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = timeOffToDelete.getUser();
         User boss = employee.getBoss();
         Notification notification = new Notification(NotificationType.INFORMATION, "Deleted time off", employee, boss);
+
 
         _notificationSender.sendNotification(notification);
         _repository.deleteTimeOff(timeOffToDelete);

@@ -5,11 +5,7 @@ package controllers.notification;
  */
 public interface NotificationViewModel {
 
-    int getTimeOffId();
-
     int getNotificationId();
-
-    boolean hasRead();
 
     String getIcon();
 
@@ -21,5 +17,7 @@ public interface NotificationViewModel {
 
     boolean isRejectable();
 
-    void accept();
+    void accept(int userId) throws Exception;
+
+    void reject(int userId) throws Exception;
 }

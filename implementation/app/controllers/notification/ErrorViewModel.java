@@ -4,24 +4,23 @@ import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
- * Created by csaq5996 on 4/25/16.
+ * Created by csaq5996 on 5/2/16.
  */
-public class SickLeaveViewModel extends BasicViewModel {
+public class ErrorViewModel extends BasicViewModel {
 
-    public SickLeaveViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
 
+    public ErrorViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
         super(notificationId, message, sender, timeTracking);
-
     }
 
     @Override
     public String getIcon() {
-        return Messages.get("notifications.icons.sickleave");
+        return Messages.get("notifications.icons.error");
     }
 
     @Override
     public String getHeader() {
-        return Messages.get("notifications.sickleave");
+        return Messages.get("notifications.error");
     }
 
     @Override
@@ -29,7 +28,8 @@ public class SickLeaveViewModel extends BasicViewModel {
         return false;
     }
 
-    public void accept(int userId) {
+    @Override
+    public void accept(int userId) throws Exception {
 
     }
 }

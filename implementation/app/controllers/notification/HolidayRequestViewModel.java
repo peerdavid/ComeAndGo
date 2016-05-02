@@ -8,24 +8,14 @@ import play.i18n.Messages;
  */
 public class HolidayRequestViewModel extends BasicViewModel {
 
-    private TimeTracking _timeTracking;
-
     private int _timeOffId;
 
+    public HolidayRequestViewModel(int _notificationId, int _timeOffId, String message, String sender, TimeTracking timeTracking) {
 
-    public HolidayRequestViewModel(TimeTracking timeTracking, int _notificationId, int _timeOffId, String message, String sender, boolean read) {
-
-        super(_notificationId,message,sender,read);
+        super(_notificationId, message, sender, timeTracking);
 
         this._timeOffId = _timeOffId;
 
-        _timeTracking = timeTracking;
-
-    }
-
-    @Override
-    public int getTimeOffId() {
-        return _timeOffId;
     }
 
     @Override
@@ -44,13 +34,11 @@ public class HolidayRequestViewModel extends BasicViewModel {
     }
 
     @Override
-    public void accept() {
-        super.setRead(true);
-        //_timeTracking.acceptHolidayRequest();
+    public void accept(int userId) throws Exception {
+        _timeTracking.acceptHoliday(_timeOffId, userId);
     }
 
-    public void reject() {
-        super.setRead(false);
-        //_timeTracking.rejectHolidayRequest();
+    public void reject(int userId) throws Exception {
+        _timeTracking.rejectHoliday(_timeOffId, userId);
     }
 }

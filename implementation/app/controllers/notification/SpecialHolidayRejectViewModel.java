@@ -4,12 +4,13 @@ import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
- * Created by csaq5996 on 4/29/16.
+ * Created by csaq5996 on 5/2/16.
  */
-public class HolidayRejectViewModel extends BasicViewModel {
+public class SpecialHolidayRejectViewModel extends BasicViewModel {
 
-    public HolidayRejectViewModel(int id, String message, String sender, TimeTracking timeTracking) {
+    public SpecialHolidayRejectViewModel(int id, String message, String sender, TimeTracking timeTracking) {
         super(id, message, sender, timeTracking);
+
     }
 
     @Override
@@ -19,7 +20,7 @@ public class HolidayRejectViewModel extends BasicViewModel {
 
     @Override
     public String getHeader() {
-        return Messages.get("notifications.holiday");
+        return Messages.get("notifications.specialholiday");
     }
 
     @Override
@@ -27,6 +28,7 @@ public class HolidayRejectViewModel extends BasicViewModel {
         return false;
     }
 
+    @Override
     public void accept(int userId) {
 
     }
