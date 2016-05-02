@@ -144,15 +144,15 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String breakStart = "break_starttime" + b.getId();
             String breakEnd = "break_endtime" + b.getId();
 
-            DynamicForm breakFormData = Form.form().bindFromRequest(
+            Map<String, String> breakFormData = Form.form().bindFromRequest(
                 breakStart,
                 breakEnd
-            );
+            ).data();
 
-            if (formData.get(breakStart) != null && !breakFormData.get(breakStart).isEmpty()) {
+            if (breakFormData.get(breakStart) != null && !breakFormData.get(breakStart).isEmpty()) {
                 b.setFrom(DateTimeUtils.stringToTime(breakFormData.get(breakStart)));
             }
-            if (formData.get(breakEnd) != null && !breakFormData.get(breakEnd).isEmpty()) {
+            if (breakFormData.get(breakEnd) != null && !breakFormData.get(breakEnd).isEmpty()) {
                 b.setTo(DateTimeUtils.stringToTime(breakFormData.get(breakEnd)));
             }
         }

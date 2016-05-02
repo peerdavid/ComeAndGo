@@ -132,6 +132,10 @@ nav.top-nav .page-title {
     height: 100%;
 }
 
+.modal-break form {
+    padding: 12px;
+}
+
 .notification-list .button-container {
     padding: 0px 18px 0px 18px;
 }
