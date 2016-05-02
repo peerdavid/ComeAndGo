@@ -51,7 +51,7 @@ public class Notification extends Model {
 
     // Use standard messages for each Notification Type
     public Notification(NotificationType type, User sender, User receiver) throws NotificationException {
-        this(type, getStandardMessage(type, sender), sender, receiver);
+        this(type, "", sender, receiver);
     }
 
     public Notification(NotificationType type, String message, User sender, User receiver) throws NotificationException {
@@ -112,11 +112,6 @@ public class Notification extends Model {
 
     public void setRead(boolean read) {
         this._read = read;
-    }
-
-
-    public static String getStandardMessage(NotificationType type, User sender) {
-        return Messages.get("notifications." + type.name().toLowerCase(), sender.getFirstName() + " " + sender.getLastName());
     }
 
     public int getReferenceId() {
