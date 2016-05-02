@@ -21,7 +21,7 @@
             <li id="admin_dropdown" class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li>
-                        <a href="@routes.AuthenticationController.signUp()">
+                        <a href="@routes.AuthenticationController.createUser()">
                         @Messages("views.admin.title")
                         </a>
                         <a class="collapsible-header">
@@ -29,7 +29,7 @@
                         </a>
                         <div class="collapsible-body grey lighten-4">
                             <ul>
-                                <li><a href="@routes.AuthenticationController.signUp()">@Messages("views.admin.signup")</a></li>
+                                <li><a href="@routes.AuthenticationController.createUser()">@Messages("views.admin.createuser")</a></li>
                                 <li><a href="@routes.UserManagementController.updateUser()">@Messages("views.admin.updateuser")</a></li>
                             </ul>
                         </div>

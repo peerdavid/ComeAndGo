@@ -9,46 +9,46 @@
     @navigation(Messages("views.admin.title"), profile) {
 
 
-        <form action="@routes.AuthenticationController.doSignUp()" method="POST">
+        <form action="@routes.AuthenticationController.doCreateUser()" method="POST">
             <div class="row">
                 <div class="input-field col s12 m6">
                     <input name="username" type="text">
-                    <label for="username">@Messages("views.admin.signup.form.username")</label>
+                    <label for="username">@Messages("views.admin.createuser.form.username")</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m6">
                     <input name="firstname" type="text">
-                    <label for="firstname">@Messages("views.admin.signup.form.firstname")</label>
+                    <label for="firstname">@Messages("views.admin.createuser.form.firstname")</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <input name="lastname" type="text">
-                    <label for="lastname">@Messages("views.admin.signup.form.lastname")</label>
+                    <label for="lastname">@Messages("views.admin.createuser.form.lastname")</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m6">
                     <input name="email" type="email">
-                    <label for="email">@Messages("views.admin.signup.form.email")</label>
+                    <label for="email">@Messages("views.admin.createuser.form.email")</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <select name="role" type="text">
-                        <option value="ROLE_USER" selected>@Messages("views.admin.signup.form.roles.user")</option>
-                        <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.signup.form.roles.persman")</option>
-                        <option value="ROLE_BOSS">@Messages("views.admin.signup.form.roles.boss")</option>
-                        <option value="ROLE_ADMIN">@Messages("views.admin.signup.form.roles.admin")</option>
+                        <option value="ROLE_USER" selected>@Messages("views.admin.createuser.form.roles.user")</option>
+                        <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                        <option value="ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                        <option value="ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
                     </select>
-                    <label for="role">@Messages("views.admin.signup.form.selectrole")</label>
+                    <label for="role">@Messages("views.admin.createuser.form.selectrole")</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12 m6">
                     <input name="password" type="password">
-                    <label for="password">@Messages("views.admin.signup.form.password")</label>
+                    <label for="password">@Messages("views.admin.createuser.form.password")</label>
                 </div>
                 <div class="input-field col s12 m6">
                     <input name="repeat_password" type="password">
-                    <label for="repeat_password">@Messages("views.admin.signup.form.repeatpassword")</label>
+                    <label for="repeat_password">@Messages("views.admin.createuser.form.repeatpassword")</label>
                 </div>
             </div>
             <div class="row">
@@ -60,11 +60,11 @@
                             }
                         }
                     </select>
-                    <label for="usernameboss">@Messages("views.admin.signup.form.selectboss")</label>
+                    <label for="usernameboss">@Messages("views.admin.createuser.form.selectboss")</label>
                 </div>
             </div>
             <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
-                @Messages("views.admin.signup.title")
+                @Messages("views.admin.createuser.title")
             </button>
         </form>
     }

@@ -10,8 +10,8 @@ GET     /login                                     @controllers.AuthenticationCo
 POST    /login                                     @org.pac4j.play.CallbackController.callback
 GET     /logout                                    @org.pac4j.play.ApplicationLogoutController.logout
 POST    /logout                                    @org.pac4j.play.ApplicationLogoutController.logout
-GET     /signup                                    @controllers.AuthenticationController.signUp
-POST    /signup                                    @controllers.AuthenticationController.doSignUp
+GET     /signup                                    @controllers.AuthenticationController.createUser
+POST    /signup                                    @controllers.AuthenticationController.doCreateUser
 
 GET     /edituser                                  @controllers.UserManagementController.readUsers
 POST    /edituser                                  @controllers.UserManagementController.updateUser
