@@ -10,7 +10,9 @@ public class ErrorViewModel extends BasicViewModel {
 
 
     public ErrorViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
-        super(notificationId, message, sender, timeTracking);
+
+        super(notificationId, message, sender, "", timeTracking);
+
     }
 
     @Override
@@ -28,8 +30,4 @@ public class ErrorViewModel extends BasicViewModel {
         return false;
     }
 
-    @Override
-    public void accept(int userId) throws Exception {
-
-    }
 }

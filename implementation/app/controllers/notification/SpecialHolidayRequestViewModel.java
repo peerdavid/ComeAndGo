@@ -10,8 +10,10 @@ public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
     private int _timeOffId;
 
-    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender, TimeTracking timeTracking) {
-        super(id, message, sender, timeTracking);
+    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender, String date, TimeTracking timeTracking) {
+
+        super(id, message, sender, date, timeTracking);
+
         this._timeOffId = referenceId;
 
     }

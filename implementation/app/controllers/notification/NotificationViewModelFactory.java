@@ -3,6 +3,9 @@ package controllers.notification;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import models.Notification;
+import models.TimeOff;
+import play.i18n.Messages;
+import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,64 +27,112 @@ public class NotificationViewModelFactory {
 
         switch (notification.getType()) {
 
-            case HOLIDAY_REQUEST:
+            case HOLIDAY_REQUEST:{
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new HolidayRequestViewModel(
                         notification.getId(),
                         notification.getReferenceId(),
                         notification.getMessage(),
                         notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        date,
                         _timeTracking
                 );
+            }
 
-            case HOLIDAY_ACCEPT:
+            case HOLIDAY_ACCEPT: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new HolidayAcceptViewModel(
                     notification.getId(),
-                    notification.getMessage(),
+                    Messages.get("notifications.holiday_accept"),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    date,
+                    _timeTracking
                 );
+            }
 
-            case HOLIDAY_REJECT:
+            case HOLIDAY_REJECT: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new HolidayRejectViewModel(
-                        notification.getId(),
-                        notification.getMessage(),
-                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    notification.getId(),
+                    Messages.get("notifications.holiday_reject"),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                    date,
+                    _timeTracking
                 );
+            }
 
+            case SICK_LEAVE_INFORMATION: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
 
-            case SICK_LEAVE_INFORMATION:
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new SickLeaveViewModel(
                     notification.getId(),
                     notification.getMessage(),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    date,
+                    _timeTracking
                 );
+            }
 
-            case SPECIAL_HOLIDAY_REQUEST:
+            case SPECIAL_HOLIDAY_REQUEST: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new SpecialHolidayRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
                     notification.getMessage(),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    date,
+                    _timeTracking
                 );
+            }
 
-            case SPECIAL_HOLIDAY_ACCEPT:
+            case SPECIAL_HOLIDAY_ACCEPT: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new SpecialHolidayAcceptViewModel(
                     notification.getId(),
-                    notification.getMessage(),
+                    Messages.get("notifications.special_holiday_accept"),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    date,
+                    _timeTracking
                 );
+            }
 
-            case SPECIAL_HOLIDAY_REJECT:
+            case SPECIAL_HOLIDAY_REJECT: {
+                TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
+
+                String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
+                    + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
+
                 return new SpecialHolidayRejectViewModel(
                     notification.getId(),
-                    notification.getMessage(),
+                    Messages.get("notifications.special_holiday_reject"),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
-                        _timeTracking
+                    date,
+                    _timeTracking
                 );
+            }
 
             case INFORMATION:
                 return new InformationViewModel(

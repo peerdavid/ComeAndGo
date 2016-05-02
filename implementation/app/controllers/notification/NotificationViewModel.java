@@ -15,6 +15,8 @@ public interface NotificationViewModel {
 
     String getSender();
 
+    String getDate();
+
     boolean isRejectable();
 
     void accept(int userId) throws Exception;

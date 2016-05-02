@@ -10,9 +10,9 @@ public class HolidayRequestViewModel extends BasicViewModel {
 
     private int _timeOffId;
 
-    public HolidayRequestViewModel(int _notificationId, int _timeOffId, String message, String sender, TimeTracking timeTracking) {
+    public HolidayRequestViewModel(int _notificationId, int _timeOffId, String message, String sender, String date, TimeTracking timeTracking) {
 
-        super(_notificationId, message, sender, timeTracking);
+        super(_notificationId, message, sender, date, timeTracking);
 
         this._timeOffId = _timeOffId;
 
