@@ -1,0 +1,55 @@
+@import org.pac4j.core.profile.CommonProfile
+
+@(profile: CommonProfile, companyReport: java.util.List[ReportEntry], summary: ReportEntry)
+
+@main(Messages("views.personal.title")) {
+
+    @navigation(Messages("views.personal.title"), profile) {
+
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th data-field="id">Name</th>
+                    <th data-field="name">Salary</th>
+                    <th data-field="price">Used Holiday</th>
+                    <th data-field="price">Unused Holiday</th>
+                    <th data-field="price">Sick days</th>
+                    <th data-field="price">Work hours (should)</th>
+                    <th data-field="price">Work hours (real)</th>
+                    <th data-field="price">Difference</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- User reports -->
+            @for(userReport <- companyReport) {
+                <tr>
+                    <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
+                    <td>@userReport.getSalary</td>
+                    <td>@userReport.getNumOfUsedHolidays</td>
+                    <td>@userReport.getNumOfUnusedHolidays</td>
+                    <td>@userReport.getNumOfSickDays</td>
+                    <td>@userReport.getWorkHoursShould</td>
+                    <td>@userReport.getWorkHoursIs</td>
+                    @if(userReport.getWorkHoursDifference < 0){
+                        <td style="color: darkred"><b>@userReport.getWorkHoursDifference</b></td>
+                    } else {
+                        <td style="color: darkgreen"><b>@userReport.getWorkHoursDifference</b></td>
+                    }
+                </tr>
+            }
+
+                <!-- Summary -->
+                <tr>
+                    <td class="result">SUMMARY</td>
+                    <td class="result">@summary.getSalary</td>
+                    <td class="result">@summary.getNumOfUsedHolidays</td>
+                    <td class="result">@summary.getNumOfUnusedHolidays</td>
+                    <td class="result">@summary.getNumOfSickDays</td>
+                    <td class="result">@summary.getWorkHoursShould</td>
+                    <td class="result">@summary.getWorkHoursIs</td>
+                    <td class="result">@summary.getWorkHoursDifference</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+}

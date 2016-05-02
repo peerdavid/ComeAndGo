@@ -100,7 +100,7 @@ views.notification.sentnotifications = Sent Notifications
 
 views.holiday.title = Holiday
 
-views.personal.title = Personal - Management
+views.personal.title = Company Report
 
 views.report.title = Calculation
 
