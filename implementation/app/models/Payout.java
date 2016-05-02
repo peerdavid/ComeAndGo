@@ -26,11 +26,9 @@ public class Payout {
     @ManyToOne()
     private User user;
 
-    @Column(name = "start", columnDefinition = "datetime")
-    private DateTime from;
-
-    @Column(name = "end", columnDefinition = "datetime")
-    private DateTime to;
+    // Amount can be hours for Overtime or days for holiday
+    @Column(name = "amount")
+    int amount;
 
     @Column(name = "type")
     private PayoutType type;
@@ -46,9 +44,8 @@ public class Payout {
     @ManyToOne
     private User reviewedBy;
 
-    public Payout(User user, DateTime from, DateTime to, PayoutType type, RequestState state, String comment) throws TimeTrackException {
-        setFrom(from);
-        setTo(to);
+    public Payout(User user, PayoutType type, int amount, RequestState state, String comment) throws TimeTrackException {
+        setAmount(amount);
 
         if(user == null) {
             throw new TimeTrackException("user is null");
@@ -66,19 +63,13 @@ public class Payout {
         this.comment = comment;
     }
 
-    public void setFrom(DateTime from) throws TimeTrackException {
-        if(to != null && from.isAfter(to)) {
-            throw new TimeTrackException("from date is after to date");
+    public void setAmount(int amount) throws TimeTrackException {
+        if(amount < 0) {
+            throw new TimeTrackException("Invalid amount of time");
         }
-        this.from = from;
+        this.amount = amount;
     }
 
-    public void setTo(DateTime to) throws TimeTrackException {
-        if(from != null && to.isBefore(from)) {
-            throw new TimeTrackException("to date is before from date");
-        }
-        this.to = to;
-    }
 
     public PayoutType getType() {
         return type;
@@ -92,12 +83,8 @@ public class Payout {
         return user;
     }
 
-    public DateTime getFrom() {
-        return from;
-    }
-
-    public DateTime getTo() {
-        return to;
+    public int getAmount() {
+        return amount;
     }
 
     public RequestState getState() {

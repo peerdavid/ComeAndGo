@@ -10,6 +10,20 @@ nav.top-nav .page-title {
     margin-top: 0px;
 }
 
+nav .navbar-buttons {
+    height: 120px;
+    position: absolute;
+    right: 0;
+}
+
+nav .navbar-buttons li, nav .navbar-buttons a {
+    height: 100%;
+}
+
+nav .navbar-buttons a {
+    padding-top: 26px;
+}
+
 .side-nav {
     overflow: hidden;
     height: 100%;
@@ -283,10 +297,45 @@ td.result{
         height: 290px;
         right: auto;
     }
+
+    nav.top-nav {
+        height: 60px;
+        overflow: hidden;
+    }
+
+    nav.top-nav .page-title {
+        line-height: 60px;
+        font-size: 36px;
+        position: relative;
+        left: 20%;
+        max-width: 38%;
+    }
+
+    nav .navbar-buttons {
+        height: 60px;
+        position: relative;
+        overflow: hidden;
+        max-width: 50%;
+    }
+
+    nav .navbar-buttons a {
+        padding-top: 0;
+    }
 }
 
 /* tablets */
 @media (min-width: 600px) and (max-width: 991px) {
+    nav.top-nav .page-title {
+        left: 190px;
+    }
+
+    nav.top-nav .page-title {
+        max-width: 50%;
+    }
+
+    .button-collapse {
+        padding-top: 26px;
+    }
 }
 
 /* tablets & phones */
