@@ -2,6 +2,7 @@ package business.reporting;
 
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
+import models.CompanyReport;
 import models.ReportEntry;
 import models.User;
 
@@ -23,7 +24,7 @@ class ReportingFacade implements Reporting {
 
 
     @Override
-    public List<ReportEntry> createCompanyReport() throws Exception {
+    public CompanyReport createCompanyReport() throws Exception {
         return _reportingService.getCompanyReport();
     }
 }

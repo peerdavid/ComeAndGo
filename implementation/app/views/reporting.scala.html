@@ -1,6 +1,6 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, companyReport: java.util.List[ReportEntry], summary: ReportEntry)
+@(profile: CommonProfile, companyReport: CompanyReport)
 
 @main(Messages("views.personal.title")) {
 
@@ -21,7 +21,7 @@
             </thead>
             <tbody>
                 <!-- User reports -->
-            @for(userReport <- companyReport) {
+            @for(userReport <- companyReport.getUserReports) {
                 <tr>
                     <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
                     <td>@userReport.getSalary</td>
@@ -41,13 +41,13 @@
                 <!-- Summary -->
                 <tr>
                     <td class="result">SUMMARY</td>
-                    <td class="result">@summary.getSalary</td>
-                    <td class="result">@summary.getNumOfUsedHolidays</td>
-                    <td class="result">@summary.getNumOfUnusedHolidays</td>
-                    <td class="result">@summary.getNumOfSickDays</td>
-                    <td class="result">@summary.getWorkHoursShould</td>
-                    <td class="result">@summary.getWorkHoursIs</td>
-                    <td class="result">@summary.getWorkHoursDifference</td>
+                    <td class="result">@companyReport.getSummary().getSalary</td>
+                    <td class="result">@companyReport.getSummary().getNumOfUsedHolidays</td>
+                    <td class="result">@companyReport.getSummary().getNumOfUnusedHolidays</td>
+                    <td class="result">@companyReport.getSummary().getNumOfSickDays</td>
+                    <td class="result">@companyReport.getSummary().getWorkHoursShould</td>
+                    <td class="result">@companyReport.getSummary().getWorkHoursIs</td>
+                    <td class="result">@companyReport.getSummary().getWorkHoursDifference</td>
                 </tr>
             </tbody>
         </table>

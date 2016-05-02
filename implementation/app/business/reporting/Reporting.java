@@ -1,12 +1,11 @@
 package business.reporting;
 
-import models.ReportEntry;
+import models.CompanyReport;
 
-import java.util.List;
 
 /**
  * Created by david on 02.05.16.
  */
 public interface Reporting {
-    List<ReportEntry> createCompanyReport() throws Exception;
+    CompanyReport createCompanyReport() throws Exception;
 }

@@ -1,5 +1,6 @@
 package business.reporting;
 
+import models.CompanyReport;
 import models.ReportEntry;
 
 import java.util.List;
@@ -9,5 +10,5 @@ import java.util.List;
  */
 interface ReportingService {
 
-    List<ReportEntry> getCompanyReport() throws Exception;
+    CompanyReport getCompanyReport() throws Exception;
 }

@@ -1,8 +1,6 @@
 package business.reporting;
 
-import models.TimeOff;
-import models.TimeTrack;
-import models.User;
+import models.*;
 
 import java.util.List;
 
@@ -11,5 +9,5 @@ import java.util.List;
  */
 interface CollectiveAggreement {
 
-    double getSalaryOfUser(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs);
+    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
 }
