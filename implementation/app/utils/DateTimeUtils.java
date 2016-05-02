@@ -1,6 +1,7 @@
 package utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 import java.io.PrintWriter;
 
@@ -9,7 +10,7 @@ import java.io.PrintWriter;
  */
 public class DateTimeUtils {
 
-    private final static DateTime EMPTY_DATE = new DateTime(0, 1, 1, 0, 0);
+    private final static DateTime EMPTY_DATE = DateTime.now();
 
     public static String dateTimeToTimeString(DateTime dateTime) {
         int hours = dateTime.getHourOfDay();

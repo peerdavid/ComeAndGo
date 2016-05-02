@@ -102,7 +102,7 @@ public class TimeTrack extends Model {
 
 
     public void addBreak(Break breakToAdd){
-        this.breaks.add(breakToAdd);
+        breaks.add(breakToAdd);
     }
 
    public User getUser() {
