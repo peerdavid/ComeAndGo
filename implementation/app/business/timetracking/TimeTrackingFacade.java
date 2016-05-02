@@ -5,7 +5,6 @@ import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +96,7 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void deleteTimeOff(int userId, int id) throws Exception {
-        _timeOffService.deleteTimeTrack(userId, id);
+        _timeOffService.deleteTimeOff(userId, id);
     }
 
     @Override
