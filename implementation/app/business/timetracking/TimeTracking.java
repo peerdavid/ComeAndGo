@@ -51,9 +51,21 @@ public interface TimeTracking extends UseCases {
 
     void  requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception;
 
+    void requestOvertimePayout(int userId, int numberOfHours) throws Exception;
+
+    void requestHolidayPayout(int userId, int numberOfDays) throws Exception;
+
     void  acceptHoliday(int timeOffId, int bossId) throws Exception;
 
     void  rejectHoliday(int timeOffId, int bossId) throws Exception;
+
+    void acceptHolidayPayout(int payoutId, int bossId) throws Exception;
+
+    void rejectHolidayPayout(int payoutId, int bossId) throws Exception;
+
+    void acceptOvertimePayout(int payoutId, int bossId) throws Exception;
+
+    void rejectOvertimePayout(int payoutId, int bossId) throws Exception;
 
     void  acceptSpecialHoliday(int timeOffId, int bossId) throws Exception;
 
