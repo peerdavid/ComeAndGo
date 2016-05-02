@@ -86,6 +86,16 @@ public class TimeOffValidationImplTest {
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }
 
+    @Test(expected = UserException.class)
+    public void validateTimeOffInsert_WithAlreadyDONETimeOffAtSameTime_ShouldThrowUserException() throws UserException, TimeTrackException {
+        TimeOff timeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(3), TimeOffType.PARENTAL_LEAVE, TimeOffState.DONE, "");
+        List<TimeOff> testList = new ArrayList<>();
+        testList.add(timeOff);
+        when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);
+
+        _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
+    }
+
 
 
 
