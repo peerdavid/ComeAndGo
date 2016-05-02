@@ -132,7 +132,6 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         String purple = "#9C27B0";
 
         switch (timeOff.getState()){
-            case NEW:
             case REQUEST_SENT:
                 return grey;
 

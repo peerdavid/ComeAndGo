@@ -116,11 +116,11 @@
                                             <div class="collapsible-body">
                                                 <div class="row">
                                                     <div class="input-field col s6 m3">
-                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getFrom))" name="break_starttime_@b.getId" type="text" class="timepicker">
+                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getFrom))" name="break_starttime@b.getId" type="text" class="timepicker">
                                                         <label for="break_starttime_@b.getId">@Messages("views.admin.updatetimetracks.starttime")</label>
                                                     </div>
                                                     <div id="disabled" class="input-field col s6 m3 offset-m3">
-                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getTo))"  name="break_endtime_@b.getId" type="text" class="timepicker">
+                                                        <input disabled="disabled" value="@(DateTimeUtils.dateTimeToTimeString(b.getTo))"  name="break_endtime@b.getId" type="text" class="timepicker">
                                                         <label for="break_endtime_@b.getId">@Messages("views.admin.updatetimetracks.endtime")</label>
                                                     </div>
                                                 </div>
@@ -157,7 +157,7 @@
                         </form>
 
                             <!-- add break -->
-                        <div id="modal-add-break@t.getId" class="modal">
+                        <div id="modal-add-break@t.getId" class="modal modal-break">
                             <div class="modal-content">
                                 <h4>@Messages("views.admin.updatetimetracks.addbreak")</h4>
                             </div>
