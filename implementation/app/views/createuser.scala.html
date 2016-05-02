@@ -53,18 +53,18 @@
             </div>
             <div class="row">
                 <div class="input-field col s12 m6">
-                    <select name="usernameboss" type="text">
-                        @for(u : User <- userlist) {
-                            @if(u.getRole == SecurityRole.ROLE_BOSS) {
-                                <option value=@u.getUserName>@(u.getFirstName + " " + u.getLastName)</option>
-                            }
+                    <select name="boss" type="text">
+                    @for(u : User <- userlist) {
+                        @if(u.getRole == SecurityRole.ROLE_BOSS) {
+                            <option value=@u.getUsername>@(u.getFirstName + " " + u.getLastName)</option>
                         }
+                    }
                     </select>
-                    <label for="usernameboss">@Messages("views.admin.createuser.form.selectboss")</label>
+                    <label for="boss">@Messages("views.admin.createuser.form.selectboss")</label>
                 </div>
             </div>
             <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
-                @Messages("views.admin.createuser.title")
+            @Messages("views.admin.createuser.title")
             </button>
         </form>
     }

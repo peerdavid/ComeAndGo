@@ -20,96 +20,96 @@ public class TimeTrack extends Model {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer _id;
+    private Integer id;
 
     @Column(name = "_user_id")
     @NotNull
     @Index
     @ManyToOne()
-    private User _user;
+    private User user;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     @Column(name = "start", columnDefinition = "datetime")
-    private DateTime _from;
+    private DateTime from;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
     @Column(name = "end", columnDefinition = "datetime")
-    private DateTime _to;
+    private DateTime to;
 
     // initialize the following list to a new Arraylist, so that it will be returned an empty list in case of no breaks
     @OneToMany(cascade= CascadeType.ALL)
     @Column(name = "breaks")
-    private List<Break> _breaks = new ArrayList();
+    private List<Break> breaks = new ArrayList();
 
    /**
     * sets userId and from_time to the current date and time
     * @param user
     */
    public TimeTrack(User user) {
-      _user = user;
-      _from = DateTime.now();
+      this.user = user;
+      from = DateTime.now();
    }
 
     public TimeTrack(User user, DateTime from, DateTime to, List<Break> breaks) throws UserException {
-       _user = user;
+       this.user = user;
        setFrom(from);
        setTo(to);
        if(breaks != null) {      // if we get that case, breaks should keep an empty list (see above)
-          this._breaks = breaks;
+          this.breaks = breaks;
        }
     }
 
     public void setId(int id) {
-        _id = id;
+        this.id = id;
     }
 
     public int getId() {
-        return _id;
+        return id;
     }
 
 
     public DateTime getFrom() {
-        return _from;
+        return from;
     }
 
 
     public void setFrom(DateTime from) throws UserException {
-        if (_to != null && from.isAfter(_to)) {
+        if (to != null && from.isAfter(to)) {
             throw new UserException("exceptions.timetracking.user_timetrack_error");
         }
 
-        _from = from;
+        this.from = from;
     }
 
 
     public DateTime getTo() {
-        return _to;
+        return to;
     }
 
 
     public void setTo(DateTime to) throws UserException {
-        if (to.isBefore(_from)) {
+        if (to.isBefore(from)) {
             throw new UserException("exceptions.timetracking.user_timetrack_error");
         }
 
-        _to = to;
+        this.to = to;
     }
 
 
     public List<Break> getBreaks() {
-        return _breaks;
+        return breaks;
     }
 
 
     public void addBreak(Break breakToAdd){
-        this._breaks.add(breakToAdd);
+        this.breaks.add(breakToAdd);
     }
 
    public User getUser() {
-      return _user;
+      return user;
    }
 
     public void setUser(User user) {
-        _user = user;
+        this.user = user;
     }
 }

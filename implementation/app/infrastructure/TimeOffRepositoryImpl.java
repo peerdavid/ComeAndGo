@@ -61,7 +61,7 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)
                         .where().and(
-                        Expr.eq("_user_id", user.getId()),
+                        Expr.eq("user_id", user.getId()),
                         Expr.or(
                                 Expr.or(
                                         Expr.between("start", "end", from),     // Case 1
@@ -91,7 +91,7 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
     public List<TimeOff> readTimeOffs(User user) throws TimeTrackException {
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)
-                        .where().eq("_user_id", user.getId())
+                        .where().eq("user_id", user.getId())
                         .findList();
 
         if(timeOffs == null || timeOffs.isEmpty()) {

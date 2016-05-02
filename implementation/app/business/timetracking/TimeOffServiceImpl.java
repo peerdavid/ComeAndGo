@@ -11,9 +11,7 @@ import models.Notification;
 import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +36,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void takeSickLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
@@ -52,7 +50,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void takeBusinessTrip(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
@@ -65,7 +63,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void requestHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
@@ -78,7 +76,7 @@ class TimeOffServiceImpl implements TimeOffService {
     @Override
     public void requestSpecialHoliday(int userId, DateTime from, DateTime to, String comment) throws Exception {
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
@@ -107,7 +105,7 @@ class TimeOffServiceImpl implements TimeOffService {
     public void rejectHoliday(int timeOffId, int bossId) throws Exception {
         TimeOff timeOffToReject = _repository.readTimeOff(timeOffId);
         User employee = timeOffToReject.getUser();
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         if(bossId != boss.getId()){
             throw new NotAuthorizedException("Boss is not boss of employee.");
@@ -125,7 +123,7 @@ class TimeOffServiceImpl implements TimeOffService {
     public void takeParentalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         // todo: add additional validation for parental leave?
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(parentalLeave);
@@ -138,7 +136,7 @@ class TimeOffServiceImpl implements TimeOffService {
     public void requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception {
         // todo: add additional validation for educational leave?
         User employee = _userManagement.readUser(userId);
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
 
         TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, TimeOffState.REQUEST_SENT, comment);
         _repository.createTimeOff(educationalLeave);
@@ -235,7 +233,7 @@ class TimeOffServiceImpl implements TimeOffService {
         }
 
         User employee = timeOffToDelete.getUser();
-        User boss = employee.get_boss();
+        User boss = employee.getBoss();
         Notification notification = new Notification(NotificationType.INFORMATION, "Deleted time off", employee, boss);
 
         _notificationSender.sendNotification(notification);

@@ -53,12 +53,12 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
     public void createUser(User newUser) throws UserException {
 
         // Input validation
-        if (userAlreadyExists(newUser.getUserName())) {
+        if (userAlreadyExists(newUser.getUsername())) {
             throw new UserException("exceptions.usermanagement.user_already_exists");
         }
 
         try {
-            _userRepository.readUser(newUser.get_boss().getId());
+            _userRepository.readUser(newUser.getBoss().getId());
         } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }
@@ -115,7 +115,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         HttpProfile userProfile = new HttpProfile();
         userProfile.setId(possibleUser.getId());
         userProfile.addRole(possibleUser.getRole());
-        userProfile.addAttribute("username", possibleUser.getUserName());
+        userProfile.addAttribute("username", possibleUser.getUsername());
         userProfile.addPermission(possibleUser.getRole());
 
         userProfile.addAttribute("first_name", possibleUser.getFirstName());
@@ -151,7 +151,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         }
         // Check if boss is valid
         try {
-            _userRepository.readUser(newUserData.get_boss().getId());
+            _userRepository.readUser(newUserData.getBoss().getId());
         } catch (Exception e) {
             throw new UserException("exceptions.usermanagement.invalid_boss");
         }
@@ -173,7 +173,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
             List<User> userList = _userRepository.readUsers();
             boolean foundAdmin = false;
             for (User u : userList) {
-                if (u.getRole().equals(SecurityRole.ROLE_ADMIN) && !u.getUserName().equals(userToDelete.getUserName())) {
+                if (u.getRole().equals(SecurityRole.ROLE_ADMIN) && !u.getUsername().equals(userToDelete.getUsername())) {
                     foundAdmin = true;
                     break;
                 }

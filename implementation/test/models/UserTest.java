@@ -33,7 +33,7 @@ public class UserTest {
 
     @Test(expected = UserException.class)
     public void setInvalidUserName_ShouldFail() throws UserException {
-        _testUser.setUserName("1");
+        _testUser.setUsername("1");
     }
 
     @Test(expected = UserException.class)
