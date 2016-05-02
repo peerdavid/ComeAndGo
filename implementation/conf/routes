@@ -21,17 +21,19 @@ GET     /users/delete                              @controllers.UserManagementCo
 # Timetracks
 GET     /timetracks/:userId                        @controllers.TimeTrackController.readTimeTracks(userId : Int, from ?= null, to ?= null)
 POST    /timetracks/:userId                        @controllers.TimeTrackController.updateTimeTrack(userId : Int, from ?= null, to ?= null)
-POST    /timetracks/:userId/addtimetrack           @controllers.TimeTrackController.createTimeTrack(userId : Int, from ?= null, to ?= null)
-GET     /timetracks/:userId/deletetimetrack        @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from ?= null, to ?= null)
-POST    /timetracks/:userId/createbreak/           @controllers.TimeTrackController.createBreak(timetrackId: Int, userId : Int, from ?= null, to ?= null)
-GET     /timetracks/:userId/deletebreak/           @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from ?= null, to ?= null)
+POST    /timetracks/:userId/create                 @controllers.TimeTrackController.createTimeTrack(userId : Int, from ?= null, to ?= null)
+GET     /timetracks/:userId/delete                 @controllers.TimeTrackController.deleteTimeTrack(timetrackId : Int, userId : Int, from ?= null, to ?= null)
+POST    /timetracks/:userId/breaks/create          @controllers.TimeTrackController.createBreak(timetrackId: Int, userId : Int, from ?= null, to ?= null)
+GET     /timetracks/:userId/breaks/delete          @controllers.TimeTrackController.deleteBreak(breakid: Int, timetrackId: Int, userId : Int, from ?= null, to ?= null)
 
+# Timeoffs
 GET     /timeoff                                   @controllers.TimeOffController.index
 POST    /timeoff/createTimeOff                     @controllers.TimeOffController.createTimeOff
 GET     /timeoff/calendar                          @controllers.TimeOffController.readTimeOffCalendar
 GET     /timeoff/details/:id                       @controllers.TimeOffController.readTimeOffDetails(id: Int)
 GET     /timeoff/delete/:id                        @controllers.TimeOffController.deleteTimeOff(id: Int)
 
+# Notifications
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
 GET     /notification/reject                       @controllers.NotificationController.rejectNotification(notifId : Int)
