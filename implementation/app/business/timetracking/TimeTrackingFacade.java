@@ -170,4 +170,34 @@ class TimeTrackingFacade implements TimeTracking {
     public List<TimeOff> readTimeOffs(int userId) throws Exception {
         return _timeOffService.readTimeOffs(userId);
     }
+
+    @Override
+    public void requestOvertimePayout(int userId, int numberOfHours) throws Exception {
+
+    }
+
+    @Override
+    public void requestHolidayPayout(int userId, int numberOfDays) throws Exception {
+
+    }
+
+    @Override
+    public void acceptHolidayPayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectHolidayPayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void acceptOvertimePayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectOvertimePayout(int payoutId, int bossId) throws Exception {
+
+    }
 }
