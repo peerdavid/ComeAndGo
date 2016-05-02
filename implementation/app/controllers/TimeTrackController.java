@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -200,7 +201,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             throw new UserException("exceptions.timetracking.error_in_break_form");
         }
 
-        timeTrack.getBreaks().add(new Break(fromDate, toDate));
+        timeTrack.addBreak(new Break(fromDate, toDate));
 
         _timeTracking.updateTimeTrack(timeTrack);
 

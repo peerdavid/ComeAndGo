@@ -62,7 +62,7 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setFrom(DateTime from) throws UserException {
-       if (to != null && from.isAfter(to)) {
+       if (this.to != null && from.isAfter(this.to)) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
        this.from = from;
@@ -74,7 +74,7 @@ public class Break extends Model {
      * @return TO time
      */
     public DateTime getTo() {
-        return to;
+        return this.to;
     }
 
 
@@ -84,7 +84,7 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setTo(DateTime to) throws UserException {
-       if(to.isBefore(from)) {
+       if(to.isBefore(this.from)) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
        this.to = to;
