@@ -5,11 +5,11 @@
 
 @main(Messages("views.admin.title")) {
 
-    @navigation(Messages("views.admin.edituser"), profile) {
+    @navigation(Messages("views.admin.updateuser"), profile) {
 
         @if(userlist.isEmpty) {
 
-            <h4>@Messages("views.admin.edituser.empty")</h4>
+            <h4>@Messages("views.admin.updateuser.empty")</h4>
 
         } else {
 
@@ -22,7 +22,7 @@
                             <div class="col s12 m6 enable-editing-switch-container">
                                 <div class="switch">
                                     <label>
-                                        @Messages("views.admin.enableediting")
+                                        @Messages("views.admin.enableupdating")
                                         <input type="checkbox" class="green enable-editing-switch">
                                         <span class="lever"></span>
                                     </label>
@@ -82,31 +82,31 @@
                                             }
                                         }
                                     </select>
-                                    <label for="boss">@Messages("views.admin.edituser.bossofuser")</label>
+                                    <label for="boss">@Messages("views.admin.updateuser.bossofuser")</label>
                                 </div>
                             </div>
                             <input type="hidden" name="id" value="@u.getId">
 
-                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.edituser.deleteuser")
+                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.updateuser.deleteuser")
                                 <i class="material-icons right">delete</i>
                             </button>
 
-                            <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.readTimeTracks(u.getId)">@Messages("views.admin.edittimetracks")
+                            <a class="waves-effect waves-light btn secondary-btn" href="@routes.TimeTrackController.readTimeTracks(u.getId)">@Messages("views.admin.updatetimetracks")
                                 <i class="material-icons right">list</i>
                             </a>
 
-                            <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.edituser.savechanges")
+                            <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.updateuser.savechanges")
                                 <i class="material-icons right">done</i>
                             </button>
 
 
                             <div id="modal@(u.getId)" class="modal delete-user">
                                 <div class="modal-content">
-                                    <h4>@Messages("views.admin.edituser.deleteuser")</h4>
-                                    <p>@(Messages("views.admin.edituser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
+                                    <h4>@Messages("views.admin.updateuser.deleteuser")</h4>
+                                    <p>@(Messages("views.admin.updateuser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.UserManagementController.deleteUser(u.getUserName)" style="float : right">@Messages("views.admin.edituser.delete")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.UserManagementController.deleteUser(u.getUserName)" style="float : right">@Messages("views.admin.updateuser.delete")</a>
                                     <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.btn.close")</a>
                                 </div>
                             </div>

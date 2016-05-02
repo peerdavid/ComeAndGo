@@ -48,8 +48,7 @@ views.timeoff.modal.details.infos = Informations:
 
 
 views.admin.title = Admin
-views.admin.enableediting = Edit
-
+views.admin.enableupdating = Update
 views.admin.signup = Sign up new user
 views.admin.signup.form.firstname = Firstname
 views.admin.signup.form.lastname = Lastname
@@ -65,7 +64,7 @@ views.admin.signup.form.roles.boss = Boss
 views.admin.signup.form.roles.persman = Personnel Manager
 views.admin.signup.title = Sign Up
 
-views.admin.edittimetracks = Edit Timetracks
+views.admin.updatetimetracks = Edit Timetracks
 views.admin.edittimetracks.empty = no timetracks found
 views.admin.edittimetracks.loadtimetracks = load timetracks
 views.admin.edittimetracks.starttime = starting time
@@ -83,13 +82,13 @@ views.admin.edittimetracks.deletebreakmessage = Do you really want to remove thi
 views.admin.edittimetracks.deletetimetrack = Delete Timetrack
 views.admin.edittimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?
 
-views.admin.edituser = Edit User
-views.admin.edituser.empty = Nothing to show
-views.admin.edituser.savechanges = Save Changes
-views.admin.edituser.deleteuser = Delete User
-views.admin.edituser.delete = Delete
-views.admin.edituser.deletemessage = Do you really want to remove this user?
-views.admin.edituser.bossofuser = Boss
+views.admin.updateuser = Update User
+views.admin.updateuser.empty = Nothing to show
+views.admin.updateuser.savechanges = Save Changes
+views.admin.updateuser.deleteuser = Delete User
+views.admin.updateuser.delete = Delete
+views.admin.updateuser.deletemessage = Do you really want to remove this user?
+views.admin.updateuser.bossofuser = Boss
 
 views.notification.title = Notifications
 views.notification.buttonaccept = Accept
