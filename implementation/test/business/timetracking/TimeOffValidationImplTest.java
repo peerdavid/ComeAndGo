@@ -12,10 +12,8 @@ import models.User;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
-import play.i18n.Messages;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -55,7 +53,7 @@ public class TimeOffValidationImplTest {
 
     @Test
     public void validateTimeOffInsert_WithNoClashingTimeOffs_ShouldSucceed() throws Exception {
-        when(_timeOffRepository.readTimeOffFromUser(_testUser, _MIDNIGHT, _MIDDAY)).thenThrow(TimeTrackException.class);
+        when(_timeOffRepository.readTimeOffsFromUser(_testUser, _MIDNIGHT, _MIDDAY)).thenThrow(TimeTrackException.class);
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }
 
@@ -67,7 +65,7 @@ public class TimeOffValidationImplTest {
         List<TimeOff> list = new ArrayList<>();
         list.add(_firstTimeOff);
         list.add(_secondTimeOff);
-        when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(list);
+        when(_timeOffRepository.readTimeOffsFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(list);
 
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }
@@ -80,7 +78,7 @@ public class TimeOffValidationImplTest {
         List<TimeOff> testList = new ArrayList<>();
         testList.add(_firstTimeOff);
         testList.add(_secondTimeOff);
-        when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);
+        when(_timeOffRepository.readTimeOffsFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);
 
         // test
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
@@ -91,7 +89,7 @@ public class TimeOffValidationImplTest {
         TimeOff timeOff = new TimeOff(_testUser, DateTime.now(), DateTime.now().plusHours(3), TimeOffType.PARENTAL_LEAVE, RequestState.DONE, "");
         List<TimeOff> testList = new ArrayList<>();
         testList.add(timeOff);
-        when(_timeOffRepository.readTimeOffFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);
+        when(_timeOffRepository.readTimeOffsFromUser(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(testList);
 
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }

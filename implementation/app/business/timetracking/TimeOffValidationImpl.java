@@ -6,7 +6,6 @@ import infrastructure.TimeOffRepository;
 import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
-import play.i18n.Messages;
 
 import java.util.List;
 
@@ -25,7 +24,7 @@ class TimeOffValidationImpl implements TimeOffValidation {
     public void validateTimeOff(User user, DateTime from, DateTime to) throws UserException {
 
         try {
-            List<TimeOff> timeOffsFromUser = _repository.readTimeOffFromUser(user, from, to);
+            List<TimeOff> timeOffsFromUser = _repository.readTimeOffsFromUser(user, from, to);
 
             // at this point user has timeOff(s) in conflict
             StringBuilder sb = new StringBuilder("");

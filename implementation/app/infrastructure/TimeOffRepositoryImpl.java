@@ -56,7 +56,7 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
      *      . +---------+ .
      */
     @Override
-    public List<TimeOff> readTimeOffFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
+    public List<TimeOff> readTimeOffsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
 
         List<TimeOff> timeOffs =
                 Ebean.find(TimeOff.class)

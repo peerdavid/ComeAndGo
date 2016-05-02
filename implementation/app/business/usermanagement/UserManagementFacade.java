@@ -45,9 +45,4 @@ class UserManagementFacade implements UserManagement {
     public List<User> readUsers() throws UserException {
         return _userService.readUsers();
     }
-
-    @Override
-    public boolean checkUserCredentials(String userName, String password) throws UserException {
-        return _userService.checkUserCredentials(userName, password);
-    }
 }

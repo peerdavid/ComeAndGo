@@ -17,7 +17,7 @@ public interface PayoutRepository {
 
     Payout readPayout(int id) throws TimeTrackException;
 
-    List<Payout> readPayoutFromUser(User user, DateTime from, DateTime to) throws TimeTrackException;
+    List<Payout> readPayoutsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException;
 
     List<Payout> readPayouts(User user) throws TimeTrackException;
 

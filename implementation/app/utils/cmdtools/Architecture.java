@@ -36,6 +36,7 @@ public class Architecture {
                 new business.timetracking.Module(),
                 new business.notification.Module(),
                 new business.usermanagement.Module(),
+                new business.reporting.Module(),
                 new business.Module());
         writeDotFile("architecture.dot", injector);
     }

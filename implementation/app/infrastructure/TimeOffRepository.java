@@ -16,11 +16,11 @@ public interface TimeOffRepository {
 
     TimeOff readTimeOff(int id) throws TimeTrackException;
 
-    List<TimeOff> readTimeOffFromUser(User user, DateTime from, DateTime to) throws TimeTrackException;
+    List<TimeOff> readTimeOffsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException;
 
     List<TimeOff> readTimeOffs(User user) throws TimeTrackException;
 
-    void deleteTimeOff(TimeOff timeoff);
-
     void updateTimeOff(TimeOff timeoff);
+
+    void deleteTimeOff(TimeOff timeoff);
 }
