@@ -18,15 +18,18 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
     private UserRepository _userRepository;
 
+
     @Inject
     public UserServiceImpl(UserRepository userRepository) {
         _userRepository = userRepository;
     }
 
+
     @Override
     public User readUser(int id) throws UserException {
         return _userRepository.readUser(id);
     }
+
 
     @Override
     public User readUser(String userName) throws UserException {
@@ -37,10 +40,18 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         return usertoRead;
     }
 
+
     @Override
     public List<User> readUsers() throws UserException {
         return _userRepository.readUsers();
     }
+
+
+    @Override
+    public List<User> readUsersOfBoss(int userId) throws UserException {
+        return _userRepository.readUsersOfBoss(userId);
+    }
+
 
     @Override
     public boolean checkUserCredentials(String userName, String passwordCandidate) throws UserException {
@@ -48,6 +59,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         String hashedPassword = userToCheck.getPassword();
         return userToCheck.checkPassword(passwordCandidate, hashedPassword);
     }
+
 
     @Override
     public void createUser(User newUser) throws UserException {
@@ -110,6 +122,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
     }
 
+
     @NotNull
     private HttpProfile getProfileForUser(User possibleUser) {
         HttpProfile userProfile = new HttpProfile();
@@ -123,6 +136,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
         return userProfile;
     }
+
 
     @Override
     public void updateUser(String userName, User newUserData) throws UserException {

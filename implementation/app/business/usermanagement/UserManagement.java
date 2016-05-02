@@ -20,7 +20,4 @@ public interface UserManagement extends UseCases {
 
     List<User> readUsers() throws UserException;
 
-    boolean checkUserCredentials(String userName, String password) throws UserException;
-
-
 }

@@ -100,9 +100,10 @@ views.notification.sentnotifications = Sent Notifications
 
 views.holiday.title = Holiday
 
-views.personal.title = Company Report
-
-views.report.title = My Report
+views.report.title = Report
+views.report.company.title = Company Report
+views.report.employee.title = My Report
+views.report.boss.title = Boss Report
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials

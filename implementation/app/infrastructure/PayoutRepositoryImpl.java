@@ -55,7 +55,7 @@ public class PayoutRepositoryImpl implements PayoutRepository {
      *      . +---------+ .
      */
     @Override
-    public List<Payout> readPayoutFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
+    public List<Payout> readPayoutsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
 
         List<Payout> payouts =
                 Ebean.find(Payout.class)

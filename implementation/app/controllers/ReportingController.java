@@ -2,7 +2,7 @@ package controllers;
 
 import business.reporting.Reporting;
 import com.google.inject.Inject;
-import models.CompanyReport;
+import models.Report;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -25,11 +25,31 @@ public class ReportingController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default", authorizerName = "personal")
-    public Result index() throws Exception {
+    public Result companyReport() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        CompanyReport companyReport = _reporting.createCompanyReport();
-        return ok(views.html.reporting.render(profile, companyReport));
+        Report report = _reporting.createCompanyReport();
+        return ok(views.html.reporting.render(profile, report));
+    }
+
+
+    @RequiresAuthentication(clientName = "default")
+    public Result employeeReport() throws Exception {
+        CommonProfile profile = getUserProfile();
+        int userId = Integer.parseInt(profile.getId());
+
+        Report report = _reporting.createEmployeeReport(userId);
+        return ok(views.html.reporting.render(profile, report));
+    }
+
+
+    @RequiresAuthentication(clientName = "default", authorizerName = "boss")
+    public Result bossReport() throws Exception {
+        CommonProfile profile = getUserProfile();
+        int userId = Integer.parseInt(profile.getId());
+
+        Report report = _reporting.createBossReport(userId);
+        return ok(views.html.reporting.render(profile, report));
     }
 
 }

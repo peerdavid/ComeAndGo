@@ -1,14 +1,15 @@
 package business.reporting;
 
-import models.CompanyReport;
-import models.ReportEntry;
-
-import java.util.List;
+import models.Report;
 
 /**
  * Created by david on 02.05.16.
  */
 interface ReportingService {
 
-    CompanyReport getCompanyReport() throws Exception;
+    Report getCompanyReport() throws Exception;
+
+    Report createEmployeeReport(int userId) throws Exception;
+
+    Report createBossReport(int userId) throws Exception;
 }

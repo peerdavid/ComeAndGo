@@ -1,9 +1,9 @@
 package business.reporting;
 
 import business.timetracking.InternalTimeTracking;
-import business.usermanagement.UserManagement;
+import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
-import models.CompanyReport;
+import models.Report;
 import models.ReportEntry;
 import models.TimeTrack;
 import models.User;
@@ -17,11 +17,12 @@ import java.util.List;
 class ReportingServiceImpl implements ReportingService {
 
     private InternalTimeTracking _internalTimeTracking;
-    private UserManagement _userManagement;
+    private InternalUserManagement _userManagement;
     private CollectiveAggreement _collectiveAggreement;
 
+
     @Inject
-    public ReportingServiceImpl(UserManagement userManagement, CollectiveAggreement collectiveAggreement, InternalTimeTracking internalTimeTracking){
+    public ReportingServiceImpl(InternalUserManagement userManagement, CollectiveAggreement collectiveAggreement, InternalTimeTracking internalTimeTracking){
         _userManagement = userManagement;
         _collectiveAggreement = collectiveAggreement;
         _internalTimeTracking = internalTimeTracking;
@@ -29,17 +30,37 @@ class ReportingServiceImpl implements ReportingService {
 
 
     @Override
-    public CompanyReport getCompanyReport() throws Exception {
+    public Report getCompanyReport() throws Exception {
+        List<User> users = _userManagement.readUsers();
+        return createReport(users);
+    }
+
+
+    @Override
+    public Report createEmployeeReport(int userId) throws Exception {
+        List<User> users = new ArrayList<>();
+        users.add(_userManagement.readUser(userId));
+        return createReport(users);
+    }
+
+
+    @Override
+    public Report createBossReport(int userId) throws Exception{
+        List<User> employeesOfBoss = _userManagement.readUsersOfBoss(userId);
+        return createReport(employeesOfBoss);
+    }
+
+
+    private Report createReport(List<User> users) throws Exception{
         List<ReportEntry> userReports = new ArrayList<>();
 
-
-        for(User user : _userManagement.readUsers()){
+        for(User user : users){
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId());
             userReports.add(_collectiveAggreement.createUserReport(user, timeTracks, null, null));
         }
 
         ReportEntry summary = createCompanySummary(userReports);
-        return new CompanyReport(userReports, summary);
+        return new Report(userReports, summary);
     }
 
 

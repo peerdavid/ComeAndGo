@@ -15,6 +15,8 @@ public interface UserRepository {
 
     User readUser(int userId) throws UserNotFoundException;
 
+    List<User> readUsersOfBoss(int userId) throws UserNotFoundException;
+
     void deleteUser(User user);
 
     void updateUser(User user);

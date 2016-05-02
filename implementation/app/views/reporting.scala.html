@@ -1,10 +1,10 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, companyReport: CompanyReport)
+@(profile: CommonProfile, report: Report)
 
-@main(Messages("views.personal.title")) {
+@main(Messages("views.report.title")) {
 
-    @navigation(Messages("views.personal.title"), profile) {
+    @navigation(Messages("views.report.title"), profile) {
 
         <table class="striped responsive-table">
             <thead>
@@ -20,35 +20,39 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- User reports -->
-            @for(userReport <- companyReport.getUserReports) {
-                <tr>
-                    <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
-                    <td>@userReport.getNumOfUsedHolidays</td>
-                    <td>@userReport.getNumOfUnusedHolidays</td>
-                    <td>@userReport.getNumOfSickDays</td>
-                    <td>@(userReport.getWorkMinutesShould() / 60)</td>
-                    <td>@(userReport.getWorkMinutesIs() / 60)</td>
-                    <td>@(userReport.getBreakMinutes())</td>
-                    @if(userReport.getWorkMinutesDifference < 0){
-                        <td style="color: darkred"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
-                    } else {
-                        <td style="color: darkgreen"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
-                    }
-                </tr>
-            }
 
-                <!-- Summary -->
-                <tr>
-                    <td class="result">SUMMARY</td>
-                    <td class="result">@companyReport.getSummary().getNumOfUsedHolidays</td>
-                    <td class="result">@companyReport.getSummary().getNumOfUnusedHolidays</td>
-                    <td class="result">@companyReport.getSummary().getNumOfSickDays</td>
-                    <td class="result">@(companyReport.getSummary().getWorkMinutesShould() / 60)</td>
-                    <td class="result">@(companyReport.getSummary().getWorkMinutesIs() / 60)</td>
-                    <td class="result">@(companyReport.getSummary().getBreakMinutes())</td>
-                    <td class="result">@(companyReport.getSummary().getWorkMinutesDifference() / 60)</td>
-                </tr>
+                <!-- User reports -->
+                @for(userReport <- report.getUserReports) {
+                    <tr>
+                        <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
+                        <td>@userReport.getNumOfUsedHolidays</td>
+                        <td>@userReport.getNumOfUnusedHolidays</td>
+                        <td>@userReport.getNumOfSickDays</td>
+                        <td>@(userReport.getWorkMinutesShould() / 60)</td>
+                        <td>@(userReport.getWorkMinutesIs() / 60)</td>
+                        <td>@(userReport.getBreakMinutes())</td>
+                        @if(userReport.getWorkMinutesDifference < 0) {
+                            <td style="color: darkred"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
+                        } else {
+                            <td style="color: darkgreen"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
+                        }
+                    </tr>
+                }
+
+                <!-- If there is only 1 entry, we don't need a summary...-->
+                @if(report.getUserReports().size() > 1) {
+                    <!-- Summary -->
+                    <tr>
+                        <td class="result">SUMMARY</td>
+                        <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
+                        <td class="result">@report.getSummary().getNumOfUnusedHolidays</td>
+                        <td class="result">@report.getSummary().getNumOfSickDays</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
+                        <td class="result">@(report.getSummary().getBreakMinutes())</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
+                    </tr>
+                }
             </tbody>
         </table>
     }
