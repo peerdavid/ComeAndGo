@@ -5,7 +5,6 @@ import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +96,7 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void deleteTimeOff(int userId, int id) throws Exception {
-        _timeOffService.deleteTimeTrack(userId, id);
+        _timeOffService.deleteTimeOff(userId, id);
     }
 
     @Override
@@ -169,5 +168,35 @@ class TimeTrackingFacade implements TimeTracking {
     @Override
     public List<TimeOff> readTimeOffs(int userId) throws Exception {
         return _timeOffService.readTimeOffs(userId);
+    }
+
+    @Override
+    public void requestOvertimePayout(int userId, int numberOfHours) throws Exception {
+
+    }
+
+    @Override
+    public void requestHolidayPayout(int userId, int numberOfDays) throws Exception {
+
+    }
+
+    @Override
+    public void acceptHolidayPayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectHolidayPayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void acceptOvertimePayout(int payoutId, int bossId) throws Exception {
+
+    }
+
+    @Override
+    public void rejectOvertimePayout(int payoutId, int bossId) throws Exception {
+
     }
 }

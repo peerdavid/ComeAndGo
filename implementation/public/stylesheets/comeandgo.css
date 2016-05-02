@@ -232,6 +232,14 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
     color:    #727272;
 }
 
+span.badge.new{
+    background-color: #F44336;
+}
+
+span.badge.new:after{
+    content: ""
+}
+
 /* fix date and time pickers in modals */
 .picker__holder, .modal {
     overflow: visible !important;

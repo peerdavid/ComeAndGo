@@ -75,30 +75,81 @@ public class TimeOffServiceImplTest {
 
 
     @Test
-    public void deleteTimeTrack_FutureTimeTrack_ShouldSucceed() throws Exception{
-        _testee.deleteTimeTrack(_testEmployeeId, _timeOffFutureId);
+    public void deleteTimeOff_FutureTimeOff_ShouldSucceed() throws Exception{
+        _testee.deleteTimeOff(_testEmployeeId, _timeOffFutureId);
     }
 
 
     @Test
-    public void deleteTimeTrack_ValidInputData_ShouldSendMessageToBoss() throws Exception{
-        _testee.deleteTimeTrack(_testEmployeeId, _timeOffFutureId);
+    public void deleteTimeOff_ValidInputData_ShouldSendMessageToBoss() throws Exception{
+        _testee.deleteTimeOff(_testEmployeeId, _timeOffFutureId);
 
         Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
     }
 
 
     @Test(expected = NotAuthorizedException.class)
-    public void deleteTimeTrack_UserWantsToDeleteTimeOffOfAnotherUser_ShouldFail() throws Exception{
-        _testee.deleteTimeTrack(_testEmployeeId + 1, _timeOffFutureId);
+    public void deleteTimeOff_UserWantsToDeleteTimeOffOfAnotherUser_ShouldFail() throws Exception{
+        _testee.deleteTimeOff(_testEmployeeId + 1, _timeOffFutureId);
     }
 
 
     @Test(expected = UserException.class)
-    public void deleteTimeTrack_UserWantsToDeleteOldTimeOff_ShouldFail() throws Exception{
-        _testee.deleteTimeTrack(_testEmployeeId, _timeOffPastId);
+    public void deleteTimeOff_UserWantsToDeleteOldTimeOff_ShouldFail() throws Exception{
+        _testee.deleteTimeOff(_testEmployeeId, _timeOffPastId);
     }
 
+    @Test
+    public void takeSickLeave_ShouldSendNotification() throws Exception {
+        _testee.takeSickLeave(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "sick");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void takeParentalLeave_ShouldSendNotification() throws Exception {
+        _testee.takeParentalLeave(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "babysitter");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void takeBusinessTrip_ShouldSendNotification() throws Exception {
+        _testee.takeBusinessTrip(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "important meeting");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void requestHoliday_ShouldSendNotification() throws Exception {
+        _testee.requestHoliday(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "yeah holiday");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void requestSpecialHoliday_ShouldSendNotification() throws Exception {
+        _testee.requestSpecialHoliday(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "wohnungsumzug");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void requestEducationalLeave_ShouldSendNotification() throws Exception {
+        _testee.requestEducationalLeave(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "studium");
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test(expected = NotAuthorizedException.class)
+    public void acceptHoliday_BossIsNotBossOfUser_ShouldFail() throws Exception {
+        _testee.acceptHoliday(_timeOffFutureId, _testBossId+1);
+    }
+
+    @Test
+    public void acceptHoliday_BossIsBossOfUser_ShouldSucceed() throws Exception {
+        _testee.acceptHoliday(_timeOffFutureId, _testBossId);
+    }
+
+    @Test
+    public void acceptHoliday_BossIsBossOfUser_ShouldSendNotification() throws Exception {
+        _testee.acceptHoliday(_timeOffFutureId, _testBossId);
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
 
     @Test
     public void rejectHoliday_BossIsBossOfUser_ShouldSucceed() throws Exception{
@@ -116,5 +167,70 @@ public class TimeOffServiceImplTest {
     @Test(expected = NotAuthorizedException.class)
     public void rejectHoliday_BossIsNotBossOfUser_ShouldFail() throws Exception{
         _testee.rejectHoliday(_timeOffFutureId, _testBossId + 1);
+    }
+
+
+    @Test(expected = NotAuthorizedException.class)
+    public void acceptSpecialHoliday_BossIsNotBossOfUser_ShouldFail() throws Exception {
+        _testee.acceptSpecialHoliday(_timeOffFutureId, _testBossId+1);
+    }
+
+    @Test
+    public void acceptSpecialHoliday_BossIsBossOfUser_ShouldSucceed() throws Exception {
+        _testee.acceptSpecialHoliday(_timeOffFutureId, _testBossId);
+    }
+
+    @Test
+    public void acceptSpecialHoliday_BossIsBossOfUser_ShouldSendNotification() throws Exception {
+        _testee.acceptSpecialHoliday(_timeOffFutureId, _testBossId);
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void rejectSpecialHoliday_BossIsBossOfUser_ShouldSucceed() throws Exception{
+        _testee.rejectSpecialHoliday(_timeOffFutureId, _testBossId);
+    }
+    
+    @Test
+    public void rejectSpecialHoliday_BossIsBossOfUser_ShouldSendNotification() throws Exception{
+        _testee.rejectSpecialHoliday(_timeOffFutureId, _testBossId);
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+    
+    @Test(expected = NotAuthorizedException.class)
+    public void rejectSpecialHoliday_BossIsNotBossOfUser_ShouldFail() throws Exception{
+        _testee.rejectSpecialHoliday(_timeOffFutureId, _testBossId + 1);
+    }
+
+    @Test(expected = NotAuthorizedException.class)
+    public void acceptEducationalLeave_BossIsNotBossOfUser_ShouldFail() throws Exception {
+        _testee.acceptEducationalLeave(_timeOffFutureId, _testBossId+1);
+    }
+
+    @Test
+    public void acceptEducationalLeave_BossIsBossOfUser_ShouldSucceed() throws Exception {
+        _testee.acceptEducationalLeave(_timeOffFutureId, _testBossId);
+    }
+
+    @Test
+    public void acceptEducationalLeave_BossIsBossOfUser_ShouldSendNotification() throws Exception {
+        _testee.acceptEducationalLeave(_timeOffFutureId, _testBossId);
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test
+    public void rejectEducationalLeave_BossIsBossOfUser_ShouldSucceed() throws Exception{
+        _testee.rejectEducationalLeave(_timeOffFutureId, _testBossId);
+    }
+
+    @Test
+    public void rejectEducationalLeave_BossIsBossOfUser_ShouldSendNotification() throws Exception{
+        _testee.rejectEducationalLeave(_timeOffFutureId, _testBossId);
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
+    }
+
+    @Test(expected = NotAuthorizedException.class)
+    public void rejectEducationalLeave_BossIsNotBossOfUser_ShouldFail() throws Exception{
+        _testee.rejectEducationalLeave(_timeOffFutureId, _testBossId + 1);
     }
 }

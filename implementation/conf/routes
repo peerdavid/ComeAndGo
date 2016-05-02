@@ -37,6 +37,7 @@ GET     /timeoff/delete/:id                        @controllers.TimeOffControlle
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
 GET     /notification/reject                       @controllers.NotificationController.rejectNotification(notifId : Int)
+GET     /notification/number                       @controllers.NotificationController.readNumberNewNotifications()
 
 # Come & Go
 GET     /come                                      @controllers.TimeTrackController.come
