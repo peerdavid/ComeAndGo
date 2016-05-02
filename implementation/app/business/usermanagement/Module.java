@@ -32,6 +32,8 @@ public class Module extends AbstractModule {
         final Config config = new Config(client);
         config.addAuthorizer("admin", new RequireAnyRoleAuthorizer<>(SecurityRole.ROLE_ADMIN));
         config.addAuthorizer("user", new RequireAnyRoleAuthorizer<>(SecurityRole.ROLE_USER));
+        config.addAuthorizer("boss", new RequireAnyRoleAuthorizer<>(SecurityRole.ROLE_BOSS));
+        config.addAuthorizer("personal", new RequireAnyRoleAuthorizer<>(SecurityRole.ROLE_PERSONNEL_MANAGER));
         config.setHttpActionAdapter(new DefaultHttpActionAdapter());
         bind(Config.class).toInstance(config);
 

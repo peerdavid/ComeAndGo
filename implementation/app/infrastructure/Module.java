@@ -13,5 +13,6 @@ public class Module extends AbstractModule {
         bind(TimeOffRepository.class).to(TimeOffRepositoryImpl.class);
         bind(TimeTrackingRepository.class).to(TimeTrackingRepositoryImpl.class);
         bind(UserRepository.class).to(UserRepositoryImpl.class);
+        bind(PayoutRepository.class).to(PayoutRepositoryImpl.class);
     }
 }
