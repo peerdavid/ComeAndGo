@@ -71,8 +71,16 @@ public class NotificationController extends UserProfileController {
         NotificationViewModelFactory
                 .createNotificationViewModel(_notifReader.readNotification(notificationId)).reject(id);
 
-
-
         return redirect(routes.NotificationController.index());
+    }
+
+
+    @RequiresAuthentication(clientName = "default")
+    public Result readNumberNewNotifications() throws Exception{
+        CommonProfile profile = getUserProfile();
+        int id = Integer.parseInt(profile.getId());
+
+        int num = _notifReader.readNumberOfUnseenNotifications(id);
+        return ok(String.valueOf(num));
     }
 }
