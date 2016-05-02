@@ -44,7 +44,7 @@ public class TimeTrackingValidationImplTest {
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("testuser", "asdfasdf", SecurityRole.ROLE_USER, "Hans", "Wurst", "hans@wurst.at", true, null);
+        _testUser = new User("testuser", "asdfasdf", SecurityRole.ROLE_USER, "Hans", "Wurst", "hans@wurst.at", true, null, 1200);
         _testBreak = new Break(DateTime.now());
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);

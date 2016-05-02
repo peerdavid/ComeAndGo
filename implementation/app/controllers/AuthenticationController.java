@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class AuthenticationController extends UserProfileController<CommonProfile> {
 
-    private UserManagement _userManagement;
     public static final Form<User> FORM = Form.form(User.class);
+    private UserManagement _userManagement;
 
     @Inject
     public AuthenticationController(UserManagement userManagement) {
@@ -54,6 +54,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
         String userNameBoss = form.data().get("boss");
+        double salary = Double.parseDouble(form.data().get("salary"));
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;
@@ -64,7 +65,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         }
         User boss = _userManagement.readUser(userNameBoss);
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss, salary);
 
         _userManagement.createUser(userToRegister);
 

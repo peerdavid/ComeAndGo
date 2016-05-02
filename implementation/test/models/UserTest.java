@@ -17,8 +17,8 @@ public class UserTest {
 
     @Before
     public void SetUp() throws UserException {
-        _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null);
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss);
+        _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null, 1200);
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss, 1200);
     }
 
     @Test(expected = UserException.class)
@@ -49,6 +49,11 @@ public class UserTest {
     @Test(expected = UserException.class)
     public void setInvalidRole_ShouldFail() throws UserException {
         _testUser.setRole("abc");
+    }
+
+    @Test(expected = UserException.class)
+    public void setSalary_NegativeSalary_ShouldFail() throws UserException {
+        _testUser.setSalary(-5);
     }
 
 }

@@ -25,7 +25,7 @@ public class TimeTrackingRepositoryImplTest {
 
    @Before
    public void setUp() throws UserException {
-      _testuser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, null);
+      _testuser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", false, null, 1200);
       _timetrack = new TimeTrack(_testuser);
       _timeTrackRepository = new TimeTrackingRepositoryImpl();
    }

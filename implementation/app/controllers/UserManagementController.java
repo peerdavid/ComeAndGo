@@ -18,8 +18,8 @@ import static play.mvc.Results.ok;
  */
 public class UserManagementController extends UserProfileController {
 
-    private UserManagement _userManagement;
     public static final Form<User> FORM = Form.form(User.class);
+    private UserManagement _userManagement;
 
     @Inject
     public UserManagementController(UserManagement userManagement) {
@@ -51,6 +51,7 @@ public class UserManagementController extends UserProfileController {
         String repeatPassword = form.data().get("repeat_password");
         String userNameBoss = form.data().get("boss");
         String role = form.data().get("role");
+        double salary = Double.parseDouble(form.data().get("salary"));
 
         // Password check
         if(password != null && !password.equals(repeatPassword)) {
@@ -62,6 +63,7 @@ public class UserManagementController extends UserProfileController {
         changingUser.setFirstName(firstName);
         changingUser.setLastName(lastName);
         changingUser.setEmail(email);
+        changingUser.setSalary(salary);
 
         if (password != null && !password.isEmpty()) {
             changingUser.setPassword(password);

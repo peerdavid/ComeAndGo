@@ -46,7 +46,11 @@ public class User extends Model {
     @ManyToOne()
     private User boss;
 
-    public User(String username, String password, String role, String firstname, String lastname, String email, boolean active, User boss) throws UserException {
+    @Column(name = "salary")
+    private double salary;
+
+    public User(String username, String password, String role, String firstname, String lastname,
+                String email, boolean active, User boss, double salary) throws UserException {
 
         // Data Validation in Setters
 
@@ -57,6 +61,7 @@ public class User extends Model {
         this.setLastName(lastname);
         this.setRole(role);
         this.setBoss(boss);
+        this.setSalary(salary);
         this.active = active;
     }
 
@@ -75,24 +80,12 @@ public class User extends Model {
         return id;
     }
 
+    public void setId(Integer _id) {
+        this.id = _id;
+    }
+
     public String getUsername() {
         return username;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public String getFirstName() {
-        return firstname;
-    }
-
-    public String getLastName() {
-        return lastname;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setUsername(String username) throws UserException {
@@ -100,6 +93,25 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.username_format");
         }
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) throws UserException {
+        if (    !role.equals(SecurityRole.ROLE_ADMIN) &&
+                !role.equals(SecurityRole.ROLE_USER) &&
+                !role.equals(SecurityRole.ROLE_PERSONNEL_MANAGER) &&
+                !role.equals(SecurityRole.ROLE_BOSS)) {
+            throw new UserException("exceptions.usermanagement.invalid_role");
+        }
+
+        this.role = role;
+    }
+
+    public String getFirstName() {
+        return firstname;
     }
 
     public void setFirstName(String name) throws UserException {
@@ -110,12 +122,20 @@ public class User extends Model {
         this.firstname = name;
     }
 
+    public String getLastName() {
+        return lastname;
+    }
+
     public void setLastName(String name) throws UserException {
         if (name.length() < 2 || name.length() > 50) {
             throw new UserException("exceptions.usermanagement.name_format");
         }
 
         this.lastname = name;
+    }
+
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) throws UserException {
@@ -134,24 +154,13 @@ public class User extends Model {
         return BCrypt.checkpw(candidate, hashed);
     }
 
-    public void setRole(String role) throws UserException {
-        if (    !role.equals(SecurityRole.ROLE_ADMIN) &&
-                !role.equals(SecurityRole.ROLE_USER) &&
-                !role.equals(SecurityRole.ROLE_PERSONNEL_MANAGER) &&
-                !role.equals(SecurityRole.ROLE_BOSS)) {
-            throw new UserException("exceptions.usermanagement.invalid_role");
-        }
-
-        this.role = role;
+    public User getBoss() {
+        return boss;
     }
 
     // Do not rename Setter and Getter, DataBinder needs exactly this method names!!! Weird!
     public void setBoss(User boss) {
         this.boss = boss;
-    }
-
-    public User getBoss() {
-        return boss;
     }
 
     public boolean getActive() {
@@ -162,7 +171,15 @@ public class User extends Model {
         this.active = active;
     }
 
-    public void setId(Integer _id) {
-        this.id = _id;
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) throws UserException {
+        if(salary < 0){
+            throw new UserException("exceptions.usermanagement.invalid_salary");
+        }
+
+        this.salary = salary;
     }
 }

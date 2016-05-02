@@ -33,11 +33,11 @@ public class UserServiceTest {
     public void SetUp() throws Exception {
         _userRepository = mock(UserRepository.class);
         _testee = new UserServiceImpl(_userRepository);
-        _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null);
+        _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null, 1200);
         _testBoss.setBoss(_testBoss);
         _testBoss.setId(1);
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss);
-        _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, _testBoss);
+        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss, 1200);
+        _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, _testBoss, 1200);
     }
 
 

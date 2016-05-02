@@ -61,6 +61,7 @@ views.admin.createuser.form.roles.user = User
 views.admin.createuser.form.roles.admin = Admin
 views.admin.createuser.form.roles.boss = Boss
 views.admin.createuser.form.roles.persman = Personnel Manager
+views.admin.createuser.form.salary = Salary
 views.admin.createuser.title = Sign up new User
 
 views.admin.updatetimetracks = Timetracks
@@ -117,6 +118,7 @@ exceptions.usermanagement.repeat_password_different = Password and repeat passwo
 exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
+exceptions.usermanagement.invalid_salary = Negative salary is not allowed
 exceptions.timetracking.could_not_update_break = Could not update TimeTrack and insert break
 exceptions.timetracking.could_not_find_timetrack = Timetrack was not found
 exceptions.timetracking.could_not_find_break = Break was not found

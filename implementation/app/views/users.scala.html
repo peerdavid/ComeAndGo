@@ -85,6 +85,14 @@
                                     <label for="boss">@Messages("views.admin.createuser.form.selectboss")</label>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="input-field col s12 m6">
+                                    <input disabled="disabled" name="salary" type="number" value="@u.getSalary">
+                                    <label for="salary">@Messages("views.admin.createuser.form.salary")</label>
+                                </div>
+                                <div class="input-field col s12 m6">
+                                </div>
+                            </div>
                             <input type="hidden" name="id" value="@u.getId">
 
                             <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.updateuser.deleteuser")

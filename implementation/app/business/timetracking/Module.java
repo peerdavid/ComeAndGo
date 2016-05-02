@@ -13,5 +13,6 @@ public class Module extends AbstractModule {
         bind(TimeOffService.class).to(TimeOffServiceImpl.class);
         bind(TimeTrackingValidation.class).to(TimeTrackingValidationImpl.class);
         bind(TimeOffValidation.class).to(TimeOffValidationImpl.class);
+        bind(InternalTimeTracking.class).to(InternalTimeTrackingFacade.class);
     }
 }

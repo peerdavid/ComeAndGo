@@ -1,5 +1,6 @@
 package business.reporting;
 
+import business.timetracking.InternalTimeTracking;
 import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
 import models.CompanyReport;
@@ -14,14 +15,15 @@ import java.util.List;
  */
 class ReportingServiceImpl implements ReportingService {
 
+    private InternalTimeTracking _internalTimeTracking;
     private UserManagement _userManagement;
     private CollectiveAggreement _collectiveAggreement;
 
     @Inject
-    public ReportingServiceImpl(UserManagement userManagement, CollectiveAggreement collectiveAggreement){
-
+    public ReportingServiceImpl(UserManagement userManagement, CollectiveAggreement collectiveAggreement, InternalTimeTracking internalTimeTracking){
         _userManagement = userManagement;
         _collectiveAggreement = collectiveAggreement;
+        _internalTimeTracking = internalTimeTracking;
     }
 
 
