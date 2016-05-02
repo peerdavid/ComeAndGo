@@ -107,7 +107,7 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = timeOffToReject.getUser();
         User boss = employee.getBoss();
 
-        if(bossId != boss.getId()){
+        if (bossId != boss.getId()) {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
