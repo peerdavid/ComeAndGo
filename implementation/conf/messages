@@ -7,7 +7,6 @@ views.btn.close = Close
 views.login.title = Login
 views.login.username = Username
 views.login.password = Password
-views.login.forgotPassword = Forgot Password?
 
 views.navigation.loggedinas = Logged in as:
 
