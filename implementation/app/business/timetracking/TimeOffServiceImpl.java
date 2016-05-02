@@ -43,7 +43,7 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, RequestState.DONE, comment);
 
         _repository.createTimeOff(sickLeave);
-        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss));
+        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss, sickLeave.getId()));
 
     }
 
@@ -57,7 +57,7 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, RequestState.DONE, comment);
 
         _repository.createTimeOff(businessTrip);
-        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss));
+        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss, businessTrip.getId()));
     }
 
     @Override
@@ -70,7 +70,9 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
-        _notificationSender.sendNotification(new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss));
+        Notification notification = new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+
+        _notificationSender.sendNotification(notification);
     }
 
     @Override
@@ -83,7 +85,7 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(timeOff);
 
-        _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss));
+        _notificationSender.sendNotification(new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId()));
     }
 
     @Override
@@ -100,7 +102,7 @@ class TimeOffServiceImpl implements TimeOffService {
         timeOffToAccept.setReviewedBy(boss);
         _repository.updateTimeOff(timeOffToAccept);
 
-        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_ACCEPT, boss, employee);
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_ACCEPT, boss, employee, timeOffToAccept.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -118,7 +120,7 @@ class TimeOffServiceImpl implements TimeOffService {
         timeOffToReject.setReviewedBy(boss);
         _repository.updateTimeOff(timeOffToReject);
 
-        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee);
+        Notification answerToEmployee = new Notification(NotificationType.HOLIDAY_REJECT, boss, employee, timeOffToReject.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -133,7 +135,7 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(parentalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, employee, boss);
+        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, comment, employee, boss, parentalLeave.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -147,7 +149,7 @@ class TimeOffServiceImpl implements TimeOffService {
         TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, RequestState.REQUEST_SENT, comment);
         _repository.createTimeOff(educationalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, employee, boss);
+        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, comment, employee, boss, educationalLeave.getId());
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -165,7 +167,7 @@ class TimeOffServiceImpl implements TimeOffService {
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_ACCEPT, boss, employee);
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_ACCEPT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -183,7 +185,7 @@ class TimeOffServiceImpl implements TimeOffService {
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REJECT, boss, employee);
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REJECT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -201,7 +203,7 @@ class TimeOffServiceImpl implements TimeOffService {
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_ACCEPT, boss, employee);
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_ACCEPT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -219,7 +221,7 @@ class TimeOffServiceImpl implements TimeOffService {
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
-        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee);
+        Notification notification = new Notification(NotificationType.EDUCATIONAL_LEAVE_REJECT, boss, employee, requestedTimeOff.getId());
         _notificationSender.sendNotification(notification);
     }
 
@@ -251,6 +253,7 @@ class TimeOffServiceImpl implements TimeOffService {
         User employee = timeOffToDelete.getUser();
         User boss = employee.getBoss();
         Notification notification = new Notification(NotificationType.INFORMATION, "Deleted time off", employee, boss);
+
 
         _notificationSender.sendNotification(notification);
         _repository.deleteTimeOff(timeOffToDelete);
