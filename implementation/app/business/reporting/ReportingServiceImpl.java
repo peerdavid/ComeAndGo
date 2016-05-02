@@ -5,6 +5,7 @@ import business.usermanagement.UserManagement;
 import com.google.inject.Inject;
 import models.CompanyReport;
 import models.ReportEntry;
+import models.TimeTrack;
 import models.User;
 
 import java.util.ArrayList;
@@ -31,8 +32,10 @@ class ReportingServiceImpl implements ReportingService {
     public CompanyReport getCompanyReport() throws Exception {
         List<ReportEntry> userReports = new ArrayList<>();
 
+
         for(User user : _userManagement.readUsers()){
-            userReports.add(_collectiveAggreement.createUserReport(user, null, null, null));
+            List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId());
+            userReports.add(_collectiveAggreement.createUserReport(user, timeTracks, null, null));
         }
 
         ReportEntry summary = createCompanySummary(userReports);
@@ -41,12 +44,14 @@ class ReportingServiceImpl implements ReportingService {
 
 
     private ReportEntry createCompanySummary(List<ReportEntry> userReports) {
-        double salary = userReports.stream().mapToDouble(d -> d.getSalary()).sum();
+        double hoursPerDay = userReports.stream().mapToDouble(d -> d.getHoursPerDay()).sum();
         int numOfUsedHolidays = userReports.stream().mapToInt(d -> d.getNumOfUsedHolidays()).sum();
         int numOfUnusedHolidays = userReports.stream().mapToInt(d -> d.getNumOfUnusedHolidays()).sum();
         int numOfSickDays = userReports.stream().mapToInt(d -> d.getNumOfSickDays()).sum();
-        int numOfWorkHoursShould = userReports.stream().mapToInt(d -> d.getWorkHoursShould()).sum();
-        int numOfWorkHoursIs = userReports.stream().mapToInt(d -> d.getWorkHoursIs()).sum();
-        return new ReportEntry(null, salary, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays, numOfWorkHoursShould, numOfWorkHoursIs);
+        long numOfWorkMinutesShould = userReports.stream().mapToLong(d -> d.getWorkMinutesShould()).sum();
+        long numOfWorkMinutesIs = userReports.stream().mapToLong(d -> d.getWorkMinutesIs()).sum();
+        long numOfBreakMinutes = userReports.stream().mapToLong(d -> d.getBreakMinutes()).sum();
+
+        return new ReportEntry(null, hoursPerDay, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays, numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes);
     }
 }

@@ -54,7 +54,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         String role = form.data().get("role");
         String email = form.data().get("email");
         String userNameBoss = form.data().get("boss");
-        double salary = Double.parseDouble(form.data().get("salary"));
+        double hoursPerDay = Double.parseDouble(form.data().get("hours-per-day"));
 
         if (role.isEmpty()) {
             role = SecurityRole.ROLE_USER;
@@ -65,7 +65,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         }
         User boss = _userManagement.readUser(userNameBoss);
 
-        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss, salary);
+        User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss, hoursPerDay);
 
         _userManagement.createUser(userToRegister);
 

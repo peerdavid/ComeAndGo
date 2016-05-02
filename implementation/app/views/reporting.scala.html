@@ -10,12 +10,12 @@
             <thead>
                 <tr>
                     <th data-field="id">Name</th>
-                    <th data-field="name">Salary</th>
                     <th data-field="price">Used Holiday</th>
                     <th data-field="price">Unused Holiday</th>
                     <th data-field="price">Sick days</th>
-                    <th data-field="price">Work hours (should)</th>
-                    <th data-field="price">Work hours (real)</th>
+                    <th data-field="price">Work-Should [h] </th>
+                    <th data-field="price">Work-Is [h]</th>
+                    <th data-field="price">Break [min]</th>
                     <th data-field="price">Difference</th>
                 </tr>
             </thead>
@@ -24,16 +24,16 @@
             @for(userReport <- companyReport.getUserReports) {
                 <tr>
                     <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
-                    <td>@userReport.getSalary</td>
                     <td>@userReport.getNumOfUsedHolidays</td>
                     <td>@userReport.getNumOfUnusedHolidays</td>
                     <td>@userReport.getNumOfSickDays</td>
-                    <td>@userReport.getWorkHoursShould</td>
-                    <td>@userReport.getWorkHoursIs</td>
-                    @if(userReport.getWorkHoursDifference < 0){
-                        <td style="color: darkred"><b>@userReport.getWorkHoursDifference</b></td>
+                    <td>@(userReport.getWorkMinutesShould() / 60)</td>
+                    <td>@(userReport.getWorkMinutesIs() / 60)</td>
+                    <td>@(userReport.getBreakMinutes())</td>
+                    @if(userReport.getWorkMinutesDifference < 0){
+                        <td style="color: darkred"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
                     } else {
-                        <td style="color: darkgreen"><b>@userReport.getWorkHoursDifference</b></td>
+                        <td style="color: darkgreen"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
                     }
                 </tr>
             }
@@ -41,13 +41,13 @@
                 <!-- Summary -->
                 <tr>
                     <td class="result">SUMMARY</td>
-                    <td class="result">@companyReport.getSummary().getSalary</td>
                     <td class="result">@companyReport.getSummary().getNumOfUsedHolidays</td>
                     <td class="result">@companyReport.getSummary().getNumOfUnusedHolidays</td>
                     <td class="result">@companyReport.getSummary().getNumOfSickDays</td>
-                    <td class="result">@companyReport.getSummary().getWorkHoursShould</td>
-                    <td class="result">@companyReport.getSummary().getWorkHoursIs</td>
-                    <td class="result">@companyReport.getSummary().getWorkHoursDifference</td>
+                    <td class="result">@(companyReport.getSummary().getWorkMinutesShould() / 60)</td>
+                    <td class="result">@(companyReport.getSummary().getWorkMinutesIs() / 60)</td>
+                    <td class="result">@(companyReport.getSummary().getBreakMinutes())</td>
+                    <td class="result">@(companyReport.getSummary().getWorkMinutesDifference() / 60)</td>
                 </tr>
             </tbody>
         </table>

@@ -51,7 +51,7 @@ public class UserManagementController extends UserProfileController {
         String repeatPassword = form.data().get("repeat_password");
         String userNameBoss = form.data().get("boss");
         String role = form.data().get("role");
-        double salary = Double.parseDouble(form.data().get("salary"));
+        double hoursPerDay = Double.parseDouble(form.data().get("hours-per-day"));
 
         // Password check
         if(password != null && !password.equals(repeatPassword)) {
@@ -63,7 +63,7 @@ public class UserManagementController extends UserProfileController {
         changingUser.setFirstName(firstName);
         changingUser.setLastName(lastName);
         changingUser.setEmail(email);
-        changingUser.setSalary(salary);
+        changingUser.setHoursPerDay(hoursPerDay);
 
         if (password != null && !password.isEmpty()) {
             changingUser.setPassword(password);

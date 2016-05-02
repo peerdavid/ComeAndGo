@@ -6,22 +6,24 @@ package models;
 public class ReportEntry {
 
     private User user;
-    private double salary;
+    private double hoursPerDay;
     private int numOfUsedHolidays;
     private int numOfUnusedHolidays;
     private int numOfSickDays;
-    private int workHoursShould;
-    private int workHoursIs;
+    private long workMinutesShould;
+    private long workMinutesIs;
+    private long breakMinutes;
 
-
-    public ReportEntry(User user, double salary, int numOfUsedHolidays, int numOfUnusedHolidays, int numOfSickDays, int workHoursShould, int workHoursIs) {
+    public ReportEntry(User user, double hoursPerDay, int numOfUsedHolidays, int numOfUnusedHolidays, int numOfSickDays,
+                       long workHoursShould, long workHoursIs, long breakMinutes) {
         this.user = user;
-        this.salary = salary;
+        this.hoursPerDay = hoursPerDay;
         this.numOfUsedHolidays = numOfUsedHolidays;
         this.numOfUnusedHolidays = numOfUnusedHolidays;
         this.numOfSickDays = numOfSickDays;
-        this.workHoursShould = workHoursShould;
-        this.workHoursIs = workHoursIs;
+        this.workMinutesShould = workHoursShould;
+        this.workMinutesIs = workHoursIs;
+        this.breakMinutes = breakMinutes;
     }
 
 
@@ -29,8 +31,8 @@ public class ReportEntry {
         return user;
     }
 
-    public double getSalary() {
-        return salary;
+    public double getHoursPerDay() {
+        return hoursPerDay;
     }
 
     public int getNumOfUsedHolidays() {
@@ -45,15 +47,19 @@ public class ReportEntry {
         return numOfSickDays;
     }
 
-    public int getWorkHoursShould() {
-        return workHoursShould;
+    public long getWorkMinutesShould() {
+        return workMinutesShould;
     }
 
-    public int getWorkHoursIs() {
-        return workHoursIs;
+    public long getWorkMinutesIs() {
+        return workMinutesIs;
     }
 
-    public int getWorkHoursDifference(){
-        return workHoursShould - workHoursIs;
+    public long getWorkMinutesDifference(){
+        return workMinutesIs - workMinutesShould;
+    }
+
+    public long getBreakMinutes() {
+        return breakMinutes;
     }
 }

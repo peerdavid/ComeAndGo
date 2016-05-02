@@ -41,7 +41,7 @@ public class TimeOffValidationImplTest {
 
     @Before
     public void setUp() throws UserException {
-        _testUser = new User("Stefan", "TesterStefan", SecurityRole.ROLE_USER, "Stefan", "Tester", "stefan@tester.at", true, null);
+        _testUser = new User("Stefan", "TesterStefan", SecurityRole.ROLE_USER, "Stefan", "Tester", "stefan@tester.at", true, null, 2000);
         _testBreak = new Break(DateTime.now());
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);

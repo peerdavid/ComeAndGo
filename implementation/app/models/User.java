@@ -46,11 +46,11 @@ public class User extends Model {
     @ManyToOne()
     private User boss;
 
-    @Column(name = "salary")
-    private double salary;
+    @Column(name = "hours_per_day")
+    private double hoursPerDay;
 
     public User(String username, String password, String role, String firstname, String lastname,
-                String email, boolean active, User boss, double salary) throws UserException {
+                String email, boolean active, User boss, double hoursPerDay) throws UserException {
 
         // Data Validation in Setters
 
@@ -61,7 +61,7 @@ public class User extends Model {
         this.setLastName(lastname);
         this.setRole(role);
         this.setBoss(boss);
-        this.setSalary(salary);
+        this.setHoursPerDay(hoursPerDay);
         this.active = active;
     }
 
@@ -171,15 +171,15 @@ public class User extends Model {
         this.active = active;
     }
 
-    public double getSalary() {
-        return salary;
+    public double getHoursPerDay() {
+        return this.hoursPerDay;
     }
 
-    public void setSalary(double salary) throws UserException {
-        if(salary < 0){
+    public void setHoursPerDay(double hoursPerDay) throws UserException {
+        if(hoursPerDay < 0){
             throw new UserException("exceptions.usermanagement.invalid_salary");
         }
 
-        this.salary = salary;
+        this.hoursPerDay = hoursPerDay;
     }
 }

@@ -53,7 +53,7 @@ public class UserTest {
 
     @Test(expected = UserException.class)
     public void setSalary_NegativeSalary_ShouldFail() throws UserException {
-        _testUser.setSalary(-5);
+        _testUser.setHoursPerDay(-5);
     }
 
 }
