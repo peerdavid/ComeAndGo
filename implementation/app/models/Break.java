@@ -28,8 +28,7 @@ public class Break extends Model {
      * @param from, to
      */
     public Break(DateTime from, DateTime to) throws UserException {
-       setFrom(from);
-       setTo(to);
+       setFromAndTo(from, to);
     }
 
    /**
