@@ -206,6 +206,11 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             throw new UserException("exceptions.timetracking.error_in_break_form");
         }
 
+        // in case we have a break over midnight (dates from DateTimeUtils.stringToTime() are always equal)
+        if(fromDate.isAfter(toDate)) {
+            toDate = toDate.plusDays(1);
+        }
+
         timeTrack.addBreak(new Break(fromDate, toDate));
 
         _timeTracking.updateTimeTrack(timeTrack);
