@@ -249,7 +249,9 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 span.badge.new{
     background-color: #F44336;
     font-weight: 600;
-    font-size: 10pt;
+    font-size: 11pt;
+    padding: 1px 4px;
+    margin: 0;
 }
 
 span.badge.new:after{
