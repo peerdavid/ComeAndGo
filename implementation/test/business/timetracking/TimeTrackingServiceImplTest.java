@@ -98,12 +98,12 @@ public class TimeTrackingServiceImplTest {
         _timeTrackService.go(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readActiveTimeTrack(_testUser);
-        Mockito.verify(_internalUserManagement, times(1)).readUser(userId);
+        Mockito.verify(_timeTrackingRepository, times(2)).readActiveTimeTrack(_testUser);
+        Mockito.verify(_internalUserManagement, times(2)).readUser(userId);
         Assert.assertNotEquals(timeTrack.getTo(), null);
     }
 
-    @Test(expected = NotFoundException.class)
+    @Test(expected = UserException.class)
     public void go_WithoutComeCalledBefore_ShouldThrowExceptionAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_timeTrackingRepository.readActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);

@@ -78,6 +78,7 @@ views.admin.updatetimetracks.addbreak = Add Break
 views.admin.updatetimetracks.addtimetrack = Add Timetrack
 views.admin.updatetimetracks.deletebreak = Delete Break
 views.admin.updatetimetracks.deletebreakmessage = Do you really want to remove this break?
+views.admin.updatetimetrack.closemessage = Close
 
 views.admin.updatetimetracks.deletetimetrack = Delete Timetrack
 views.admin.updatetimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?

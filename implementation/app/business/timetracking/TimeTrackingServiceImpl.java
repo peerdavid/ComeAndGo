@@ -40,8 +40,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public int come(int userId) throws UserException {
-        boolean isActive = isActive(userId);
-        if(isActive) {
+        if(isActive(userId)) {
             throw new UserException("exceptions.timetracking.error_user_already_working");
         }
 
@@ -53,8 +52,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void go(int userId) throws UserException, NotFoundException {
-        User user = loadUserById(userId);
+        if(!isActive(userId)) {
+            throw new UserException("exceptions.timetracking.error_user_not_started_work");
+        }
 
+        User user = loadUserById(userId);
         TimeTrack timeTrack = _repository.readActiveTimeTrack(user);
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);

@@ -145,17 +145,22 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String breakStart = "break_starttime" + b.getId();
             String breakEnd = "break_endtime" + b.getId();
 
+            DateTime start = null;
+            DateTime end = null;
+
             Map<String, String> breakFormData = Form.form().bindFromRequest(
                 breakStart,
                 breakEnd
             ).data();
 
             if (breakFormData.get(breakStart) != null && !breakFormData.get(breakStart).isEmpty()) {
-                b.setFrom(DateTimeUtils.stringToTime(breakFormData.get(breakStart)));
+                start = DateTimeUtils.stringToTime(breakFormData.get(breakStart));
             }
             if (breakFormData.get(breakEnd) != null && !breakFormData.get(breakEnd).isEmpty()) {
-                b.setTo(DateTimeUtils.stringToTime(breakFormData.get(breakEnd)));
+                end = DateTimeUtils.stringToTime(breakFormData.get(breakEnd));
             }
+
+            b.setFromAndTo(start, end);
         }
 
         _timeTracking.updateTimeTrack(timeTrack);
@@ -199,6 +204,11 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         }
         if (fromDate == null || toDate == null) {
             throw new UserException("exceptions.timetracking.error_in_break_form");
+        }
+
+        // in case we have a break over midnight (dates from DateTimeUtils.stringToTime() are always equal)
+        if(fromDate.isAfter(toDate)) {
+            toDate = toDate.plusDays(1);
         }
 
         timeTrack.addBreak(new Break(fromDate, toDate));
