@@ -62,7 +62,7 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setFrom(DateTime from) throws UserException {
-       if (this.to != null && from.isAfter(this.to)) {
+       if (getTo() != null && from.isAfter(getTo())) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
        this.from = from;
@@ -84,9 +84,22 @@ public class Break extends Model {
      * @throws UserException
      */
     public void setTo(DateTime to) throws UserException {
-       if(to.isBefore(this.from)) {
+       if(to.isBefore(getFrom())) {
           throw new UserException("exceptions.timetracking.user_break_error");
        }
        this.to = to;
+    }
+
+    /**
+     * @param from
+     * @param to
+     * @throws UserException in case from is after to time (also accept date because of nightwork)
+     */
+    public void setFromAndTo(DateTime from, DateTime to) throws UserException {
+        if(from == null || to == null || from.isAfter(to)) {
+            throw new UserException("exceptions.timetracking.user_break_error");
+        }
+        this.from = from;
+        this.to = to;
     }
 }
