@@ -12,7 +12,7 @@ public abstract class BasicViewModel implements NotificationViewModel {
 
     private String _message;
     private String _sender;
-    private String _date;
+    private String _additionalInfo;
 
     protected TimeTracking _timeTracking;
 
@@ -21,7 +21,7 @@ public abstract class BasicViewModel implements NotificationViewModel {
 
         _message = message;
         _sender = sender;
-        _date = date;
+        _additionalInfo = date;
 
         _timeTracking = timeTracking;
     }
@@ -38,8 +38,8 @@ public abstract class BasicViewModel implements NotificationViewModel {
         _message = message;
     }
 
-    public String getDate(){
-        return _date;
+    public String getAdditionalInformation(){
+        return _additionalInfo;
     }
 
     public String getSender() {

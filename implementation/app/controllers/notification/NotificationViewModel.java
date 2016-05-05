@@ -15,7 +15,7 @@ public interface NotificationViewModel {
 
     String getSender();
 
-    String getDate();
+    String getAdditionalInformation();
 
     boolean isRejectable();
 
