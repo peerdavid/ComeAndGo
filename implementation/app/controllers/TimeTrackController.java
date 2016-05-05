@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
@@ -35,7 +36,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int userId = Integer.parseInt(profile.getId());
         int progress = 70;
 
-        DateTime now = DateTime.now();
+        DateTime now = DateTime.now().plusDays(20);
 
         DateTime from = DateTimeUtils.stringToTime("00:00", now);
         DateTime to = now.plusDays(1);
@@ -93,11 +94,16 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         List<TimeTrack> timeTracks;
         if (from == null || to == null || from.isEmpty() || to.isEmpty()) {
-            dateFrom = DateTime.now();
-            dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
+            DateTime today = DateTime.now();
+            dateFrom = today.minusSeconds(today.getSecondOfDay());
+
+            // always start on Monday, the week before actual one
+            dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek() + 6);
             from = DateTimeUtils.dateTimeToDateString(dateFrom);
 
-            dateTo = dateFrom.plusDays(6);
+            // always end on Sunday, the current week
+            dateTo = today.plusDays(7 - today.getDayOfWeek());
+            dateTo = dateTo.plusSeconds(DateTimeConstants.SECONDS_PER_DAY - dateTo.getSecondOfDay() - 1);
             to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
