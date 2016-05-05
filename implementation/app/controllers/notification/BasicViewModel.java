@@ -16,12 +16,12 @@ public abstract class BasicViewModel implements NotificationViewModel {
 
     protected TimeTracking _timeTracking;
 
-    public BasicViewModel(int notificationId, String message, String sender, String date, TimeTracking timeTracking) {
+    public BasicViewModel(int notificationId, String message, String sender, String additionalInfo, TimeTracking timeTracking) {
         _notificationId = notificationId;
 
         _message = message;
         _sender = sender;
-        _additionalInfo = date;
+        _additionalInfo = additionalInfo;
 
         _timeTracking = timeTracking;
     }
