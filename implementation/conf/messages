@@ -144,6 +144,8 @@ exceptions.timetracking.error_user_not_started_work = You are currently not work
 exceptions.timeoff.error_clashing_timeoffs = You are not able to request time off because of clashing "{0}"
 exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
 
+exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
+
 notifications.holiday_request = Holiday request from employee
 notifications.special_holiday_request = Special-holiday request from employee
 notifications.business_trip_information = Employee is on Business trip

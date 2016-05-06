@@ -325,7 +325,7 @@ public class NotificationViewModelFactory {
 
 
             default:
-                return null;
+                throw new Exception(Messages.get("exceptions.notificationfactory.notification_type_not_found"));
         }
     }
 
