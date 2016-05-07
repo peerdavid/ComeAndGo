@@ -21,7 +21,7 @@ public class TimeTrackChangedViewModel extends BasicViewModel {
 
     @Override
     public String getHeader() {
-        return Messages.get("notifications.timetrack");
+        return Messages.get("notifications.timetrack.changed");
     }
 
     @Override

@@ -177,7 +177,9 @@ notifications.error = Error
 notifications.specialholiday = Special Holiday
 notifications.businesstrip = Business Trip
 notifications.sickleave = Sick Leave
-notifications.timetrack = Timetrack Changed
+notifications.timetrack.changed = Timetrack Changed
+notifications.timetrack.deleted = Timetrack Deleted
+notifications.timetrack.created = Timetrack Added
 notifications.fireemployee = You Are Fired
 notifications.parentalleave = Parental Leave
 

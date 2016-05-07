@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import java.util.Collections;
 import java.util.List;
 import com.google.inject.Inject;
+import org.joda.time.DateTimeUtils;
 
 
 /**
@@ -158,7 +159,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.createTimeTrack(timeTrack);
 
-        String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was created";
+        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was created";
         Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser());
         _notificationSender.sendNotification(notification);
@@ -167,7 +168,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException {
-        String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was deleted";
+        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was deleted";
         Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser());
         _notificationSender.sendNotification(notification);
@@ -183,12 +184,26 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.updateTimeTrack(timeTrack);
 
 
-           String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was updated";
+           String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was updated";
            Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
                timeTrack.getUser().getBoss(), timeTrack.getUser());
            _notificationSender.sendNotification(notification);
     }
 
+    private String dateToString(DateTime date) {
+        StringBuilder sb = new StringBuilder();
+        int value;
+        if((value = date.getDayOfMonth()) < 10) {
+            sb.append("0");
+        }
+        sb.append(value + ".");
+        if((value = date.getMonthOfYear()) < 10) {
+            sb.append("0");
+        }
+        sb.append(value + ".");
+        sb.append(date.getYear());
+        return sb.toString();
+    }
 
     private User loadUserById(int userId) throws UserException {
         User user;
