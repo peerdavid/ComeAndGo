@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.notification.NotificationException;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
@@ -7,6 +8,7 @@ import business.usermanagement.SecurityRole;
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
 import models.Break;
+import models.Notification;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -411,7 +413,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void addTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException {
+    public void addTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException, NotificationException {
         // init
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(23), DateTime.now().plusHours(50), null);
 
@@ -420,7 +422,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void addTimeTrack_whichDoesNotOverlayToAnother_ShouldSucceedAndCallRepository() throws UserException {
+    public void addTimeTrack_whichDoesNotOverlayToAnother_ShouldSucceedAndCallRepository() throws UserException, NotificationException {
         // init
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(6), DateTime.now().plusHours(20), null);
 
@@ -443,16 +445,10 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void updateTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException {
+    public void updateTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException, NotificationException {
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
 
         _timeTrackService.updateTimeTrack(timeTrack);
         Mockito.verify(_validation, times(1)).validateTimeTrackUpdate(any(TimeTrack.class));
     }
-
-    @Test
-    public void editTimeTrack_whichIsTheActiveOneAndOnlyEditsToTime_ShouldSucceedAndCallRepository() throws NotFoundException, UserException {
-    }
-
-
 }
