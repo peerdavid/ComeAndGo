@@ -16,8 +16,11 @@ import java.util.List;
 public class PayoutRepositoryImpl implements PayoutRepository {
 
     @Override
-    public void createPayout(Payout payout) {
+    public int createPayout(Payout payout) {
         Ebean.save(payout);
+        // refresh and return auto generated id
+        Ebean.refresh(payout);
+        return payout.getId();
     }
 
 

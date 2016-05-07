@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface PayoutRepository {
 
-    void createPayout(Payout payout);
+    int createPayout(Payout payout);
 
     Payout readPayout(int id) throws TimeTrackException;
 
