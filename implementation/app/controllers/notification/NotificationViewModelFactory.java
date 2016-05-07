@@ -286,6 +286,15 @@ public class NotificationViewModelFactory {
                 );
             }
 
+            case CREATED_TIMETRACK: {
+                return new TimeTrackCreatedViewModel(
+                    notification.getId(),
+                    notification.getMessage(),
+                    notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                    _timeTracking
+                );
+            }
+
             case CHANGED_TIMETRACK: {
                 return new TimeTrackChangedViewModel(
                     notification.getId(),

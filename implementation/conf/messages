@@ -205,3 +205,4 @@ notifications.icons.fireemployee = priority_high
 
 notifications.icons.changedtimetrack = access_time
 notifications.icons.deletedtimetrack = access_time
+notifications.icons.createdtimetrack = access_time

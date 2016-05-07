@@ -1,12 +1,15 @@
 package business.timetracking;
 
 
+import business.notification.NotificationException;
+import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
 import models.Break;
+import models.Notification;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -142,7 +145,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
+    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException, NotificationException {
         User user = loadUserById(userId);
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
         createTimeTrack(timeTrack);
@@ -150,24 +153,40 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void createTimeTrack(TimeTrack timeTrack) throws UserException {
+    public void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.createTimeTrack(timeTrack);
+
+        String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was created";
+        Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
+            timeTrack.getUser().getBoss(), timeTrack.getUser());
+        _notificationSender.sendNotification(notification);
     }
 
 
     @Override
-    public void deleteTimeTrack(TimeTrack timeTrack) {
+    public void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException {
+        String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was deleted";
+        Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
+            timeTrack.getUser().getBoss(), timeTrack.getUser());
+        _notificationSender.sendNotification(notification);
+
         _repository.deleteTimeTrack(timeTrack);
     }
 
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
+    public void updateTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.updateTimeTrack(timeTrack);
+
+
+           String comment = "Your TimeTrack from [" + timeTrack.getFrom().toString("dd.mm.yy") + "] was updated";
+           Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
+               timeTrack.getUser().getBoss(), timeTrack.getUser());
+           _notificationSender.sendNotification(notification);
     }
 
 
