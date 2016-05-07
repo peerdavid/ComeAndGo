@@ -58,6 +58,7 @@ class PayoutServiceImpl implements PayoutService {
    public void acceptHolidayPayout(int payoutId, int bossId) throws Exception {
       // marks requested holiday payout as accepted
       Payout requestedPayout = _repository.readPayout(payoutId);
+      validateTypes(requestedPayout.getType(), PayoutType.HOLIDAY_PAYOUT);
       requestedPayout.setState(RequestState.REQUEST_ACCEPTED);
       _repository.updatePayout(requestedPayout);
 
@@ -70,6 +71,7 @@ class PayoutServiceImpl implements PayoutService {
    @Override
    public void rejectHolidayPayout(int payoutId, int bossId) throws Exception {
       Payout requestedPayout = _repository.readPayout(payoutId);
+      validateTypes(requestedPayout.getType(), PayoutType.HOLIDAY_PAYOUT);
       requestedPayout.setState(RequestState.REQUEST_REJECTED);
       _repository.updatePayout(requestedPayout);
 
@@ -83,6 +85,7 @@ class PayoutServiceImpl implements PayoutService {
    public void acceptOvertimePayout(int payoutId, int bossId) throws Exception {
       // marks requested holiday payout as accepted
       Payout requestedPayout = _repository.readPayout(payoutId);
+      validateTypes(requestedPayout.getType(), PayoutType.OVERTIME_PAYOUT);
       requestedPayout.setState(RequestState.REQUEST_ACCEPTED);
       _repository.updatePayout(requestedPayout);
 
@@ -95,6 +98,7 @@ class PayoutServiceImpl implements PayoutService {
    @Override
    public void rejectOvertimePayout(int payoutId, int bossId) throws Exception {
       Payout requestedPayout = _repository.readPayout(payoutId);
+      validateTypes(requestedPayout.getType(), PayoutType.OVERTIME_PAYOUT);
       requestedPayout.setState(RequestState.REQUEST_REJECTED);
       _repository.updatePayout(requestedPayout);
 
@@ -102,5 +106,11 @@ class PayoutServiceImpl implements PayoutService {
       User boss = _userManagement.readUser(bossId);
       Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REJECT, boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
+   }
+
+   private void validateTypes(PayoutType actualPayoutType, PayoutType methodType) throws TimeTrackException {
+      if(actualPayoutType != methodType) {
+         throw new TimeTrackException("type of given payout is not compatible with called method");
+      }
    }
 }
