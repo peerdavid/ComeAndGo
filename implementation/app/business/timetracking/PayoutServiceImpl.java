@@ -8,6 +8,9 @@ import infrastructure.PayoutRepository;
 import models.Notification;
 import models.Payout;
 import models.User;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * Created by stefan on 07.05.16.
@@ -106,6 +109,26 @@ class PayoutServiceImpl implements PayoutService {
       User boss = _userManagement.readUser(bossId);
       Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REJECT, boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
+   }
+
+   @Override
+   public List<Payout> readPayoutsFromUser(int userId) throws Exception {
+      return _repository.readPayouts(userId);
+   }
+
+   @Override
+   public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
+      return _repository.readPayoutsFromUser(userId, from, to);
+   }
+
+   @Override
+   public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
+      return _repository.readAcceptedPayoutsFromUser(userId, from, to);
+   }
+
+   @Override
+   public void deletePayout(Payout payout) throws Exception {
+      _repository.deletePayout(payout);
    }
 
    private void validateTypes(PayoutType actualPayoutType, PayoutType methodType) throws TimeTrackException {
