@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import com.google.inject.Inject;
+import models.Payout;
 import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
@@ -15,11 +16,13 @@ class TimeTrackingFacade implements TimeTracking {
 
     private TimeTrackingService _timeTrackingService;
     private TimeOffService _timeOffService;
+    private PayoutService _payoutService;
 
     @Inject
-    public TimeTrackingFacade(TimeTrackingService timeTrackingService, TimeOffService timeOffService) {
+    public TimeTrackingFacade(TimeTrackingService timeTrackingService, TimeOffService timeOffService, PayoutService payoutService) {
         _timeTrackingService = timeTrackingService;
         _timeOffService = timeOffService;
+        _payoutService = payoutService;
     }
 
 
@@ -171,32 +174,57 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
-    public void requestOvertimePayout(int userId, int numberOfHours) throws Exception {
-
+    public void requestOvertimePayout(int userId, int numberOfHours, String comment) throws Exception {
+        _payoutService.requestOvertimePayout(userId, numberOfHours, comment);
     }
 
     @Override
-    public void requestHolidayPayout(int userId, int numberOfDays) throws Exception {
-
+    public void requestHolidayPayout(int userId, int numberOfDays, String comment) throws Exception {
+        _payoutService.requestHolidayPayout(userId, numberOfDays, comment);
     }
 
     @Override
     public void acceptHolidayPayout(int payoutId, int bossId) throws Exception {
-
+        _payoutService.acceptHolidayPayout(payoutId, bossId);
     }
 
     @Override
     public void rejectHolidayPayout(int payoutId, int bossId) throws Exception {
-
+        _payoutService.rejectHolidayPayout(payoutId, bossId);
     }
 
     @Override
     public void acceptOvertimePayout(int payoutId, int bossId) throws Exception {
-
+        _payoutService.acceptOvertimePayout(payoutId, bossId);
     }
 
     @Override
     public void rejectOvertimePayout(int payoutId, int bossId) throws Exception {
+        _payoutService.rejectOvertimePayout(payoutId, bossId);
+    }
 
+    @Override
+    public void deletePayoutRequest(int payoutId) throws Exception {
+        _payoutService.deletePayout(payoutId);
+    }
+
+    @Override
+    public List<Payout> readPayoutsFromUser(int userId) throws Exception {
+        return _payoutService.readPayoutsFromUser(userId);
+    }
+
+    @Override
+    public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
+        return _payoutService.readPayoutsFromUser(userId, from, to);
+    }
+
+    @Override
+    public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
+        return _payoutService.readAcceptedPayoutsFromUser(userId, from, to);
+    }
+
+    @Override
+    public Payout readPayout(int payoutId) throws Exception {
+        return _payoutService.readPayout(payoutId);
     }
 }

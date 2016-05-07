@@ -1,7 +1,9 @@
 package business.timetracking;
 
+import models.Payout;
 import models.TimeOff;
 import models.TimeTrack;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -11,4 +13,5 @@ import java.util.List;
 public interface InternalTimeTracking {
     List<TimeOff> readTimeOffs(int userId) throws Exception;
     List<TimeTrack> readTimeTracks(int userId) throws Exception;
+    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
 }

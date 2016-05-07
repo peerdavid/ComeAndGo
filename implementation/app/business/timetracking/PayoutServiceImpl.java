@@ -112,6 +112,11 @@ class PayoutServiceImpl implements PayoutService {
    }
 
    @Override
+   public Payout readPayout(int payoutId) throws Exception {
+      return _repository.readPayout(payoutId);
+   }
+
+   @Override
    public List<Payout> readPayoutsFromUser(int userId) throws Exception {
       return _repository.readPayouts(userId);
    }
@@ -127,8 +132,9 @@ class PayoutServiceImpl implements PayoutService {
    }
 
    @Override
-   public void deletePayout(Payout payout) throws Exception {
-      _repository.deletePayout(payout);
+   public void deletePayout(int payoutId) throws Exception {
+      Payout toDelete = _repository.readPayout(payoutId);
+      _repository.deletePayout(toDelete);
    }
 
    private void validateTypes(PayoutType actualPayoutType, PayoutType methodType) throws TimeTrackException {

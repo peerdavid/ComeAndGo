@@ -22,11 +22,13 @@ interface PayoutService {
 
    void rejectOvertimePayout(int payoutId, int bossId) throws Exception;
 
+   Payout readPayout(int payoutId) throws Exception;
+
    List<Payout> readPayoutsFromUser(int userId) throws Exception;
 
    List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
 
    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
 
-   void deletePayout(Payout payout) throws Exception;
+   void deletePayout(int payoutId) throws Exception;
 }
