@@ -7,6 +7,7 @@ import models.Payout;
 import models.User;
 import org.joda.time.DateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -79,7 +80,7 @@ public class PayoutRepositoryImpl implements PayoutRepository {
                 ).findList();
 
         if (payouts == null || payouts.isEmpty()) {
-            throw new TimeTrackException("no such payouts found");
+            return Collections.emptyList();
         }
 
         return payouts;
