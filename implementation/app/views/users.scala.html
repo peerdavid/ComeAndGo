@@ -16,7 +16,18 @@
             <ul id="user-list" class="collapsible listing" data-collapsible="accordion">
             @for(u : User <- userlist) {
                 <li>
-                    <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + u.getRole + ")")</div>
+                    @if(u.getRole==SecurityRole.ROLE_USER) {
+                        <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.user") + ")") </div>
+                    }
+                    @if(u.getRole==SecurityRole.ROLE_PERSONNEL_MANAGER) {
+                        <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.persman") + ")") </div>
+                    }
+                    @if(u.getRole==SecurityRole.ROLE_BOSS) {
+                        <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.boss") + ")") </div>
+                    }
+                    @if(u.getRole==SecurityRole.ROLE_ADMIN) {
+                        <div class="collapsible-header"><i class="material-icons">perm_identity</i>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.admin") + ")") </div>
+                    }
                     <div class="collapsible-body">
                         <div class="row">
                             <div class="col s12 m6 enable-editing-switch-container">
