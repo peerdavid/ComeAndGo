@@ -19,7 +19,7 @@ $( document ).ready(function() {
 });
 
 /*
- * Get hotel availability from server by ajax call
+ * get notification count by ajax call
  */
 var updateNewNotificationBadge = function(){
     $.ajax({
