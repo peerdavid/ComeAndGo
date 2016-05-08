@@ -15,9 +15,13 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.creation.MockitoMethodProxy;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
@@ -122,7 +126,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test(expected = UserException.class)
-    public void go_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
+    public void go_ForUnregisteredUser_ShouldThrowException() throws TimeTrackException, NotFoundException, UserException {
         // Prepare
         when(_internalUserManagement.readUser(8)).thenThrow(Exception.class);
 
@@ -133,6 +137,242 @@ public class TimeTrackingServiceImplTest {
 
         // Validate
         Mockito.verify(_internalUserManagement, times(1)).readUser(userId);
+    }
+
+    @Test
+    public void getHoursWorked_WithNoTimeTracks_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(Collections.emptyList());
+
+        int userId = 8;
+        double expected = 0;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorked(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0);
+    }
+
+    @Test
+    public void getHoursWorked_WithBreak_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        TimeTrack t = Mockito.mock(TimeTrack.class);
+        when(t.getFrom()).thenReturn(DateTime.now().minusHours(6));
+        when(t.getTo()).thenReturn(DateTime.now());
+
+        List<TimeTrack> timeTracks = new ArrayList<>();
+        timeTracks.add(t);
+
+        Break b = Mockito.mock(Break.class);
+        when(b.getFrom()).thenReturn(DateTime.now().minusHours(4));
+        when(b.getTo()).thenReturn(DateTime.now());
+
+        List<Break> breaks = new ArrayList<>();
+        breaks.add(b);
+        when(t.getBreaks()).thenReturn(breaks);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+
+        int userId = 8;
+        double expected = 2.0;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorked(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.05);
+    }
+
+    @Test
+    public void getHoursWorked_WithMultipleTimeTracksAndBreaks_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        TimeTrack t1 = Mockito.mock(TimeTrack.class);
+        when(t1.getFrom()).thenReturn(DateTime.now().minusHours(7));
+        when(t1.getTo()).thenReturn(DateTime.now().minusHours(4));
+        TimeTrack t2 = Mockito.mock(TimeTrack.class);
+        when(t2.getFrom()).thenReturn(DateTime.now().minusHours(3));
+        when(t2.getTo()).thenReturn(DateTime.now());
+
+        List<TimeTrack> timeTracks = new ArrayList<>();
+        timeTracks.add(t1);
+        timeTracks.add(t2);
+
+        Break b1 = Mockito.mock(Break.class);
+        when(b1.getFrom()).thenReturn(DateTime.now().minusHours(6));
+        when(b1.getTo()).thenReturn(DateTime.now().minusHours(5));
+
+        Break b2 = Mockito.mock(Break.class);
+        when(b2.getFrom()).thenReturn(DateTime.now().minusHours(2));
+        when(b2.getTo()).thenReturn(DateTime.now().minusHours(1));
+
+        List<Break> breaks = new ArrayList<>();
+        breaks.add(b1);
+        breaks.add(b2);
+        when(t1.getBreaks()).thenReturn(breaks);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+
+        int userId = 8;
+        double expected = 4.0;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorked(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.05);
+    }
+
+    @Test(expected = Exception.class)
+    public void getHoursWorked_ForUnregisteredUser_ShouldThrowException() throws UserException {
+        // Prepare
+        when(_internalUserManagement.readUser(8)).thenThrow(Exception.class);
+
+        int userId = 8;
+
+        // Call
+        _timeTrackService.getHoursWorked(userId);
+    }
+
+    @Test
+    public void getHoursWorkedProgress_WithNoTimeTracks_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(Collections.emptyList());
+
+        _testUser.setHoursPerDay(2.0);
+
+        int userId = 8;
+        double expected = 0;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorkedProgress(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void getHoursWorkedProgress_WithBreak_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        TimeTrack t = Mockito.mock(TimeTrack.class);
+        when(t.getFrom()).thenReturn(DateTime.now().minusHours(6));
+        when(t.getTo()).thenReturn(DateTime.now());
+
+        List<TimeTrack> timeTracks = new ArrayList<>();
+        timeTracks.add(t);
+
+        Break b = Mockito.mock(Break.class);
+        when(b.getFrom()).thenReturn(DateTime.now().minusHours(4));
+        when(b.getTo()).thenReturn(DateTime.now());
+
+        List<Break> breaks = new ArrayList<>();
+        breaks.add(b);
+        when(t.getBreaks()).thenReturn(breaks);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+
+        _testUser.setHoursPerDay(4.0);
+
+        int userId = 8;
+        double expected = 0.5;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorkedProgress(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void getHoursWorkedProgress_WithMoreThanHundredPercent_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        TimeTrack t = Mockito.mock(TimeTrack.class);
+        when(t.getFrom()).thenReturn(DateTime.now().minusHours(6));
+        when(t.getTo()).thenReturn(DateTime.now());
+
+        List<TimeTrack> timeTracks = new ArrayList<>();
+        timeTracks.add(t);
+
+        when(t.getBreaks()).thenReturn(Collections.emptyList());
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+
+        _testUser.setHoursPerDay(4.0);
+
+        int userId = 8;
+        double expected = 1.0;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorkedProgress(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void getHoursWorkedProgress_WithMultipleTimeTracksAndBreaks_ShouldSucceedAndCallRepository() throws UserException {
+        // Prepare
+        TimeTrack t1 = Mockito.mock(TimeTrack.class);
+        when(t1.getFrom()).thenReturn(DateTime.now().minusHours(7));
+        when(t1.getTo()).thenReturn(DateTime.now().minusHours(4));
+        TimeTrack t2 = Mockito.mock(TimeTrack.class);
+        when(t2.getFrom()).thenReturn(DateTime.now().minusHours(3));
+        when(t2.getTo()).thenReturn(DateTime.now());
+
+        List<TimeTrack> timeTracks = new ArrayList<>();
+        timeTracks.add(t1);
+        timeTracks.add(t2);
+
+        Break b1 = Mockito.mock(Break.class);
+        when(b1.getFrom()).thenReturn(DateTime.now().minusHours(6));
+        when(b1.getTo()).thenReturn(DateTime.now().minusHours(5));
+
+        Break b2 = Mockito.mock(Break.class);
+        when(b2.getFrom()).thenReturn(DateTime.now().minusHours(2));
+        when(b2.getTo()).thenReturn(DateTime.now().minusHours(1));
+
+        List<Break> breaks = new ArrayList<>();
+        breaks.add(b1);
+        breaks.add(b2);
+        when(t1.getBreaks()).thenReturn(breaks);
+
+        _testUser.setHoursPerDay(6.0);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+
+        int userId = 8;
+        double expected = 0.66;
+
+        // Call
+        double actual = _timeTrackService.getHoursWorkedProgress(userId);
+
+        // Validate
+        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expected, actual, 0.01);
+    }
+
+    @Test(expected = Exception.class)
+    public void getHoursWorkedProgress_ForUnregisteredUser_ShouldThrowException() throws UserException {
+        // Prepare
+        when(_internalUserManagement.readUser(8)).thenThrow(Exception.class);
+
+        int userId = 8;
+
+        // Call
+        _timeTrackService.getHoursWorked(userId);
     }
 
     @Test
