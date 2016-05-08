@@ -2,6 +2,8 @@ package utils;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.PrintWriter;
 
@@ -9,42 +11,33 @@ import java.io.PrintWriter;
  * Created by csaq5996 on 4/22/16.
  */
 public class DateTimeUtils {
+    private final static DateTimeFormatter DATE_FORMATTER = DateTimeFormat.forPattern("dd.MM.yyyy");
+    private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
 
     private final static DateTime EMPTY_DATE = DateTime.now();
 
-    public static String dateTimeToTimeString(DateTime dateTime) {
-        int hours = dateTime.getHourOfDay();
-        int minutes = dateTime.getMinuteOfHour();
-
-        String result = String.format("%02d:%02d", hours, minutes);
-
-        return result;
+    public static String dateTimeToTimeString(DateTime time) {
+        return TIME_FORMATTER.print(time.toInstant());
 
     }
 
-    public static String dateTimeToDateString(DateTime dateTime) {
-        int day = dateTime.getDayOfMonth();
-        int month = dateTime.getMonthOfYear();
-        int year = dateTime.getYear();
-
-        String result = String.format("%02d.%02d.%4d", day, month, year);
-
-        return result;
+    public static String dateTimeToDateString(DateTime date) {
+        return DATE_FORMATTER.print(date.toInstant());
     }
 
     public static DateTime stringToTime(String time) {
         return stringToTime(time, EMPTY_DATE);
     }
 
-    public static DateTime stringToTime(String time, DateTime date) {
-        String[] parts = time.split(":");
+    public static DateTime stringToTime(String timeString, DateTime date) {
+        DateTime time = TIME_FORMATTER.parseDateTime(timeString);
 
         return new DateTime(
             date.getYear(),
             date.getMonthOfYear(),
             date.getDayOfMonth(),
-            Integer.parseInt(parts[0]),
-            Integer.parseInt(parts[1])
+            time.getHourOfDay(),
+            time.getMinuteOfHour()
         );
     }
 
@@ -52,13 +45,24 @@ public class DateTimeUtils {
         return stringToDateTime(date, 0, 0);
     }
 
-    public static DateTime stringToDateTime(String date, int hours, int minutes) {
-        String[] parts = date.split("\\.");
+    public static DateTime stringToDateTime(String dateString, int hours, int minutes) {
+        DateTime date = DATE_FORMATTER.parseDateTime(dateString);
         return new DateTime(
-            Integer.parseInt(parts[2]),
-            Integer.parseInt(parts[1]),
-            Integer.parseInt(parts[0]),
+            date.getYear(),
+            date.getMonthOfYear(),
+            date.getDayOfMonth(),
             hours, minutes
+        );
+    }
+
+    public static DateTime stringToDateTime(String dateString, DateTime time) {
+        DateTime date = DATE_FORMATTER.parseDateTime(dateString);
+        return new DateTime(
+            date.getYear(),
+            date.getMonthOfYear(),
+            date.getDayOfMonth(),
+            time.getHourOfDay(),
+            time.getMinuteOfHour()
         );
     }
 
