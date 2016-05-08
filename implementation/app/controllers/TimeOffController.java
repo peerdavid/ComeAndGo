@@ -14,6 +14,7 @@ import org.pac4j.play.java.UserProfileController;
 import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
+import utils.DateTimeUtils;
 
 import java.util.List;
 
@@ -32,14 +33,14 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result index() throws Exception{
+    public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
         return ok(views.html.timeoff.render(profile, null));
     }
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result readTimeOffDetails(int id) throws Exception{
+    public Result readTimeOffDetails(int id) throws Exception {
         CommonProfile profile = getUserProfile();
         TimeOff timeOffToDelete = _timeTracking.readTimeOffById(id);
         return ok(views.html.timeoff.render(profile, timeOffToDelete));
@@ -47,7 +48,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result deleteTimeOff(int id) throws Exception{
+    public Result deleteTimeOff(int id) throws Exception {
         CommonProfile profile = getUserProfile();
 
         _timeTracking.deleteTimeOff(Integer.parseInt(profile.getId()), id);
@@ -56,13 +57,13 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     @RequiresAuthentication(clientName = "default")
-    public Result readTimeOffCalendar() throws Exception{
+    public Result readTimeOffCalendar() throws Exception {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
         List<TimeOff> timeOffs = _timeTracking.readTimeOffs(userId);
 
         String timeOffString = "";
-        for(TimeOff t : timeOffs){
+        for(TimeOff t : timeOffs) {
             timeOffString += timeOffToXml(t);
         }
 
@@ -86,9 +87,8 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         String comment = form.get("comment");
         TimeOffType type = TimeOffType.valueOf(form.get("type"));
 
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd.MM.yyyy");
-        DateTime from = dtf.parseDateTime(form.get("from"));
-        DateTime to = dtf.parseDateTime(form.get("to"));
+        DateTime from = DateTimeUtils.stringToDateTime(form.get("from"));
+        DateTime to = DateTimeUtils.stringToDateTime(form.get("to"));
 
         // Call business logic
         createTimeOffForGivenType(userId, type, from, to, comment);
@@ -99,7 +99,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
     /*
      * HELPER METHODS
      */
-    private static String timeOffToXml(TimeOff timeOff){
+    private static String timeOffToXml(TimeOff timeOff) {
         int id = timeOff.getId();
         String name = StringEscapeUtils.escapeXml10(timeOff.getType().toString());
         String comment = StringEscapeUtils.escapeXml10(timeOff.getComment());
@@ -122,8 +122,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
                 "\t</event>\n", id, name, comment, from, to, color, url);
     }
 
-    private static String timeOffToColor(TimeOff timeOff){
-
+    private static String timeOffToColor(TimeOff timeOff) {
         String grey = "#BDBDBD";
         String orange = "#FF5722";
         String green = "#4CAF50";
@@ -131,7 +130,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         String blue = "#2196F3";
         String purple = "#9C27B0";
 
-        switch (timeOff.getState()){
+        switch (timeOff.getState()) {
             case REQUEST_SENT:
                 return grey;
 
@@ -139,7 +138,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
                 return orange;
         }
 
-        switch (timeOff.getType()){
+        switch (timeOff.getType()) {
             case HOLIDAY:
                 return green;
 
@@ -162,8 +161,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
 
 
     private void createTimeOffForGivenType(int userId, TimeOffType type, DateTime from, DateTime to, String comment) throws Exception {
-
-        switch(type){
+        switch(type) {
             case HOLIDAY:
                 _timeTracking.requestHoliday(userId, from, to, comment);
                 break;
