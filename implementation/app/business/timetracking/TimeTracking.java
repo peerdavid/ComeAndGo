@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import business.UseCases;
+import business.usermanagement.UserException;
 import models.Payout;
 import models.TimeOff;
 import models.TimeTrack;
@@ -15,6 +16,8 @@ public interface TimeTracking extends UseCases {
     void come(int userId) throws Exception;
 
     void go(int userId) throws Exception;
+
+    float getHoursWorked(int userId) throws UserException;
 
     void startBreak(int userId) throws Exception;
 

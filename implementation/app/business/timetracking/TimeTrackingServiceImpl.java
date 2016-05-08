@@ -15,6 +15,7 @@ import models.User;
 import org.joda.time.DateTime;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import com.google.inject.Inject;
 import org.joda.time.DateTimeUtils;
@@ -66,6 +67,30 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.updateTimeTrack(timeTrack);
     }
 
+    @Override
+    public float getHoursWorked(int userId) throws UserException {
+        User user = loadUserById(userId);
+
+        DateTime now = DateTime.now();
+        List<TimeTrack> timeTracks = readTimeTracks(userId,
+            new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0),
+            new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 23, 59));
+
+        // TODO: check for timetrack over night
+        float result = 0;
+        for (TimeTrack timeTrack : timeTracks) {
+            DateTime from = timeTrack.getFrom();
+            DateTime to = timeTrack.getTo() == null ? now : timeTrack.getTo();
+            result += (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+            for (Break b : timeTrack.getBreaks()) {
+                from = b.getFrom();
+                to = b.getTo() == null ? now : b.getTo();
+                result -= (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+            }
+        }
+
+        return result;
+    }
 
     @Override
     public boolean isActive(int userId) throws UserException {

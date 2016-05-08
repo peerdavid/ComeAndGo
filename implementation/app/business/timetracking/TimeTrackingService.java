@@ -16,6 +16,8 @@ interface TimeTrackingService {
 
     void go(int userId) throws UserException, NotFoundException;
 
+    float getHoursWorked(int userId) throws UserException;
+
     boolean isActive(int userId) throws UserException;
 
     boolean takesBreak(int userId) throws UserException;

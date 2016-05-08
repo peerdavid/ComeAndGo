@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Payout;
 import models.TimeOff;
@@ -25,7 +26,6 @@ class TimeTrackingFacade implements TimeTracking {
         _payoutService = payoutService;
     }
 
-
     @Override
     public void come(int userId) throws Exception {
         _timeTrackingService.come(userId);
@@ -34,19 +34,23 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void go(int userId) throws Exception {
-            _timeTrackingService.go(userId);
+        _timeTrackingService.go(userId);
     }
 
+    @Override
+    public float getHoursWorked(int userId) throws UserException {
+        return _timeTrackingService.getHoursWorked(userId);
+    }
 
     @Override
     public void startBreak(int userId) throws Exception {
-            _timeTrackingService.createBreak(userId);
+        _timeTrackingService.createBreak(userId);
     }
 
 
     @Override
     public void endBreak(int userId) throws Exception {
-            _timeTrackingService.endBreak(userId);
+        _timeTrackingService.endBreak(userId);
     }
 
 
