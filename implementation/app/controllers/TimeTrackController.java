@@ -5,6 +5,7 @@ import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
+import models.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
@@ -34,7 +35,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     public Result index() throws Exception {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
-        int progress = 70;
 
         DateTime now = DateTime.now().plusDays(20);
 
@@ -46,7 +46,6 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         return ok(views.html.index.render(
             profile,
             _timeTracking.readState(userId),
-            progress,
             timeTrackList)
         );
     }
@@ -76,6 +75,15 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         }
 
         return redirect(routes.TimeTrackController.index());
+    }
+
+    @RequiresAuthentication(clientName = "default")
+    public Result readProgress() throws UserException {
+        int userId = Integer.parseInt(getUserProfile().getId());
+
+        int progress = (int) (_timeTracking.getHoursWorkedProgress(userId) * 100);
+
+        return ok(String.valueOf(progress));
     }
 
     @RequiresAuthentication(clientName = "default")

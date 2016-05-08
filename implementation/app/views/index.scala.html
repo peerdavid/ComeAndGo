@@ -1,9 +1,42 @@
 @import org.pac4j.core.profile.CommonProfile
 @import business.timetracking.TimeTrackState
 @import utils.DateTimeUtils
-@(profile: CommonProfile, userState: TimeTrackState, progress: Int, timeTracks: java.util.List[TimeTrack])
+@(profile: CommonProfile, userState: TimeTrackState, timeTracks: java.util.List[TimeTrack])
 
-@main(Messages("views.index.title")) {
+@script = {
+    <!-- JS for updating progress -->
+    <script>
+            /*
+             * get progress by ajax call
+             */
+            var updateProgress = function(){
+                $.ajax({
+                    type:  'GET',
+                    contentType: 'application/json',
+                    data: '',
+                    url: '/progress',
+                    success: function(data, textStatus, jqXHR) {
+                        if(data <= 0){
+                            return;
+                        }
+
+                        $('#active_progress .determinate').css("width", data + "%");
+                    },
+                    error:function(jqXHR, textStatus, errorThrown) {
+                        console.log("Progess update failed " + textStatus);
+                    }
+                });
+            }
+
+            $( document ).ready(function() {
+                updateProgress();
+                // update progress every minute
+                setInterval(updateProgress, 60000);
+            });
+    </script>
+}
+
+@main(Messages("views.index.title"), script) {
 
     @navigation(Messages("views.index.title"), profile) {
 
@@ -26,7 +59,7 @@
 
         <!-- Progress bar -->
         <div id="active_progress" class="progress row">
-            <div class="determinate green col s12 l12" style="width : @(progress)%"></div>
+            <div class="determinate green col s12 l12" style="width: 0%"></div>
         </div>
 
         <!-- Current state -->

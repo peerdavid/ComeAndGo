@@ -48,6 +48,7 @@ GET     /notification/number                       @controllers.NotificationCont
 GET     /come                                      @controllers.TimeTrackController.come
 GET     /go                                        @controllers.TimeTrackController.go
 GET     /pause                                     @controllers.TimeTrackController.pause
+GET     /progress                                  @controllers.TimeTrackController.readProgress
 
 # Map static resources _from the /public folder _to the /assets URL path
 GET     /assets/*file                              controllers.Assets.at(path="/public", file)
