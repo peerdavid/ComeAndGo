@@ -47,7 +47,7 @@ views.timeoff.modal.details.infos = Informations:
 
 
 views.admin.title = Admin
-views.admin.enableupdating = Update
+views.admin.enableediting = Edit
 views.admin.createuser = Sign up new User
 views.admin.createuser.form.firstname = Firstname
 views.admin.createuser.form.lastname = Lastname
