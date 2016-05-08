@@ -38,8 +38,13 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
-    public float getHoursWorked(int userId) throws UserException {
+    public double getHoursWorked(int userId) throws UserException {
         return _timeTrackingService.getHoursWorked(userId);
+    }
+
+    @Override
+    public double getHoursWorkedProgress(int userId) throws UserException {
+        return _timeTrackingService.getHoursWorkedProgress(userId);
     }
 
     @Override

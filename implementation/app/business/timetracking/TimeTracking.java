@@ -17,7 +17,9 @@ public interface TimeTracking extends UseCases {
 
     void go(int userId) throws Exception;
 
-    float getHoursWorked(int userId) throws UserException;
+    double getHoursWorked(int userId) throws UserException;
+
+    double getHoursWorkedProgress(int userId) throws UserException;
 
     void startBreak(int userId) throws Exception;
 

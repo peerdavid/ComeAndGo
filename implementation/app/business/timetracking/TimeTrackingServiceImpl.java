@@ -68,7 +68,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     @Override
-    public float getHoursWorked(int userId) throws UserException {
+    public double getHoursWorked(int userId) throws UserException {
         User user = loadUserById(userId);
 
         DateTime now = DateTime.now();
@@ -90,6 +90,15 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         }
 
         return result;
+    }
+
+    @Override
+    public double getHoursWorkedProgress(int userId) throws UserException {
+        User user = loadUserById(userId);
+
+        double result = getHoursWorked(userId) / user.getHoursPerDay();
+
+        return result < 0 ? 0 : result > 1 ? 1 : result;
     }
 
     @Override
