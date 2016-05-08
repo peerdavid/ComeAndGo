@@ -38,12 +38,10 @@ var updateNewNotificationBadge = function(){
                 .text(data);
         },
         error:function(jqXHR, textStatus, errorThrown) {
-            console.log("Notification number request failed" + textStatus);
+            console.log("Notification number request failed " + textStatus);
         }
     });
 }
-
-
 
 $('.enable-editing-switch').click(function () {
     $('li.active form input').prop('disabled', !this.checked);
