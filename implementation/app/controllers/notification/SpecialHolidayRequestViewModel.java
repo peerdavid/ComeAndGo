@@ -8,11 +8,13 @@ import play.i18n.Messages;
  */
 public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
-    private int _referenceId;
+    private int _timeOffId;
 
-    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender, TimeTracking timeTracking) {
-        super(id, message, sender, timeTracking);
-        this._referenceId = referenceId;
+    public SpecialHolidayRequestViewModel(int id, int referenceId, String message, String sender, String date, TimeTracking timeTracking) {
+
+        super(id, message, sender, date, timeTracking);
+
+        this._timeOffId = referenceId;
 
     }
 
@@ -33,10 +35,11 @@ public class SpecialHolidayRequestViewModel extends BasicViewModel {
 
     @Override
     public void accept(int userId) throws Exception {
-        _timeTracking.acceptSpecialHoliday(_referenceId, userId);
+        _timeTracking.acceptSpecialHoliday(_timeOffId, userId);
     }
 
+    @Override
     public void reject(int userId) throws Exception {
-        _timeTracking.rejectSpecialHoliday(_referenceId, userId);
+        _timeTracking.rejectSpecialHoliday(_timeOffId, userId);
     }
 }

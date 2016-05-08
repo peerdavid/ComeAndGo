@@ -26,8 +26,6 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
    @Override
    public void validateTimeTrackInsert(TimeTrack timeTrack) throws UserException {
-      // TODO: add maximum working time validation, checks for holiday, illness, ...
-
       // this list contains timeTracks which do overlap, if it is empty, then there is no worry of conflict timeTracks
       User user = timeTrack.getUser();
       List<Break> breakList = timeTrack.getBreaks();
@@ -46,8 +44,6 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
    @Override
    public void validateTimeTrackUpdate(TimeTrack timeTrack) throws UserException {
-      // TODO: add validation, if timeTrack lies inside holiday, ill time, ...
-
       // the following query does the filtering for overlapping timeTracks
       //     after that we have to find out, if the list contains timeTrack itself, because timeTrack
       //     will overlap itself
@@ -128,20 +124,83 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
             LocalTime toInspectStart = breakList.get(j).getFrom().toLocalTime();
             LocalTime toInspectEnd = breakList.get(j).getTo().toLocalTime();
 
-            if(breakOverMidnight) {
-               if(actualStart.isBefore(toInspectEnd) || actualEnd.isAfter(toInspectStart)) {
+            /**
+             * breaks can also start at same time...
+             */
+            if(toInspectStart.isEqual(actualStart) || toInspectEnd.isEqual(actualEnd)) {
+               throwClashingBreakException();
+            }
+            /**
+             * if the actualBreak is over midnight, there are several cases to respect
+             * (the position marked with # is midnight)
+             *
+             *             |___________actualBreak____#_________|
+             *          |__________1__________|       #  |_2_________|
+             *                |______3________|       #  |_4___|
+             *                |_________5_____________#________|
+             *          |_________________6___________#_______________|
+             *          |__________________7__________#________|
+             *                |_____________8_________#________|
+             *
+             *   cases 1,3 can be combined because if toInspectEnd is after actualStart, both cases are respected
+             *   cases 2,4 can be combined on a similar way
+             *   cases 5-8 can be combined because all of these are over midnight
+             */
+            else if(breakOverMidnight) {
+               boolean isActualBreakOverMidnight = toInspectStart.isAfter(toInspectEnd);
+               if((toInspectEnd.isAfter(actualStart))             // cases 1 and 3
+                   || (toInspectStart.isBefore(actualEnd))        // cases 2 and 4
+                   || isActualBreakOverMidnight) {                // cases 5,6,7,8
                   throwClashingBreakException();
                }
             }
+            /**
+             * if we have no break which starts before midnight and ends after midnight, there are 4 cases where
+             * breaks can clash:
+             *
+             *           |__________actualBreak_________|
+             *
+             *
+             *       |_____case1____|           |______case2______|
+             *       |_________________case3______________________|
+             *                |________case4_____|
+             *
+             *
+             *    the validation also checks for the breaks lying over midnight, especially in case1 and case2 these things
+             *    have to be validated.
+             *    For case3 there are two possibilities (actualBreak cannot be over midnight at this point):
+             *
+             *             |________actualBreak____|
+             *         |_!_____________________________|
+             *         |_____________________________!_|
+             *
+             *    --> midnight can be at the ! marked positions, both cases have to be attended
+             *
+             *    for case4 we can be sure that it cannot be over midnight, because otherwise also actualBreak would be over midnight
+             *    - that's because we only have to inspect the case where break to insert does not be over midnight
+             */
             else {
                boolean isToInspectOverMidnight = toInspectStart.isAfter(toInspectEnd);
+               // case2 iff the break for insert is over midnight
                if(isToInspectOverMidnight && toInspectStart.isBefore(actualEnd)) {
                   throwClashingBreakException();               }
+               // case2 iff the break for insert is not over midnight
+               if(!isToInspectOverMidnight && toInspectStart.isBefore(actualEnd) && toInspectEnd.isAfter(actualEnd)) {
+                  throwClashingBreakException();               }
+               // case1 iff the break for insert is over midnight
                if(isToInspectOverMidnight && toInspectEnd.isAfter(actualStart)) {
                   throwClashingBreakException();               }
-               if(!isToInspectOverMidnight && toInspectStart.isAfter(actualStart) && toInspectStart.isBefore(actualEnd)) {
+               // case1 iff the break for insert is not over midnight
+               if(!isToInspectOverMidnight && toInspectEnd.isAfter(actualStart) && toInspectStart.isBefore(actualStart)) {
                   throwClashingBreakException();               }
-               if(!isToInspectOverMidnight && toInspectEnd.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
+               // case3  (if break to insert is over midnight)
+               if(isToInspectOverMidnight && (toInspectStart.isBefore(actualStart) || toInspectEnd.isAfter(actualEnd))) {
+                  throwClashingBreakException();               }
+               // case3 (if break to inset is not over midnight)
+               if(!isToInspectOverMidnight && toInspectStart.isBefore(actualStart) && toInspectEnd.isAfter(actualEnd)) {
+                  throwClashingBreakException();               }
+               // case4 (ignore case that break to inspect is over midnight, because for that case also actualBreak has to be over midnight)
+               if(!isToInspectOverMidnight && toInspectStart.isAfter(actualStart) && toInspectEnd.isBefore(actualEnd)) {
                   throwClashingBreakException();               }
             }
          }

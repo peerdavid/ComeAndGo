@@ -12,14 +12,16 @@ public abstract class BasicViewModel implements NotificationViewModel {
 
     private String _message;
     private String _sender;
+    private String _additionalInfo;
 
     protected TimeTracking _timeTracking;
 
-    public BasicViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public BasicViewModel(int notificationId, String message, String sender, String additionalInfo, TimeTracking timeTracking) {
         _notificationId = notificationId;
 
         _message = message;
         _sender = sender;
+        _additionalInfo = additionalInfo;
 
         _timeTracking = timeTracking;
     }
@@ -36,9 +38,15 @@ public abstract class BasicViewModel implements NotificationViewModel {
         _message = message;
     }
 
+    public String getAdditionalInformation(){
+        return _additionalInfo;
+    }
+
     public String getSender() {
         return _sender;
     }
+
+    public void accept(int userid) throws Exception{}
 
     public void reject(int userId) throws Exception {
         throw new Exception(Messages.get("exceptions.notifications.invalid_action"));

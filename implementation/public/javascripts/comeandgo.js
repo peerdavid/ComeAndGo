@@ -26,7 +26,7 @@ var updateNewNotificationBadge = function(){
         type:  'GET',
         contentType: 'application/json',
         data: '',
-        url: 'notification/number',
+        url: '/notification/number',
         success: function(data, textStatus, jqXHR) {
             if(data <= 0){
                 return;

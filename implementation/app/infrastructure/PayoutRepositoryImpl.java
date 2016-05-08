@@ -1,5 +1,6 @@
 package infrastructure;
 
+import business.timetracking.RequestState;
 import business.timetracking.TimeTrackException;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
@@ -7,6 +8,7 @@ import models.Payout;
 import models.User;
 import org.joda.time.DateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -15,8 +17,11 @@ import java.util.List;
 public class PayoutRepositoryImpl implements PayoutRepository {
 
     @Override
-    public void createPayout(Payout payout) {
+    public int createPayout(Payout payout) {
         Ebean.save(payout);
+        // refresh and return auto generated id
+        Ebean.refresh(payout);
+        return payout.getId();
     }
 
 
@@ -55,12 +60,12 @@ public class PayoutRepositoryImpl implements PayoutRepository {
      *      . +---------+ .
      */
     @Override
-    public List<Payout> readPayoutsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException {
+    public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException {
 
         List<Payout> payouts =
                 Ebean.find(Payout.class)
                         .where().and(
-                        Expr.eq("user_id", user.getId()),
+                        Expr.eq("user_id", userId),
                         Expr.or(
                                 Expr.or(
                                         Expr.between("start", "end", from),     // Case 1
@@ -79,18 +84,53 @@ public class PayoutRepositoryImpl implements PayoutRepository {
                 ).findList();
 
         if (payouts == null || payouts.isEmpty()) {
-            throw new TimeTrackException("no such payouts found");
+            return Collections.emptyList();
         }
 
         return payouts;
     }
 
+    @Override
+    public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException {
+        if(from.isAfter(to)) {
+            throw new TimeTrackException("invalid date from and to given");
+        }
+        List<Payout> payouts =
+            Ebean.find(Payout.class)
+                .where().and(
+                Expr.and(
+                    Expr.eq("user_id", userId),
+                    Expr.eq("state", RequestState.REQUEST_ACCEPTED)
+                ),
+                Expr.or(
+                    Expr.or(
+                        Expr.between("start", "end", from),     // Case 1
+                        Expr.between("start", "end", to)),      // Case 2
+                    Expr.or(
+                        Expr.and(                               // Case 3
+                            Expr.lt("start", from),
+                            Expr.gt("end", to)
+                        ),
+                        Expr.and(                               // Case 4
+                            Expr.gt("start", from),
+                            Expr.lt("end", to)
+                        )
+                    )
+                )
+            ).findList();
+
+        if (payouts == null || payouts.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return payouts;
+    }
 
     @Override
-    public List<Payout> readPayouts(User user) throws TimeTrackException {
+    public List<Payout> readPayouts(int userId) throws TimeTrackException {
         List<Payout> payouts =
                 Ebean.find(Payout.class)
-                        .where().eq("user_id", user.getId())
+                        .where().eq("user_id", userId)
                         .findList();
 
         if (payouts == null || payouts.isEmpty()) {

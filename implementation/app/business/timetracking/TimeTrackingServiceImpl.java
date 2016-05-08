@@ -1,12 +1,15 @@
 package business.timetracking;
 
 
+import business.notification.NotificationException;
+import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
 import models.Break;
+import models.Notification;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -14,6 +17,7 @@ import org.joda.time.DateTime;
 import java.util.Collections;
 import java.util.List;
 import com.google.inject.Inject;
+import org.joda.time.DateTimeUtils;
 
 
 /**
@@ -40,8 +44,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public int come(int userId) throws UserException {
-        boolean isActive = isActive(userId);
-        if(isActive) {
+        if(isActive(userId)) {
             throw new UserException("exceptions.timetracking.error_user_already_working");
         }
 
@@ -53,8 +56,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void go(int userId) throws UserException, NotFoundException {
-        User user = loadUserById(userId);
+        if(!isActive(userId)) {
+            throw new UserException("exceptions.timetracking.error_user_not_started_work");
+        }
 
+        User user = loadUserById(userId);
         TimeTrack timeTrack = _repository.readActiveTimeTrack(user);
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
@@ -140,7 +146,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException {
+    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException, NotificationException {
         User user = loadUserById(userId);
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
         createTimeTrack(timeTrack);
@@ -148,26 +154,56 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void createTimeTrack(TimeTrack timeTrack) throws UserException {
+    public void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.createTimeTrack(timeTrack);
+
+        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was created";
+        Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
+            timeTrack.getUser().getBoss(), timeTrack.getUser());
+        _notificationSender.sendNotification(notification);
     }
 
 
     @Override
-    public void deleteTimeTrack(TimeTrack timeTrack) {
+    public void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException {
+        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was deleted";
+        Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
+            timeTrack.getUser().getBoss(), timeTrack.getUser());
+        _notificationSender.sendNotification(notification);
+
         _repository.deleteTimeTrack(timeTrack);
     }
 
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack) throws UserException {
+    public void updateTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.updateTimeTrack(timeTrack);
+
+
+           String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was updated";
+           Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
+               timeTrack.getUser().getBoss(), timeTrack.getUser());
+           _notificationSender.sendNotification(notification);
     }
 
+    private String dateToString(DateTime date) {
+        StringBuilder sb = new StringBuilder();
+        int value;
+        if((value = date.getDayOfMonth()) < 10) {
+            sb.append("0");
+        }
+        sb.append(value + ".");
+        if((value = date.getMonthOfYear()) < 10) {
+            sb.append("0");
+        }
+        sb.append(value + ".");
+        sb.append(date.getYear());
+        return sb.toString();
+    }
 
     private User loadUserById(int userId) throws UserException {
         User user;

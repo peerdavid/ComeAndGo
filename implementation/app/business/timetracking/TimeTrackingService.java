@@ -1,5 +1,6 @@
 package business.timetracking;
 
+import business.notification.NotificationException;
 import business.usermanagement.UserException;
 import models.TimeTrack;
 import javassist.NotFoundException;
@@ -30,10 +31,10 @@ interface TimeTrackingService {
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException;
 
     /*  EDIT / DELETE / ADD TIMETRACKS AND BREAKS  */
-    void createTimeTrack(TimeTrack timeTrack) throws UserException;
-    void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException;
+    void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException;
+    void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException, NotificationException;
 
-    void deleteTimeTrack(TimeTrack timeTrack);
+    void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException;
 
-    void updateTimeTrack(TimeTrack timeTrack) throws UserException;
+    void updateTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException;
 }

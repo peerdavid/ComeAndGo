@@ -9,7 +9,9 @@ import play.i18n.Messages;
 public class InformationViewModel extends BasicViewModel {
 
     public InformationViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
-        super(notificationId, message, sender, timeTracking);
+
+        super(notificationId, message, sender, "", timeTracking);
+
     }
 
     @Override
@@ -27,8 +29,4 @@ public class InformationViewModel extends BasicViewModel {
         return false;
     }
 
-    @Override
-    public void accept(int userId) throws Exception {
-
-    }
 }

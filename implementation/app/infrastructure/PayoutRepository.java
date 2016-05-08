@@ -13,13 +13,15 @@ import java.util.List;
  */
 public interface PayoutRepository {
 
-    void createPayout(Payout payout);
+    int createPayout(Payout payout);
 
     Payout readPayout(int id) throws TimeTrackException;
 
-    List<Payout> readPayoutsFromUser(User user, DateTime from, DateTime to) throws TimeTrackException;
+    List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException;
 
-    List<Payout> readPayouts(User user) throws TimeTrackException;
+    List<Payout> readPayouts(int userId) throws TimeTrackException;
+
+    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException;
 
     void deletePayout(Payout payout);
 

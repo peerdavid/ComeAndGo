@@ -8,8 +8,9 @@ import play.i18n.Messages;
  */
 public class SpecialHolidayAcceptViewModel extends BasicViewModel {
 
-    public SpecialHolidayAcceptViewModel(int id, String message, String sender, TimeTracking timeTracking) {
-        super(id, message, sender, timeTracking);
+    public SpecialHolidayAcceptViewModel(int id, String message, String sender, String date, TimeTracking timeTracking) {
+
+        super(id, message, sender, date, timeTracking);
 
     }
 
@@ -28,8 +29,4 @@ public class SpecialHolidayAcceptViewModel extends BasicViewModel {
         return false;
     }
 
-    @Override
-    public void accept(int userId) {
-
-    }
 }

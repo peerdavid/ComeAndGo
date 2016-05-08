@@ -6,6 +6,8 @@ import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -34,7 +36,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int userId = Integer.parseInt(profile.getId());
         int progress = 70;
 
-        DateTime now = DateTime.now();
+        DateTime now = DateTime.now().plusDays(20);
 
         DateTime from = DateTimeUtils.stringToTime("00:00", now);
         DateTime to = now.plusDays(1);
@@ -92,11 +94,16 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         List<TimeTrack> timeTracks;
         if (from == null || to == null || from.isEmpty() || to.isEmpty()) {
-            dateFrom = DateTime.now();
-            dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek());
+            DateTime today = DateTime.now();
+            dateFrom = today.minusSeconds(today.getSecondOfDay());
+
+            // always start on Monday, the week before actual one
+            dateFrom = dateFrom.minusDays(dateFrom.getDayOfWeek() + 6);
             from = DateTimeUtils.dateTimeToDateString(dateFrom);
 
-            dateTo = dateFrom.plusDays(6);
+            // always end on Sunday, the current week
+            dateTo = today.plusDays(7 - today.getDayOfWeek());
+            dateTo = dateTo.plusSeconds(DateTimeConstants.SECONDS_PER_DAY - dateTo.getSecondOfDay() - 1);
             to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
@@ -144,17 +151,22 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             String breakStart = "break_starttime" + b.getId();
             String breakEnd = "break_endtime" + b.getId();
 
+            DateTime start = null;
+            DateTime end = null;
+
             Map<String, String> breakFormData = Form.form().bindFromRequest(
                 breakStart,
                 breakEnd
             ).data();
 
             if (breakFormData.get(breakStart) != null && !breakFormData.get(breakStart).isEmpty()) {
-                b.setFrom(DateTimeUtils.stringToTime(breakFormData.get(breakStart)));
+                start = DateTimeUtils.stringToTime(breakFormData.get(breakStart));
             }
             if (breakFormData.get(breakEnd) != null && !breakFormData.get(breakEnd).isEmpty()) {
-                b.setTo(DateTimeUtils.stringToTime(breakFormData.get(breakEnd)));
+                end = DateTimeUtils.stringToTime(breakFormData.get(breakEnd));
             }
+
+            b.setFromAndTo(start, end);
         }
 
         _timeTracking.updateTimeTrack(timeTrack);
@@ -200,7 +212,12 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             throw new UserException("exceptions.timetracking.error_in_break_form");
         }
 
-        timeTrack.getBreaks().add(new Break(fromDate, toDate));
+        // in case we have a break over midnight (dates from DateTimeUtils.stringToTime() are always equal)
+        if(fromDate.isAfter(toDate)) {
+            toDate = toDate.plusDays(1);
+        }
+
+        timeTrack.addBreak(new Break(fromDate, toDate));
 
         _timeTracking.updateTimeTrack(timeTrack);
 

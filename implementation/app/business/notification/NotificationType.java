@@ -32,6 +32,7 @@ public enum NotificationType {
     FIRE_EMPLOYEE,
 
     // Personnel Manager as sender notifications
+    CREATED_TIMETRACK,
     CHANGED_TIMETRACK,
     DELETED_TIMETRACK
 

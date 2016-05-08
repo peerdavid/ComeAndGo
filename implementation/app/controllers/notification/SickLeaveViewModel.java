@@ -8,9 +8,9 @@ import play.i18n.Messages;
  */
 public class SickLeaveViewModel extends BasicViewModel {
 
-    public SickLeaveViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public SickLeaveViewModel(int notificationId, String message, String sender, String date, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, timeTracking);
+        super(notificationId, message, sender, date, timeTracking);
 
     }
 
@@ -29,7 +29,4 @@ public class SickLeaveViewModel extends BasicViewModel {
         return false;
     }
 
-    public void accept(int userId) {
-
-    }
 }

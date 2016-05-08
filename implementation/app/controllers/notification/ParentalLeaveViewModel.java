@@ -4,12 +4,11 @@ import business.timetracking.TimeTracking;
 import play.i18n.Messages;
 
 /**
- * Created by csaq5996 on 5/2/16.
+ * Created by Leonhard on 05.05.2016.
  */
-public class ErrorViewModel extends BasicViewModel {
+public class ParentalLeaveViewModel extends BasicViewModel {
 
-
-    public ErrorViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public ParentalLeaveViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
 
         super(notificationId, message, sender, "", timeTracking);
 
@@ -17,17 +16,16 @@ public class ErrorViewModel extends BasicViewModel {
 
     @Override
     public String getIcon() {
-        return Messages.get("notifications.icons.error");
+        return Messages.get("notifications.icons.parentalleave");
     }
 
     @Override
     public String getHeader() {
-        return Messages.get("notifications.error");
+        return Messages.get("notifications.parentalleave");
     }
 
     @Override
     public boolean isRejectable() {
         return false;
     }
-
 }

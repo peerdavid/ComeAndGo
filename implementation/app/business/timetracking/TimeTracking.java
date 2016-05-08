@@ -1,6 +1,7 @@
 package business.timetracking;
 
 import business.UseCases;
+import models.Payout;
 import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
@@ -51,9 +52,9 @@ public interface TimeTracking extends UseCases {
 
     void  requestEducationalLeave(int userId, DateTime from, DateTime to, String comment) throws Exception;
 
-    void requestOvertimePayout(int userId, int numberOfHours) throws Exception;
+    void requestOvertimePayout(int userId, int numberOfHours, String comment) throws Exception;
 
-    void requestHolidayPayout(int userId, int numberOfDays) throws Exception;
+    void requestHolidayPayout(int userId, int numberOfDays, String comment) throws Exception;
 
     void  acceptHoliday(int timeOffId, int bossId) throws Exception;
 
@@ -74,4 +75,14 @@ public interface TimeTracking extends UseCases {
     void  acceptEducationalLeave(int timeOffId, int bossId) throws Exception;
 
     void  rejectEducationalLeave(int timeOffId, int bossId) throws Exception;
+
+    void deletePayoutRequest(int payoutId) throws Exception;
+
+    List<Payout> readPayoutsFromUser(int userId) throws Exception;
+
+    List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
+
+    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
+
+    Payout readPayout(int payoutId) throws Exception;
 }

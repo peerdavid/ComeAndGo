@@ -24,6 +24,9 @@
                             </div>
 
                             <div class="collapsible-body">
+                                @if(notification.getAdditionalInformation!="") {
+                                    <p>@notification.getAdditionalInformation</p>
+                                }
                                 <p>@notification.getMessage</p>
 
                                 <div class="row button-container">
@@ -68,6 +71,9 @@
                             </div>
 
                             <div class="collapsible-body">
+                                @if(notification.getAdditionalInformation!="") {
+                                    <p>@notification.getAdditionalInformation</p>
+                                }
                                 <p>@notification.getMessage</p>
                             </div>
                         </li>
@@ -92,6 +98,9 @@
                             </div>
 
                             <div class="collapsible-body">
+                                @if(notification.getAdditionalInformation!="") {
+                                    <p>@notification.getAdditionalInformation</p>
+                                }
                                 <p>@notification.getMessage</p>
                             </div>
                         </li>

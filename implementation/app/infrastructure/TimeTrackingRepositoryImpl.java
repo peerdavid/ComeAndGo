@@ -3,6 +3,7 @@ package infrastructure;
 import business.usermanagement.UserException;
 import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Expr;
+import com.avaje.ebean.Query;
 import models.Break;
 import models.TimeTrack;
 import models.User;
@@ -132,7 +133,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) {
-       Ebean.delete(TimeTrack.class, timeTrack);
+       Ebean.delete(timeTrack);
     }
 
     @Override
@@ -167,7 +168,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
 
     @Override
     public void deleteBreak(Break actualBreak) {
-       Ebean.delete(Break.class, actualBreak);
+       Ebean.delete(actualBreak);
     }
 
     @Override

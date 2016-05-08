@@ -243,6 +243,46 @@ public class TimeTrackingValidationImplTest {
     }
 
     @Test(expected = UserException.class)
+    public void validateBreakInsertToTimeTrack_WhereStartTimeIsInConflict_ShouldThrowUserException() throws UserException {
+        // prepare
+        Break toInsert1 = new Break(_MIDDAY.minusMinutes(10), _MIDDAY.plusMinutes(10));
+        Break toInsert2 = new Break(_MIDDAY.minusMinutes(10), _MIDDAY.plusMinutes(20));
+
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), null);
+        timeTrack.addBreak(toInsert1);
+        timeTrack.addBreak(toInsert2);
+
+        // test
+        _validation.validateTimeTrackUpdate(timeTrack);
+
+    }
+
+    @Test(expected = UserException.class)
+    public void validateBreakInsertToTimeTrack_WhereEndTimeIsInConflict_ShouldThrowUserException() throws UserException {
+        // preparing
+        Break toInsert1 = new Break(_MIDNIGHT.minusMinutes(10), _MIDNIGHT.plusMinutes(20));
+        Break toInsert2 = new Break(_MIDNIGHT.minusMinutes(20), _MIDNIGHT.plusMinutes(20));
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDNIGHT.minusHours(5), _MIDNIGHT.plusHours(5), null);
+        timeTrack.addBreak(toInsert1);
+        timeTrack.addBreak(toInsert2);
+
+        // execute test
+        _validation.validateTimeTrackUpdate(timeTrack);
+    }
+
+    @Test(expected = UserException.class)
+    public void validateBreakInsertToTimeTrack_WhereBreakIsDuplicated_ShouldThrowUserException() throws UserException {
+        // prepare
+        Break toInsert = new Break(_MIDDAY.plusMinutes(10), _MIDDAY.plusMinutes(30));
+        TimeTrack timeTrack = new TimeTrack(_testUser, _MIDDAY.minusHours(5), _MIDDAY.plusHours(3), null);
+        timeTrack.addBreak(toInsert);
+        timeTrack.addBreak(toInsert);
+
+        // execute test
+        _validation.validateTimeTrackUpdate(timeTrack);
+    }
+
+    @Test(expected = UserException.class)
     public void validateTimeTrackInsert_WorkingOnDayAndTakingBreaksAtEndOfrTimeTrack_ShouldThrowUserExceptionAndCallRepo() throws UserException {
         // initialize
         Break firstBreak = new Break(_MIDDAY.plusMinutes(20), _MIDDAY.plusMinutes(30));

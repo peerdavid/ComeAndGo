@@ -25,7 +25,7 @@ public class TimeTrack extends Model {
     @Column(name = "_user_id")
     @NotNull
     @Index
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.REFRESH)
     private User user;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
@@ -37,8 +37,8 @@ public class TimeTrack extends Model {
     private DateTime to;
 
     // initialize the following list to a new Arraylist, so that it will be returned an empty list in case of no breaks
-    @OneToMany(cascade= CascadeType.ALL)
     @Column(name = "breaks")
+    @OneToMany(cascade= CascadeType.ALL)
     private List<Break> breaks = new ArrayList();
 
    /**
@@ -102,10 +102,10 @@ public class TimeTrack extends Model {
 
 
     public void addBreak(Break breakToAdd){
-        this.breaks.add(breakToAdd);
+        breaks.add(breakToAdd);
     }
 
-   public User getUser() {
+    public User getUser() {
       return user;
    }
 

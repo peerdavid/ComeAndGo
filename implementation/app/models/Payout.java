@@ -20,7 +20,7 @@ public class Payout {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "_user_id")
+    @Column(name = "user_id")
     @NotNull
     @Index
     @ManyToOne()
@@ -28,7 +28,7 @@ public class Payout {
 
     // Amount can be hours for Overtime or days for holiday
     @Column(name = "amount")
-    int amount;
+    Integer amount;
 
     @Column(name = "type")
     private PayoutType type;
@@ -40,7 +40,7 @@ public class Payout {
     @Constraints.MaxLength(150)
     private String comment;
 
-    @Column(name = "_reviewed_by")
+    @Column(name = "reviewed_by_id")
     @ManyToOne
     private User reviewedBy;
 
