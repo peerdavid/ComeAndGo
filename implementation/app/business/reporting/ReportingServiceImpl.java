@@ -3,10 +3,7 @@ package business.reporting;
 import business.timetracking.InternalTimeTracking;
 import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
-import models.Report;
-import models.ReportEntry;
-import models.TimeTrack;
-import models.User;
+import models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +15,13 @@ class ReportingServiceImpl implements ReportingService {
 
     private InternalTimeTracking _internalTimeTracking;
     private InternalUserManagement _userManagement;
-    private CollectiveAggreement _collectiveAggreement;
+    private CollectiveAgreement _collectiveAgreement;
 
 
     @Inject
-    public ReportingServiceImpl(InternalUserManagement userManagement, CollectiveAggreement collectiveAggreement, InternalTimeTracking internalTimeTracking){
+    public ReportingServiceImpl(InternalUserManagement userManagement, CollectiveAgreement collectiveAgreement, InternalTimeTracking internalTimeTracking){
         _userManagement = userManagement;
-        _collectiveAggreement = collectiveAggreement;
+        _collectiveAgreement = collectiveAgreement;
         _internalTimeTracking = internalTimeTracking;
     }
 
@@ -56,7 +53,9 @@ class ReportingServiceImpl implements ReportingService {
 
         for(User user : users){
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId());
-            userReports.add(_collectiveAggreement.createUserReport(user, timeTracks, null, null));
+            List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId());
+            List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId());
+            userReports.add(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts));
         }
 
         ReportEntry summary = createCompanySummary(userReports);

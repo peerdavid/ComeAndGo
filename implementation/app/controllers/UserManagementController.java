@@ -81,15 +81,13 @@ public class UserManagementController extends UserProfileController {
         return redirect(routes.UserManagementController.readUsers());
     }
 
+
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result deleteUser(String userName) throws Exception {
-//        CommonProfile profile = getUserProfile();
+    public Result deleteUser(String userNameToDelete) throws Exception {
+        CommonProfile profile = getUserProfile();
+        String currentUserName = profile.getUsername();
 
-        if (userName.isEmpty()) {
-            throw new Exception("Empty Username");
-        }
-
-        _userManagement.deleteUser(userName);
+        _userManagement.deleteUser(currentUserName, userNameToDelete);
 
         return redirect(routes.UserManagementController.readUsers());
     }

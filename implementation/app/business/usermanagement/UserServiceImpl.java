@@ -1,7 +1,11 @@
 package business.usermanagement;
 
+import business.notification.NotificationException;
+import business.notification.NotificationSender;
+import business.notification.NotificationType;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
+import models.Notification;
 import models.User;
 import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
@@ -17,11 +21,13 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
 
     private UserRepository _userRepository;
+    private NotificationSender _notificationSender;
 
 
     @Inject
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, NotificationSender notificationSender) {
         _userRepository = userRepository;
+        _notificationSender = notificationSender;
     }
 
 
@@ -176,12 +182,9 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
 
     @Override
-    public void deleteUser(String userName) throws UserException {
+    public void deleteUser(String currentUserName, String userName) throws Exception {
         User userToDelete = _userRepository.readUser(userName);
 
-        if (userToDelete == null) {
-            throw new UserException("exceptions.usermanagement.no_such_user");
-        }
         // Check if its not the last admin
         if (userToDelete.getRole().equals(SecurityRole.ROLE_ADMIN)) {
             List<User> userList = _userRepository.readUsers();
@@ -197,6 +200,20 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
                 throw new UserException("exceptions.usermanagement.at_least_one_admin");
             }
         }
+
+        notifyBossAboutDelete(currentUserName, userToDelete);
+
         _userRepository.deleteUser(userToDelete);
+    }
+
+
+    private void notifyBossAboutDelete(String currentUserName, User userToDelete) throws UserNotFoundException, NotificationException {
+        User admin = _userRepository.readUser(currentUserName);
+        Notification informBossNotification = new Notification(
+                NotificationType.INFORMATION,
+                "Fired " + userToDelete.getLastName() + " " + userToDelete.getFirstName(),
+                admin,
+                userToDelete.getBoss());
+        _notificationSender.sendNotification(informBossNotification);
     }
 }

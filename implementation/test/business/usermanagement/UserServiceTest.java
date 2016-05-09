@@ -1,14 +1,17 @@
 package business.usermanagement;
 
 
+import business.notification.NotificationSender;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
+import models.Notification;
 import models.User;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +26,8 @@ import static org.mockito.Mockito.when;
  */
 public class UserServiceTest {
 
-    UserRepository _userRepository;
+    UserRepository _userRepositoryMock;
+    NotificationSender _notificationSenderMock;
     UserService _testee;
     User _testUser;
     User _testBoss;
@@ -31,8 +35,9 @@ public class UserServiceTest {
 
     @Before
     public void SetUp() throws Exception {
-        _userRepository = mock(UserRepository.class);
-        _testee = new UserServiceImpl(_userRepository);
+        _userRepositoryMock = mock(UserRepository.class);
+        _notificationSenderMock = mock(NotificationSender.class);
+        _testee = new UserServiceImpl(_userRepositoryMock, _notificationSenderMock);
         _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null, 1200);
         _testBoss.setBoss(_testBoss);
         _testBoss.setId(1);
@@ -44,19 +49,19 @@ public class UserServiceTest {
     @Test
     public void registerUser_ShouldCallRepository() throws UserException, NotFoundException {
         // Prepare
-        when(_userRepository.readUser(_testUser.getUsername())).thenThrow(UserNotFoundException.class);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenThrow(UserNotFoundException.class);
 
         _testee.createUser(_testUser);
 
         // Check if a new User is created in repo
-        Mockito.verify(_userRepository, times(1)).createUser(any()); // Check if the function really called our repository
+        Mockito.verify(_userRepositoryMock, times(1)).createUser(any()); // Check if the function really called our repository
     }
 
     @Test(expected = UserException.class)
     public void registerUser_WithAlreadyExistingUser_ShouldFail() throws UserException, NotFoundException {
         // Prepare
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(_testUser);
-        when(_userRepository.readUser(_testAdmin.getBoss().getUsername())).thenReturn(_testAdmin);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUser(_testAdmin.getUsername())).thenReturn(_testAdmin);
 
         _testee.createUser(_testUser);
 
@@ -64,14 +69,14 @@ public class UserServiceTest {
 
     @Test(expected = UserException.class)
     public void changeUser_ForUnregisteredUser_ShouldFail() throws UserException {
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(null);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(null);
 
         _testee.updateUser(_testUser.getUsername(), _testUser);
     }
 
     @Test(expected = UserException.class)
     public void changeUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
 
         _testUser.setPassword("test123");
 
@@ -82,7 +87,7 @@ public class UserServiceTest {
     public void readUser_ForNotExistingUser_ShouldFail() throws UserException {
         // Prepare
         String notExistingUsername = "abc";
-        when(_userRepository.readUser(notExistingUsername)).thenReturn(null);
+        when(_userRepositoryMock.readUser(notExistingUsername)).thenReturn(null);
 
         User expected = null;
 
@@ -93,7 +98,7 @@ public class UserServiceTest {
 
     @Test
     public void checkUserCredentials_ForWrongPassword_ShouldSucceed() throws UserException {
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
 
         boolean expected = false;
 
@@ -104,7 +109,7 @@ public class UserServiceTest {
 
     @Test(expected = UserException.class)
     public void checkUserCredentials_ForUnregisteredUser_ShouldFail() throws UserException {
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(null);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(null);
 
         boolean expected = false;
 
@@ -115,7 +120,7 @@ public class UserServiceTest {
 
     @Test
     public void checkUserCredentials_WithActualPassword_ShouldSucceed() throws UserException {
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
 
         boolean expected = true;
 
@@ -124,46 +129,46 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void deleteUser_ForLastRemainingAdmin_ShouldFail() throws UserException {
+    public void deleteUser_ForLastRemainingAdmin_ShouldFail() throws Exception {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testAdmin);
-        when(_userRepository.readUser(_testAdmin.getUsername())).thenReturn(_testAdmin);
-        when(_userRepository.readUsers()).thenReturn(userList);
+        when(_userRepositoryMock.readUser(_testAdmin.getUsername())).thenReturn(_testAdmin);
+        when(_userRepositoryMock.readUsers()).thenReturn(userList);
 
-        _testee.deleteUser(_testAdmin.getUsername());
+        _testee.deleteUser(_testAdmin.getUsername(), _testAdmin.getUsername());
     }
 
     @Test
-    public void deleteUser_ForExistingUser_ShouldSucceed() throws UserException {
+    public void deleteUser_ForExistingUser_ShouldSucceed() throws Exception {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testUser);
         userList.add(_testAdmin);
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(_testUser);
-        when(_userRepository.readUsers()).thenReturn(userList);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUsers()).thenReturn(userList);
 
-        _testee.deleteUser(_testUser.getUsername());
+        _testee.deleteUser(_testAdmin.getUsername(), _testUser.getUsername());
 
         // Check if a User is deleted in repo
-        Mockito.verify(_userRepository, times(1)).deleteUser(any()); // Check if the function really called our repository
+        Mockito.verify(_userRepositoryMock, times(1)).deleteUser(any()); // Check if the function really called our repository
     }
 
-    @Test(expected = UserException.class)
-    public void deleteUser_ForUnregisteredUser_ShouldFail() throws UserException {
+
+    @Test
+    public void deleteUser_ForExistingUser_ShouldSendNotificationToTheBoss() throws Exception {
         //Prepare
         List<User> userList = new ArrayList<User>();
         userList.add(_testUser);
         userList.add(_testAdmin);
-        when(_userRepository.readUser(_testUser.getUsername())).thenReturn(null);
-        when(_userRepository.readUsers()).thenReturn(userList);
+        when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
+        when(_userRepositoryMock.readUsers()).thenReturn(userList);
 
-        _testee.deleteUser(_testUser.getUsername());
+        _testee.deleteUser(_testAdmin.getUsername(), _testUser.getUsername());
 
         // Check if a User is deleted in repo
-        Mockito.verify(_userRepository, times(1)).deleteUser(any()); // Check if the function really called our repository
+        Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any());
     }
-
 
 
 }
