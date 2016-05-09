@@ -236,4 +236,9 @@ class TimeTrackingFacade implements TimeTracking {
     public Payout readPayout(int payoutId) throws Exception {
         return _payoutService.readPayout(payoutId);
     }
+
+    @Override
+    public void updatePayoutRequest(Payout payout) throws Exception {
+        _payoutService.updatePayoutRequest(payout);
+    }
 }

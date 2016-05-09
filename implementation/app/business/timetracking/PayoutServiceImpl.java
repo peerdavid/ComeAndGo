@@ -132,6 +132,11 @@ class PayoutServiceImpl implements PayoutService {
    }
 
    @Override
+   public void updatePayoutRequest(Payout payout) throws Exception {
+      _repository.updatePayout(payout);
+   }
+
+   @Override
    public void deletePayout(int payoutId) throws Exception {
       Payout toDelete = _repository.readPayout(payoutId);
       _repository.deletePayout(toDelete);
