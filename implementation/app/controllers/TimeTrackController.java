@@ -1,18 +1,16 @@
 package controllers;
 
+import business.reporting.Reporting;
 import business.timetracking.TimeTracking;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
-import models.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeZone;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
-import play.data.DynamicForm;
 import play.data.Form;
 import play.mvc.Result;
 import utils.DateTimeUtils;
@@ -24,10 +22,12 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
 
     private TimeTracking _timeTracking;
+    private Reporting _reporting;
 
     @Inject
-    public TimeTrackController(TimeTracking timeTracking) {
+    public TimeTrackController(TimeTracking timeTracking, Reporting reporting) {
         _timeTracking = timeTracking;
+        _reporting = reporting;
     }
 
 
@@ -78,10 +78,10 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default")
-    public Result readProgress() throws UserException {
+    public Result readProgress() throws Exception {
         int userId = Integer.parseInt(getUserProfile().getId());
 
-        int progress = (int) (_timeTracking.getHoursWorkedProgress(userId) * 100);
+        int progress = (int) (_reporting.readHoursWorkedProgress(userId) * 100);
 
         return ok(String.valueOf(progress));
     }

@@ -31,4 +31,14 @@ class ReportingFacade implements Reporting {
     public Report createBossReport(int userId) throws Exception {
         return _reportingService.createBossReport(userId);
     }
+
+    @Override
+    public double readHoursWorkedProgress(int userId) throws Exception {
+        return _reportingService.readHoursWorkedProgress(userId);
+    }
+
+    @Override
+    public double readHoursWorked(int userId) throws Exception {
+        return _reportingService.readHoursWorked(userId);
+    }
 }

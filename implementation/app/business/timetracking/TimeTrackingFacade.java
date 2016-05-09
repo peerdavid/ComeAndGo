@@ -38,16 +38,6 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
-    public double getHoursWorked(int userId) throws UserException {
-        return _timeTrackingService.getHoursWorked(userId);
-    }
-
-    @Override
-    public double getHoursWorkedProgress(int userId) throws UserException {
-        return _timeTrackingService.getHoursWorkedProgress(userId);
-    }
-
-    @Override
     public void startBreak(int userId) throws Exception {
         _timeTrackingService.createBreak(userId);
     }
