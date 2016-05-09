@@ -11,12 +11,10 @@ import models.Notification;
 class NotificationService implements NotificationSender {
 
     private final NotificationRepository _notificationRepository;
-    private final InternalUserManagement _userManagement;
 
     @Inject
-    public NotificationService(NotificationRepository notificationRepository, InternalUserManagement userRepository) {
+    public NotificationService(NotificationRepository notificationRepository) {
         _notificationRepository = notificationRepository;
-        _userManagement = userRepository;
     }
 
     @Override

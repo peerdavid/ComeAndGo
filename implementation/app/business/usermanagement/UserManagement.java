@@ -14,7 +14,7 @@ public interface UserManagement extends UseCases {
 
     void updateUser(String userName, User newUserData) throws UserException;
 
-    void deleteUser(String userName) throws UserException;
+    void deleteUser(String currentUserName, String userName) throws Exception;
 
     User readUser(String userName) throws UserException;
 
