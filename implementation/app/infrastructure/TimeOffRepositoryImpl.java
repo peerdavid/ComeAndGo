@@ -16,8 +16,12 @@ import java.util.List;
 public class TimeOffRepositoryImpl implements TimeOffRepository {
 
     @Override
-    public void createTimeOff(TimeOff timeoff) {
+    public int createTimeOff(TimeOff timeoff) {
         Ebean.save(timeoff);
+
+        // refresh and return auto generated id
+        Ebean.refresh(timeoff);
+        return timeoff.getId();
     }
 
 

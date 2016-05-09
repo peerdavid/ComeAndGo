@@ -191,11 +191,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
-        _repository.createTimeTrack(timeTrack);
+        int id = _repository.createTimeTrack(timeTrack);
 
         String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was created";
         Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
-            timeTrack.getUser().getBoss(), timeTrack.getUser());
+            timeTrack.getUser().getBoss(), timeTrack.getUser(), id);
         _notificationSender.sendNotification(notification);
     }
 
@@ -220,7 +220,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
            String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was updated";
            Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
-               timeTrack.getUser().getBoss(), timeTrack.getUser());
+               timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
            _notificationSender.sendNotification(notification);
     }
 
