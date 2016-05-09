@@ -1,5 +1,7 @@
 package business.usermanagement;
 
+import business.notification.ModuleInternal;
+import business.notification.NotificationSender;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -22,10 +24,13 @@ public class Module extends AbstractModule {
         bind(UserManagement.class).to(UserManagementFacade.class);
         bind(InternalUserManagement.class).to(UserServiceImpl.class);
 
-        Injector injector = Guice.createInjector(new infrastructure.Module());
+        Injector injector = Guice.createInjector(
+                new infrastructure.Module(),
+                new ModuleInternal());
         UserRepository userRepository = injector.getInstance(UserRepository.class);
+        NotificationSender notificationSender = null;//injector.getInstance(NotificationSender.class);
 
-        UserService userService = new UserServiceImpl(userRepository);
+        UserService userService = new UserServiceImpl(userRepository, notificationSender);
         final FormClient client = new FormClient("/login", userService);
         client.setName("default");
 

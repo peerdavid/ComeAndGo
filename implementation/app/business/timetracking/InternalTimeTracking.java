@@ -13,5 +13,5 @@ import java.util.List;
 public interface InternalTimeTracking {
     List<TimeOff> readTimeOffs(int userId) throws Exception;
     List<TimeTrack> readTimeTracks(int userId) throws Exception;
-    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
+    List<Payout> readPayouts(int userId) throws Exception;
 }

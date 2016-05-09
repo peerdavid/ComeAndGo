@@ -9,7 +9,7 @@ public class Module extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(CollectiveAggreement.class).to(CollectiveAggreementImpl.class);
+        bind(CollectiveAgreement.class).to(CollectiveAgreementImpl.class);
         bind(ReportingService.class).to(ReportingServiceImpl.class);
         bind(Reporting.class).to(ReportingFacade.class);
     }
