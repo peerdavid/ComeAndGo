@@ -1,13 +1,17 @@
 package business.reporting;
 
+import business.timetracking.RequestState;
+import business.timetracking.TimeOffType;
 import models.*;
+import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by david on 02.05.16.
  */
-class CollectiveAggreementImpl implements CollectiveAggreement {
+class CollectiveAgreementImpl implements CollectiveAgreement {
 
 
     @Override
@@ -19,6 +23,16 @@ class CollectiveAggreementImpl implements CollectiveAggreement {
                         b -> (b.getTo().getMillis() - b.getFrom().getMillis()) / (1000 * 60)
                 ).sum()
         ).sum();
+
+        long holidayMinutes = 0;
+        for (TimeOff t : timeOffs) {
+            if (    (t.getType() == TimeOffType.HOLIDAY) &&
+                    (t.getState() == RequestState.REQUEST_ACCEPTED) &&
+                    (t.getFrom().isBeforeNow())) {
+                holidayMinutes += TimeUnit.MILLISECONDS.toMinutes(t.getTo().getMillis() - t.getFrom().getMillis());
+            }
+        }
+
 
         long workMinutesShould = (long) (1000 * user.getHoursPerDay());
 
