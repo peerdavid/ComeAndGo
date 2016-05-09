@@ -105,6 +105,14 @@ views.report.title = Report
 views.report.company.title = Company Report
 views.report.employee.title = My Report
 views.report.boss.title = Boss Report
+views.report.username = Name
+views.report.usedholiday = Used Holiday
+views.report.unusedholiday = Unused Holiday
+views.report.sickdays = Sickdays
+views.report.workshould = Work should [h]
+views.report.workis = Work is [h]
+views.report.break = Break [min]
+views.report.difference = Difference
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials

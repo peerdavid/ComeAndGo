@@ -16,7 +16,11 @@ $( document ).ready(function() {
     // Poll new notifications every second
     updateNewNotificationBadge()    // Do it immediately
     setInterval(updateNewNotificationBadge, 1000);
+
+    $('.enable-editing-switch').prop( "checked", false );
+
 });
+
 
 /*
  * get notification count by ajax call
@@ -44,10 +48,14 @@ var updateNewNotificationBadge = function(){
 }
 
 $('.enable-editing-switch').click(function () {
-    $('li.active form input').prop('disabled', !this.checked);
-    $('li.active form button.ghost').css('display', (this.checked ? 'inline' : 'none'));
-    //$('form select').attr('disabled', 'disabled');
+    enableForm(this.checked);
+
 });
+
+function enableForm(enable) {
+    $('li.active form input').prop('disabled', !enable);
+    $('li.active form button.ghost').css('display', (enable ? 'inline' : 'none'));
+}
 
 /* fix for datepicker bug showing 19XX instead of 20XX */
 $('.datepicker').focus(function () {
