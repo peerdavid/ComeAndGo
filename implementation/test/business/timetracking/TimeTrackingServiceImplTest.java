@@ -451,6 +451,7 @@ public class TimeTrackingServiceImplTest {
     @Test
     public void updateTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws UserException, NotificationException {
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
+        timeTrack.setId(1);
 
         _timeTrackService.updateTimeTrack(timeTrack);
         Mockito.verify(_validation, times(1)).validateTimeTrackUpdate(any(TimeTrack.class));

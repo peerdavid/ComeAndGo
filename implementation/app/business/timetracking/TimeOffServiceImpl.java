@@ -257,6 +257,10 @@ class TimeOffServiceImpl implements TimeOffService {
         if (timeOffToDelete.getUser().getId() != userId) {
             throw new NotAuthorizedException("User " + userId + " is not allowed to delete time off " + id);
         }
+        if (timeOffToDelete.getFrom().isBefore(DateTime.now())
+                || timeOffToDelete.getTo().isBefore(DateTime.now())) {
+            throw new UserException("exceptions.timeoff.error_delete_timoff_in_past");
+        }
 
         User employee = timeOffToDelete.getUser();
         User boss = employee.getBoss();

@@ -33,8 +33,7 @@ public class ReportingServiceImplTest {
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _internalUserManagement;
     User _testUser;
-    Break _testBreak;
-    ReportingServiceImpl _reporting;
+    ReportingService _reporting;
     CollectiveAgreement _collectiveAgreement;
     InternalTimeTracking _internalTimeTrack;
 
@@ -42,7 +41,6 @@ public class ReportingServiceImplTest {
     @Before
     public void SetUp() throws Exception {
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null, 1200);
-        _testBreak = new Break(DateTime.now());
 
         _notificationSenderMock = mock(NotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
@@ -65,7 +63,7 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorked(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0);
     }
 
@@ -88,7 +86,7 @@ public class ReportingServiceImplTest {
         when(t.getBreaks()).thenReturn(breaks);
 
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
 
         int userId = 8;
         double expected = 2.0;
@@ -97,7 +95,7 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorked(userId);
 
         // Validate
-        //Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.05);
     }
 
@@ -129,7 +127,7 @@ public class ReportingServiceImplTest {
         when(t1.getBreaks()).thenReturn(breaks);
 
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
 
         int userId = 8;
         double expected = 4.0;
@@ -138,15 +136,14 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorked(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.05);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = UserException.class)
     public void getHoursWorked_ForUnregisteredUser_ShouldThrowException() throws Exception {
         // Prepare
-        when(_internalUserManagement.readUser(8)).thenThrow(Exception.class);
-
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(UserException.class);
         int userId = 8;
 
         // Call
@@ -157,7 +154,7 @@ public class ReportingServiceImplTest {
     public void getHoursWorkedProgress_WithNoTimeTracks_ShouldSucceedAndCallRepository() throws Exception {
         // Prepare
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(Collections.emptyList());
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(Collections.emptyList());
 
         _testUser.setHoursPerDay(2.0);
 
@@ -168,7 +165,7 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorkedProgress(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.01);
     }
 
@@ -193,7 +190,7 @@ public class ReportingServiceImplTest {
         when(t.getBreaks()).thenReturn(breaks);
 
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
 
         _testUser.setHoursPerDay(4.0);
 
@@ -204,7 +201,7 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorkedProgress(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.01);
     }
 
@@ -221,7 +218,7 @@ public class ReportingServiceImplTest {
         when(t.getBreaks()).thenReturn(Collections.emptyList());
 
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
 
         _testUser.setHoursPerDay(4.0);
 
@@ -232,7 +229,7 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorkedProgress(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.01);
     }
 
@@ -266,7 +263,7 @@ public class ReportingServiceImplTest {
         _testUser.setHoursPerDay(6.0);
 
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
-        when(_timeTrackingRepository.readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTracks);
 
         int userId = 8;
         double expected = 0.66;
@@ -275,14 +272,14 @@ public class ReportingServiceImplTest {
         double actual = _reporting.readHoursWorkedProgress(userId);
 
         // Validate
-        Mockito.verify(_timeTrackingRepository, times(1)).readTimeTracks(any(User.class), any(DateTime.class), any(DateTime.class));
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.01);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = UserException.class)
     public void getHoursWorkedProgress_ForUnregisteredUser_ShouldThrowException() throws Exception {
         // Prepare
-        when(_internalUserManagement.readUser(8)).thenThrow(Exception.class);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(UserException.class);
 
         int userId = 8;
 
