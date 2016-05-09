@@ -2,7 +2,7 @@
 
 @import business.notification.NotificationType
 @import controllers.notification.NotificationViewModel
-@(profile: CommonProfile, notreadnotifications: java.util.List[NotificationViewModel], readnotifications: java.util.List[NotificationViewModel],sentnotifications: java.util.List[NotificationViewModel])
+@(profile: CommonProfile, notreadnotifications: java.util.List[NotificationViewModel], readnotifications: java.util.List[NotificationViewModel], sentnotifications: java.util.List[NotificationViewModel])
 
 @main(Messages("views.notification.title")) {
 
@@ -11,43 +11,45 @@
 
         <div class="row">
 
-            <!--  Not read Notifications   -->
+                <!--  Not read Notifications   -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.notreadnotifications")</h5>
                 <ul class="collapsible notification-list" data-collapsible="accordion">
-                @if(!notreadnotifications.isEmpty){
-                    @for(notification : NotificationViewModel <- notreadnotifications){
+                @if(!notreadnotifications.isEmpty) {
+                    @for(notification: NotificationViewModel <- notreadnotifications) {
                         <li>
                             <div class="collapsible-header">
                                 <i class="material-icons">@notification.getIcon</i>
-                                <h6>@(notification.getHeader + " - " + notification.getSender)</h6>
+                                <b>
+                                @(notification.getHeader + " - " + notification.getSender)
+                                </b>
                             </div>
 
                             <div class="collapsible-body">
-                                @if(notification.getAdditionalInformation!="") {
+                                @if(notification.getAdditionalInformation != "") {
                                     <p>@notification.getAdditionalInformation</p>
                                 }
-                                <p>@notification.getMessage</p>
+                            <p>@notification.getMessage</p>
 
-                                <div class="row button-container">
+                            <div class="row button-container">
 
-                                @if(notification.isRejectable) {
-                                    <a class="btn waves-effect waves-light negative-btn col s12 l5" href="@routes.NotificationController.rejectNotification(notification.getNotificationId)">
-                                        <i class="material-icons right"></i>
-                                        @Messages("views.notification.buttonreject")
-                                    </a>
-                                    <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l2" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
-                                        @Messages("views.notification.buttonaccept")
-                                    </a>
+                            @if(notification.isRejectable) {
+                                <a class="btn waves-effect waves-light negative-btn col s12 l5" href="@routes.NotificationController.rejectNotification(notification.getNotificationId)">
+                                    <i class="material-icons right"></i>
+                                    @Messages("views.notification.buttonreject")
+                                </a>
+                                <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l2" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
+                                @Messages("views.notification.buttonaccept")
+                                </a>
 
-                                } else {
+                            } else {
 
-                                    <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l7" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
-                                        @Messages("views.notification.buttonaccept")
-                                    </a>
-                                }
+                                <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l7" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
+                                @Messages("views.notification.buttonaccept")
+                                </a>
+                            }
 
-                                </div>
+                            </div>
 
                             </div>
                         </li>
@@ -58,7 +60,7 @@
                 </ul>
             </div>
 
-            <!--  Read and accepted/rejected Notifications  -->
+                <!--  Read and accepted/rejected Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.readnotifications")</h5>
                 <ul class="collapsible notification-list" data-collapsible="accordion">
@@ -67,14 +69,16 @@
                         <li>
                             <div class="collapsible-header">
                                 <i class="material-icons">drafts</i>
-                                <h6>@(notification.getHeader + " - " + notification.getSender)</h6>
+                                <b>
+                                @(notification.getHeader + " - " + notification.getSender)
+                                </b>
                             </div>
 
                             <div class="collapsible-body">
-                                @if(notification.getAdditionalInformation!="") {
+                                @if(notification.getAdditionalInformation != "") {
                                     <p>@notification.getAdditionalInformation</p>
                                 }
-                                <p>@notification.getMessage</p>
+                            <p>@notification.getMessage</p>
                             </div>
                         </li>
                     }
@@ -85,7 +89,7 @@
 
             </div>
 
-            <!-- Sent Notifications  -->
+                <!-- Sent Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.sentnotifications")</h5>
                 <ul class="collapsible notification-list" data-collapsible="accordion">
@@ -94,14 +98,16 @@
                         <li>
                             <div class="collapsible-header">
                                 <i class="material-icons">@notification.getIcon</i>
-                                <h6>@notification.getHeader</h6>
+                                <b>
+                                @notification.getHeader
+                                </b>
                             </div>
 
                             <div class="collapsible-body">
-                                @if(notification.getAdditionalInformation!="") {
+                                @if(notification.getAdditionalInformation != "") {
                                     <p>@notification.getAdditionalInformation</p>
                                 }
-                                <p>@notification.getMessage</p>
+                            <p>@notification.getMessage</p>
                             </div>
                         </li>
                     }
@@ -111,7 +117,7 @@
                 </ul>
             </div>
         </div>
-        <br style="clear : both ;"/>
+        <br style="clear: both ;"/>
 
     }
 }
