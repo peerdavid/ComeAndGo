@@ -113,6 +113,7 @@ views.report.workshould = Work should [h]
 views.report.workis = Work is [h]
 views.report.break = Break [min]
 views.report.difference = Difference
+views.report.requestpayout = Request Holiday Payout
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials

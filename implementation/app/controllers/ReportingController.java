@@ -52,4 +52,14 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         return ok(views.html.reporting.render(profile, report));
     }
 
+
+    @RequiresAuthentication(clientName = "default")
+    public Result requestHolidayPayout() throws Exception {
+        CommonProfile profile = getUserProfile();
+        int userId = Integer.parseInt(profile.getId());
+
+
+        Report report = _reporting.createEmployeeReport(userId);
+        return ok(views.html.reporting.render(profile, report));
+    }
 }

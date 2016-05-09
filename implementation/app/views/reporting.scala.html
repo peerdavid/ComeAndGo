@@ -55,5 +55,87 @@
                 }
             </tbody>
         </table>
+
+        <form>
+            <button data-target="modal-request-holiday-payout" class="btn modal-trigger right secondary-btn">@Messages("views.report.requestpayout")
+                <i class="material-icons right">monetization_on</i>
+            </button>
+
+            <button data-target="modal-request-overtime-payout" class="btn modal-trigger right secondary-btn">request overtime payout
+                <i class="material-icons right">monetization_on</i>
+            </button>
+
+            <div id="modal-request-holiday-payout" class="modal">
+                    <!-- header of modal -->
+                <header class="modal-content">
+                    <h4>Request Holiday Payout</h4>
+                </header>
+
+                <form action="..." method="POST">
+                        <!-- Content of modal -->
+                    <div class="modal-content">
+
+                        <div class="row">
+                            <div class="input-field col s6 m5">
+                                <input name="numberOfDays" required="required" type="text">
+                                <label for="numberOfDays">Days</label>
+                            </div>
+                            <div class="input-field col s6 m5">
+                                <input name="comment" required="required" type="text">
+                                <label for="comment">Comment</label>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Modal footer -->
+                    <footer class="modal-footer">
+                        <button class="waves-effect modal-close waves-light btn right primary-btn"
+                        style="float : right">request
+                            <i class="material-icons right">add</i>
+                        </button>
+
+                        <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                        @Messages("views.btn.close")
+                        </button>
+                    </footer>
+                </form>
+            </div>
+
+            <div id="modal-request-overtime-payout" class="modal">
+                    <!-- header of modal -->
+                <header class="modal-content">
+                    <h4>Request Overtime Payout</h4>
+                </header>
+
+                <form action="..." method="POST">
+                        <!-- Content of modal -->
+                    <div class="modal-content">
+
+                        <div class="row">
+                            <div class="input-field col s6 m5">
+                                <input name="numberOfDays" required="required" type="text">
+                                <label for="numberOfDays">Hours</label>
+                            </div>
+                            <div class="input-field col s6 m5">
+                                <input name="comment" required="required" type="text">
+                                <label for="comment">Comment</label>
+                            </div>
+                        </div>
+                    </div>
+
+                        <!-- Modal footer -->
+                    <footer class="modal-footer">
+                        <button class="waves-effect modal-close waves-light btn right primary-btn"
+                        style="float : right">request
+                            <i class="material-icons right">add</i>
+                        </button>
+
+                        <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                        @Messages("views.btn.close")
+                        </button>
+                    </footer>
+                </form>
+            </div>
+        </form >
     }
 }
