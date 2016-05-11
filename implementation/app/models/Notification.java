@@ -57,12 +57,7 @@ public class Notification extends Model {
     }
 
     public Notification(NotificationType type, String message, User sender, User receiver) throws NotificationException {
-        setType(type);
-        setMessage(message);
-        setSender(sender);
-        setReceiver(receiver);
-        setRead(false);
-        createdOn = DateTime.now();
+        this(type, message, sender, receiver, null);
     }
 
     public Notification(NotificationType type, String message, User sender, User receiver, Integer referenceId) throws NotificationException {
