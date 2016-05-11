@@ -3,7 +3,9 @@ package models;
 import business.usermanagement.UserException;
 import business.usermanagement.SecurityRole;
 import com.avaje.ebean.Model;
+import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
+import play.data.format.Formats;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -52,6 +54,10 @@ public class User extends Model {
     @Column(name = "holidays")
     private int holidays;
 
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Column(name = "entry_date", columnDefinition = "datetime")
+    private DateTime entryDate;
+
     public User(String username, String password, String role, String firstname, String lastname,
                 String email, boolean active, User boss, double hoursPerDay) throws UserException {
 
@@ -67,6 +73,7 @@ public class User extends Model {
         this.setHoursPerDay(hoursPerDay);
         this.active = active;
         this.holidays = 25;
+        this.entryDate = DateTime.now();
     }
 
     public String getPassword() {
@@ -196,5 +203,13 @@ public class User extends Model {
             throw new UserException("exceptions.usermanagement.invalid_amount_of_holidays");
         }
         this.holidays = holidays;
+    }
+
+    public DateTime getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(DateTime entryDate) {
+        this.entryDate = entryDate;
     }
 }

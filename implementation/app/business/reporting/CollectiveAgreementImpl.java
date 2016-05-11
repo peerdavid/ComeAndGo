@@ -14,6 +14,8 @@ import java.util.concurrent.TimeUnit;
  */
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
+    // ToDo: How to update this amount?
+    private static final int WORKDAYS_OF_YEAR = 249;
 
     @Override
     public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
@@ -46,7 +48,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
 
-        long workMinutesShould = (long) ((getWorkdaysOfThisYear() * 24 * 60 * user.getHoursPerDay() * 60)
+        long workMinutesShould = (long) ((getWorkdaysOfThisYearUptoNow(user.getEntryDate()) * 24 * 60 * user.getHoursPerDay() * 60)
                                     - usedHolidays * user.getHoursPerDay() * 60);
 
         return new ReportEntry(
@@ -67,9 +69,12 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return null;
     }
 
-    @Override
-    public int getWorkdaysOfThisYear() {
-        return 249;
+    private int getWorkdaysOfThisYearUptoNow(DateTime entryDate) {
+        // If user joined company this year
+        if (entryDate.getYear() == DateTime.now().getYear()) {
+            return WORKDAYS_OF_YEAR - entryDate.getDayOfYear();
+        }
+        return WORKDAYS_OF_YEAR;
     }
 
     // This function only counts real work days, not the weekend
