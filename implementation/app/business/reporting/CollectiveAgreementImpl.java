@@ -5,6 +5,7 @@ import business.timetracking.TimeOffType;
 import models.*;
 import org.joda.time.DateTime;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -33,14 +34,14 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                     (t.getState() == RequestState.REQUEST_ACCEPTED)) {
 
                 if (t.getFrom().isBeforeNow()) {
-                    usedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
+                    usedHolidays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
                 }
 
-                acceptedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
+                acceptedHolidays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
 
             if (t.getType() == TimeOffType.SICK_LEAVE) {
-                sickDays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
+                sickDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
         }
 
@@ -51,9 +52,10 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return new ReportEntry(
                 user,
                 user.getHoursPerDay(),
-                usedHolidays,
-                user.getHolidays() - usedHolidays,
-                sickDays, workMinutesShould,
+                acceptedHolidays,
+                user.getHolidays() - acceptedHolidays,
+                sickDays,
+                workMinutesShould,
                 workMinutesWithoutBreak - breakMinutes,
                 breakMinutes);
     }
@@ -68,5 +70,17 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     @Override
     public int getWorkdaysOfThisYear() {
         return 249;
+    }
+
+    // This function only counts real work days, not the weekend
+    private int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
+        int workdays = 0;
+        for (int i = 0; i < to.getDayOfYear() - from.getDayOfYear(); i++) {
+            if (    from.plusDays(i).getDayOfWeek() != 6
+                    && from.plusDays(i).getDayOfWeek() != 7) {
+                workdays++;
+            }
+        }
+        return workdays;
     }
 }
