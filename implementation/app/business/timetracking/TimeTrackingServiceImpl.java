@@ -192,18 +192,22 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     }
 
     private String dateToString(DateTime date) {
-        StringBuilder sb = new StringBuilder();
-        int value;
-        if((value = date.getDayOfMonth()) < 10) {
-            sb.append("0");
+        try {
+            StringBuilder sb = new StringBuilder();
+            int value;
+            if ((value = date.getDayOfMonth()) < 10) {
+                sb.append("0");
+            }
+            sb.append(value + ".");
+            if ((value = date.getMonthOfYear()) < 10) {
+                sb.append("0");
+            }
+            sb.append(value + ".");
+            sb.append(date.getYear());
+            return sb.toString();
+        } catch (Exception e) {
+            return "";
         }
-        sb.append(value + ".");
-        if((value = date.getMonthOfYear()) < 10) {
-            sb.append("0");
-        }
-        sb.append(value + ".");
-        sb.append(date.getYear());
-        return sb.toString();
     }
 
     private User loadUserById(int userId) throws UserException {
