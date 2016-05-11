@@ -24,19 +24,25 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 ).sum()
         ).sum();
 
-        long holidayMinutes = 0;
+
+        int usedHolidays = 0;
+        int acceptedHolidays = 0;
         for (TimeOff t : timeOffs) {
             if (    (t.getType() == TimeOffType.HOLIDAY) &&
-                    (t.getState() == RequestState.REQUEST_ACCEPTED) &&
-                    (t.getFrom().isBeforeNow())) {
-                holidayMinutes += TimeUnit.MILLISECONDS.toMinutes(t.getTo().getMillis() - t.getFrom().getMillis());
+                    (t.getState() == RequestState.REQUEST_ACCEPTED)) {
+
+                if (t.getFrom().isBeforeNow()) {
+                    usedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear();
+                }
+
+                acceptedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear();
             }
         }
 
 
-        long workMinutesShould = (long) (1000 * user.getHoursPerDay());
+        long workMinutesShould = (long) ((getWorkdaysOfThisYear() * 24 * 60 * user.getHoursPerDay() * 60) - usedHolidays * user.getHoursPerDay() * 60);
 
-        return new ReportEntry(user, 1,2,3,4, workMinutesShould, (workMinutesWithoutBreak - breakMinutes), breakMinutes);
+        return new ReportEntry(user, user.getHoursPerDay(), usedHolidays,3,4, workMinutesShould, (workMinutesWithoutBreak - breakMinutes), breakMinutes);
     }
 
 
@@ -44,5 +50,10 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     public List<Notification> createForbiddenWorkTimeNotifications(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
         // If user worked > 8h, send a notification to the boss
         return null;
+    }
+
+    @Override
+    public int getWorkdaysOfThisYear() {
+        return 249;
     }
 }

@@ -49,6 +49,9 @@ public class User extends Model {
     @Column(name = "hours_per_day")
     private double hoursPerDay;
 
+    @Column(name = "holidays")
+    private double holidays;
+
     public User(String username, String password, String role, String firstname, String lastname,
                 String email, boolean active, User boss, double hoursPerDay) throws UserException {
 
@@ -63,6 +66,7 @@ public class User extends Model {
         this.setBoss(boss);
         this.setHoursPerDay(hoursPerDay);
         this.active = active;
+        this.holidays = 25;
     }
 
     public String getPassword() {
@@ -176,10 +180,21 @@ public class User extends Model {
     }
 
     public void setHoursPerDay(double hoursPerDay) throws UserException {
-        if(hoursPerDay < 0){
-            throw new UserException("exceptions.usermanagement.invalid_salary");
+        if (hoursPerDay < 0) {
+            throw new UserException("exceptions.usermanagement.invalid_work_time");
         }
 
         this.hoursPerDay = hoursPerDay;
+    }
+
+    public double getHolidays() {
+        return holidays;
+    }
+
+    public void setHolidays(double holidays) throws UserException {
+        if (holidays < 0) {
+            throw new UserException("exceptions.usermanagement.invalid_amount_of_holidays");
+        }
+        this.holidays = holidays;
     }
 }
