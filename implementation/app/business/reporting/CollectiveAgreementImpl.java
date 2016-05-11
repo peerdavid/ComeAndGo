@@ -81,8 +81,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     private int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
         int workdays = 0;
         for (int i = 0; i < to.getDayOfYear() - from.getDayOfYear(); i++) {
-            if (    from.plusDays(i).getDayOfWeek() != 6
-                    && from.plusDays(i).getDayOfWeek() != 7) {
+            if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
                 workdays++;
             }
         }
