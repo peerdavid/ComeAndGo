@@ -50,7 +50,7 @@ public class User extends Model {
     private double hoursPerDay;
 
     @Column(name = "holidays")
-    private double holidays;
+    private int holidays;
 
     public User(String username, String password, String role, String firstname, String lastname,
                 String email, boolean active, User boss, double hoursPerDay) throws UserException {
@@ -187,11 +187,11 @@ public class User extends Model {
         this.hoursPerDay = hoursPerDay;
     }
 
-    public double getHolidays() {
+    public int getHolidays() {
         return holidays;
     }
 
-    public void setHolidays(double holidays) throws UserException {
+    public void setHolidays(int holidays) throws UserException {
         if (holidays < 0) {
             throw new UserException("exceptions.usermanagement.invalid_amount_of_holidays");
         }

@@ -27,22 +27,35 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         int usedHolidays = 0;
         int acceptedHolidays = 0;
+        int sickDays = 0;
         for (TimeOff t : timeOffs) {
             if (    (t.getType() == TimeOffType.HOLIDAY) &&
                     (t.getState() == RequestState.REQUEST_ACCEPTED)) {
 
                 if (t.getFrom().isBeforeNow()) {
-                    usedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear();
+                    usedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
                 }
 
-                acceptedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear();
+                acceptedHolidays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
+            }
+
+            if (t.getType() == TimeOffType.SICK_LEAVE) {
+                sickDays += t.getTo().getDayOfYear() - t.getFrom().getDayOfYear() + 1;
             }
         }
 
 
-        long workMinutesShould = (long) ((getWorkdaysOfThisYear() * 24 * 60 * user.getHoursPerDay() * 60) - usedHolidays * user.getHoursPerDay() * 60);
+        long workMinutesShould = (long) ((getWorkdaysOfThisYear() * 24 * 60 * user.getHoursPerDay() * 60)
+                                    - usedHolidays * user.getHoursPerDay() * 60);
 
-        return new ReportEntry(user, user.getHoursPerDay(), usedHolidays,3,4, workMinutesShould, (workMinutesWithoutBreak - breakMinutes), breakMinutes);
+        return new ReportEntry(
+                user,
+                user.getHoursPerDay(),
+                usedHolidays,
+                user.getHolidays() - usedHolidays,
+                sickDays, workMinutesShould,
+                workMinutesWithoutBreak - breakMinutes,
+                breakMinutes);
     }
 
 
