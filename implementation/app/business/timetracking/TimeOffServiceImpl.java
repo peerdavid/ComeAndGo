@@ -42,8 +42,8 @@ class TimeOffServiceImpl implements TimeOffService {
 
         TimeOff sickLeave = new TimeOff(employee, from, to, TimeOffType.SICK_LEAVE, RequestState.DONE, comment);
 
-        _repository.createTimeOff(sickLeave);
-        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss, sickLeave.getId()));
+        int id = _repository.createTimeOff(sickLeave);
+        _notificationSender.sendNotification(new Notification(NotificationType.SICK_LEAVE_INFORMATION, comment, employee, boss, id));
 
     }
 
@@ -56,8 +56,8 @@ class TimeOffServiceImpl implements TimeOffService {
 
         TimeOff businessTrip = new TimeOff(employee, from, to, TimeOffType.BUSINESS_TRIP, RequestState.DONE, comment);
 
-        _repository.createTimeOff(businessTrip);
-        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss, businessTrip.getId()));
+        int id = _repository.createTimeOff(businessTrip);
+        _notificationSender.sendNotification(new Notification(NotificationType.BUSINESS_TRIP_INFORMATION, comment, employee, boss, id));
     }
 
     @Override
@@ -68,9 +68,9 @@ class TimeOffServiceImpl implements TimeOffService {
         _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.HOLIDAY, RequestState.REQUEST_SENT, comment);
-        _repository.createTimeOff(timeOff);
+        int id = _repository.createTimeOff(timeOff);
 
-        Notification notification = new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+        Notification notification = new Notification(NotificationType.HOLIDAY_REQUEST, comment, employee, boss, id);
 
         _notificationSender.sendNotification(notification);
     }
@@ -83,9 +83,9 @@ class TimeOffServiceImpl implements TimeOffService {
         _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff timeOff = new TimeOff(employee, from, to, TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_SENT, comment);
-        _repository.createTimeOff(timeOff);
+        int id = _repository.createTimeOff(timeOff);
 
-        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, timeOff.getId());
+        Notification notification = new Notification(NotificationType.SPECIAL_HOLIDAY_REQUEST, comment, employee, boss, id);
         _notificationSender.sendNotification(notification);
     }
 
@@ -137,9 +137,9 @@ class TimeOffServiceImpl implements TimeOffService {
         _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_SENT, comment);
-        _repository.createTimeOff(parentalLeave);
+        int id = _repository.createTimeOff(parentalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, comment, employee, boss, parentalLeave.getId());
+        Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, comment, employee, boss, id);
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -151,9 +151,9 @@ class TimeOffServiceImpl implements TimeOffService {
         _timeOffValidation.validateTimeOff(employee, from, to);
 
         TimeOff educationalLeave = new TimeOff(employee, from, to, TimeOffType.EDUCATIONAL_LEAVE, RequestState.REQUEST_SENT, comment);
-        _repository.createTimeOff(educationalLeave);
+        int id = _repository.createTimeOff(educationalLeave);
 
-        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, comment, employee, boss, educationalLeave.getId());
+        Notification answerToEmployee = new Notification(NotificationType.EDUCATIONAL_LEAVE_REQUEST, comment, employee, boss, id);
         _notificationSender.sendNotification(answerToEmployee);
     }
 
@@ -257,8 +257,8 @@ class TimeOffServiceImpl implements TimeOffService {
         if (timeOffToDelete.getUser().getId() != userId) {
             throw new NotAuthorizedException("User " + userId + " is not allowed to delete time off " + id);
         }
-
-        if (timeOffToDelete.getFrom().isBeforeNow()) {
+        if (timeOffToDelete.getFrom().isBefore(DateTime.now())
+                || timeOffToDelete.getTo().isBefore(DateTime.now())) {
             throw new UserException("exceptions.timeoff.error_delete_timoff_in_past");
         }
 

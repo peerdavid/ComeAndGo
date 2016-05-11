@@ -17,10 +17,6 @@ public interface TimeTracking extends UseCases {
 
     void go(int userId) throws Exception;
 
-    double getHoursWorked(int userId) throws UserException;
-
-    double getHoursWorkedProgress(int userId) throws UserException;
-
     void startBreak(int userId) throws Exception;
 
     void endBreak(int userId) throws Exception;
@@ -90,4 +86,6 @@ public interface TimeTracking extends UseCases {
     List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
 
     Payout readPayout(int payoutId) throws Exception;
+
+    void updatePayoutRequest(Payout payout) throws Exception;
 }

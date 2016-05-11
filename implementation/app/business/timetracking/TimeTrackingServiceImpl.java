@@ -67,39 +67,6 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.updateTimeTrack(timeTrack);
     }
 
-    @Override
-    public double getHoursWorked(int userId) throws UserException {
-        User user = loadUserById(userId);
-
-        DateTime now = DateTime.now();
-        List<TimeTrack> timeTracks = readTimeTracks(userId,
-            new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0),
-            new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 23, 59));
-
-        // TODO: check for timetrack over night
-        float result = 0;
-        for (TimeTrack timeTrack : timeTracks) {
-            DateTime from = timeTrack.getFrom();
-            DateTime to = timeTrack.getTo() == null ? now : timeTrack.getTo();
-            result += (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
-            for (Break b : timeTrack.getBreaks()) {
-                from = b.getFrom();
-                to = b.getTo() == null ? now : b.getTo();
-                result -= (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
-            }
-        }
-
-        return result;
-    }
-
-    @Override
-    public double getHoursWorkedProgress(int userId) throws UserException {
-        User user = loadUserById(userId);
-
-        double result = getHoursWorked(userId) / user.getHoursPerDay();
-
-        return result < 0 ? 0 : result > 1 ? 1 : result;
-    }
 
     @Override
     public boolean isActive(int userId) throws UserException {
@@ -145,7 +112,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException{
+    public void endBreak(int userId) throws UserException, NotFoundException, TimeTrackException {
         if(!takesBreak(userId)) {
             throw new UserException("exceptions.timetracking.user_break_error");
         }
@@ -191,11 +158,11 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
-        _repository.createTimeTrack(timeTrack);
+        int id = _repository.createTimeTrack(timeTrack);
 
         String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was created";
         Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
-            timeTrack.getUser().getBoss(), timeTrack.getUser());
+            timeTrack.getUser().getBoss(), timeTrack.getUser(), id);
         _notificationSender.sendNotification(notification);
     }
 
@@ -220,7 +187,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
            String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was updated";
            Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
-               timeTrack.getUser().getBoss(), timeTrack.getUser());
+               timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
            _notificationSender.sendNotification(notification);
     }
 

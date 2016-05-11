@@ -1,5 +1,6 @@
 package business.reporting;
 
+import business.usermanagement.UserException;
 import models.Report;
 
 /**
@@ -12,4 +13,8 @@ interface ReportingService {
     Report createEmployeeReport(int userId) throws Exception;
 
     Report createBossReport(int userId) throws Exception;
+
+    double readHoursWorkedProgress(int userId) throws Exception;
+
+    double readHoursWorked(int userId) throws Exception;
 }

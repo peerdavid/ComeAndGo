@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface TimeOffRepository {
 
-    void createTimeOff(TimeOff timeoff);
+    int createTimeOff(TimeOff timeoff);
 
     TimeOff readTimeOff(int id) throws TimeTrackException;
 

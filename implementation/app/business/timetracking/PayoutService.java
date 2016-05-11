@@ -30,5 +30,7 @@ interface PayoutService {
 
    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
 
+   void updatePayoutRequest(Payout payout) throws Exception;
+
    void deletePayout(int payoutId) throws Exception;
 }

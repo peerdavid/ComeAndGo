@@ -4,6 +4,7 @@ import business.timetracking.InternalTimeTracking;
 import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import models.*;
+import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +61,37 @@ class ReportingServiceImpl implements ReportingService {
 
         ReportEntry summary = createCompanySummary(userReports);
         return new Report(userReports, summary);
+    }
+
+    @Override
+    public double readHoursWorked(int userId) throws Exception {
+        DateTime now = DateTime.now();
+        List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(userId,
+                new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0),
+                new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 23, 59));
+
+        float result = 0;
+        for (TimeTrack timeTrack : timeTracks) {
+            DateTime from = timeTrack.getFrom();
+            DateTime to = timeTrack.getTo() == null ? now : timeTrack.getTo();
+            result += (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+            for (Break b : timeTrack.getBreaks()) {
+                from = b.getFrom();
+                to = b.getTo() == null ? now : b.getTo();
+                result -= (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public double readHoursWorkedProgress(int userId) throws Exception {
+        User user = _userManagement.readUser(userId);
+
+        double result = readHoursWorked(userId) / user.getHoursPerDay();
+
+        return result < 0 ? 0 : result > 1 ? 1 : result;
     }
 
 

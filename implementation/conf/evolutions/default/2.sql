@@ -57,6 +57,23 @@ insert into time_off  VALUES
 (4, 5, '2016-06-23 08:10:09', '2016-06-25 08:10:09', 3, 3, 'Please boss give me holiday', NULL),
 (5, 5, '2016-06-01 08:10:09', '2016-06-02 08:10:09', 4, 2, 'Travel to the usa', NULL);
 
+insert into payout VALUES
+(1, 1, 10, 0, 0, 'Hallo :-)', NULL),
+(2, 1, 2, 1, 1, 'Hallo :-)', 2),
+(3, 1, 5, 1, 3, 'Hallo :-)', NULL),
+(4, 1, 20, 1, 2, 'Hallo :-)', NULL),
+(5, 2, 10, 0, 1, 'Hallo :-)', 1),
+(6, 2, 12, 0, 0, 'Hallo :-)', NULL),
+(7, 3, 10, 0, 0, 'Hallo :-)', NULL),
+(8, 3, 8, 1, 1, 'Hallo :-)', NULL),
+(9, 3, 2, 0, 2, 'Hallo :-)', 1),
+(10, 4, 3, 0, 3, 'Hallo :-)', 2),
+(11, 4, 14, 1, 0, 'Hallo :-)', 6),
+(12, 4, 7, 0, 2, 'Hallo :-)', NULL),
+(13, 5, 9, 1, 3, 'Hallo :-)', NULL),
+(14, 5, 1, 0, 1, 'Hallo :-)', 4),
+(15, 6, 2, 0, 2, 'Hallo :-)', NULL);
+
 # --- !Downs
 delete from break;
 delete from time_track;
