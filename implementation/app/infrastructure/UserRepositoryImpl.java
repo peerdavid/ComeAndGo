@@ -4,6 +4,7 @@ import business.usermanagement.UserNotFoundException;
 import com.avaje.ebean.Ebean;
 import models.User;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,6 +69,10 @@ class UserRepositoryImpl implements UserRepository {
                         .where().eq("active", true)
                         .where().eq("boss_id", userId)
                         .findList();
+
+        if(userList == null) {
+            return Collections.emptyList();
+        }
 
         return userList;
     }

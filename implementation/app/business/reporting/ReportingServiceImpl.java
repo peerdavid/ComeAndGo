@@ -5,6 +5,7 @@ import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,14 +75,23 @@ class ReportingServiceImpl implements ReportingService {
         for (TimeTrack timeTrack : timeTracks) {
             DateTime from = timeTrack.getFrom();
             DateTime to = timeTrack.getTo() == null ? now : timeTrack.getTo();
-            result += (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+            result += getDifferenceOfMinutes(from, to, DateTimeConstants.MINUTES_PER_DAY);
             for (Break b : timeTrack.getBreaks()) {
                 from = b.getFrom();
                 to = b.getTo() == null ? now : b.getTo();
-                result -= (to.getMinuteOfDay() - from.getMinuteOfDay()) / 60f;
+                result -= getDifferenceOfMinutes(from, to, DateTimeConstants.MINUTES_PER_DAY);
             }
         }
 
+        return result / 60f;
+    }
+
+    private float getDifferenceOfMinutes(DateTime from, DateTime to, int unit) {
+        float result = to.getMinuteOfDay() - from.getMinuteOfDay();
+        // would be negative if working times go through midnight
+        if(result < 0) {
+            result = unit - result;
+        }
         return result;
     }
 
