@@ -18,9 +18,15 @@ $( document ).ready(function() {
     setInterval(updateNewNotificationBadge, 1000);
 
     $('.enable-editing-switch').prop( "checked", false );
-    
+
+    // filter bar on edituser
     $(function(){
-        listFilter($("#notReadHeader"),$("#notReadList"));
+        listFilter($("#user-filter"),$("#user-list"));
+    });
+
+    // filter bar for not read notifications on notifications view
+    $(function(){
+        listFilter($("#not-read-filter"),$("#not-read-list"));
     });
 
 });
@@ -49,7 +55,7 @@ var updateNewNotificationBadge = function(){
             console.log("Notification number request failed " + textStatus);
         }
     });
-}
+};
 
 $('.enable-editing-switch').click(function () {
     enableForm(this.checked);
@@ -90,16 +96,16 @@ $('.datepicker').focus(function () {
     $('.datepicker').pickadate(options);
 });
 
-function listFilter(header,list) {
-    var form = $("<form>").attr({"class":"filterform","action":"#"}),
-        input = $("<input>").attr({"class":"filterinput","type":"text"});
-    $(form).append(input).appendTo(notReadHeader);
+
+// code from: https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
+// slightly modified
+function listFilter(input,list) {
 
     $(input).change(function(){
         var filter = $(this).val();
         if(filter) {
-            $(list).find("b:not(:contains(" + filter + "))").parent().slideUp();
-            $(list).find("b:contains(" + filter + ")").parent().slideDown();
+            $(list).find("b:not(:Contains(" + filter + "))").parent().slideUp();
+            $(list).find("b:Contains(" + filter + ")").parent().slideDown();
         } else {
             $(list).find("li").slideDown();
         }
@@ -107,9 +113,7 @@ function listFilter(header,list) {
         $(this).change();
     });
     
-}
-
-
+};
 
 jQuery.expr[':'].Contains = function(a,i,m){
     return (a.textContent||a.innerText||"").toUpperCase().indexOf(m[3].toUpperCase())>=0;
