@@ -13,8 +13,8 @@
 
                 <!--  Not read Notifications   -->
             <div class="col s12 m4">
-                <h5>@Messages("views.notification.notreadnotifications")</h5>
-                <ul class="collapsible notification-list" data-collapsible="accordion">
+                <h5 id="notReadHeader">@Messages("views.notification.notreadnotifications")</h5>
+                <ul id="notReadList" class="collapsible notification-list" data-collapsible="accordion">
                 @if(!notreadnotifications.isEmpty) {
                     @for(notification: NotificationViewModel <- notreadnotifications) {
                         <li>
