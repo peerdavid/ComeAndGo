@@ -29,6 +29,8 @@ views.index.state.active = Active
 views.index.state.inactive = Inactive
 views.index.state.pause = Pause
 
+views.filter = Filter
+
 views.timeoff.title = Time Off
 views.timeoff.modal.create = Send new time off request
 views.timeoff.btn.request = Send

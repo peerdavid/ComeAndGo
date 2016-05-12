@@ -19,6 +19,16 @@ $( document ).ready(function() {
 
     $('.enable-editing-switch').prop( "checked", false );
 
+    // filter bar on edituser
+    $(function(){
+        listFilter($("#user-filter"),$("#user-list"));
+    });
+
+    // filter bar for not read notifications on notifications view
+    $(function(){
+        listFilter($("#not-read-filter"),$("#not-read-list"));
+    });
+
 });
 
 
@@ -45,7 +55,7 @@ var updateNewNotificationBadge = function(){
             console.log("Notification number request failed " + textStatus);
         }
     });
-}
+};
 
 $('.enable-editing-switch').click(function () {
     enableForm(this.checked);
@@ -86,3 +96,25 @@ $('.datepicker').focus(function () {
     $('.datepicker').pickadate(options);
 });
 
+
+// code from: https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
+// slightly modified
+function listFilter(input,list) {
+
+    $(input).change(function(){
+        var filter = $(this).val();
+        if(filter) {
+            $(list).find("b:not(:Contains(" + filter + "))").parent().slideUp();
+            $(list).find("b:Contains(" + filter + ")").parent().slideDown();
+        } else {
+            $(list).find("li").slideDown();
+        }
+    }).keyup(function(){
+        $(this).change();
+    });
+    
+};
+
+jQuery.expr[':'].Contains = function(a,i,m){
+    return (a.textContent||a.innerText||"").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+};
