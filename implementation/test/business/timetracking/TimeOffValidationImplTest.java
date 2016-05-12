@@ -12,12 +12,14 @@ import models.User;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.when;
 
 /**
@@ -94,7 +96,21 @@ public class TimeOffValidationImplTest {
         _validation.validateTimeOff(_testUser, _MIDNIGHT, _MIDDAY);
     }
 
+    @Test(expected = UserException.class)
+    public void validateCome_WhileTimeOffIsTaken_ShouldFail() throws Exception {
+        DateTime now = DateTime.now();
+        when(_timeOffRepository.readTimeOffsFromUser(any(User.class), any(DateTime.class), any(DateTime.class)))
+            .thenThrow(UserException.class);
 
+        _validation.validateComeForDate(_testUser, now);
+        Mockito.verify(_validation, times(1)).validateTimeOff(any(User.class), any(DateTime.class), any(DateTime.class));
+    }
+
+    @Test
+    public void validateCome_WhileNoTimeOffIsTaken_ShouldSucceed() throws Exception {
+        DateTime now = DateTime.now();
+        _validation.validateComeForDate(_testUser, now);
+    }
 
 
 }

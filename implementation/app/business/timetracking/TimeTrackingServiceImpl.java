@@ -48,8 +48,9 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         if(isActive(userId)) {
             throw new UserException("exceptions.timetracking.error_user_already_working");
         }
-
         User user = loadUserById(userId);
+
+        _timeOffValidation.validateComeForDate(user, DateTime.now());
         TimeTrack newTimeTrack = new TimeTrack(user);
         return _repository.createTimeTrack(newTimeTrack);
     }

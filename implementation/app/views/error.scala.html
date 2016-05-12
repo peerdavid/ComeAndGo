@@ -16,10 +16,12 @@
 
         @if(throwable.isInstanceOf[UserException]) {
             <p>@Messages(throwable.getMessage)</p>
+            @for(clash : Object <- throwable.asInstanceOf[UserException].getArguments) {
+                <p>@clash.asInstanceOf[String]</p>
+            }
         } else {
             <p>@Messages(throwable.getMessage)</p>
         }
-
 
     </div>
 

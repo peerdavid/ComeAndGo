@@ -76,6 +76,21 @@ public class TimeTrackingServiceImplTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void come_whileUserHasTimeOff_ShouldFail() throws Exception {
+       /** go while user has time of does not need to be tested.
+        *    if user can't come, he also can't go
+        *    another problem is that if user comes at evening (e.g. one day before timeOff), he would not be
+        *    able to leave work at next day.
+        */
+
+        // init and test
+        when(_timeTrackingRepository.readActiveTimeTrack(any(User.class))).thenThrow(NotFoundException.class);
+
+        _timeTrackService.come(8);
+        Mockito.verify(_timeOffValidation, times(1)).validateComeForDate(any(User.class), any(DateTime.class));
+    }
+
     @Test(expected = UserException.class)
     public void come_ForUnregisteredUser_ShouldThrowExceptionAndCallRepository() throws UserException, TimeTrackException {
         // Prepare

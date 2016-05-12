@@ -150,7 +150,7 @@ exceptions.timetracking.error_user_already_working = You are currently working a
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 
 
-exceptions.timeoff.error_clashing_timeoffs = You are not able to request time off because of clashing "{0}"
+exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:
 exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
