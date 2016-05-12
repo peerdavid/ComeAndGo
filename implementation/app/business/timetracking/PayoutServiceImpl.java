@@ -18,15 +18,12 @@ import java.util.List;
 class PayoutServiceImpl implements PayoutService {
 
    private final InternalUserManagement _userManagement;
-   private final InternalTimeTracking _timeTracking;
    private final PayoutRepository _repository;
    private final NotificationSender _notification;
 
    @Inject
-   PayoutServiceImpl(InternalUserManagement userManagement, InternalTimeTracking timeTracking,
-                     PayoutRepository repository, NotificationSender notification) {
+   PayoutServiceImpl(InternalUserManagement userManagement, PayoutRepository repository, NotificationSender notification) {
       _userManagement = userManagement;
-      _timeTracking = timeTracking;
       _repository = repository;
       _notification = notification;
    }
