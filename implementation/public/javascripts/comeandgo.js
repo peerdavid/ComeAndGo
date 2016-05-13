@@ -97,8 +97,9 @@ $('.datepicker').focus(function () {
 });
 
 
-// code from: https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
-// slightly modified
+// used to filter list
+// code slightly modified from:
+// https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
 function listFilter(input,list) {
 
     $(input).change(function(){
@@ -115,6 +116,7 @@ function listFilter(input,list) {
     
 };
 
+// diffrent contains function for case insensitivity
 jQuery.expr[':'].Contains = function(a,i,m){
     return (a.textContent||a.innerText||"").toUpperCase().indexOf(m[3].toUpperCase())>=0;
 };

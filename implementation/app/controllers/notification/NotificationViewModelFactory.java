@@ -28,7 +28,8 @@ public class NotificationViewModelFactory {
         switch (notification.getType()) {
 
             // Holiday-Cases
-            case HOLIDAY_REQUEST:{
+            //TODO: fix requests for deleted TimeOffs
+            case HOLIDAY_REQUEST: {
                 TimeOff timeOff = _timeTracking.readTimeOffById(notification.getReferenceId());
 
                 String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -37,7 +38,7 @@ public class NotificationViewModelFactory {
                 String message = notification.getMessage();
                 String sender = notification.getSender().getFirstName() + " " + notification.getSender().getLastName();
 
-                if(message.isEmpty()){
+                if(message.isEmpty()) {
                     message = Messages.get("notifications.holiday_request") + " " + sender;
                 }
 
@@ -150,7 +151,7 @@ public class NotificationViewModelFactory {
 
                 String message = notification.getMessage();
 
-                if(notification.getMessage().isEmpty()){
+                if(notification.getMessage().isEmpty()) {
                     message = Messages.get("notifications.educational_leave_request");
                 }
 
@@ -191,7 +192,7 @@ public class NotificationViewModelFactory {
                 String message = notification.getMessage();
                 String sender = notification.getSender().getFirstName() + " " + notification.getSender().getLastName();
 
-                if(message.isEmpty()){
+                if(message.isEmpty()) {
                     message = Messages.get("notifications.special_holiday_request") + " " + sender;
                 }
 
@@ -245,7 +246,7 @@ public class NotificationViewModelFactory {
                 String message = notification.getMessage();
                 String sender = notification.getSender().getFirstName() + " " + notification.getSender().getLastName();
 
-                if(message.isEmpty()){
+                if(message.isEmpty()) {
                     message = sender + Messages.get("notifications.sick_leave_information");
                 }
 
