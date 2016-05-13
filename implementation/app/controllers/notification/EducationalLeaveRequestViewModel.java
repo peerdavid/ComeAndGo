@@ -10,9 +10,9 @@ public class EducationalLeaveRequestViewModel extends BasicViewModel {
 
     private int _timeOffId;
 
-    public EducationalLeaveRequestViewModel(int notificationId, int timeOffId, String message, String sender, TimeTracking timeTracking) {
+    public EducationalLeaveRequestViewModel(int notificationId, int timeOffId, String message, String sender, String date, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, "", timeTracking);
+        super(notificationId, message, sender, date, timeTracking);
 
         _timeOffId = timeOffId;
 

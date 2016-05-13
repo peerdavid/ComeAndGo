@@ -8,9 +8,9 @@ import play.i18n.Messages;
  */
 public class EducationalLeaveAcceptViewModel extends BasicViewModel {
 
-    public EducationalLeaveAcceptViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public EducationalLeaveAcceptViewModel(int notificationId, String message, String sender, String date, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, "", timeTracking);
+        super(notificationId, message, sender, date, timeTracking);
 
     }
 
