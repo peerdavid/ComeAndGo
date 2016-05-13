@@ -11,6 +11,10 @@ public class TransactionInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
 
+        if(invocation.getMethod().getAnnotation(NoTransaction.class) != null){
+            return invocation.proceed();
+        }
+
         try {
             Ebean.beginTransaction();
             Object result = invocation.proceed();

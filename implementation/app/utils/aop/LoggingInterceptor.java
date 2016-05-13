@@ -15,6 +15,10 @@ public class LoggingInterceptor implements MethodInterceptor {
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
 
+        if(invocation.getMethod().getAnnotation(NoLogging.class) != null){
+            return invocation.proceed();
+        }
+
         // Log entry of method -> happy path is always debug
         Logger.debug(
                 String.format("%s() with parameters %s.",
