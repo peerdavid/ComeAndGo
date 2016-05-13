@@ -14,9 +14,6 @@ import java.util.concurrent.TimeUnit;
  */
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
-    // ToDo: How to update this amount?
-    private static final int WORKDAYS_OF_YEAR = 249;
-
     @Override
     public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
 
@@ -28,18 +25,18 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         ).sum();
 
 
-        int usedHolidays = 0;
-        int acceptedHolidays = 0;
+        int usedHolidayDays = 0;
+        int acceptedHolidayDays = 0;
         int sickDays = 0;
         for (TimeOff t : timeOffs) {
             if (    (t.getType() == TimeOffType.HOLIDAY) &&
                     (t.getState() == RequestState.REQUEST_ACCEPTED)) {
 
                 if (t.getFrom().isBeforeNow()) {
-                    usedHolidays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
+                    usedHolidayDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
                 }
 
-                acceptedHolidays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
+                acceptedHolidayDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
 
             if (t.getType() == TimeOffType.SICK_LEAVE) {
@@ -48,14 +45,14 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
 
-        long workMinutesShould = (long) ((getWorkdaysOfThisYearUptoNow(user.getEntryDate()) * 24 * 60 * user.getHoursPerDay() * 60)
-                                    - usedHolidays * user.getHoursPerDay() * 60);
+        long workMinutesShould = (long) ((getWorkdaysOfThisYearUptoNow(user.getEntryDate()) * 60 * user.getHoursPerDay())
+                                    - usedHolidayDays * user.getHoursPerDay() * 60);
 
         return new ReportEntry(
                 user,
                 user.getHoursPerDay(),
-                acceptedHolidays,
-                user.getHolidays() - acceptedHolidays,
+                acceptedHolidayDays,
+                user.getHolidays() - acceptedHolidayDays,
                 sickDays,
                 workMinutesShould,
                 workMinutesWithoutBreak - breakMinutes,
@@ -69,16 +66,26 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return null;
     }
 
-    private int getWorkdaysOfThisYearUptoNow(DateTime entryDate) {
+    private static int getWorkdaysOfThisYearUptoNow(DateTime entryDate) {
+        DateTime january1st = new DateTime(DateTime.now().getYear(), 1, 1, 0, 0);
+
         // If user joined company this year
         if (entryDate.getYear() == DateTime.now().getYear()) {
-            return WORKDAYS_OF_YEAR - entryDate.getDayOfYear();
+            return getWorkdaysOfTimeInterval(january1st, DateTime.now()) - entryDate.getDayOfYear();
         }
-        return WORKDAYS_OF_YEAR;
+        return getWorkdaysOfTimeInterval(january1st, DateTime.now());
+    }
+
+    private static int getWorkdaysOfThisYear() {
+        DateTime january1st = new DateTime(DateTime.now().getYear(), 1, 1, 0, 0);
+        DateTime december31th = new DateTime(DateTime.now().getYear(), 12, 31, 23, 59);
+
+        return getWorkdaysOfTimeInterval(january1st, december31th);
     }
 
     // This function only counts real work days, not the weekend
-    private int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
+    // ToDo: Consider Bank holiday too!
+    private static int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
         int workdays = 0;
         for (int i = 0; i < to.getDayOfYear() - from.getDayOfYear(); i++) {
             if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
