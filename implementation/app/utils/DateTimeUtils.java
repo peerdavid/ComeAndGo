@@ -68,6 +68,14 @@ public class DateTimeUtils {
         return startOfYear.plusYears(1);
     }
 
+    public static DateTime startOfDay(DateTime day) {
+        return day.minusMillis(day.getMillisOfDay());
+    }
+
+    public static DateTime endOfDay(DateTime day) {
+        return startOfDay(day).minusMillis(1).plusDays(1);
+    }
+
     public static DateTime stringToDateTime(String dateString, DateTime time) {
         DateTime date = DATE_FORMATTER.parseDateTime(dateString);
         return new DateTime(
