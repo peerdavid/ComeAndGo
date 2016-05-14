@@ -4,10 +4,9 @@ import business.timetracking.RequestState;
 import business.timetracking.TimeOffType;
 import models.*;
 import org.joda.time.DateTime;
+import utils.DateTimeUtils;
 
-import java.time.DayOfWeek;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by david on 02.05.16.
@@ -45,7 +44,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
 
-        long workMinutesShould = (long) ((getWorkdaysOfThisYearUptoNow(user.getEntryDate()) * 60 * user.getHoursPerDay())
+        long workMinutesShould = (long) ((getWorkdaysOfThisYearUpToNow(user.getEntryDate()) * 60 * user.getHoursPerDay())
                                     - usedHolidayDays * user.getHoursPerDay() * 60);
 
         return new ReportEntry(
@@ -66,8 +65,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return null;
     }
 
-    private static int getWorkdaysOfThisYearUptoNow(DateTime entryDate) {
-        DateTime january1st = new DateTime(DateTime.now().getYear(), 1, 1, 0, 0);
+    private static int getWorkdaysOfThisYearUpToNow(DateTime entryDate) {
+        DateTime january1st = DateTimeUtils.startOfActualYear();
 
         // If user joined company this year
         if (entryDate.getYear() == DateTime.now().getYear()) {
@@ -77,8 +76,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     private static int getWorkdaysOfThisYear() {
-        DateTime january1st = new DateTime(DateTime.now().getYear(), 1, 1, 0, 0);
-        DateTime december31th = new DateTime(DateTime.now().getYear(), 12, 31, 23, 59);
+        DateTime january1st = DateTimeUtils.startOfActualYear();
+        DateTime december31th = DateTimeUtils.endOfActualYear();
 
         return getWorkdaysOfTimeInterval(january1st, december31th);
     }

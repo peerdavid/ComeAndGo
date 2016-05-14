@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,8 +69,7 @@ class ReportingServiceImpl implements ReportingService {
     public double readHoursWorked(int userId) throws Exception {
         DateTime now = DateTime.now();
         List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(userId,
-                new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 0, 0),
-                new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 23, 59));
+            DateTimeUtils.startOfDay(now), DateTimeUtils.endOfDay(now));
 
         float result = 0;
         for (TimeTrack timeTrack : timeTracks) {
