@@ -49,13 +49,13 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
                Expr.eq("user_id", user.getId()),
                Expr.or(
                   Expr.or(
-                     Expr.between("from", "to", from),   // case1
-                     Expr.between("from", "to", to)      // case2
+                     Expr.between("start", "end", from),   // case1
+                     Expr.between("start", "end", to)      // case2
                   ),
 
                   Expr.and(
-                     Expr.ge("from", from),              // case3: when given times are surrounding inspected timeTrack
-                     Expr.le("to", to)
+                     Expr.ge("start", from),              // case3: when given times are surrounding inspected timeTrack
+                     Expr.le("end", to)
                   )
                )
            ).setOrderBy("start").findList();
@@ -93,28 +93,7 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
      */
    @Override
    public List<TimeTrack> readTimeTracksOverlay(User user, TimeTrack timeTrack) {
-      List<TimeTrack> wantedList =
-          Ebean.find(TimeTrack.class)
-          .where().and(
-              Expr.eq("user_id", user.getId()),             // filter for only timeTracks from given user
-              Expr.or(
-                  Expr.between("start", "end", timeTrack.getFrom()),
-                  Expr.or(
-                     Expr.between("start", "end", timeTrack.getTo()),
-                     Expr.and(
-                         Expr.ge("start", timeTrack.getFrom()),
-                         Expr.le("end", timeTrack.getTo())
-                     )
-                  )
-              )
-          )
-          .findList();
-
-      if(wantedList == null) {
-         return Collections.emptyList();
-      }
-
-      return wantedList;
+      return readTimeTracks(user, timeTrack.getFrom(), timeTrack.getTo());
    }
 
     @Override
