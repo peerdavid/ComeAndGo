@@ -15,13 +15,11 @@ public interface PayoutRepository {
 
     int createPayout(Payout payout);
 
-    Payout readPayout(int id) throws TimeTrackException;
-
-    List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException;
+    Payout readPayout(int payoutId) throws TimeTrackException;
 
     List<Payout> readPayouts(int userId) throws TimeTrackException;
 
-    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException;
+    List<Payout> readAcceptedPayoutsFromUser(int userId) throws TimeTrackException;
 
     void deletePayout(Payout payout);
 

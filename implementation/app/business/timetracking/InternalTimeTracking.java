@@ -18,5 +18,4 @@ public interface InternalTimeTracking {
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
 
     List<Payout> readPayouts(int userId) throws Exception;
-    List<Payout> readPayouts(int userId, DateTime from, DateTime to) throws Exception;
 }

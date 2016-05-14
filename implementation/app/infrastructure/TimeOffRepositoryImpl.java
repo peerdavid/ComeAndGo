@@ -8,6 +8,7 @@ import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -83,8 +84,8 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
                         )
                 ).findList();
 
-        if(timeOffs == null || timeOffs.isEmpty()) {
-            throw new TimeOffNotFoundException("no such timeOffs found");
+        if(timeOffs == null) {
+            return Collections.emptyList();
         }
 
         return timeOffs;
@@ -98,8 +99,8 @@ public class TimeOffRepositoryImpl implements TimeOffRepository {
                         .where().eq("user_id", user.getId())
                         .findList();
 
-        if(timeOffs == null || timeOffs.isEmpty()) {
-            throw new TimeOffNotFoundException("no such timeOffs found");
+        if(timeOffs == null) {
+            return Collections.emptyList();
         }
 
         return timeOffs;

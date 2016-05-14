@@ -81,9 +81,7 @@ public interface TimeTracking extends UseCases {
 
     List<Payout> readPayoutsFromUser(int userId) throws Exception;
 
-    List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
-
-    List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
+    List<Payout> readAcceptedPayoutsFromUser(int userId) throws Exception;
 
     Payout readPayout(int payoutId) throws Exception;
 

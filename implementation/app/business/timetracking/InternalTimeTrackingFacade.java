@@ -49,9 +49,4 @@ class InternalTimeTrackingFacade implements InternalTimeTracking {
     public List<Payout> readPayouts(int userId) throws Exception {
         return _payoutService.readPayoutsFromUser(userId);
     }
-
-    @Override
-    public List<Payout> readPayouts(int userId, DateTime from, DateTime to) throws Exception {
-        return _payoutService.readPayoutsFromUser(userId, from, to);
-    }
 }

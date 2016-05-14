@@ -119,13 +119,8 @@ class PayoutServiceImpl implements PayoutService {
    }
 
    @Override
-   public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
-      return _repository.readPayoutsFromUser(userId, from, to);
-   }
-
-   @Override
-   public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
-      return _repository.readAcceptedPayoutsFromUser(userId, from, to);
+   public List<Payout> readAcceptedPayoutsFromUser(int userId) throws Exception {
+      return _repository.readAcceptedPayoutsFromUser(userId);
    }
 
    @Override

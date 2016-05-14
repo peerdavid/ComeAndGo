@@ -213,13 +213,8 @@ class TimeTrackingFacade implements TimeTracking {
     }
 
     @Override
-    public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
-        return _payoutService.readPayoutsFromUser(userId, from, to);
-    }
-
-    @Override
-    public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception {
-        return _payoutService.readAcceptedPayoutsFromUser(userId, from, to);
+    public List<Payout> readAcceptedPayoutsFromUser(int userId) throws Exception {
+        return _payoutService.readAcceptedPayoutsFromUser(userId);
     }
 
     @Override

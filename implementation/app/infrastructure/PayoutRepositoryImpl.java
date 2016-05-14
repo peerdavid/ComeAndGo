@@ -36,88 +36,14 @@ public class PayoutRepositoryImpl implements PayoutRepository {
         return payout;
     }
 
-
-    /**
-     * The following things can happen, when reading timetracks from the db which are in range:
-     *
-     *      +-------------+
-     *      |Request range|
-     *      +-------------+
-     *      .             .
-     *  +---------+       .
-     *  |  Case1  |       .
-     *  +---------+       .
-     *      .        +--------+
-     *      .        | Case2  |
-     *      .        +--------+
-     *      .             .
-     * +-----------------------+
-     * |       Case3           |
-     * +-----------------------+
-     *      .             .
-     *      . +---------+ .
-     *      . |  Case4  | .
-     *      . +---------+ .
-     */
     @Override
-    public List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException {
-
-        List<Payout> payouts =
-                Ebean.find(Payout.class)
-                        .where().and(
-                        Expr.eq("user_id", userId),
-                        Expr.or(
-                                Expr.or(
-                                        Expr.between("start", "end", from),     // Case 1
-                                        Expr.between("start", "end", to)),      // Case 2
-                                Expr.or(
-                                        Expr.and(                               // Case 3
-                                                Expr.lt("start", from),
-                                                Expr.gt("end", to)
-                                        ),
-                                        Expr.and(                               // Case 4
-                                                Expr.gt("start", from),
-                                                Expr.lt("end", to)
-                                        )
-                                )
-                        )
-                ).findList();
-
-        if (payouts == null || payouts.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return payouts;
-    }
-
-    @Override
-    public List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws TimeTrackException {
-        if(from.isAfter(to)) {
-            throw new TimeTrackException("invalid date from and to given");
-        }
+    public List<Payout> readAcceptedPayoutsFromUser(int userId) throws TimeTrackException {
         List<Payout> payouts =
             Ebean.find(Payout.class)
                 .where().and(
-                Expr.and(
                     Expr.eq("user_id", userId),
                     Expr.eq("state", RequestState.REQUEST_ACCEPTED)
-                ),
-                Expr.or(
-                    Expr.or(
-                        Expr.between("start", "end", from),     // Case 1
-                        Expr.between("start", "end", to)),      // Case 2
-                    Expr.or(
-                        Expr.and(                               // Case 3
-                            Expr.lt("start", from),
-                            Expr.gt("end", to)
-                        ),
-                        Expr.and(                               // Case 4
-                            Expr.gt("start", from),
-                            Expr.lt("end", to)
-                        )
-                    )
-                )
-            ).findList();
+                ).findList();
 
         if (payouts == null || payouts.isEmpty()) {
             return Collections.emptyList();
@@ -134,7 +60,7 @@ public class PayoutRepositoryImpl implements PayoutRepository {
                         .findList();
 
         if (payouts == null || payouts.isEmpty()) {
-            throw new TimeTrackException("no such payouts found");
+            return Collections.emptyList();
         }
 
         return payouts;

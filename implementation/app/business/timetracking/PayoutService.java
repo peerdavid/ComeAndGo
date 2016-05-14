@@ -26,9 +26,7 @@ interface PayoutService {
 
    List<Payout> readPayoutsFromUser(int userId) throws Exception;
 
-   List<Payout> readPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
-
-   List<Payout> readAcceptedPayoutsFromUser(int userId, DateTime from, DateTime to) throws Exception;
+   List<Payout> readAcceptedPayoutsFromUser(int userId) throws Exception;
 
    void updatePayoutRequest(Payout payout) throws Exception;
 
