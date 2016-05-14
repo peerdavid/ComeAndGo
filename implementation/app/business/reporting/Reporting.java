@@ -1,6 +1,10 @@
 package business.reporting;
 
 import models.Report;
+import models.User;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 
 /**
@@ -12,6 +16,16 @@ public interface Reporting {
     Report createEmployeeReport(int userId) throws Exception;
 
     Report createBossReport(int userId) throws Exception;
+
+   /**
+    * starts calculation from begin where timeTracks exist, ends at to
+    * @param userId
+    * @param to
+    * @return List of ForbiddenWorkTimeAlerts
+    * @throws Exception
+    */
+    List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime to) throws Exception;
+    List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
 
     double readHoursWorkedProgress(int userId) throws Exception;
 

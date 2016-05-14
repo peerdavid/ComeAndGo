@@ -1,6 +1,7 @@
 package utils;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -15,6 +16,7 @@ public class DateTimeUtils {
     private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormat.forPattern("HH:mm");
 
     private final static DateTime EMPTY_DATE = DateTime.now();
+    public final static DateTime BIG_BANG = new DateTime(0, 1, 1, 0, 0, 0, 0);
 
     public static String dateTimeToTimeString(DateTime time) {
         return TIME_FORMATTER.print(time);
@@ -66,6 +68,17 @@ public class DateTimeUtils {
         DateTime startOfYear = startOfActualYear();
         startOfYear = startOfYear.minusMillis(1);
         return startOfYear.plusYears(1);
+    }
+
+    public static DateTime startOfMonth(DateTime date) {
+        date = date.minusDays(date.getDayOfMonth() - 1);
+        return startOfDay(date);
+    }
+
+    public static DateTime endOfMonth(DateTime date) {
+        // to avoid to get into next after next month... (e.g. 31.1. + 31 days would be March...)
+        DateTime nextMonth = date.plusDays(date.getDayOfMonth() > 15 ? 16 : 31);
+        return startOfMonth(nextMonth).minusMillis(1);
     }
 
     public static DateTime startOfDay(DateTime day) {

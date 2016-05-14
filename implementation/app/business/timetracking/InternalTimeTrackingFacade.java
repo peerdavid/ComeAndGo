@@ -31,6 +31,11 @@ class InternalTimeTrackingFacade implements InternalTimeTracking {
     }
 
     @Override
+    public List<TimeOff> readTimeOffs(int userId, DateTime from, DateTime to) throws Exception {
+        return _timeOffService.readTimeOffs(userId, from, to);
+    }
+
+    @Override
     public List<TimeTrack> readTimeTracks(int userId) throws Exception {
         return _timeTrackingService.readTimeTracks(userId);
     }
@@ -43,5 +48,10 @@ class InternalTimeTrackingFacade implements InternalTimeTracking {
     @Override
     public List<Payout> readPayouts(int userId) throws Exception {
         return _payoutService.readPayoutsFromUser(userId);
+    }
+
+    @Override
+    public List<Payout> readPayouts(int userId, DateTime from, DateTime to) throws Exception {
+        return _payoutService.readPayoutsFromUser(userId, from, to);
     }
 }

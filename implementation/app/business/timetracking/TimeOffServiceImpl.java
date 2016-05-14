@@ -251,6 +251,12 @@ class TimeOffServiceImpl implements TimeOffService {
     }
 
     @Override
+    public List<TimeOff> readTimeOffs(int userId, DateTime from, DateTime to) throws Exception {
+        User user = _userManagement.readUser(userId);
+        return _repository.readTimeOffsFromUser(user, from, to);
+    }
+
+    @Override
     public void deleteTimeOff(int userId, int id) throws Exception {
         TimeOff timeOffToDelete = _repository.readTimeOff(id);
 

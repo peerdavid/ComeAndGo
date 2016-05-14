@@ -60,8 +60,10 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
 
     @Override
-    public List<Notification> createForbiddenWorkTimeNotifications(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
+    public List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(User user, ReportEntry entry) {
         // If user worked > 8h, send a notification to the boss
+
+
         return null;
     }
 

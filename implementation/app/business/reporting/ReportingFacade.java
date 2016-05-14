@@ -2,6 +2,10 @@ package business.reporting;
 
 import com.google.inject.Inject;
 import models.Report;
+import models.User;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * Created by david on 02.05.16.
@@ -30,6 +34,16 @@ class ReportingFacade implements Reporting {
     @Override
     public Report createBossReport(int userId) throws Exception {
         return _reportingService.createBossReport(userId);
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime to) throws Exception {
+        return _reportingService.readForbiddenWorkTimeAlerts(userList, to);
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
+        return _reportingService.readForbiddenWorkTimeAlerts(userId, to);
     }
 
     @Override

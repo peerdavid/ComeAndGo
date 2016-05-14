@@ -50,19 +50,42 @@ class ReportingServiceImpl implements ReportingService {
         return createReport(employeesOfBoss);
     }
 
-
-    private Report createReport(List<User> users) throws Exception{
+    private Report createReport(List<User> users, DateTime to) throws Exception {
         List<ReportEntry> userReports = new ArrayList<>();
 
         for(User user : users){
-            List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId());
-            List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId());
-            List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId());
+            List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId(), DateTimeUtils.BIG_BANG, to);
+            List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId(), DateTimeUtils.BIG_BANG, to);
+            List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId(), DateTimeUtils.BIG_BANG, to);
             userReports.add(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts));
         }
 
         ReportEntry summary = createCompanySummary(userReports);
         return new Report(userReports, summary);
+    }
+
+    private Report createReport(List<User> users) throws Exception{
+        return createReport(users, DateTime.now());
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime to) throws Exception {
+        Report report = createReport(userList, to);
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+
+        for(ReportEntry entry : report.getUserReports()) {
+            alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry.getUser(), entry));
+        }
+
+        return alertList;
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
+        User user = _userManagement.readUser(userId);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
+        return readForbiddenWorkTimeAlerts(userList, to);
     }
 
     @Override
