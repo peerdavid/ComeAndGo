@@ -157,6 +157,18 @@ exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 
+forbidden_worktime.more_holiday_used_than_available = User "{0}" has already used "{1}" holiday days but only has "{2}"
+forbidden_worktime.too_many_unused_holiday_available = User "{0}" seems not to like holiday, has "{1}" days off.
+forbidden_worktime.flextime_saldo_over_specified_percent = User "{0}" has exceeded "{1}"% of plus hours overtime tolerated.
+forbidden_worktime.flextime_saldo_under_specified_percent = User "{0}" has undershot "{1}"% of minus hours overtime tolerated.
+forbidden_worktime.user_overuses_breaks_regularly = User "{0}" seems to like breaks. In "{1}"% of work time breaks are consumed.
+forbidden_worktime.user_underuses_breaks_regularly = User "{0}" seems not to like breaks. In "{1}"% of work time breaks are consumed.
+forbidden_worktime.user_has_many_sick_leaves = User "{0}" often seems to be ill. Suggest him something for his defenses.
+
+
+
+
+
 notifications.holiday_request = Holiday request from employee
 notifications.special_holiday_request = Special-holiday request from employee
 notifications.business_trip_information = Employee is on Business trip

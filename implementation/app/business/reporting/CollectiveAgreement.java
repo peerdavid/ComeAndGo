@@ -1,6 +1,7 @@
 package business.reporting;
 
 import models.*;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  */
 interface CollectiveAgreement {
 
-    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
+    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime to);
 
-    List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(User user, ReportEntry entry);
+    List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry);
 }

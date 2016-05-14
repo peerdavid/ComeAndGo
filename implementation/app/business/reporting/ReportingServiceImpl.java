@@ -57,7 +57,7 @@ class ReportingServiceImpl implements ReportingService {
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId(), DateTimeUtils.BIG_BANG, to);
             List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId(), DateTimeUtils.BIG_BANG, to);
             List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId(), DateTimeUtils.BIG_BANG, to);
-            userReports.add(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts));
+            userReports.add(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts, to));
         }
 
         ReportEntry summary = createCompanySummary(userReports);
@@ -74,7 +74,7 @@ class ReportingServiceImpl implements ReportingService {
         List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
 
         for(ReportEntry entry : report.getUserReports()) {
-            alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry.getUser(), entry));
+            alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry));
         }
 
         return alertList;

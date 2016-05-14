@@ -1,5 +1,6 @@
 package business.reporting;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,11 +8,16 @@ import java.util.List;
  */
 public class ForbiddenWorkTimeAlert {
    private String _message;
-   private List<String> _arguments;
+   private List<String> _arguments = new ArrayList<>();
 
-   public ForbiddenWorkTimeAlert(String message, List<String> arguments) {
+   public ForbiddenWorkTimeAlert(String message) {
       this._message = message;
-      this._arguments = arguments;
+   }
+
+   public void addArguments(String... arguments) {
+      for(String s : arguments) {
+         _arguments.add(s);
+      }
    }
 
    public String getMessage() {
