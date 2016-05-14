@@ -118,7 +118,7 @@ public class TimeOffServiceImplTest {
     }
 
     @Test
-    public void requestHoliday_ShouldSendNotification() throws Exception {
+    public void requestHoliday_ValidData_ShouldSendNotification() throws Exception {
         _testee.requestHoliday(_testEmployeeId, _timeOffFutureMock.getFrom(), _timeOffFutureMock.getTo(), "yeah holiday");
         Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any(Notification.class)); // Check if the function really called our repository
     }
