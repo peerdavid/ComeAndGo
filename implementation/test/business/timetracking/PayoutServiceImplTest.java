@@ -77,10 +77,8 @@ public class PayoutServiceImplTest {
       payoutList.add(_testPayoutOvertimeMock);
       payoutList.add(_testPayoutHolidayMock);
       when(_repository.readPayouts(_testEmployeeId)).thenReturn(payoutList);
-      when(_repository.readPayoutsFromUser(any(Integer.class), any(DateTime.class), any(DateTime.class)))
-          .thenReturn(payoutList);
-      when(_repository.readAcceptedPayoutsFromUser(any(Integer.class), any(DateTime.class), any(DateTime.class)))
-          .thenReturn(payoutList);
+      when(_repository.readPayouts(any(Integer.class))).thenReturn(payoutList);
+      when(_repository.readAcceptedPayoutsFromUser(any(Integer.class))).thenReturn(payoutList);
 
       // init internal user management mock
       _internalUserManagementMock = mock(InternalUserManagement.class);
@@ -193,18 +191,18 @@ public class PayoutServiceImplTest {
    @Test
    public void readPayouts_FromUserWithGivenDates_ShouldCallRepository() throws Exception {
       int expected = 2;
-      int actual = _testee.readPayoutsFromUser(_testEmployeeId, DateTime.now(), DateTime.now().plusHours(3)).size();
+      int actual = _testee.readPayoutsFromUser(_testEmployeeId).size();
 
-      Mockito.verify(_repository, times(1)).readPayoutsFromUser(any(Integer.class), any(DateTime.class), any(DateTime.class));
+      Mockito.verify(_repository, times(1)).readPayouts(any(Integer.class));
       Assert.assertEquals(expected, actual);
    }
 
    @Test
    public void readAcceptedPayouts_FromUser_ShouldCallRepository() throws Exception {
       int expected = 2;
-      int actual = _testee.readAcceptedPayoutsFromUser(_testEmployeeId, DateTime.now(), DateTime.now().plusHours(3)).size();
+      int actual = _testee.readAcceptedPayoutsFromUser(_testEmployeeId).size();
 
-      Mockito.verify(_repository, times(1)).readAcceptedPayoutsFromUser(any(Integer.class), any(DateTime.class), any(DateTime.class));
+      Mockito.verify(_repository, times(1)).readAcceptedPayoutsFromUser(any(Integer.class));
       Assert.assertEquals(expected, actual);
    }
 
