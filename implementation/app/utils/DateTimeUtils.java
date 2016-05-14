@@ -55,6 +55,19 @@ public class DateTimeUtils {
         );
     }
 
+    public static DateTime startOfActualYear() {
+        DateTime now = DateTime.now();
+        now = now.minusMillis(now.getMillisOfDay());
+        now = now.minusDays(now.getDayOfYear() - 1);
+        return now;
+    }
+
+    public static DateTime endOfActualYear() {
+        DateTime startOfYear = startOfActualYear();
+        startOfYear = startOfYear.minusMillis(1);
+        return startOfYear.plusYears(1);
+    }
+
     public static DateTime stringToDateTime(String dateString, DateTime time) {
         DateTime date = DATE_FORMATTER.parseDateTime(dateString);
         return new DateTime(
