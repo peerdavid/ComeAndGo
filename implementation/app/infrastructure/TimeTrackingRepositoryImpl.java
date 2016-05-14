@@ -42,24 +42,27 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
        if(from.isAfter(to))
           return Collections.emptyList();
 
+       // following query also includes activeTimeTrack, if there is one (case 1)
        List<TimeTrack> _timeTracks =
            Ebean.find(TimeTrack.class)
-           .where().eq("user_id", user.getId())
-           .where().ge("start", from)
-           .where().le("end", to)
-           .setOrderBy("start")
-           .findList();
+           .where().and(
+               Expr.eq("user_id", user.getId()),
+               Expr.or(
+                  Expr.or(
+                     Expr.between("from", "to", from),   // case1
+                     Expr.between("from", "to", to)      // case2
+                  ),
+
+                  Expr.and(
+                     Expr.ge("from", from),              // case3: when given times are surrounding inspected timeTrack
+                     Expr.le("to", to)
+                  )
+               )
+           ).setOrderBy("start").findList();
 
         // if we have the case that there was nothing found
        if(_timeTracks == null) {
            _timeTracks = Collections.emptyList();
-       }
-
-       // we also should include the active timeTrack:
-       try {
-          _timeTracks.add(readActiveTimeTrack(user));
-       } catch (NotFoundException e) {
-          // in this branch should be done anything
        }
 
        return _timeTracks;

@@ -36,7 +36,7 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
       List<TimeTrack> timesFromUser =
           _repository.readTimeTracksOverlay(user, timeTrack);
       if(timesFromUser.size() > 0) {
-         throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
+         throwClashingTimeTrackException();
       }
 
       validateBreaks(breakList, timeTrack);
@@ -56,7 +56,7 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
       for(TimeTrack actual : overLayList) {
          if(actual.getId() != timeTrack.getId()) {
-            throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
+            throwClashingTimeTrackException();
          }
       }
 
@@ -97,11 +97,11 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          if(breakStart.isAfter(timeTrackStart) && breakEnd.isBefore(timeTrackEnd)) {
             return;
          }
-         throw new UserException("exceptions.timetracking.validate_break_not_inside_timetrack");
+         throwBreakNotInsideTimeTrackException();
 
       } else {
          if(breakStart.isBefore(timeTrackStart) || breakEnd.isAfter(timeTrackEnd)) {
-            throw new UserException("exceptions.timetracking.validate_break_not_inside_timetrack");
+            throwBreakNotInsideTimeTrackException();
          }
       }
    }
@@ -209,5 +209,13 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
    private void throwClashingBreakException() throws UserException {
       throw new UserException("exceptions.timetracking.validate_clashing_breaks");
+   }
+
+   private void throwBreakNotInsideTimeTrackException() throws UserException {
+      throw new UserException("exceptions.timetracking.validate_break_not_inside_timetrack");
+   }
+
+   private void throwClashingTimeTrackException() throws UserException {
+      throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
    }
 }

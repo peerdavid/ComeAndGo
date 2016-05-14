@@ -17,12 +17,12 @@ public class DateTimeUtils {
     private final static DateTime EMPTY_DATE = DateTime.now();
 
     public static String dateTimeToTimeString(DateTime time) {
-        return TIME_FORMATTER.print(time.toInstant());
+        return TIME_FORMATTER.print(time);
 
     }
 
     public static String dateTimeToDateString(DateTime date) {
-        return DATE_FORMATTER.print(date.toInstant());
+        return DATE_FORMATTER.print(date);
     }
 
     public static DateTime stringToTime(String time) {
