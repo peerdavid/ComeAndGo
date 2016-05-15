@@ -15,7 +15,7 @@ import java.util.List;
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
     @Override
-    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime to) {
+    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
 
         long workMinutesWithoutBreak = timeTracks.stream().mapToLong(t -> (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60)).sum();
         long breakMinutes = timeTracks.stream().mapToLong(
@@ -28,25 +28,47 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         int usedHolidayDays = 0;
         int acceptedHolidayDays = 0;
         int sickDays = 0;
+        int businessTripDays = 0;
+        int specialHolidayDays = 0;
+        int bankHolidayDays = 0;
+        int educationalLeaveDays = 0;
+        int parentalLeaveDays = 0;
+
         for (TimeOff t : timeOffs) {
-            if (    (t.getType() == TimeOffType.HOLIDAY) &&
-                    (t.getState() == RequestState.REQUEST_ACCEPTED)) {
-
-                if (t.getFrom().isBeforeNow()) {
-                    usedHolidayDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
-                }
-
+            if (t.getType() == TimeOffType.SICK_LEAVE) {
+                sickDays += getWorkdaysOfTimeOff(t);
+            }
+            if (t.getType() == TimeOffType.BUSINESS_TRIP) {
+                businessTripDays += getWorkdaysOfTimeOff(t);
+            }
+            if (t.getType() == TimeOffType.BANK_HOLIDAY) {
+                bankHolidayDays += getWorkdaysOfTimeOff(t);
+            }
+            if (t.getType() == TimeOffType.PARENTAL_LEAVE) {
+                parentalLeaveDays += getWorkdaysOfTimeOff(t);
+            }
+            if ((t.getType() == TimeOffType.HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
+                usedHolidayDays += getWorkdaysOfTimeOff(t);
                 acceptedHolidayDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
-
-            if (t.getType() == TimeOffType.SICK_LEAVE) {
-                sickDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
+            if ((t.getType() == TimeOffType.SPECIAL_HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
+                specialHolidayDays += getWorkdaysOfTimeOff(t);
             }
+            if ((t.getType() == TimeOffType.EDUCATIONAL_LEAVE) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
+                educationalLeaveDays += getWorkdaysOfTimeOff(t);
+            }
+
         }
 
-        // TODO: workMinutesShould depending on specified "to" (end-time) given in function call
-        long workMinutesShould = (long) ((getWorkdaysOfThisYearUpToNow(user.getEntryDate()) * 60 * user.getHoursPerDay())
-                                    - usedHolidayDays * user.getHoursPerDay() * 60);
+        long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
+        long workMinutesShould = workMinutesPerDay * (getWorkdaysOfThisYearUpToNow(user.getEntryDate())
+                - sickDays
+                - businessTripDays
+                - bankHolidayDays
+                - parentalLeaveDays
+                - usedHolidayDays
+                - specialHolidayDays
+                - educationalLeaveDays);
 
         return new ReportEntry(
                 user,
@@ -145,14 +167,27 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     // This function only counts real work days, not the weekend
-    // ToDo: Consider Bank holiday too!
     private static int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
         int workdays = 0;
-        for (int i = 0; i < to.getDayOfYear() - from.getDayOfYear(); i++) {
+        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
             if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
                 workdays++;
             }
         }
         return workdays;
     }
+
+    private static int getWorkdaysOfTimeOff(TimeOff timeoff) {
+        // TimeOff is already complete in history
+        if (timeoff.getTo().isBeforeNow()) {
+            return getWorkdaysOfTimeInterval(timeoff.getFrom(), timeoff.getTo());
+        }
+        // TimeOff has started, but not finished today
+        if (timeoff.getFrom().isBeforeNow() && timeoff.getTo().isAfterNow()) {
+            return getWorkdaysOfTimeInterval(timeoff.getFrom(), DateTime.now());
+        }
+        // If TimeOff is in future, do not consider now
+        return 0;
+    }
+
 }
