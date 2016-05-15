@@ -126,6 +126,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         String grey = "#BDBDBD";
         String orange = "#FF5722";
         String green = "#4CAF50";
+        String mudgreen = "#636349";
         String yellow = "#FFEB3B";
         String blue = "#2196F3";
         String purple = "#9C27B0";
@@ -141,6 +142,8 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         switch (timeOff.getType()) {
             case HOLIDAY:
                 return green;
+            case BANK_HOLIDAY:
+                return mudgreen;
 
             case BUSINESS_TRIP:
                 return yellow;
