@@ -86,4 +86,6 @@ public interface TimeTracking extends UseCases {
     Payout readPayout(int payoutId) throws Exception;
 
     void updatePayoutRequest(Payout payout) throws Exception;
+
+    void createBankHoliday(int userId, DateTime from, DateTime to, String nameOfBankHoliday) throws Exception;
 }

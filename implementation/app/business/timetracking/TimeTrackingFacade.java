@@ -226,4 +226,9 @@ class TimeTrackingFacade implements TimeTracking {
     public void updatePayoutRequest(Payout payout) throws Exception {
         _payoutService.updatePayoutRequest(payout);
     }
+
+    @Override
+    public void createBankHoliday(int userId, DateTime from, DateTime to, String nameOfBankHoliday) throws Exception {
+        _timeOffService.createBankHoliday(userId, from, to, nameOfBankHoliday);
+    }
 }

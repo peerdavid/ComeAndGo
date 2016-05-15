@@ -4,6 +4,7 @@ import business.notification.NotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.NotAuthorizedException;
+import business.usermanagement.SecurityRole;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import infrastructure.TimeOffRepository;
@@ -275,5 +276,21 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _notificationSender.sendNotification(notification);
         _repository.deleteTimeOff(timeOffToDelete);
+    }
+
+    @Override
+    public void createBankHoliday(int userId, DateTime from, DateTime to, String nameOfBankHoliday) throws Exception {
+        User user = _userManagement.readUser(userId);
+
+        if (!user.getRole().equals(SecurityRole.ROLE_ADMIN) || user.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            throw new UserException("exceptions.timeoff.invalid_role_for_creating_bankholiday");
+        }
+        if (from.isAfter(to)) {
+            throw new UserException("exceptions.timeoff.invalid_dates");
+        }
+
+        TimeOff timeOff = new TimeOff(user, from, to, TimeOffType.BANK_HOLIDAY, RequestState.DONE, nameOfBankHoliday);
+        _repository.createTimeOff(timeOff);
+
     }
 }

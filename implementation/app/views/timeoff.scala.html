@@ -1,5 +1,6 @@
 @import org.pac4j.core.profile.CommonProfile
 
+@import business.usermanagement.SecurityRole
 @(profile: CommonProfile, timeOffToDelete: TimeOff)
 
 
@@ -66,7 +67,11 @@
                                     <option value="PARENTAL_LEAVE">@Messages("views.timeoff.create.parentalleave")</option>
                                     <option value="EDUCATIONAL_LEAVE">@Messages("views.timeoff.create.educationalleave")</option>
                                     <option value="BUSINESS_TRIP">@Messages("views.timeoff.create.businesstrip")</option>
-                                </select>
+                                    @if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)
+                                        || profile.getRoles().contains(SecurityRole.ROLE_ADMIN)) {
+                                        <option value="BANK_HOLIDAY">@Messages("views.timeoff.create.bankholiday")</option>
+                                    }
+                                    </select>
                                 <label for="type">Type</label>
                             </div>
                             <div class="input-field col s6 m5">

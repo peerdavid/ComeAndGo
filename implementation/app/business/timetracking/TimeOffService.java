@@ -41,4 +41,6 @@ interface TimeOffService {
     List<TimeOff> readTimeOffs(int userId, DateTime from, DateTime to) throws Exception;
 
     void deleteTimeOff(int userId, int id) throws Exception;
+
+    void createBankHoliday(int userId, DateTime from, DateTime to, String nameOfBankHoliday) throws Exception;
 }
