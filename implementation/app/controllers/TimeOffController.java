@@ -186,6 +186,10 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
                 _timeTracking.requestSpecialHoliday(userId, from, to, comment);
                 break;
 
+            case BANK_HOLIDAY:
+                _timeTracking.createBankHoliday(userId, from, to, comment);
+                break;
+
             default:
                 throw new IllegalArgumentException("Unknown timeoff type " + type);
         }

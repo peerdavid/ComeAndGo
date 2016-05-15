@@ -289,8 +289,11 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new UserException("exceptions.timeoff.invalid_dates");
         }
 
-        TimeOff timeOff = new TimeOff(user, from, to, TimeOffType.BANK_HOLIDAY, RequestState.DONE, nameOfBankHoliday);
-        _repository.createTimeOff(timeOff);
+        List<User> allUsers = _userManagement.readUsers();
+        for (User u : allUsers) {
+            TimeOff timeOff = new TimeOff(u, from, to, TimeOffType.BANK_HOLIDAY, RequestState.DONE, nameOfBankHoliday);
+            _repository.createTimeOff(timeOff);
+        }
 
     }
 }
