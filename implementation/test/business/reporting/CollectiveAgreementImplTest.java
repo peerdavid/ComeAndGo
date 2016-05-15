@@ -4,10 +4,7 @@ package business.reporting;
 import business.timetracking.RequestState;
 import business.timetracking.TimeOffType;
 import business.usermanagement.SecurityRole;
-import models.ReportEntry;
-import models.TimeOff;
-import models.TimeTrack;
-import models.User;
+import models.*;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
@@ -62,11 +59,8 @@ public class CollectiveAgreementImplTest {
 
         ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, _timeoffs, Collections.EMPTY_LIST);
 
-        Assert.assertEquals(0, actual.getNumOfSickDays());
         Assert.assertEquals(10, actual.getNumOfUnusedHolidays());
         Assert.assertEquals(15, actual.getNumOfUsedHolidays());
-        Assert.assertEquals(0, actual.getBreakMinutes());
-        Assert.assertEquals(0, actual.getWorkMinutesIs());
 
         int expectedWorkMinutesShould = (int)_testUser.getHoursPerDay() * 60 * (
                 DateTimeUtils.getWorkdaysOfTimeInterval(_testUser.getEntryDate(), DateTime.now())
@@ -84,16 +78,32 @@ public class CollectiveAgreementImplTest {
 
         ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
 
-        Assert.assertEquals(0, actual.getNumOfSickDays());
-        Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
-        Assert.assertEquals(0, actual.getNumOfUsedHolidays());
         Assert.assertEquals(0, actual.getBreakMinutes());
 
         int expectedWorkMinutesIs = (date2.getMinuteOfDay() - date1.getMinuteOfDay());
         Assert.assertEquals(expectedWorkMinutesIs, actual.getWorkMinutesIs());
 
-        int expectedWorkMinutesShould = (int)_testUser.getHoursPerDay() * 60 * DateTimeUtils.getWorkdaysOfTimeInterval(_testUser.getEntryDate(), DateTime.now());
-        Assert.assertEquals(expectedWorkMinutesShould, actual.getWorkMinutesShould());
+
+    }
+
+    @Test
+    public void createUserReport_With1DayWorkingWith2Breaks_ShouldSucceed() throws Exception {
+        DateTime date1 = new DateTime(2016, 1, 12, 7, 55);
+        DateTime date2 = new DateTime(2016, 1, 12, 16, 57);
+
+        List<Break> breaks = new ArrayList<>();
+        breaks.add(new Break(new DateTime(2016, 1, 12, 9, 0), new DateTime(2016, 1, 12, 9, 15)));
+        breaks.add(new Break(new DateTime(2016, 1, 12, 12, 0), new DateTime(2016, 1, 12, 12, 45)));
+
+        TimeTrack work1dayWithoutBreaks = new TimeTrack(_testUser, date1, date2, breaks);
+        _timetracks.add(work1dayWithoutBreaks);
+
+        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
+
+        Assert.assertEquals(60, actual.getBreakMinutes());
+
+        int expectedWorkMinutesIs = date2.getMinuteOfDay() - date1.getMinuteOfDay() - 60;
+        Assert.assertEquals(expectedWorkMinutesIs, actual.getWorkMinutesIs());
 
     }
 
