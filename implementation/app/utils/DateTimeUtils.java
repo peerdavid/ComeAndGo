@@ -1,5 +1,6 @@
 package utils;
 
+import models.TimeOff;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
@@ -109,4 +110,33 @@ public class DateTimeUtils {
             time.getMinuteOfHour()
         );
     }
+
+    public static int getWorkdaysOfThisYearUpToNow(DateTime entryDate) {
+        DateTime january1st = DateTimeUtils.startOfActualYear();
+
+        // If user joined company this year
+        if (entryDate.getYear() == DateTime.now().getYear()) {
+            return getWorkdaysOfTimeInterval(entryDate, DateTime.now());
+        }
+        return getWorkdaysOfTimeInterval(january1st, DateTime.now());
+    }
+
+    public static int getWorkdaysOfThisYear() {
+        DateTime january1st = DateTimeUtils.startOfActualYear();
+        DateTime december31th = DateTimeUtils.endOfActualYear();
+
+        return getWorkdaysOfTimeInterval(january1st, december31th);
+    }
+
+    // This function only counts real work days, not the weekend
+    public static int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
+        int workdays = 0;
+        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
+            if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
+                workdays++;
+            }
+        }
+        return workdays;
+    }
+
 }

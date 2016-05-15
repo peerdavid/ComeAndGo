@@ -49,7 +49,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
             }
             if ((t.getType() == TimeOffType.HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
                 usedHolidayDays += getWorkdaysOfTimeOff(t);
-                acceptedHolidayDays += getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
+                acceptedHolidayDays += DateTimeUtils.getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
             if ((t.getType() == TimeOffType.SPECIAL_HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
                 specialHolidayDays += getWorkdaysOfTimeOff(t);
@@ -61,7 +61,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
         long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
-        long workMinutesShould = workMinutesPerDay * (getWorkdaysOfThisYearUpToNow(user.getEntryDate())
+        long workMinutesShould = workMinutesPerDay * (DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate())
                 - sickDays
                 - businessTripDays
                 - bankHolidayDays
@@ -149,42 +149,16 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return alert;
     }
 
-    private static int getWorkdaysOfThisYearUpToNow(DateTime entryDate) {
-        DateTime january1st = DateTimeUtils.startOfActualYear();
 
-        // If user joined company this year
-        if (entryDate.getYear() == DateTime.now().getYear()) {
-            return getWorkdaysOfTimeInterval(january1st, DateTime.now()) - entryDate.getDayOfYear();
-        }
-        return getWorkdaysOfTimeInterval(january1st, DateTime.now());
-    }
-
-    private static int getWorkdaysOfThisYear() {
-        DateTime january1st = DateTimeUtils.startOfActualYear();
-        DateTime december31th = DateTimeUtils.endOfActualYear();
-
-        return getWorkdaysOfTimeInterval(january1st, december31th);
-    }
-
-    // This function only counts real work days, not the weekend
-    private static int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
-        int workdays = 0;
-        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
-            if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
-                workdays++;
-            }
-        }
-        return workdays;
-    }
 
     private static int getWorkdaysOfTimeOff(TimeOff timeoff) {
         // TimeOff is already complete in history
         if (timeoff.getTo().isBeforeNow()) {
-            return getWorkdaysOfTimeInterval(timeoff.getFrom(), timeoff.getTo());
+            return DateTimeUtils.getWorkdaysOfTimeInterval(timeoff.getFrom(), timeoff.getTo());
         }
         // TimeOff has started, but not finished today
         if (timeoff.getFrom().isBeforeNow() && timeoff.getTo().isAfterNow()) {
-            return getWorkdaysOfTimeInterval(timeoff.getFrom(), DateTime.now());
+            return DateTimeUtils.getWorkdaysOfTimeInterval(timeoff.getFrom(), DateTime.now());
         }
         // If TimeOff is in future, do not consider now
         return 0;
