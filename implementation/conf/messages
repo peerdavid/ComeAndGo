@@ -36,6 +36,7 @@ views.timeoff.modal.create = Send new time off request
 views.timeoff.btn.request = Send
 views.timeoff.create.from = From
 views.timeoff.create.to = To
+views.timeoff.create.comment = Comment
 views.timeoff.create.holiday = Holiday
 views.timeoff.create.specialholiday = Special Holiday
 views.timeoff.create.parentalleave = Parental Leave
