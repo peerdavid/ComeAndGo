@@ -107,4 +107,36 @@ public class CollectiveAgreementImplTest {
 
     }
 
+    @Test
+    public void createUserReport_With2DaysWorkingAnd1DaySpecialHoliday_ShouldSucceed() throws Exception {
+        TimeOff specialHoliday = new TimeOff(_testUser, new DateTime(2016, 2, 1, 0, 0), new DateTime(2016, 2, 2, 0, 0), TimeOffType.SPECIAL_HOLIDAY, RequestState.REQUEST_ACCEPTED, "");
+        _timeoffs.add(specialHoliday);
+
+        DateTime date1 = new DateTime(2016, 1, 12, 7, 55);
+        DateTime date2 = new DateTime(2016, 1, 12, 16, 57);
+
+        TimeTrack work1dayWithoutBreaks = new TimeTrack(_testUser, date1, date2, Collections.EMPTY_LIST);
+        _timetracks.add(work1dayWithoutBreaks);
+
+        DateTime date3 = new DateTime(2016, 1, 13, 8, 1);
+        DateTime date4 = new DateTime(2016, 1, 13, 17, 28);
+
+        TimeTrack work1dayWithoutBreaks2 = new TimeTrack(_testUser, date3, date4, Collections.EMPTY_LIST);
+        _timetracks.add(work1dayWithoutBreaks2);
+
+        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
+
+        Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
+        Assert.assertEquals(0, actual.getNumOfUsedHolidays());
+
+        int expectedWorkMinutesShould = (int)_testUser.getHoursPerDay() * 60 * (
+                DateTimeUtils.getWorkdaysOfTimeInterval(_testUser.getEntryDate(), DateTime.now())
+                        - DateTimeUtils.getWorkdaysOfTimeInterval(_timeoffs.get(0).getFrom(), _timeoffs.get(0).getTo()));
+        Assert.assertEquals(expectedWorkMinutesShould, actual.getWorkMinutesShould());
+
+        int expectedWorkMinutesIs = date2.getMinuteOfDay() - date1.getMinuteOfDay() + (date4.getMinuteOfDay() - date3.getMinuteOfDay());
+        Assert.assertEquals(expectedWorkMinutesIs, actual.getWorkMinutesIs());
+
+    }
+
 }
