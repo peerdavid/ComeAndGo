@@ -12,12 +12,15 @@
                 <h4>@Messages("views.admin.updateuser.empty")</h4>
 
             } else {
-                <form>
-                    <div class="input-field row s12 m6 l6">
-                        <input id="user-filter" type="text" class="row l3">
-                        <label>@Messages("views.filter")</label>
-                    </div>
-                </form>
+                <div class="row">
+                    <form>
+                        <div class="input-field s12 m6 l6">
+                            <i class="prefix material-icons">filter_list</i>
+                            <input id="user-filter" type="text" class="row l3">
+                            <label>@Messages("views.filter")</label>
+                        </div>
+                    </form>
+                </div>
 
                 <ul id="user-list" class="collapsible listing" data-collapsible="accordion">
                 @for(u: User <- userlist) {

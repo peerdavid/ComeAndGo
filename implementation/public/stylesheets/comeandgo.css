@@ -58,10 +58,6 @@ nav .navbar-buttons a {
     border: 2px solid #F6F6F6;
 }
 
-#login_container .input-field > i {
-    padding-top: 9px;
-}
-
 #login_container label {
     margin-left: 2.3rem;
 }
@@ -244,6 +240,11 @@ input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:
 }
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color:    #727272;
+}
+
+/* move prefix icons a bit down */
+i.prefix {
+    padding-top: 9px;
 }
 
 span.badge.new{
