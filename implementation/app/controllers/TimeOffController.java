@@ -13,6 +13,7 @@ import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.DynamicForm;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Result;
 import utils.DateTimeUtils;
 
@@ -101,7 +102,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
      */
     private static String timeOffToXml(TimeOff timeOff) {
         int id = timeOff.getId();
-        String name = StringEscapeUtils.escapeXml10(timeOff.getType().toString());
+        String name = StringEscapeUtils.escapeXml10(timeOffToString(timeOff.getType()));
         String comment = StringEscapeUtils.escapeXml10(timeOff.getComment());
 
         String from = StringEscapeUtils.escapeXml10(timeOff.getFrom().toString("yyyy-MM-dd"));
@@ -194,7 +195,48 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown timeoff type " + type);
+                throw new IllegalArgumentException(Messages.get("exceptions.timeoff.error_timeoff_type_unknown") + " : " + type);
         }
+    }
+
+    private static String timeOffToString(TimeOffType type){
+        String result = null;
+
+        switch (type) {
+
+            case HOLIDAY:
+                result = Messages.get("views.timeoff.create.holiday");
+                break;
+
+            case SPECIAL_HOLIDAY:
+                result = Messages.get("views.timeoff.create.specialholiday");
+                break;
+
+            case SICK_LEAVE:
+                result = Messages.get("views.timeoff.create.sickleave");
+                break;
+
+            case PARENTAL_LEAVE:
+                result = Messages.get("views.timeoff.create.parentalleave");
+                break;
+
+            case EDUCATIONAL_LEAVE:
+                result = Messages.get("views.timeoff.create.educationalleave");
+                break;
+
+            case BUSINESS_TRIP:
+                result = Messages.get("views.timeoff.create.businesstrip");
+                break;
+
+            case BANK_HOLIDAY:
+                result = Messages.get("views.timeoff.create.bankholiday");
+                break;
+
+            default:
+                throw new IllegalArgumentException(Messages.get("exceptions.timeoff.error_timeoff_type_unknown") + " : " + type);
+
+        }
+
+        return result;
     }
 }
