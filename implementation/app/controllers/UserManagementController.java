@@ -11,6 +11,10 @@ import play.data.Form;
 import play.mvc.Result;
 
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static play.mvc.Results.ok;
 
 /**
@@ -30,9 +34,10 @@ public class UserManagementController extends UserProfileController {
     public Result readUsers() throws Exception {
         CommonProfile profile = getUserProfile();
 
-        return ok(views.html.users.render(profile, _userManagement.readUsers()));
-    }
+        List<User> userList = _userManagement.readUsers();
 
+        return ok(views.html.users.render(profile, sortUserList(userList)));
+    }
 
     /*
     Username remains unchangable because the authenticator
@@ -90,5 +95,12 @@ public class UserManagementController extends UserProfileController {
         _userManagement.deleteUser(currentUserName, userNameToDelete);
 
         return redirect(routes.UserManagementController.readUsers());
+    }
+
+    private static List<User> sortUserList(List<User> list) {
+        return list.stream()
+            .sorted((User user, User t1) ->
+                user.getLastName().toUpperCase().compareTo(t1.getLastName().toUpperCase()))
+            .collect(Collectors.toList());
     }
 }
