@@ -36,10 +36,13 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        DateTime now = DateTime.now().plusDays(20);
+        //DateTime now = DateTime.now().plusDays(20);
 
-        DateTime from = DateTimeUtils.stringToTime("00:00", now);
-        DateTime to = now.plusDays(1);
+        //DateTime from = DateTimeUtils.stringToTime("00:00", now);
+        //DateTime to = now.plusDays(1);
+
+        DateTime from = DateTimeUtils.startOfDay(DateTime.now());
+        DateTime to = DateTimeUtils.endOfDay(DateTime.now());
 
         List<TimeTrack> timeTrackList = _timeTracking.readTimeTracks(userId, from, to);
 
@@ -111,7 +114,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
             // always end on Sunday, the current week
             dateTo = today.plusDays(7 - today.getDayOfWeek());
-            dateTo = dateTo.plusSeconds(DateTimeConstants.SECONDS_PER_DAY - dateTo.getSecondOfDay() - 1);
+            dateTo = DateTimeUtils.endOfDay(dateTo);
             to = DateTimeUtils.dateTimeToDateString(dateTo);
         } else {
             dateFrom = DateTimeUtils.stringToDateTime(from);
