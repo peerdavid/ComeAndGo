@@ -31,6 +31,13 @@ public class TimeTrackTest {
         testee.setFrom(_testFromTime);
     }
 
+    @Test
+    public void setFromAndToTime_InValidConfiguration_ShouldSucceed() throws UserException, TimeTrackException {
+        TimeTrack testee = new TimeTrack(_testUser);
+        testee.setFrom(_testFromTime);
+        testee.setTo(_testToTime);
+    }
+
 
     @Test(expected = UserException.class)
     public void setToTime_IsSmallerThanFromTime_ShouldFail() throws UserException, TimeTrackException{
