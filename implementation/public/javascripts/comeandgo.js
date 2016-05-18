@@ -29,8 +29,9 @@ $( document ).ready(function() {
         listFilter($("#not-read-filter"),$("#not-read-list"));
     });
 
-});
+    enableEditing(false, null);
 
+});
 
 /*
  * get notification count by ajax call
@@ -58,14 +59,15 @@ var updateNewNotificationBadge = function(){
 };
 
 $('.enable-editing-switch').click(function () {
-    enableForm(this.checked);
-
+    enableEditing(true, this);
 });
 
-function enableForm(enable) {
-    $('li.active form input').prop('disabled', !enable);
-    $('li.active form button.ghost').css('display', (enable ? 'inline' : 'none'));
-}
+var enableEditing = function(enable, toggle) {
+    if(toggle == null) toggle = $('.enable-editing-switch');
+    var li = $(toggle).closest('li');
+    li.find('form input').prop('disabled', !toggle.checked);
+    li.find('form button.ghost').css('display', (toggle.checked ? 'inline' : 'none'));
+};
 
 /* fix for datepicker bug showing 19XX instead of 20XX */
 $('.datepicker').focus(function () {
