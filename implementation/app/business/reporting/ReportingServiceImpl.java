@@ -114,7 +114,8 @@ class ReportingServiceImpl implements ReportingService {
                     endReport.getNumOfSickDays() - startReport.getNumOfSickDays(),
                     endReport.getWorkMinutesShould() - startReport.getWorkMinutesShould(),
                     endReport.getWorkMinutesIs() - startReport.getWorkMinutesIs(),
-                    endReport.getBreakMinutes() - startReport.getBreakMinutes());
+                    endReport.getBreakMinutes() - startReport.getBreakMinutes(),
+                    endReport.getWorkDaysRespected() - startReport.getWorkDaysRespected());
 
             // at this point we have the report starting at "from" and ending at "to"
             alertList.addAll(readForbiddenWorkTimeAlerts(differenceReport, from, to));
@@ -186,7 +187,9 @@ class ReportingServiceImpl implements ReportingService {
         long numOfWorkMinutesShould = userReports.stream().mapToLong(d -> d.getWorkMinutesShould()).sum();
         long numOfWorkMinutesIs = userReports.stream().mapToLong(d -> d.getWorkMinutesIs()).sum();
         long numOfBreakMinutes = userReports.stream().mapToLong(d -> d.getBreakMinutes()).sum();
+        long workDaysRespected = userReports.stream().mapToLong(d -> d.getWorkDaysRespected()).sum();
 
-        return new ReportEntry(null, hoursPerDay, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays, numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes);
+        return new ReportEntry(null, hoursPerDay, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays,
+                numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes, workDaysRespected);
     }
 }

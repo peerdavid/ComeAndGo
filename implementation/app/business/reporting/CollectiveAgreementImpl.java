@@ -63,7 +63,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
         long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
-        long workMinutesShould = workMinutesPerDay * (DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate())
+        long workDaysRespected = DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate());
+        long workMinutesShould = workMinutesPerDay * (workDaysRespected
                 - sickDays
                 - businessTripDays
                 - bankHolidayDays
@@ -80,7 +81,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 sickDays,
                 workMinutesShould,
                 workMinutesWithoutBreak - breakMinutes,
-                breakMinutes);
+                breakMinutes,
+                workDaysRespected);
     }
 
 

@@ -13,9 +13,10 @@ public class ReportEntry {
     private long workMinutesShould;
     private long workMinutesIs;
     private long breakMinutes;
+    private long workDaysRespected;
 
     public ReportEntry(User user, double hoursPerDay, int numOfUsedHolidays, int numOfUnusedHolidays, int numOfSickDays,
-                       long workMinutesShould, long workMinutesIs, long breakMinutes) {
+                       long workMinutesShould, long workMinutesIs, long breakMinutes, long workDaysRespected) {
         this.user = user;
         this.hoursPerDay = hoursPerDay;
         this.numOfUsedHolidays = numOfUsedHolidays;
@@ -24,6 +25,7 @@ public class ReportEntry {
         this.workMinutesShould = workMinutesShould;
         this.workMinutesIs = workMinutesIs;
         this.breakMinutes = breakMinutes;
+        this.workDaysRespected = workDaysRespected;
     }
 
 
@@ -61,5 +63,9 @@ public class ReportEntry {
 
     public long getBreakMinutes() {
         return breakMinutes;
+    }
+
+    public long getWorkDaysRespected() {
+        return workDaysRespected;
     }
 }
