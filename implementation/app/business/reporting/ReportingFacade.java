@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import models.Report;
 import models.User;
 import org.joda.time.DateTime;
+import utils.aop.NoLogging;
+import utils.aop.NoTransaction;
 
 import java.util.List;
 
@@ -46,6 +48,8 @@ class ReportingFacade implements Reporting {
         return _reportingService.readForbiddenWorkTimeAlerts(userId, to);
     }
 
+    @NoLogging
+    @NoTransaction
     @Override
     public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
         return _reportingService.readForbiddenWorkTimeAlerts(userId);

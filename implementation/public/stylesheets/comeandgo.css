@@ -106,11 +106,6 @@ nav .navbar-buttons a {
     margin: 6px 0 16px;
 }
 
-#admin_dropdown > ul > li > a {
-    display: inline;
-    height: 100%;
-}
-
 #index-time-track-buttons{
     text-align: center;
 }
