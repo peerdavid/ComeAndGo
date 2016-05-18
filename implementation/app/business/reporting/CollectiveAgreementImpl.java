@@ -15,12 +15,6 @@ import java.util.List;
  * Created by david on 02.05.16.
  */
 class CollectiveAgreementImpl implements CollectiveAgreement {
-    private InternalTimeTracking _timeTracking;
-
-    @Inject
-    public CollectiveAgreementImpl(InternalTimeTracking timeTracking) {
-        _timeTracking = timeTracking;
-    }
 
     @Override
     public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {

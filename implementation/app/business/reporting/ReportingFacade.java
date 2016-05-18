@@ -52,6 +52,11 @@ class ReportingFacade implements Reporting {
     }
 
     @Override
+    public double readHoursWorked(int userId, DateTime when) throws Exception {
+        return _reportingService.readHoursWorked(userId, when);
+    }
+
+    @Override
     public double readHoursWorkedProgress(int userId) throws Exception {
         return _reportingService.readHoursWorkedProgress(userId);
     }

@@ -27,5 +27,6 @@ public interface Reporting {
     List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception;
     List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
 
+    double readHoursWorked(int userId, DateTime when) throws Exception;
     double readHoursWorkedProgress(int userId) throws Exception;
 }

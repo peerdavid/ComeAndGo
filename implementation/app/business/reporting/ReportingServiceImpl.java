@@ -133,7 +133,7 @@ class ReportingServiceImpl implements ReportingService {
         // check for exceeded work time per day
         DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
         while(actualDate.isBefore(to)) {
-            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, readMinutesWorked(user.getId(), actualDate) / 60, actualDate));
+            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, readHoursWorked(user.getId(), actualDate), actualDate));
             actualDate = actualDate.plusDays(1);
         }
         return alertList;
@@ -150,13 +150,13 @@ class ReportingServiceImpl implements ReportingService {
      * @return amounts of minutes worked on that day
      * @throws Exception
      */
-    private long readMinutesWorked(int userId, DateTime when) throws Exception {
+    public double readHoursWorked(int userId, DateTime when) throws Exception {
         DateTime startOfDay = DateTimeUtils.startOfDay(when);
         DateTime endOfDay = DateTimeUtils.endOfDay(when);
 
         List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(userId, startOfDay, endOfDay);
 
-        long result = 0;
+        double result = 0;
         for (TimeTrack timeTrack : timeTracks) {
             DateTime from = timeTrack.getFrom().isBefore(startOfDay) ? startOfDay : timeTrack.getFrom();
             DateTime to = timeTrack.getTo() == null ? DateTime.now() : (timeTrack.getTo().isAfter(endOfDay) ? endOfDay : timeTrack.getTo());
@@ -167,16 +167,13 @@ class ReportingServiceImpl implements ReportingService {
                 result -= to.getMinuteOfDay() - from.getMinuteOfDay();
             }
         }
-        return result;
+        return result / 60;
     }
 
     @Override
     public double readHoursWorkedProgress(int userId) throws Exception {
         User user = _userManagement.readUser(userId);
-
-        double hoursWorked = readMinutesWorked(userId, DateTime.now()) / 60;
-        double result = hoursWorked / user.getHoursPerDay();
-
+        double result = readHoursWorked(userId, DateTime.now()) / user.getHoursPerDay();
         return result < 0 ? 0 : result > 1 ? 1 : result;
     }
 

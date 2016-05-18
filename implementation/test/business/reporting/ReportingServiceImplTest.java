@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,6 +37,7 @@ public class ReportingServiceImplTest {
     ReportingService _reporting;
     CollectiveAgreement _collectiveAgreement;
     InternalTimeTracking _internalTimeTrack;
+    DateTime _now;
 
 
     @Before
@@ -48,6 +50,8 @@ public class ReportingServiceImplTest {
         _internalTimeTrack = mock(InternalTimeTracking.class);
         _collectiveAgreement = mock(CollectiveAgreement.class);
         _reporting = new ReportingServiceImpl(_internalUserManagement, _collectiveAgreement, _internalTimeTrack);
+
+        _now = DateTime.now();
     }
 
     @Test
@@ -60,7 +64,7 @@ public class ReportingServiceImplTest {
         double expected = 0;
 
         // Call
-        double actual = _reporting.readHoursWorked(userId);
+        double actual = _reporting.readHoursWorked(userId, _now);
 
         // Validate
         Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
@@ -92,7 +96,7 @@ public class ReportingServiceImplTest {
         double expected = 2.0;
 
         // Call
-        double actual = _reporting.readHoursWorked(userId);
+        double actual = _reporting.readHoursWorked(userId, _now);
 
         // Validate
         Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
@@ -133,7 +137,7 @@ public class ReportingServiceImplTest {
         double expected = 4.0;
 
         // Call
-        double actual = _reporting.readHoursWorked(userId);
+        double actual = _reporting.readHoursWorked(userId, _now);
 
         // Validate
         Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
@@ -147,7 +151,75 @@ public class ReportingServiceImplTest {
         int userId = 8;
 
         // Call
-        _reporting.readHoursWorked(userId);
+        _reporting.readHoursWorked(userId, _now);
+    }
+
+    @Test
+    public void getHoursWorked_OverPreviousMidnight_ShouldSucceedAndCallRepository() throws Exception {
+        // init
+        List<TimeTrack> toReturn = new ArrayList<>();
+
+        // generate first timeTrack with break over midnight: working from 19.00 - 02.00
+        // also generate a break from 23.30 - 00.30
+        // --> effective working time here --> 1,5h
+        List<Break> breakList = new ArrayList<>();
+        DateTime midNight = DateTimeUtils.startOfDay(_now);
+        breakList.add(new Break(midNight.minusMinutes(30), midNight.plusMinutes(30)));
+        DateTime startOfNightWork = midNight.minusHours(5);
+        DateTime endOfNightWork = midNight.plusHours(2);
+        TimeTrack nightWork = new TimeTrack(_testUser, startOfNightWork, endOfNightWork, breakList);
+        toReturn.add(nightWork);
+
+        // generate second timeTrack without break
+        // effective work time here --> 7h
+        TimeTrack dayWork = new TimeTrack(_testUser, midNight.plusHours(8), midNight.plusHours(15), null);
+        toReturn.add(dayWork);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(toReturn);
+        double expectedHours = 8.5;
+
+        // execute test
+        double resultHours = _reporting.readHoursWorked(8, _now);
+
+        // verify results
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expectedHours, resultHours, 0.01);
+    }
+
+    @Test
+    public void getHoursWorked_OverNextMidnight_ShouldSucceedAndCallRepository() throws Exception {
+        // init
+        List<TimeTrack> toReturn = new ArrayList<>();
+
+        // generate first timeTrack with break over midnight: working from 19.00 - 02.00
+        // also generate a break from 23.30 - 00.30
+        // --> effective working time here --> 4,5h
+        List<Break> breakList = new ArrayList<>();
+        DateTime midNight = DateTimeUtils.endOfDay(_now);
+        breakList.add(new Break(midNight.minusMinutes(30), midNight.plusMinutes(30)));
+        DateTime startOfNightWork = midNight.minusHours(5);
+        DateTime endOfNightWork = midNight.plusHours(2);
+        TimeTrack nightWork = new TimeTrack(_testUser, startOfNightWork, endOfNightWork, breakList);
+        toReturn.add(nightWork);
+
+        // generate second timeTrack without break
+        // effective work time here --> 5h
+        List<Break> breaksOverDay = new ArrayList<>();
+        breaksOverDay.add(new Break(midNight.minusHours(12), midNight.minusHours(11)));
+        TimeTrack dayWork = new TimeTrack(_testUser, midNight.minusHours(16), midNight.minusHours(10), breaksOverDay);
+        toReturn.add(dayWork);
+
+        when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(toReturn);
+        double expectedHours = 9.5;
+
+        // execute test
+        double resultHours = _reporting.readHoursWorked(8, _now);
+
+        // verify results
+        Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
+        Assert.assertEquals(expectedHours, resultHours, 0.001);
     }
 
     @Test
@@ -284,7 +356,7 @@ public class ReportingServiceImplTest {
         int userId = 8;
 
         // Call
-        _reporting.readHoursWorked(userId);
+        _reporting.readHoursWorked(userId, _now);
     }
 
 }
