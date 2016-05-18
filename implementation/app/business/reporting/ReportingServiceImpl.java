@@ -2,6 +2,7 @@ package business.reporting;
 
 import business.timetracking.InternalTimeTracking;
 import business.usermanagement.InternalUserManagement;
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
@@ -69,51 +70,102 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime to) throws Exception {
-        Report report = createReport(userList, to);
-        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
+        List<User> userList = new ArrayList<>();
+        User user = _userManagement.readUser(userId);
+        userList.add(user);
+        return readForbiddenWorkTimeAlerts(userList, user.getEntryDate(), DateTime.now());
+    }
 
-        for(ReportEntry entry : report.getUserReports()) {
-            alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry));
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
+        List<User> userList = new ArrayList<>();
+        User user = _userManagement.readUser(userId);
+        userList.add(user);
+        return readForbiddenWorkTimeAlerts(userList, DateTimeUtils.BIG_BANG, to);
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+        if(from.isAfter(to)) {
+            throw new UserException("");
+        }
+
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        for(User user : userList) {
+            List<User> actualUserList = new ArrayList<>();
+            actualUserList.add(user);
+            ReportEntry startReport = null, endReport = null;
+            for(ReportEntry entry : createReport(actualUserList, from).getUserReports()) {
+                if(entry.getUser().getId() == user.getId()) {
+                    startReport = entry;
+                }
+            }
+            for(ReportEntry entry : createReport(actualUserList, to).getUserReports()) {
+                if(entry.getUser().getId() == user.getId()) {
+                    endReport = entry;
+                }
+            }
+            if(startReport == null || endReport == null) continue;
+            ReportEntry differenceReport = new ReportEntry(
+                    user, user.getHoursPerDay(),
+                    endReport.getNumOfUsedHolidays() - startReport.getNumOfUsedHolidays(),
+                    endReport.getNumOfUnusedHolidays() - startReport.getNumOfUnusedHolidays(),
+                    endReport.getNumOfSickDays() - startReport.getNumOfSickDays(),
+                    endReport.getWorkMinutesShould() - startReport.getWorkMinutesShould(),
+                    endReport.getWorkMinutesIs() - startReport.getWorkMinutesIs(),
+                    endReport.getBreakMinutes() - startReport.getBreakMinutes());
+
+            // at this point we have the report starting at "from" and ending at "to"
+            alertList.addAll(readForbiddenWorkTimeAlerts(differenceReport, from, to));
         }
 
         return alertList;
     }
 
-    @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        User user = _userManagement.readUser(userId);
-        List<User> userList = new ArrayList<>();
-        userList.add(user);
-        return readForbiddenWorkTimeAlerts(userList, to);
-    }
+    private List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        User user = entry.getUser();
 
-    @Override
-    public double readHoursWorked(int userId) throws Exception {
-        DateTime now = DateTime.now();
-        List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(userId,
-            DateTimeUtils.startOfDay(now), DateTimeUtils.endOfDay(now));
+        // check for standard alerts
+        alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry));
 
-        float result = 0;
-        for (TimeTrack timeTrack : timeTracks) {
-            DateTime from = timeTrack.getFrom();
-            DateTime to = timeTrack.getTo() == null ? now : timeTrack.getTo();
-            result += getDifferenceOfMinutes(from, to, DateTimeConstants.MINUTES_PER_DAY);
-            for (Break b : timeTrack.getBreaks()) {
-                from = b.getFrom();
-                to = b.getTo() == null ? now : b.getTo();
-                result -= getDifferenceOfMinutes(from, to, DateTimeConstants.MINUTES_PER_DAY);
-            }
+        // check for exceeded work time per day
+        DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
+        while(actualDate.isBefore(to)) {
+            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, readMinutesWorked(user.getId(), actualDate) / 60, actualDate));
+            actualDate = actualDate.plusDays(1);
         }
-
-        return result / 60f;
+        return alertList;
     }
 
-    private float getDifferenceOfMinutes(DateTime from, DateTime to, int unit) {
-        float result = to.getMinuteOfDay() - from.getMinuteOfDay();
-        // would be negative if working times go through midnight
-        if(result < 0) {
-            result = unit - result;
+    /**
+     *
+     * this method checks user TimeTracks if it exceeds MAX_HOURS_PER_DAY from CollectiveConstants
+     * It cuts timeTracks which are over midnight and calculates only times regarding that day
+     * starting at 0.00 and ending at 23.59
+     *
+     * @param userId
+     * @param when
+     * @return amounts of minutes worked on that day
+     * @throws Exception
+     */
+    private long readMinutesWorked(int userId, DateTime when) throws Exception {
+        DateTime startOfDay = DateTimeUtils.startOfDay(when);
+        DateTime endOfDay = DateTimeUtils.endOfDay(when);
+
+        List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(userId, startOfDay, endOfDay);
+
+        long result = 0;
+        for (TimeTrack timeTrack : timeTracks) {
+            DateTime from = timeTrack.getFrom().isBefore(startOfDay) ? startOfDay : timeTrack.getFrom();
+            DateTime to = timeTrack.getTo() == null ? DateTime.now() : (timeTrack.getTo().isAfter(endOfDay) ? endOfDay : timeTrack.getTo());
+            result += to.getMinuteOfDay() - from.getMinuteOfDay();
+            for (Break b : timeTrack.getBreaks()) {
+                from = b.getFrom().isBefore(startOfDay) ? startOfDay : b.getFrom();
+                to = b.getTo() == null ? DateTime.now() : (b.getTo().isAfter(endOfDay) ? endOfDay : b.getTo());
+                result -= to.getMinuteOfDay() - from.getMinuteOfDay();
+            }
         }
         return result;
     }
@@ -122,7 +174,8 @@ class ReportingServiceImpl implements ReportingService {
     public double readHoursWorkedProgress(int userId) throws Exception {
         User user = _userManagement.readUser(userId);
 
-        double result = readHoursWorked(userId) / user.getHoursPerDay();
+        double hoursWorked = readMinutesWorked(userId, DateTime.now()) / 60;
+        double result = hoursWorked / user.getHoursPerDay();
 
         return result < 0 ? 0 : result > 1 ? 1 : result;
     }

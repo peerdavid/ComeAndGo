@@ -164,7 +164,7 @@ forbidden_worktime.flextime_saldo_under_specified_percent = User "{0}" has under
 forbidden_worktime.user_overuses_breaks_regularly = User "{0}" seems to like breaks. In "{1}"% of work time breaks are consumed.
 forbidden_worktime.user_underuses_breaks_regularly = User "{0}" seems not to like breaks. In "{1}"% of work time breaks are consumed.
 forbidden_worktime.user_has_many_sick_leaves = User "{0}" often seems to be ill. Suggest him something for his defenses.
-
+forbidden_worktime.user_exceeded_daily_worktime = User "{0}" has exceeded worktime on "{1}" about "{2}" hours
 
 
 

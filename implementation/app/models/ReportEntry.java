@@ -15,14 +15,14 @@ public class ReportEntry {
     private long breakMinutes;
 
     public ReportEntry(User user, double hoursPerDay, int numOfUsedHolidays, int numOfUnusedHolidays, int numOfSickDays,
-                       long workMinutesShould, long workHoursIs, long breakMinutes) {
+                       long workMinutesShould, long workMinutesIs, long breakMinutes) {
         this.user = user;
         this.hoursPerDay = hoursPerDay;
         this.numOfUsedHolidays = numOfUsedHolidays;
         this.numOfUnusedHolidays = numOfUnusedHolidays;
         this.numOfSickDays = numOfSickDays;
         this.workMinutesShould = workMinutesShould;
-        this.workMinutesIs = workHoursIs;
+        this.workMinutesIs = workMinutesIs;
         this.breakMinutes = breakMinutes;
     }
 

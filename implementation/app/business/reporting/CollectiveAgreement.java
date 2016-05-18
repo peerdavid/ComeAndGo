@@ -13,4 +13,5 @@ interface CollectiveAgreement {
     ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
 
     List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry);
+    List<ForbiddenWorkTimeAlert> checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when);
 }
