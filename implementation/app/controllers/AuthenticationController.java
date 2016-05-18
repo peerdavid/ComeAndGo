@@ -35,15 +35,6 @@ public class AuthenticationController extends UserProfileController<CommonProfil
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
-    public Result createUser() throws UserException {
-        Form<User> form = FORM;
-        CommonProfile profile = getUserProfile();
-        List<User> userList = _userManagement.readUsers();
-
-        return ok(views.html.createuser.render(form, profile, userList));
-    }
-
-    @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result doCreateUser() throws Exception {
 
         Form<User> form = FORM.bindFromRequest();

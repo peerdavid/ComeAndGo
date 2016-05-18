@@ -169,11 +169,21 @@
                 </ul>
             }
 
+            <!-- sign up new user -->
+            <div id="modal-create-user" class="modal">
+                <div class="modal-content">
+                    <h4>@Messages("views.admin.title")</h4>
+                </div>
+                <div class="modal-footer">
+                    @createuser(AuthenticationController.FORM, userlist)
+                </div>
+            </div>
+
             <div class="fixed-action-btn" style="bottom: 24px;
                 right: 24px;">
-                <a class="btn-floating btn-large waves-light primary-btn" href="@routes.AuthenticationController.createUser()">
+                <button class="btn-floating btn modal-trigger btn-large waves-light primary-btn" data-target="modal-create-user">
                     <i class="material-icons right">add</i>
-                </a>
+                </button>
             </div>
         }
     }

@@ -1,79 +1,73 @@
 @import models.User
 
-@import org.pac4j.core.profile.CommonProfile
 @import business.usermanagement.SecurityRole
-@(form: play.data.Form[User], profile: CommonProfile, userlist: java.util.List[User])
+@(form: play.data.Form[User], userlist: java.util.List[User])
 
-@main(Messages("views.admin.title")) {
-
-    @navigation(Messages("views.admin.title"), profile) {
-
-
-        <form action="@routes.AuthenticationController.doCreateUser()" method="POST">
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <input name="username" type="text">
-                    <label for="username">@Messages("views.admin.createuser.form.username")</label>
+<form action="@routes.AuthenticationController.doCreateUser()" method="POST">
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <input name="username" type="text">
+            <label for="username">@Messages("views.admin.createuser.form.username")</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <input name="firstname" type="text">
+            <label for="firstname">@Messages("views.admin.createuser.form.firstname")</label>
+        </div>
+        <div class="input-field col s12 m6">
+            <input name="lastname" type="text">
+            <label for="lastname">@Messages("views.admin.createuser.form.lastname")</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <input name="email" type="email">
+            <label for="email">@Messages("views.admin.createuser.form.email")</label>
+        </div>
+        <div class="input-field col s12 m6">
+            <select name="role" type="text">
+                <option value="ROLE_USER" selected>@Messages("views.admin.createuser.form.roles.user")</option>
+                <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                <option value="ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                <option value="ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+            </select>
+            <label for="role">@Messages("views.admin.createuser.form.selectrole")</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <input name="password" type="password">
+            <label for="password">@Messages("views.admin.createuser.form.password")</label>
+        </div>
+        <div class="input-field col s12 m6">
+            <input name="repeat_password" type="password">
+            <label for="repeat_password">@Messages("views.admin.createuser.form.repeatpassword")</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <select name="boss" type="text">
+            @for(u : User <- userlist) {
+                @if(u.getRole == SecurityRole.ROLE_BOSS) {
+                    <option value=@u.getUsername>@(u.getFirstName + " " + u.getLastName)</option>
+                }
+            }
+            </select>
+            <label for="boss">@Messages("views.admin.createuser.form.selectboss")</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12 m6">
+            <input name="hours-per-day" type="number" step="any">
+            <label for="hours-per-day">@Messages("views.admin.createuser.form.hours_per_day")</label>
+        </div>
+        <div id="disabled" class="input-field col s12 m6">
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <input name="firstname" type="text">
-                    <label for="firstname">@Messages("views.admin.createuser.form.firstname")</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <input name="lastname" type="text">
-                    <label for="lastname">@Messages("views.admin.createuser.form.lastname")</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <input name="email" type="email">
-                    <label for="email">@Messages("views.admin.createuser.form.email")</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <select name="role" type="text">
-                        <option value="ROLE_USER" selected>@Messages("views.admin.createuser.form.roles.user")</option>
-                        <option value="ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
-                        <option value="ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
-                        <option value="ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
-                    </select>
-                    <label for="role">@Messages("views.admin.createuser.form.selectrole")</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <input name="password" type="password">
-                    <label for="password">@Messages("views.admin.createuser.form.password")</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <input name="repeat_password" type="password">
-                    <label for="repeat_password">@Messages("views.admin.createuser.form.repeatpassword")</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <select name="boss" type="text">
-                    @for(u : User <- userlist) {
-                        @if(u.getRole == SecurityRole.ROLE_BOSS) {
-                            <option value=@u.getUsername>@(u.getFirstName + " " + u.getLastName)</option>
-                        }
-                    }
-                    </select>
-                    <label for="boss">@Messages("views.admin.createuser.form.selectboss")</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <input name="hours-per-day" type="number" step="any">
-                    <label for="hours-per-day">@Messages("views.admin.createuser.form.hours_per_day")</label>
-                </div>
-                <div id="disabled" class="input-field col s12 m6">
-                </div>
-            </div>
-            <button class="btn waves-effect waves-light green" type="submit" name="action" style="float : right">
+    </div>
+    <div class="row">
+        <button class="btn waves-effect waves-light green right" type="submit" name="action">
             @Messages("views.admin.createuser.title")
-            </button>
-        </form>
-    }
-}
+        </button>
+    </div>
+</form>
