@@ -28,7 +28,14 @@ public class TimeTrackTest {
     @Test
     public void setFromTime_InEmptyObject_ShouldSucceed() throws UserException, TimeTrackException {
         TimeTrack testee = new TimeTrack(_testUser);
-        testee.setTo(_testFromTime);
+        testee.setFrom(_testFromTime);
+    }
+
+    @Test
+    public void setFromAndToTime_InValidConfiguration_ShouldSucceed() throws UserException, TimeTrackException {
+        TimeTrack testee = new TimeTrack(_testUser);
+        testee.setFrom(_testFromTime);
+        testee.setTo(_testToTime);
     }
 
 
