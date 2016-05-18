@@ -5,11 +5,11 @@
 
     @main(Messages("views.admin.title")) {
 
-        @navigation(Messages("views.admin.updateuser"), profile) {
+        @navigation(Messages("views.admin.usermanagement"), profile) {
 
             @if(userlist.isEmpty) {
 
-                <h4>@Messages("views.admin.updateuser.empty")</h4>
+                <h4>@Messages("views.admin.usermanagement.empty")</h4>
 
             } else {
                 <div class="row">
@@ -32,17 +32,17 @@
                         @if(u.getRole == SecurityRole.ROLE_PERSONNEL_MANAGER) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.persman") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.persman") + ")") </b></div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_BOSS) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.boss") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.boss") + ")") </b></div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_ADMIN) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.admin") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.admin") + ")") </b></div>
                         }
                     <div class="collapsible-body">
                         <div class="row">
@@ -57,7 +57,7 @@
                             </div>
                             <div class="input-field col s12 m6">
                                 <input disabled="disabled" name="username" type="text" value="@u.getUsername">
-                                <label for="username">@Messages("views.admin.createuser.form.username")</label>
+                                <label for="username">@Messages("views.admin.usermanagement.form.username")</label>
                             </div>
                         </div>
                         <form action="@routes.UserManagementController.updateUser()" method="POST">
@@ -65,54 +65,54 @@
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                     <input disabled="disabled" name="firstname" type="text" value="@u.getFirstName">
-                                    <label for=firstname">@Messages("views.admin.createuser.form.firstname")</label>
+                                    <label for=firstname">@Messages("views.admin.usermanagement.form.firstname")</label>
                                 </div>
                                 <div class="input-field col s12 m6">
                                     <input disabled="disabled" name="lastname" type="text" value="@u.getLastName">
-                                    <label for="lastname">@Messages("views.admin.createuser.form.lastname")</label>
+                                    <label for="lastname">@Messages("views.admin.usermanagement.form.lastname")</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                     <input disabled="disabled" name="email" type="email" value="@u.getEmail">
-                                    <label for="email">@Messages("views.admin.createuser.form.email")</label>
+                                    <label for="email">@Messages("views.admin.usermanagement.form.email")</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                     <input disabled="disabled" name="password" type="password">
-                                    <label for="password">@Messages("views.admin.createuser.form.password")</label>
+                                    <label for="password">@Messages("views.admin.usermanagement.form.password")</label>
                                 </div>
                                 <div id="disabled" class="input-field col s12 m6">
                                     <input disabled="disabled" name="repeat_password" type="password">
-                                    <label for="repeat_password">@Messages("views.admin.createuser.form.repeatpassword")</label>
+                                    <label for="repeat_password">@Messages("views.admin.usermanagement.form.repeatpassword")</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                     <select name="role" type="text">
                                         @if(u.getRole == SecurityRole.ROLE_USER) {
-                                            <option selected value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
+                                            <option selected value="@SecurityRole.ROLE_USER">@Messages("views.admin.usermanagement.form.roles.user")</option>
                                         } else {
-                                            <option value="@SecurityRole.ROLE_USER">@Messages("views.admin.createuser.form.roles.user")</option>
+                                            <option value="@SecurityRole.ROLE_USER">@Messages("views.admin.usermanagement.form.roles.user")</option>
                                         }
                                         @if(u.getRole == SecurityRole.ROLE_PERSONNEL_MANAGER) {
-                                            <option selected value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                                            <option selected value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.usermanagement.form.roles.persman")</option>
                                         } else {
-                                            <option value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.createuser.form.roles.persman")</option>
+                                            <option value="@SecurityRole.ROLE_PERSONNEL_MANAGER">@Messages("views.admin.usermanagement.form.roles.persman")</option>
                                         }
                                         @if(u.getRole == SecurityRole.ROLE_BOSS) {
-                                            <option selected value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                                            <option selected value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.usermanagement.form.roles.boss")</option>
                                         } else {
-                                            <option value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.createuser.form.roles.boss")</option>
+                                            <option value="@SecurityRole.ROLE_BOSS">@Messages("views.admin.usermanagement.form.roles.boss")</option>
                                         }
                                         @if(u.getRole == SecurityRole.ROLE_ADMIN) {
-                                            <option selected value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+                                            <option selected value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.usermanagement.form.roles.admin")</option>
                                         } else {
-                                            <option value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.createuser.form.roles.admin")</option>
+                                            <option value="@SecurityRole.ROLE_ADMIN">@Messages("views.admin.usermanagement.form.roles.admin")</option>
                                         }
                                     </select>
-                                    <label for="role">@Messages("views.admin.createuser.form.selectrole")</label>
+                                    <label for="role">@Messages("views.admin.usermanagement.form.selectrole")</label>
                                 </div>
                                 <div class="input-field col s12 m6">
                                     <select name="boss" type="text">
@@ -126,20 +126,20 @@
                                         }
                                     }
                                     </select>
-                                    <label for="boss">@Messages("views.admin.createuser.form.selectboss")</label>
+                                    <label for="boss">@Messages("views.admin.usermanagement.form.selectboss")</label>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="input-field col s12 m6">
                                     <input disabled="disabled" name="hours-per-day" type="number" step="any" value="@u.getHoursPerDay">
-                                    <label for="hours-per-day">@Messages("views.admin.createuser.form.hours_per_day")</label>
+                                    <label for="hours-per-day">@Messages("views.admin.usermanagement.form.hours_per_day")</label>
                                 </div>
                                 <div class="input-field col s12 m6">
                                 </div>
                             </div>
                             <input type="hidden" name="id" value="@u.getId">
 
-                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.updateuser.deleteuser")
+                            <button data-target="modal@(u.getId())" class="btn modal-trigger right secondary-btn">@Messages("views.admin.usermanagement.deleteuser")
                             <i class="material-icons right">delete</i>
                             </button>
 
@@ -147,18 +147,18 @@
                             <i class="material-icons right">list</i>
                             </a>
 
-                            <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.updateuser.savechanges")
+                            <button class="btn waves-effect waves-light primary-btn ghost right" type="submit" name="action" style="display: none;">@Messages("views.admin.usermanagement.savechanges")
                             <i class="material-icons right">done</i>
                             </button>
 
 
                             <div id="modal@(u.getId)" class="modal delete-user">
                                 <div class="modal-content">
-                                    <h4>@Messages("views.admin.updateuser.deleteuser")</h4>
-                                    <p>@(Messages("views.admin.updateuser.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
+                                    <h4>@Messages("views.admin.usermanagement.deleteuser")</h4>
+                                    <p>@(Messages("views.admin.usermanagement.deletemessage") + " " + u.getFirstName + " " + u.getLastName + " ?")</p>
                                 </div>
                                 <div class="modal-footer">
-                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.UserManagementController.deleteUser(u.getUsername)" style="float: right">@Messages("views.admin.updateuser.delete")</a>
+                                    <a class="waves-effect modal-action modal-close waves-light btn negative-btn" href="@routes.UserManagementController.deleteUser(u.getUsername)" style="float: right">@Messages("views.admin.usermanagement.delete")</a>
                                     <a class="waves-effect modal-action modal-close waves-light btn left secondary-btn" href="#!">@Messages("views.btn.close")</a>
                                 </div>
                             </div>
@@ -172,7 +172,7 @@
             <!-- sign up new user -->
             <div id="modal-create-user" class="modal">
                 <div class="modal-content">
-                    <h4>@Messages("views.admin.title")</h4>
+                    <h4>@Messages("views.admin.usermanagement.createuser")</h4>
                 </div>
                 <div class="modal-footer">
                     @createuser(AuthenticationController.FORM, userlist)

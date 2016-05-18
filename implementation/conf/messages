@@ -52,21 +52,26 @@ views.timeoff.modal.details.infos = Informations:
 
 views.admin.title = Admin
 views.admin.enableediting = Edit
-views.admin.createuser = Sign up new User
-views.admin.createuser.form.firstname = Firstname
-views.admin.createuser.form.lastname = Lastname
-views.admin.createuser.form.username = Username
-views.admin.createuser.form.email = EMail
-views.admin.createuser.form.password = Password
-views.admin.createuser.form.repeatpassword = Repeat Password
-views.admin.createuser.form.selectrole = Select Role
-views.admin.createuser.form.selectboss = Select Boss
-views.admin.createuser.form.roles.user = User
-views.admin.createuser.form.roles.admin = Admin
-views.admin.createuser.form.roles.boss = Boss
-views.admin.createuser.form.roles.persman = Personnel Manager
-views.admin.createuser.form.hours_per_day = Hours per day
-views.admin.createuser.title = Sign up new User
+views.admin.usermanagement.createuser = Sign up new User
+views.admin.usermanagement.form.firstname = Firstname
+views.admin.usermanagement.form.lastname = Lastname
+views.admin.usermanagement.form.username = Username
+views.admin.usermanagement.form.email = EMail
+views.admin.usermanagement.form.password = Password
+views.admin.usermanagement.form.repeatpassword = Repeat Password
+views.admin.usermanagement.form.selectrole = Select Role
+views.admin.usermanagement.form.selectboss = Select Boss
+views.admin.usermanagement.form.roles.user = User
+views.admin.usermanagement.form.roles.admin = Admin
+views.admin.usermanagement.form.roles.boss = Boss
+views.admin.usermanagement.form.roles.persman = Personnel Manager
+views.admin.usermanagement.form.hours_per_day = Hours per day
+views.admin.usermanagement = User Management
+views.admin.usermanagement.empty = Nothing to show
+views.admin.usermanagement.savechanges = Save Changes
+views.admin.usermanagement.deleteuser = Delete User
+views.admin.usermanagement.delete = Delete
+views.admin.usermanagement.deletemessage = Do you really want to remove this user?
 
 views.admin.updatetimetracks = Timetracks
 views.admin.updatetimetracks.empty = no timetracks found
@@ -86,14 +91,6 @@ views.admin.updatetimetrack.closemessage = Close
 
 views.admin.updatetimetracks.deletetimetrack = Delete Timetrack
 views.admin.updatetimetracks.deletetimetrackmessage = Do you really want to remove this timetrack?
-
-views.admin.updateuser = Update User
-views.admin.updateuser.empty = Nothing to show
-views.admin.updateuser.savechanges = Save Changes
-views.admin.updateuser.deleteuser = Delete User
-views.admin.updateuser.delete = Delete
-views.admin.updateuser.deletemessage = Do you really want to remove this user?
-views.admin.updateuser.bossofuser = Boss
 
 views.notification.title = Notifications
 views.notification.buttonaccept = Accept
