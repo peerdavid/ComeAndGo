@@ -1,5 +1,6 @@
 package business.reporting;
 
+import business.usermanagement.UserException;
 import models.Report;
 import models.User;
 import org.joda.time.DateTime;
@@ -22,5 +23,8 @@ interface ReportingService {
     List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
 
     double readHoursWorked(int userId, DateTime when) throws Exception;
+
     double readHoursWorkedProgress(int userId) throws Exception;
+
+    double calculateOvertime(int userId, DateTime when) throws Exception;
 }

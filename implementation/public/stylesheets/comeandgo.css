@@ -117,6 +117,16 @@ nav .navbar-buttons a {
 #active_progress {
     height: 32px;
     background: #ff5722;
+    overflow: visible;
+    margin-bottom: 56px;
+}
+
+#overtime-badge {
+    padding: 8px 12px;
+    border-radius: 6px;
+    right: -5%;
+    top: -50%;
+    font-size: 24pt;
 }
 
 /* listings */
@@ -186,6 +196,11 @@ input[type="tel"]:focus:not([readonly]), input[type="number"]:focus:not([readonl
 input[type="search"]:focus:not([readonly]), textarea.materialize-textarea:focus:not([readonly]) {
     border-bottom: 1px solid #00bcd4;
     box-shadow: 0px 1px 0px 0px #00bcd4;
+}
+
+[type="checkbox"]:checked + label:before {
+    border-right: 2px solid #00bcd4;
+    border-bottom: 2px solid #00bcd4;
 }
 
 .switch label input[type=checkbox]:checked + .lever:after {

@@ -85,8 +85,12 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int userId = Integer.parseInt(getUserProfile().getId());
 
         int progress = (int) (_reporting.readHoursWorkedProgress(userId) * 100);
+        double overtime = 0.0;
 
-        return ok(String.valueOf(progress));
+        if(progress >= 100)
+            overtime = _reporting.calculateOvertime(userId, DateTime.now());
+
+        return ok("{ \"progress\": \"" + progress + "\", \"overtime\": \"" + overtime + "\" }");
     }
 
     @RequiresAuthentication(clientName = "default")

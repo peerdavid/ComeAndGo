@@ -16,11 +16,19 @@
                     data: '',
                     url: '/progress',
                     success: function(data, textStatus, jqXHR) {
-                        if(data <= 0){
+                        var json = JSON.parse(data);
+                        var progress = json.progress;
+                        var overtime = json.overtime;
+
+                        if(progress <= 0){
                             return;
                         }
 
-                        $('#active_progress .determinate').css("width", data + "%");
+                        $('#active_progress .determinate').css("width", progress + "%");
+                        if(overtime > 0) {
+                            $('#overtime-badge').css('visibility', 'visible');
+                            $('#overtime-count').text(overtime);
+                        }
                     },
                     error:function(jqXHR, textStatus, errorThrown) {
                         console.log("Progess update failed " + textStatus);
@@ -60,6 +68,9 @@
         <!-- Progress bar -->
         <div id="active_progress" class="progress row">
             <div class="determinate green col s12 l12" style="width: 0%"></div>
+            <span id="overtime-badge" class="badge green white-text valign-wrapper z-depth-1" style="visibility: hidden">
+                <i class="material-icons valign">add</i><span id="overtime-count" class="valign">1.2</span>
+            </span>
         </div>
 
         <!-- Current state -->

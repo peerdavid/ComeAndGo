@@ -23,7 +23,7 @@ class ReportingServiceImpl implements ReportingService {
 
 
     @Inject
-    public ReportingServiceImpl(InternalUserManagement userManagement, CollectiveAgreement collectiveAgreement, InternalTimeTracking internalTimeTracking){
+    public ReportingServiceImpl(InternalUserManagement userManagement, CollectiveAgreement collectiveAgreement, InternalTimeTracking internalTimeTracking) {
         _userManagement = userManagement;
         _collectiveAgreement = collectiveAgreement;
         _internalTimeTracking = internalTimeTracking;
@@ -46,7 +46,7 @@ class ReportingServiceImpl implements ReportingService {
 
 
     @Override
-    public Report createBossReport(int userId) throws Exception{
+    public Report createBossReport(int userId) throws Exception {
         List<User> employeesOfBoss = _userManagement.readUsersOfBoss(userId);
         return createReport(employeesOfBoss);
     }
@@ -54,7 +54,7 @@ class ReportingServiceImpl implements ReportingService {
     private Report createReport(List<User> users, DateTime to) throws Exception {
         List<ReportEntry> userReports = new ArrayList<>();
 
-        for(User user : users){
+        for(User user : users) {
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId(), DateTimeUtils.BIG_BANG, to);
             List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId(), DateTimeUtils.BIG_BANG, to);
             List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId());
@@ -65,7 +65,7 @@ class ReportingServiceImpl implements ReportingService {
         return new Report(userReports, summary);
     }
 
-    private Report createReport(List<User> users) throws Exception{
+    private Report createReport(List<User> users) throws Exception {
         return createReport(users, DateTime.now());
     }
 
@@ -185,6 +185,15 @@ class ReportingServiceImpl implements ReportingService {
         User user = _userManagement.readUser(userId);
         double result = readHoursWorked(userId, DateTime.now()) / user.getHoursPerDay();
         return result < 0 ? 0 : result > 1 ? 1 : result;
+    }
+
+    @Override
+    public double calculateOvertime(int userId, DateTime when) throws Exception {
+        User user = _userManagement.readUser(userId);
+
+        double result = readHoursWorked(userId, when) - user.getHoursPerDay();
+
+        return result <= 0 ? 0 : result;
     }
 
 
