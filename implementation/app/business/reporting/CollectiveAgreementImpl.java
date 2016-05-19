@@ -198,6 +198,26 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return alertList;
     }
 
+    @Override
+    public List<WorkTimeAlert> checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, double durationFreeTimeNext10DaysInH) {
+        List<WorkTimeAlert> alertList = new ArrayList<>();
+        long hoursBetweenTimeTracks = CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES;
+        if(durationFreeTimeOfActualDayInH < hoursBetweenTimeTracks
+                && durationFreeTimeNext10DaysInH / 10 < CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES) {
+            alertList.add(createAlert("forbidden_worktime.freetime_undershoot_with_next_days_no_balance",
+                    WorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when),
+                    String.valueOf(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH)));
+        }
+        else if(durationFreeTimeOfActualDayInH < CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES) {
+            alertList.add(createAlert("forbidden_worktime.freetime_undershoot", WorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when),
+                    String.valueOf(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH)));
+        }
+
+        return alertList;
+    }
+
     private String userFirstAndLastName(User user) {
         return user.getFirstName() + " " + user.getLastName();
     }
