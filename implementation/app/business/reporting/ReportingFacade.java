@@ -1,5 +1,6 @@
 package business.reporting;
 
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Report;
 import models.User;
@@ -63,5 +64,10 @@ class ReportingFacade implements Reporting {
     @Override
     public double readHoursWorkedProgress(int userId) throws Exception {
         return _reportingService.readHoursWorkedProgress(userId);
+    }
+
+    @Override
+    public double calculateOvertime(int userId, DateTime when) throws Exception {
+        return _reportingService.calculateOvertime(userId, when);
     }
 }
