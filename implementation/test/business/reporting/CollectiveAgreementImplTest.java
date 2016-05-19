@@ -40,7 +40,7 @@ public class CollectiveAgreementImplTest {
     @Test
     public void createUserReport_WithNoTimeTracksAndTimeOffs_ShouldSucceed() throws Exception {
 
-        ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST);
+        ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(0, actual.getNumOfSickDays());
         Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
@@ -57,7 +57,7 @@ public class CollectiveAgreementImplTest {
         TimeOff holiday21days = new TimeOff(_testUser, new DateTime(2016, 2, 1, 0, 0), new DateTime(2016, 2, 20, 0, 0), TimeOffType.HOLIDAY, RequestState.REQUEST_ACCEPTED, "");
         _timeoffs.add(holiday21days);
 
-        ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, _timeoffs, Collections.EMPTY_LIST);
+        ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(10, actual.getNumOfUnusedHolidays());
         Assert.assertEquals(15, actual.getNumOfUsedHolidays());
@@ -76,7 +76,7 @@ public class CollectiveAgreementImplTest {
         TimeTrack work1dayWithoutBreaks = new TimeTrack(_testUser, date1, date2, Collections.EMPTY_LIST);
         _timetracks.add(work1dayWithoutBreaks);
 
-        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
+        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(0, actual.getBreakMinutes());
 
@@ -98,7 +98,7 @@ public class CollectiveAgreementImplTest {
         TimeTrack work1dayWithoutBreaks = new TimeTrack(_testUser, date1, date2, breaks);
         _timetracks.add(work1dayWithoutBreaks);
 
-        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
+        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(60, actual.getBreakMinutes());
 
@@ -124,7 +124,7 @@ public class CollectiveAgreementImplTest {
         TimeTrack work1dayWithoutBreaks2 = new TimeTrack(_testUser, date3, date4, Collections.EMPTY_LIST);
         _timetracks.add(work1dayWithoutBreaks2);
 
-        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST);
+        ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
         Assert.assertEquals(0, actual.getNumOfUsedHolidays());

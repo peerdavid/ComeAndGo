@@ -17,15 +17,29 @@ import java.util.List;
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
     @Override
-    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime to) {
+    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound) {
 
-        // ToDo get timetracks only to ToDate
-        long workMinutesWithoutBreak = timeTracks.stream().mapToLong(t -> (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60)).sum();
-        long breakMinutes = timeTracks.stream().mapToLong(
-                t -> t.getBreaks().stream().mapToLong(
-                        b -> (b.getTo().getMillis() - b.getFrom().getMillis()) / (1000 * 60)
-                ).sum()
-        ).sum();
+        long workMinutesIs = 0;
+        long breakMinutes = 0;
+        for (TimeTrack t : timeTracks) {
+            // TimeTrack is already in history
+            if (t.getTo().isBefore(upperBound)) {
+                workMinutesIs += (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60);
+                List<Break> breaks = t.getBreaks();
+                for (Break b : breaks) {
+                    breakMinutes += (b.getTo().getMillis() - b.getFrom().getMillis()) / (1000 * 60);
+                }
+            }
+            // upperBound is between Timetrack from and to
+            if (t.getFrom().isBefore(upperBound) && t.getTo().isAfter(upperBound)) {
+                workMinutesIs += (upperBound.getMillis() - t.getFrom().getMillis()) / (1000 * 60);
+                List<Break> breaks = t.getBreaks();
+                for (Break b : breaks) {
+                    breakMinutes += (upperBound.getMillis() - b.getFrom().getMillis()) / (1000 * 60);
+                }
+            }
+
+        }
 
 
         int usedHolidayDays = 0;
@@ -39,26 +53,26 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         for (TimeOff t : timeOffs) {
             if (t.getType() == TimeOffType.SICK_LEAVE) {
-                sickDays += getWorkdaysOfTimeOff(t);
+                sickDays += getWorkdaysOfTimeOff(t, upperBound);
             }
             if (t.getType() == TimeOffType.BUSINESS_TRIP) {
-                businessTripDays += getWorkdaysOfTimeOff(t);
+                businessTripDays += getWorkdaysOfTimeOff(t, upperBound);
             }
             if (t.getType() == TimeOffType.BANK_HOLIDAY) {
-                bankHolidayDays += getWorkdaysOfTimeOff(t);
+                bankHolidayDays += getWorkdaysOfTimeOff(t, upperBound);
             }
             if (t.getType() == TimeOffType.PARENTAL_LEAVE) {
-                parentalLeaveDays += getWorkdaysOfTimeOff(t);
+                parentalLeaveDays += getWorkdaysOfTimeOff(t, upperBound);
             }
             if ((t.getType() == TimeOffType.HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
-                usedHolidayDays += getWorkdaysOfTimeOff(t);
+                usedHolidayDays += getWorkdaysOfTimeOff(t, upperBound);
                 acceptedHolidayDays += DateTimeUtils.getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
             if ((t.getType() == TimeOffType.SPECIAL_HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
-                specialHolidayDays += getWorkdaysOfTimeOff(t);
+                specialHolidayDays += getWorkdaysOfTimeOff(t, upperBound);
             }
             if ((t.getType() == TimeOffType.EDUCATIONAL_LEAVE) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
-                educationalLeaveDays += getWorkdaysOfTimeOff(t);
+                educationalLeaveDays += getWorkdaysOfTimeOff(t, upperBound);
             }
 
         }
@@ -81,7 +95,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 user.getHolidays() - acceptedHolidayDays,
                 sickDays,
                 workMinutesShould,
-                workMinutesWithoutBreak - breakMinutes,
+                workMinutesIs - breakMinutes,
                 breakMinutes,
                 workDaysRespected);
     }
@@ -193,14 +207,14 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
 
 
-    private static int getWorkdaysOfTimeOff(TimeOff timeoff) {
+    private static int getWorkdaysOfTimeOff(TimeOff timeoff, DateTime upperBound) {
         // TimeOff is already complete in history
-        if (timeoff.getTo().isBeforeNow()) {
+        if (timeoff.getTo().isBefore(upperBound)) {
             return DateTimeUtils.getWorkdaysOfTimeInterval(timeoff.getFrom(), timeoff.getTo());
         }
         // TimeOff has started, but not finished today
-        if (timeoff.getFrom().isBeforeNow() && timeoff.getTo().isAfterNow()) {
-            return DateTimeUtils.getWorkdaysOfTimeInterval(timeoff.getFrom(), DateTime.now());
+        if (timeoff.getFrom().isBefore(upperBound) && timeoff.getTo().isAfter(upperBound)) {
+            return DateTimeUtils.getWorkdaysOfTimeInterval(timeoff.getFrom(), upperBound);
         }
         // If TimeOff is in future, do not consider now
         return 0;
