@@ -1,7 +1,9 @@
 package business.reporting;
 
+import business.timetracking.InternalTimeTracking;
 import business.timetracking.RequestState;
 import business.timetracking.TimeOffType;
+import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
 import utils.DateTimeUtils;
@@ -61,7 +63,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
 
         long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
-        long workMinutesShould = workMinutesPerDay * (DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate())
+        long workDaysRespected = DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate());
+        long workMinutesShould = workMinutesPerDay * (workDaysRespected
                 - sickDays
                 - businessTripDays
                 - bankHolidayDays
@@ -78,71 +81,109 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 sickDays,
                 workMinutesShould,
                 workMinutesWithoutBreak - breakMinutes,
-                breakMinutes);
+                breakMinutes,
+                workDaysRespected);
     }
 
 
     @Override
     public List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry) {
         List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
-        User user = entry.getUser();
-
-        // check working times regarding plus saldo
-        long flexTimeSaldoInHours = entry.getWorkMinutesDifference() / 60;
-        if(flexTimeSaldoInHours > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR) {
-            alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
-                user.getFirstName(), "100"));
-        }
-        else if(flexTimeSaldoInHours > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
-            alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
-                user.getFirstName(), "75"));
-        }
-
-        // check working times regarding minus saldo
-        if(flexTimeSaldoInHours < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR) {
-            alertList.add(createAlert("forbidden_worktime.flextime_saldo_under_specified_percent",
-                user.getFirstName(), "100"));
-        }
-        else if(flexTimeSaldoInHours < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
-            alertList.add(createAlert("forbidden_worktime.flextime_saldo_under_specified_percent",
-                user.getFirstName(), "75"));
-        }
-
-        // check for break overuse and under consumption
-        double workMinutesIs = entry.getWorkMinutesIs();
-        double breakMinutesIs = entry.getBreakMinutes();
-        if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
-            > workMinutesIs * (1 + CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
-            alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
-                user.getFirstName(), String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
-        } else if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
-            < workMinutesIs * (1 - CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
-            alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
-                user.getFirstName(), String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
-        }
-
-        // check for holiday
-        if(entry.getNumOfUsedHolidays() > user.getHolidays()) {
-            alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
-                user.getFirstName(), String.valueOf(entry.getNumOfUsedHolidays()), String.valueOf(user.getHolidays())));
-        }
-        if(entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY) {
-            alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available", user.getFirstName(),
-                String.valueOf(entry.getNumOfUnusedHolidays())));
-        }
-
-        // check for sick leaves
-        if(entry.getNumOfSickDays()
-            > (entry.getWorkMinutesIs() * CollectiveConstants.TOLERATED_WORKTIME_TO_SICKLEAVE_RATIO) / (60 * entry.getHoursPerDay())) {
-            alertList.add(createAlert("forbidden_worktime.user_has_many_sick_leaves", user.getFirstName()));
-        }
-
-        // TODO: add check for timeTracks where user exceeded MAX_HOURS_PER_DAY
+        alertList.addAll(checkFlexTimeAlerts(entry));
+        alertList.addAll(checkBreakOverAndUnderConsumptionAlerts(entry));
+        alertList.addAll(checkHolidayAlerts(entry));
+        alertList.addAll(checkSickDayAlerts(entry));
         return alertList;
     }
 
-    private ForbiddenWorkTimeAlert createAlert(String message, String... arguments) {
-        ForbiddenWorkTimeAlert alert = new ForbiddenWorkTimeAlert(message);
+    private List<ForbiddenWorkTimeAlert> checkSickDayAlerts(ReportEntry entry) {
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        if(entry.getNumOfSickDays()
+                > (entry.getWorkMinutesIs() * CollectiveConstants.TOLERATED_WORKTIME_TO_SICKLEAVE_RATIO) / (60 * entry.getHoursPerDay())) {
+            alertList.add(createAlert("forbidden_worktime.user_has_many_sick_leaves",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(entry.getUser())));
+        }
+        return alertList;
+    }
+
+    private List<ForbiddenWorkTimeAlert> checkHolidayAlerts(ReportEntry entry) {
+        User user = entry.getUser();
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        if(entry.getNumOfUsedHolidays() > user.getHolidays()) {
+            alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user),
+                    String.valueOf(entry.getNumOfUsedHolidays()),
+                    String.valueOf(user.getHolidays())));
+        }
+        if(entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY) {
+            alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user),
+                    String.valueOf(entry.getNumOfUnusedHolidays())));
+        }
+        return alertList;
+    }
+
+    private List<ForbiddenWorkTimeAlert> checkBreakOverAndUnderConsumptionAlerts(ReportEntry entry) {
+        double workMinutesIs = entry.getWorkMinutesIs();
+        double breakMinutesIs = entry.getBreakMinutes();
+
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
+                > workMinutesIs * (1 + CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
+            alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(entry.getUser()),
+                    String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
+        } else if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
+                < workMinutesIs * (1 - CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
+            alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(entry.getUser()),
+                    String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
+        }
+        return alertList;
+    }
+
+    private List<ForbiddenWorkTimeAlert> checkFlexTimeAlerts(ReportEntry entry) {
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        long flexTimeSaldoInHours = entry.getWorkMinutesDifference() / 60;
+        if(flexTimeSaldoInHours > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR) {
+            alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
+                    ForbiddenWorkTimeAlert.Type.URGENT,
+                    userFirstAndLastName(entry.getUser()),
+                    "100"));
+        }
+        else if(flexTimeSaldoInHours > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
+            alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(entry.getUser()),
+                    "75"));
+        }
+        return alertList;
+    }
+
+    @Override
+    public List<ForbiddenWorkTimeAlert> checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when) {
+        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        if(workedHoursOfDay > CollectiveConstants.MAX_HOURS_PER_DAY) {
+            alertList.add(createAlert("forbidden_worktime.user_exceeded_daily_worktime",
+                    ForbiddenWorkTimeAlert.Type.WARNING,
+                    user.getFirstName() + " " + user.getLastName(),
+                    DateTimeUtils.dateTimeToDateString(when),
+                    String.valueOf(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay)));
+        }
+        return alertList;
+    }
+
+    private String userFirstAndLastName(User user) {
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
+    private ForbiddenWorkTimeAlert createAlert(String message, ForbiddenWorkTimeAlert.Type type, String... arguments) {
+        ForbiddenWorkTimeAlert alert = new ForbiddenWorkTimeAlert(message, type);
         for(String arg : arguments) {
             alert.addArguments(arg);
         }

@@ -8,10 +8,18 @@ import java.util.List;
  */
 public class ForbiddenWorkTimeAlert {
    private String _message;
+   private Type _type;
    private List<String> _arguments = new ArrayList<>();
 
-   public ForbiddenWorkTimeAlert(String message) {
-      this._message = message;
+   public ForbiddenWorkTimeAlert(String message, Type type) {
+      _message = message;
+      _type = type;
+   }
+
+   public enum Type {
+      INFORMATION,
+      WARNING,
+      URGENT
    }
 
    public void addArguments(String... arguments) {
@@ -22,6 +30,10 @@ public class ForbiddenWorkTimeAlert {
 
    public String getMessage() {
       return _message;
+   }
+
+   public Type getType() {
+      return _type;
    }
 
    public List<String> getArguments() {

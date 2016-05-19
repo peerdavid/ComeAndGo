@@ -39,8 +39,8 @@ class ReportingFacade implements Reporting {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime to) throws Exception {
-        return _reportingService.readForbiddenWorkTimeAlerts(userList, to);
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+        return _reportingService.readForbiddenWorkTimeAlerts(userList, from, to);
     }
 
     @Override
@@ -51,12 +51,17 @@ class ReportingFacade implements Reporting {
     @NoLogging
     @NoTransaction
     @Override
-    public double readHoursWorkedProgress(int userId) throws Exception {
-        return _reportingService.readHoursWorkedProgress(userId);
+    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
+        return _reportingService.readForbiddenWorkTimeAlerts(userId);
     }
 
     @Override
-    public double readHoursWorked(int userId) throws Exception {
-        return _reportingService.readHoursWorked(userId);
+    public double readHoursWorked(int userId, DateTime when) throws Exception {
+        return _reportingService.readHoursWorked(userId, when);
+    }
+
+    @Override
+    public double readHoursWorkedProgress(int userId) throws Exception {
+        return _reportingService.readHoursWorkedProgress(userId);
     }
 }
