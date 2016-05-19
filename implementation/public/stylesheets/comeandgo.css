@@ -141,6 +141,10 @@ nav .navbar-buttons a {
     padding: 12px;
 }
 
+#modal-create-user {
+    max-height: 85%;
+}
+
 .notification-list .button-container {
     padding: 0px 18px 0px 18px;
 }
