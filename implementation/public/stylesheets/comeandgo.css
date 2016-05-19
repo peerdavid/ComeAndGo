@@ -117,6 +117,16 @@ nav .navbar-buttons a {
 #active_progress {
     height: 32px;
     background: #ff5722;
+    overflow: visible;
+    margin-bottom: 56px;
+}
+
+#overtime-badge {
+    padding: 8px 12px;
+    border-radius: 6px;
+    right: -5%;
+    top: -50%;
+    font-size: 24pt;
 }
 
 /* listings */
