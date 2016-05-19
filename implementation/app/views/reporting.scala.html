@@ -56,15 +56,19 @@
             </tbody>
         </table>
 
-        <button data-target="modal-request-holiday-payout" class="btn modal-trigger right secondary-btn">
-            @Messages("views.report.request.holidaypayout")
-            <i class="material-icons right">monetization_on</i>
-        </button>
+        <div class="row">
 
-        <button data-target="modal-request-overtime-payout" class="btn modal-trigger right secondary-btn">
-            @Messages("views.report.request.overtimepayout")
-            <i class="material-icons right">monetization_on</i>
-        </button>
+            <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
+                @Messages("views.report.request.overtimepayout")
+                <i class="material-icons right">monetization_on</i>
+            </button>
+
+            <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
+                @Messages("views.report.request.holidaypayout")
+                <i class="material-icons right">monetization_on</i>
+            </button>
+
+        </div>
 
         <div id="modal-request-holiday-payout" class="modal">
                 <!-- header of modal -->
