@@ -9,17 +9,37 @@
     @navigation(Messages("views.notification.title"), profile) {
 
 
+        <form>
+            <div class="row">
+                <div class="col input-field s12 m6 l8">
+                    <i class="prefix material-icons">filter_list</i>
+                    <input id="filter" type="text">
+                    <label>@Messages("views.filter")</label>
+                </div>
+                <div class="notification-filter-checkboxes col l4 m6 s12 row">
+                    <div class="col s4">
+                        <input class="notification-filter-checkbox" type="checkbox" id="filter-notread" checked="checked" />
+                        <label for="filter-notread"><i class="material-icons">email</i></label>
+                    </div>
+                    <div class="col s4">
+                        <input class="notification-filter-checkbox" type="checkbox" id="filter-read" checked="checked" />
+                        <label for="filter-read"><i class="material-icons">drafts</i></label>
+                    </div>
+                    <div class="col s4">
+                        <input class="notification-filter-checkbox" type="checkbox" id="filter-sent" checked="checked" />
+                        <label for="filter-sent"><i class="material-icons">send</i></label>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+
         <div class="row">
 
                 <!--  Not read Notifications   -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.notreadnotifications")</h5>
-                <form>
-                    <div class="input-field row s12 m6">
-                        <input id="not-read-filter" type="text">
-                        <label>@Messages("views.filter")</label>
-                    </div>
-                </form>
                 <ul id="not-read-list" class="collapsible notification-list" data-collapsible="accordion">
                 @if(!notreadnotifications.isEmpty) {
                     @for(notification: NotificationViewModel <- notreadnotifications) {
@@ -69,7 +89,7 @@
                 <!--  Read and accepted/rejected Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.readnotifications")</h5>
-                <ul class="collapsible notification-list" data-collapsible="accordion">
+                <ul id="read-list" class="collapsible notification-list" data-collapsible="accordion">
                 @if(!readnotifications.isEmpty) {
                     @for(notification: NotificationViewModel <- readnotifications) {
                         <li>
@@ -98,7 +118,7 @@
                 <!-- Sent Notifications  -->
             <div class="col s12 m4">
                 <h5>@Messages("views.notification.sentnotifications")</h5>
-                <ul class="collapsible notification-list" data-collapsible="accordion">
+                <ul id="sent-list" class="collapsible notification-list" data-collapsible="accordion">
                 @if(!sentnotifications.isEmpty) {
                     @for(notification: NotificationViewModel <- sentnotifications) {
                         <li>

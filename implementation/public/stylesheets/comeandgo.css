@@ -145,6 +145,10 @@ nav .navbar-buttons a {
     padding: 0px 18px 0px 18px;
 }
 
+div.row.notification-filter-checkboxes {
+    padding-top: 1.8em;
+}
+
 div.enable-editing-switch-container.col , div.enable-editing-switch-container.col .switch {
     float: right;
 }
