@@ -15,8 +15,9 @@ import java.util.List;
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
     @Override
-    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts) {
+    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime to) {
 
+        // ToDo get timetracks only to ToDate
         long workMinutesWithoutBreak = timeTracks.stream().mapToLong(t -> (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60)).sum();
         long breakMinutes = timeTracks.stream().mapToLong(
                 t -> t.getBreaks().stream().mapToLong(

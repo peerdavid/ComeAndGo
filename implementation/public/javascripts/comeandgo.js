@@ -26,7 +26,7 @@ $( document ).ready(function() {
 
     // filter bar for not read notifications on notifications view
     $(function(){
-        listFilter($("#not-read-filter"),$("#not-read-list"));
+        listFilter($("#filter"),$("#notification-list"));
     });
 
     enableEditing(false, null);
@@ -98,6 +98,26 @@ $('.datepicker').focus(function () {
     $('.datepicker').pickadate(options);
 });
 
+$('.notification-filter-checkbox').change(function () {
+    var listings = $('.notification-list');
+    var selector = '';
+
+    if($('#filter-notread').prop('checked')) {
+        selector += '#not-read-list'
+    }
+    if($('#filter-read').prop('checked')) {
+        if(selector != '') selector += ',';
+        selector += '#read-list'
+    }
+    if($('#filter-sent').prop('checked')) {
+        if(selector != '') selector += ',';
+        selector += '#sent-list'
+    }
+    $(function(){
+        listFilter($("#filter"),$(selector));
+    });
+});
+
 
 // used to filter list
 // code slightly modified from:
@@ -106,11 +126,13 @@ function listFilter(input,list) {
 
     $(input).change(function(){
         var filter = $(this).val();
-        if(filter) {
-            $(list).find("b:not(:Contains(" + filter + "))").parent().slideUp();
-            $(list).find("b:Contains(" + filter + ")").parent().slideDown();
-        } else {
-            $(list).find("li").slideDown();
+        for(var l in list) {
+            if (filter) {
+                $(l).find("b:not(:Contains(" + filter + "))").parent().slideUp();
+                $(l).find("b:Contains(" + filter + ")").parent().slideDown();
+            } else {
+                $(l).find("li").slideDown();
+            }
         }
     }).keyup(function(){
         $(this).change();
