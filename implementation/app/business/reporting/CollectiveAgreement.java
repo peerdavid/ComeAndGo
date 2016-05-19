@@ -10,7 +10,7 @@ import java.util.List;
  */
 interface CollectiveAgreement {
 
-    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts);
+    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime to);
 
     List<ForbiddenWorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry);
     List<ForbiddenWorkTimeAlert> checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when);

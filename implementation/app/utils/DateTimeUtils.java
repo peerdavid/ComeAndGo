@@ -8,6 +8,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.io.PrintWriter;
+import java.security.InvalidParameterException;
 
 /**
  * Created by csaq5996 on 4/22/16.
@@ -119,6 +120,16 @@ public class DateTimeUtils {
             return getWorkdaysOfTimeInterval(entryDate, DateTime.now());
         }
         return getWorkdaysOfTimeInterval(january1st, DateTime.now());
+    }
+
+    public static int getWorkdaysOfThisYearUpToSpecificDate(DateTime entryDate, DateTime limit) {
+        DateTime january1st = DateTimeUtils.startOfActualYear();
+
+        // If user joined company this year
+        if (entryDate.getYear() == DateTime.now().getYear()) {
+            return getWorkdaysOfTimeInterval(entryDate, limit);
+        }
+        return getWorkdaysOfTimeInterval(january1st, limit);
     }
 
     public static int getWorkdaysOfThisYear() {
