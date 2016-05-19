@@ -26,7 +26,7 @@ $( document ).ready(function() {
 
     // filter bar for not read notifications on notifications view
     $(function(){
-        listFilter($("#filter"),$("#notification-list"));
+        listFilter($("#notification-filter"),$(".notification-list"));
     });
 
     enableEditing(false, null);
@@ -114,7 +114,7 @@ $('.notification-filter-checkbox').change(function () {
         selector += '#sent-list'
     }
     $(function(){
-        listFilter($("#filter"),$(selector));
+        listFilter($("#notification-filter"), $(selector));
     });
 });
 
@@ -123,20 +123,24 @@ $('.notification-filter-checkbox').change(function () {
 // code slightly modified from:
 // https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
 function listFilter(input,list) {
+    if(input.size() == 0) return;
+    if(listFilter.filterFunction != undefined)
+        $(input).unbind('change', listFilter.filterFunction).bind('keyup', listFilter.filterFunction);
 
-    $(input).change(function(){
+    listFilter.list = list;
+    listFilter.filterFunction = function () {
         var filter = $(this).val();
-        for(var l in list) {
+        for(var i = 0; i < listFilter.list.length; ++i) {
             if (filter) {
-                $(l).find("b:not(:Contains(" + filter + "))").parent().slideUp();
-                $(l).find("b:Contains(" + filter + ")").parent().slideDown();
+                $(listFilter.list[i]).find("b:not(:Contains(" + filter + "))").parent().slideUp();
+                $(listFilter.list[i]).find("b:Contains(" + filter + ")").parent().slideDown();
             } else {
-                $(l).find("li").slideDown();
+                $(listFilter.list[i]).find("li").slideDown();
             }
         }
-    }).keyup(function(){
-        $(this).change();
-    });
+    };
+
+    $(input).bind('change', listFilter.filterFunction).bind('keyup', listFilter.filterFunction);
     
 };
 
