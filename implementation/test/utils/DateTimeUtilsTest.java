@@ -64,8 +64,8 @@ public class DateTimeUtilsTest {
    @Test
    public void getStartOfDay_ShouldResultAtMidnightOnSameDate_ShouldSucceed() {
       for(int i = 0; i < 10; i++) {
-         DateTime expected = now.plusMillis(i * 100).plusMinutes(i * 2).plusHours(i * 3)
-             .plusDays(i * 4).plusMonths(i * 5).plusYears(i * 6);
+         DateTime expected = now.plusMillis(i * 100);
+         expected = expected.plusHours(i * 5);
 
          DateTime result = DateTimeUtils.startOfDay(expected);
 

@@ -70,7 +70,7 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
         List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
         userList.add(user);
@@ -78,7 +78,7 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
         List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
         userList.add(user);
@@ -86,12 +86,12 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
         if(from.isAfter(to)) {
             throw new UserException("");
         }
 
-        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        List<WorkTimeAlert> alertList = new ArrayList<>();
         for(User user : userList) {
             List<User> actualUserList = new ArrayList<>();
             actualUserList.add(user);
@@ -124,8 +124,8 @@ class ReportingServiceImpl implements ReportingService {
         return alertList;
     }
 
-    private List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
-        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+    private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
+        List<WorkTimeAlert> alertList = new ArrayList<>();
         User user = entry.getUser();
 
         // check for standard alerts
@@ -134,7 +134,16 @@ class ReportingServiceImpl implements ReportingService {
         // check for exceeded work time per day
         DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
         while(actualDate.isBefore(to)) {
-            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, readHoursWorked(user.getId(), actualDate), actualDate));
+            double hoursWorked = readHoursWorked(user.getId(), actualDate);
+            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate));
+
+            double hoursWorkedNext10Days = 0;
+            DateTime startDay = actualDate;
+            for(int i = 1; i <= 10; ++i) {
+                hoursWorkedNext10Days += readHoursWorked(user.getId(), startDay.plusDays(i));
+            }
+            alertList.addAll(_collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
+                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNext10Days));
             actualDate = actualDate.plusDays(1);
         }
         return alertList;
