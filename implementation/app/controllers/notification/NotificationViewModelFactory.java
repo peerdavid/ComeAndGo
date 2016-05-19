@@ -54,7 +54,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -75,7 +80,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -96,17 +106,28 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
             // Holiday-Payout-Cases
             case HOLIDAY_PAYOUT_REQUEST: {
 
+                String message = notification.getMessage();
+
+                if(notification.getMessage().isEmpty()){
+                    message = Messages.get("notifications.holiday_payout_request");
+                }
+
                 return new HolidayPayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
-                    Messages.get("notifications.holiday_payout_request"),
+                    message,
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -135,10 +156,16 @@ public class NotificationViewModelFactory {
             // Overtime-Payout-Cases
             case OVERTIME_PAYOUT_REQUEST: {
 
+                String message = notification.getMessage();
+
+                if(notification.getMessage().isEmpty()){
+                    message = Messages.get("notifications.overtime_payout_request");
+                }
+
                 return new OvertimePayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
-                    Messages.get("notifications.overtime_payout_request"),
+                    message,
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -189,7 +216,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -209,7 +241,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -229,7 +266,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -259,7 +301,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -280,7 +327,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -301,7 +353,12 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -331,28 +388,45 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
             case PARENTAL_LEAVE_REQUEST: {
+
                 int timeOffId = notification.getReferenceId();
 
                 if(timeOffValid(timeOffId)) {
+
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
+                    String message = notification.getMessage();
+
+                    if(message.isEmpty()){
+                        message = Messages.get("notifications.parental_leave_request");
+                    }
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
                         + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
 
                     return new ParentalLeaveViewModel(
                         notification.getId(),
-                        notification.getMessage(),
+                        message,
                         notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                         date,
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
@@ -361,19 +435,29 @@ public class NotificationViewModelFactory {
 
                 if(timeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
+                    String message = notification.getMessage();
+
+                    if(message.isEmpty()){
+                        message = Messages.get("notifications.business_trip_information");
+                    }
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
                         + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
 
                     return new BusinessTripInformationViewModel(
                         notification.getId(),
-                        notification.getMessage(),
+                        message,
                         notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                         date,
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return new InformationViewModel(
+                        notification.getId(),
+                        "notifications.information_timeoffinvalid",
+                        notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+                        _timeTracking
+                    );
                 }
             }
 
