@@ -37,6 +37,10 @@ GET     /reporting/company                         @controllers.ReportingControl
 GET     /reporting/boss                            @controllers.ReportingController.bossReport
 GET     /reporting/employee                        @controllers.ReportingController.employeeReport
 
+# Payout Requests
+POST    /reporting/holidaypayout                   @controllers.ReportingController.requestHolidayPayout
+POST    /reporting/overtimepayout                  @controllers.ReportingController.requestOvertimePayout
+
 # Notifications
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
