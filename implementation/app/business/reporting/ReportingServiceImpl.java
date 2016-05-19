@@ -6,7 +6,6 @@ import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
         List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
         userList.add(user);
@@ -78,7 +77,7 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
         List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
         userList.add(user);
@@ -86,12 +85,12 @@ class ReportingServiceImpl implements ReportingService {
     }
 
     @Override
-    public List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
         if(from.isAfter(to)) {
             throw new UserException("");
         }
 
-        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+        List<WorkTimeAlert> alertList = new ArrayList<>();
         for(User user : userList) {
             List<User> actualUserList = new ArrayList<>();
             actualUserList.add(user);
@@ -124,8 +123,8 @@ class ReportingServiceImpl implements ReportingService {
         return alertList;
     }
 
-    private List<ForbiddenWorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
-        List<ForbiddenWorkTimeAlert> alertList = new ArrayList<>();
+    private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
+        List<WorkTimeAlert> alertList = new ArrayList<>();
         User user = entry.getUser();
 
         // check for standard alerts
