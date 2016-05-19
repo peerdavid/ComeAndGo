@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Created by stefan on 14.05.16.
  */
-public class ForbiddenWorkTimeAlert {
+public class WorkTimeAlert {
    private String _message;
    private Type _type;
    private List<String> _arguments = new ArrayList<>();
 
-   public ForbiddenWorkTimeAlert(String message, Type type) {
+   public WorkTimeAlert(String message, Type type) {
       _message = message;
       _type = type;
    }
