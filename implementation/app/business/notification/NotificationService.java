@@ -1,6 +1,5 @@
 package business.notification;
 
-import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
 import infrastructure.NotificationRepository;
 import models.Notification;
@@ -8,7 +7,7 @@ import models.Notification;
 /**
  * Created by david on 22.03.16.
  */
-class NotificationService implements NotificationSender {
+class NotificationService implements InternalNotificationSender {
 
     private final NotificationRepository _notificationRepository;
 

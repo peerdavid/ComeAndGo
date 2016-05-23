@@ -1,17 +1,15 @@
 package business.usermanagement;
 
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import infrastructure.UserRepository;
 import javassist.NotFoundException;
-import models.Notification;
 import models.User;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +25,7 @@ import static org.mockito.Mockito.when;
 public class UserServiceTest {
 
     UserRepository _userRepositoryMock;
-    NotificationSender _notificationSenderMock;
+    InternalNotificationSender _notificationSenderMock;
     UserService _testee;
     User _testUser;
     User _testBoss;
@@ -36,7 +34,7 @@ public class UserServiceTest {
     @Before
     public void SetUp() throws Exception {
         _userRepositoryMock = mock(UserRepository.class);
-        _notificationSenderMock = mock(NotificationSender.class);
+        _notificationSenderMock = mock(InternalNotificationSender.class);
         _testee = new UserServiceImpl(_userRepositoryMock, _notificationSenderMock);
         _testBoss = new User("testBoss", "test1234", SecurityRole.ROLE_BOSS, "Big", "boss", "boss@kleber.at", true, null, 1200);
         _testBoss.setBoss(_testBoss);

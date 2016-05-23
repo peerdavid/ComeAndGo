@@ -1,6 +1,6 @@
 package business.timetracking;
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import com.google.inject.Inject;
@@ -8,7 +8,6 @@ import infrastructure.PayoutRepository;
 import models.Notification;
 import models.Payout;
 import models.User;
-import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -19,10 +18,10 @@ class PayoutServiceImpl implements PayoutService {
 
    private final InternalUserManagement _userManagement;
    private final PayoutRepository _repository;
-   private final NotificationSender _notification;
+   private final InternalNotificationSender _notification;
 
    @Inject
-   PayoutServiceImpl(InternalUserManagement userManagement, PayoutRepository repository, NotificationSender notification) {
+   PayoutServiceImpl(InternalUserManagement userManagement, PayoutRepository repository, InternalNotificationSender notification) {
       _userManagement = userManagement;
       _repository = repository;
       _notification = notification;
