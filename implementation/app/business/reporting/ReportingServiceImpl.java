@@ -115,7 +115,9 @@ class ReportingServiceImpl implements ReportingService {
                     endReport.getWorkMinutesShould() - startReport.getWorkMinutesShould(),
                     endReport.getWorkMinutesIs() - startReport.getWorkMinutesIs(),
                     endReport.getBreakMinutes() - startReport.getBreakMinutes(),
-                    endReport.getWorkDaysRespected() - startReport.getWorkDaysRespected());
+                    endReport.getHolidayPayoutHours() - startReport.getHolidayPayoutHours(),
+                    endReport.getOvertimePayoutHours() - startReport.getOvertimePayoutHours(),
+                    endReport.getWorkdaysOfReport() - startReport.getWorkdaysOfReport());
 
             // at this point we have the report starting at "from" and ending at "to"
             alertList.addAll(readForbiddenWorkTimeAlerts(differenceReport, from, to));
@@ -200,14 +202,17 @@ class ReportingServiceImpl implements ReportingService {
     private ReportEntry createCompanySummary(List<ReportEntry> userReports) {
         double hoursPerDay = userReports.stream().mapToDouble(d -> d.getHoursPerDay()).sum();
         int numOfUsedHolidays = userReports.stream().mapToInt(d -> d.getNumOfUsedHolidays()).sum();
-        int numOfUnusedHolidays = userReports.stream().mapToInt(d -> d.getNumOfUnusedHolidays()).sum();
+        double numOfUnusedHolidays = userReports.stream().mapToDouble(d -> d.getNumOfUnusedHolidays()).sum();
         int numOfSickDays = userReports.stream().mapToInt(d -> d.getNumOfSickDays()).sum();
         long numOfWorkMinutesShould = userReports.stream().mapToLong(d -> d.getWorkMinutesShould()).sum();
         long numOfWorkMinutesIs = userReports.stream().mapToLong(d -> d.getWorkMinutesIs()).sum();
         long numOfBreakMinutes = userReports.stream().mapToLong(d -> d.getBreakMinutes()).sum();
-        long workDaysRespected = userReports.stream().mapToLong(d -> d.getWorkDaysRespected()).sum();
+        long numOfHolidayPayoutHours = userReports.stream().mapToLong(d -> d.getHolidayPayoutHours()).sum();
+        long numOfOvertimePayoutHours = userReports.stream().mapToLong(d -> d.getOvertimePayoutHours()).sum();
+        int workDaysRespected = userReports.stream().mapToInt(d -> d.getWorkdaysOfReport()).sum();
 
         return new ReportEntry(null, hoursPerDay, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays,
-                numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes, workDaysRespected);
+                numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes, numOfHolidayPayoutHours,
+                numOfOvertimePayoutHours, workDaysRespected);
     }
 }

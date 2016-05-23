@@ -43,7 +43,9 @@ public class CollectiveAgreementImplTest {
         ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, Collections.EMPTY_LIST, Collections.EMPTY_LIST, DateTime.now());
 
         Assert.assertEquals(0, actual.getNumOfSickDays());
-        Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
+
+        double expectedUnusedHoliday = DateTimeUtils.getAliquoteHolidayDays(_testUser.getEntryDate(), DateTime.now(), _testUser.getHolidays());
+        Assert.assertEquals(expectedUnusedHoliday, actual.getNumOfUnusedHolidays(), 0.1);
         Assert.assertEquals(0, actual.getNumOfUsedHolidays());
         Assert.assertEquals(0, actual.getBreakMinutes());
         Assert.assertEquals(0, actual.getWorkMinutesIs());
@@ -54,12 +56,17 @@ public class CollectiveAgreementImplTest {
 
     @Test
     public void createUserReport_WithHoliday_ShouldSucceed() throws Exception {
-        TimeOff holiday21days = new TimeOff(_testUser, new DateTime(2016, 2, 1, 0, 0), new DateTime(2016, 2, 20, 0, 0), TimeOffType.HOLIDAY, RequestState.REQUEST_ACCEPTED, "");
+        DateTime date1 = new DateTime(2016, 2, 1, 0, 0);
+        DateTime date2 = new DateTime(2016, 2, 20, 0, 0);
+        TimeOff holiday21days = new TimeOff(_testUser, date1, date2, TimeOffType.HOLIDAY, RequestState.REQUEST_ACCEPTED, "");
         _timeoffs.add(holiday21days);
 
         ReportEntry actual = _testee.createUserReport(_testUser, Collections.EMPTY_LIST, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
-        Assert.assertEquals(10, actual.getNumOfUnusedHolidays());
+        double expectedUnusedHoliday = DateTimeUtils.getAliquoteHolidayDays(_testUser.getEntryDate(), DateTime.now(), _testUser.getHolidays())
+                - DateTimeUtils.getWorkdaysOfTimeInterval(date1, date2);
+
+        Assert.assertEquals(expectedUnusedHoliday, actual.getNumOfUnusedHolidays(), 0.1);
         Assert.assertEquals(15, actual.getNumOfUsedHolidays());
 
         int expectedWorkMinutesShould = (int)_testUser.getHoursPerDay() * 60 * (
@@ -126,7 +133,7 @@ public class CollectiveAgreementImplTest {
 
         ReportEntry actual = _testee.createUserReport(_testUser, _timetracks, _timeoffs, Collections.EMPTY_LIST, DateTime.now());
 
-        Assert.assertEquals(25, actual.getNumOfUnusedHolidays());
+
         Assert.assertEquals(0, actual.getNumOfUsedHolidays());
 
         int expectedWorkMinutesShould = (int)_testUser.getHoursPerDay() * 60 * (
