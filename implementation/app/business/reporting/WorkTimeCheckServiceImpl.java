@@ -40,11 +40,11 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
         userList.add(user);
-        return readForbiddenWorkTimeAlerts(userList, DateTimeUtils.BIG_BANG, to);
+        return readForbiddenWorkTimeAlerts(userId, DateTimeUtils.BIG_BANG, to);
     }
 
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
         if(from.isAfter(to)) {
             throw new UserException("");
         }
