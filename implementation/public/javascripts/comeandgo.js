@@ -124,24 +124,26 @@ $('.notification-filter-checkbox').change(function () {
 // https://kilianvalkhof.com/2010/javascript/how-to-build-a-fast-simple-list-filter-with-jquery/
 function listFilter(input,list) {
     if(input.size() == 0) return;
-    if(listFilter.filterFunction != undefined)
+    if(listFilter.filterFunction != undefined) {
         $(input).unbind('change', listFilter.filterFunction).bind('keyup', listFilter.filterFunction);
+        for(var i = 0; i < listFilter.list.length; ++i) {
+            $(listFilter.list[i]).find("b").parent().slideDown();
+        }
+    }
 
     listFilter.list = list;
     listFilter.filterFunction = function () {
-        var filter = $(this).val();
+        listFilter.filter = $(input).val();
         for(var i = 0; i < listFilter.list.length; ++i) {
-            if (filter) {
-                $(listFilter.list[i]).find("b:not(:Contains(" + filter + "))").parent().slideUp();
-                $(listFilter.list[i]).find("b:Contains(" + filter + ")").parent().slideDown();
-            } else {
-                $(listFilter.list[i]).find("li").slideDown();
-            }
+            $(listFilter.list[i]).find("b:not(:Contains(" + listFilter.filter + "))").parent().slideUp();
+            $(listFilter.list[i]).find("b:Contains(" + listFilter.filter + ")").parent().slideDown();
         }
     };
+    listFilter.changeFunction = function () {
 
+    };
     $(input).bind('change', listFilter.filterFunction).bind('keyup', listFilter.filterFunction);
-    
+    listFilter.filterFunction();
 };
 
 // diffrent contains function for case insensitivity

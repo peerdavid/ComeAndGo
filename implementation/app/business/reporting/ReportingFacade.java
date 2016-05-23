@@ -66,6 +66,8 @@ class ReportingFacade implements Reporting {
         return _reportingService.readHoursWorkedProgress(userId);
     }
 
+    @NoLogging
+    @NoTransaction
     @Override
     public double calculateOvertime(int userId, DateTime when) throws Exception {
         return _reportingService.calculateOvertime(userId, when);
