@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity
 
     private Button mBtnCome;
     private Button mBtnGo;
+    private Button mBtnBreak;
     private CommunicationWrapper mCommunicationWrapper;
 
     @Override
@@ -54,6 +55,16 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         mCommunicationWrapper.go();
+                    }
+                }
+        );
+
+        mBtnBreak = (Button) findViewById(R.id.btnBreak);
+        mBtnBreak.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCommunicationWrapper.toggleBreak();
                     }
                 }
         );

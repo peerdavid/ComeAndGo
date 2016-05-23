@@ -32,28 +32,20 @@ public class CommunicationWrapper {
 
 
     public void come(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    int response = login("admin", "admin");
-                    Log.d("tirol.comeandgo.app", "The login response is: " + response);
+        runUseCase("come");
+    }
 
-                    response = sendHttpRequest("GET", "come");
-                    Log.d("tirol.comeandgo.app", "The come response is: " + response);
-
-                    response = sendHttpRequest("POST", "logout");
-                    Log.d("tirol.comeandgo.app", "The logout response is: " + response);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+    public void go(){
+        runUseCase("go");
     }
 
 
-    public void go(){
+    public void toggleBreak(){
+        runUseCase("pause");
+    }
+
+
+    private void runUseCase(final String useCase) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -61,8 +53,8 @@ public class CommunicationWrapper {
                     int response = login("admin", "admin");
                     Log.d("tirol.comeandgo.app", "The login response is: " + response);
 
-                    response = sendHttpRequest("GET", "go");
-                    Log.d("tirol.comeandgo.app", "The go response is: " + response);
+                    response = sendHttpRequest("GET", useCase);
+                    Log.d("tirol.comeandgo.app", "The " + useCase + " response is: " + response);
 
                     response = sendHttpRequest("POST", "logout");
                     Log.d("tirol.comeandgo.app", "The logout response is: " + response);
