@@ -3,6 +3,7 @@ package business.reporting;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
+import models.Report;
 import models.ReportEntry;
 import models.User;
 import org.joda.time.DateTime;
@@ -35,25 +36,18 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
 
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
-        userList.add(user);
-        return readForbiddenWorkTimeAlerts(userId, DateTimeUtils.BIG_BANG, to);
+        return readForbiddenWorkTimeAlerts(userId, user.getEntryDate(), to);
     }
 
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
-        if(from.isAfter(to)) {
+        if (from.isAfter(to)) {
             throw new UserException("");
         }
         List<WorkTimeAlert> alertList = new ArrayList<>();
-
-
-        // TODO: add connection to method in _reporting created by paz, which gives me the difference of two reports
-
-            // at this point we have the report starting at "from" and ending at "to"
-            //alertList.addAll(readForbiddenWorkTimeAlerts(null, from, to));
-
+        Report report = _reporting.createEmployeeReport(userId, from, to);
+        alertList.addAll(readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to));
 
         return alertList;
     }
