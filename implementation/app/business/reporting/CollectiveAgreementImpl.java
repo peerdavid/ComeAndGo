@@ -7,6 +7,7 @@ import org.joda.time.DateTime;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     @Override
     public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound) {
 
+        // TimeTrack calculation
         long workMinutesIs = 0;
         long breakMinutes = 0;
         for (TimeTrack t : timeTracks) {
@@ -39,7 +41,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         }
 
-
+        // TimeOff calculation
         int usedHolidayDays = 0;
         int acceptedHolidayDays = 0;
         int sickDays = 0;
@@ -75,27 +77,54 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         }
 
+
+        int holidayPayoutHours = 0;
+        int overtimePayoutHours = 0;
+
+        // Payout calculation
+        for (Payout p : payouts) {
+            if ((p.getState() == RequestState.REQUEST_ACCEPTED) && (p.getCreatedOn().isBefore(upperBound))) {
+                switch (p.getType()) {
+                    case HOLIDAY_PAYOUT:
+                        holidayPayoutHours += p.getAmount();
+                        break;
+                    case OVERTIME_PAYOUT:
+                        break;
+                }
+            }
+
+        }
+        long payoutMinutes = 60 * (holidayPayoutHours + overtimePayoutHours);
+
         long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
-        long workDaysRespected = DateTimeUtils.getWorkdaysOfThisYearUpToNow(user.getEntryDate());
-        long workMinutesShould = workMinutesPerDay * (workDaysRespected
+        int workDaysFromEntryToUpperBound = DateTimeUtils.getWorkdaysOfTimeInterval(user.getEntryDate(), upperBound);
+        long workMinutesShould = workMinutesPerDay * (workDaysFromEntryToUpperBound
                 - sickDays
                 - businessTripDays
                 - bankHolidayDays
                 - parentalLeaveDays
                 - usedHolidayDays
                 - specialHolidayDays
-                - educationalLeaveDays);
+                - educationalLeaveDays)
+                + payoutMinutes;
+
+        double unusedHolidayDays = DateTimeUtils.getAliquoteHolidayDays(user.getEntryDate(), upperBound, user.getHolidays())
+                - acceptedHolidayDays
+                - (holidayPayoutHours / user.getHoursPerDay());
+
 
         return new ReportEntry(
                 user,
                 user.getHoursPerDay(),
                 acceptedHolidayDays,
-                user.getHolidays() - acceptedHolidayDays,
+                unusedHolidayDays,
                 sickDays,
                 workMinutesShould,
                 workMinutesIs - breakMinutes,
                 breakMinutes,
-                workDaysRespected);
+                holidayPayoutHours,
+                overtimePayoutHours,
+                workDaysFromEntryToUpperBound);
     }
 
 
@@ -166,7 +195,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         String valueToInsert;
 
         // scale flexTimeSaldo depending on watched timeSpan and pull it up to a year
-        long workDaysRespected = entry.getWorkDaysRespected();
+        int workDaysRespected = entry.getWorkdaysOfReport();
         long workDaysInYear = DateTimeUtils.getWorkdaysOfThisYear();
         long flexTimeSaldoInHoursScaledToYear = (entry.getWorkMinutesDifference() / 60) * workDaysInYear / workDaysRespected;
 
