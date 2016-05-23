@@ -240,7 +240,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     @Override
-    public List<WorkTimeAlert> checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> workedHoursNextDays) {
+    public List<WorkTimeAlert> checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double hoursWorkedActualDay, List<Double> workedHoursNextDays) {
         List<WorkTimeAlert> alertList = new ArrayList<>();
         // check if user does only work on 5 days per week
         //      (but only check once a week to avoid multiple workTimeAlerts per week)
@@ -266,8 +266,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         //  important note: ordering in workedHoursNextDays is sequential as it was inserted (so it is day for day)
         if(when.getDayOfMonth() == 24 && when.getMonthOfYear() == DateTimeConstants.DECEMBER) {
             double hoursWorkedOnNewYearsEve = workedHoursNextDays.get(6);
-            if((durationFreeTimeOfActualDayInH >= user.getHoursPerDay() && hoursWorkedOnNewYearsEve > 0)
-                    || (durationFreeTimeOfActualDayInH > 0 && hoursWorkedOnNewYearsEve >= user.getHoursPerDay())) {
+            if((hoursWorkedActualDay >= user.getHoursPerDay() && hoursWorkedOnNewYearsEve > 0)
+                    || (hoursWorkedActualDay > 0 && hoursWorkedOnNewYearsEve >= user.getHoursPerDay())) {
                 alertList.add(createAlert("forbidden_worktime.worked_on_both_christmas_and_newyear_eve",
                         WorkTimeAlert.Type.WARNING,
                         userFirstAndLastName(user),
