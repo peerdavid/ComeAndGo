@@ -66,56 +66,6 @@ class ReportingServiceImpl implements ReportingService {
         return new Report(userReports, summary);
     }
 
-    @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
-        List<User> userList = new ArrayList<>();
-        User user = _userManagement.readUser(userId);
-        userList.add(user);
-        return readForbiddenWorkTimeAlerts(userList, user.getEntryDate(), DateTime.now());
-    }
-
-    @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        List<User> userList = new ArrayList<>();
-        User user = _userManagement.readUser(userId);
-        userList.add(user);
-        return readForbiddenWorkTimeAlerts(userList, DateTimeUtils.BIG_BANG, to);
-    }
-
-    @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
-        if(from.isAfter(to)) {
-            throw new UserException("");
-        }
-
-        return null;
-    }
-
-    private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
-        List<WorkTimeAlert> alertList = new ArrayList<>();
-        User user = entry.getUser();
-
-        // check for standard alerts
-        alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry));
-
-        // check for exceeded work time per day
-        DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
-        while(actualDate.isBefore(to)) {
-            double hoursWorked = readHoursWorked(user.getId(), actualDate);
-            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate));
-
-            double hoursWorkedNext10Days = 0;
-            DateTime startDay = actualDate;
-            for(int i = 1; i <= 10; ++i) {
-                hoursWorkedNext10Days += readHoursWorked(user.getId(), startDay.plusDays(i));
-            }
-            alertList.addAll(_collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
-                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNext10Days));
-            actualDate = actualDate.plusDays(1);
-        }
-        return alertList;
-    }
-
     /**
      *
      * this method checks user TimeTracks if it exceeds MAX_HOURS_PER_DAY from CollectiveConstants

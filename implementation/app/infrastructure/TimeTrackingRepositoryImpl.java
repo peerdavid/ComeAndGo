@@ -41,9 +41,10 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
     public List<TimeTrack> readTimeTracks(User user, DateTime from, DateTime to) {
        if(from.isAfter(to))
           return Collections.emptyList();
+       List<TimeTrack> _timeTracks = Collections.emptyList();
 
        // following query also includes activeTimeTrack, if there is one (case 1)
-       List<TimeTrack> _timeTracks =
+       _timeTracks.addAll(
            Ebean.find(TimeTrack.class)
            .where().and(
                Expr.eq("user_id", user.getId()),
@@ -58,12 +59,14 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
                      Expr.le("end", to)
                   )
                )
-           ).setOrderBy("start").findList();
+           ).setOrderBy("start").findList());
 
-        // if we have the case that there was nothing found
-       if(_timeTracks == null) {
-           _timeTracks = Collections.emptyList();
-       }
+        // also include actual timeTrack
+        try {
+            _timeTracks.add(readActiveTimeTrack(user));
+        } catch (Exception e) {
+            // do anything if no actual timeTrack is available...
+        }
 
        return _timeTracks;
     }

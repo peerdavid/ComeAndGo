@@ -45,6 +45,10 @@ public class DateTimeUtils {
         );
     }
 
+    public static String weekToString(DateTime when) {
+        return dateTimeToDateString(startOfWeek(when)) + " - " + dateTimeToDateString(endOfWeek(when));
+    }
+
     public static DateTime stringToDateTime(String date) {
         return stringToDateTime(date, 0, 0);
     }
@@ -89,6 +93,18 @@ public class DateTimeUtils {
 
     public static DateTime endOfDay(DateTime day) {
         return startOfDay(day).minusMillis(1).plusDays(1);
+    }
+
+    public static DateTime startOfWeek(DateTime week) {
+        week = week.minusDays(week.getDayOfWeek() - 1);
+        week = startOfDay(week);
+        return week;
+    }
+
+    public static DateTime endOfWeek(DateTime week) {
+        week = startOfWeek(week);
+        week = week.minusMillis(1).plusDays(7);
+        return week;
     }
 
     public static DateTime stringToDateTime(String dateString, DateTime time) {
