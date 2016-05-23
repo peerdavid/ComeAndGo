@@ -1,11 +1,11 @@
 package business.timetracking;
 
 
+import business.notification.InternalNotificationSender;
 import business.notification.NotificationException;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
-import business.notification.NotificationSender;
 import infrastructure.TimeTrackingRepository;
 import javassist.NotFoundException;
 import models.Break;
@@ -15,10 +15,8 @@ import models.User;
 import org.joda.time.DateTime;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import com.google.inject.Inject;
-import org.joda.time.DateTimeUtils;
 
 
 /**
@@ -27,14 +25,14 @@ import org.joda.time.DateTimeUtils;
 class TimeTrackingServiceImpl implements TimeTrackingService {
 
     private final TimeTrackingRepository _repository;
-    private final NotificationSender _notificationSender;
+    private final InternalNotificationSender _notificationSender;
     private final InternalUserManagement _userManagement;
     private final TimeTrackingValidation _timeTrackValidation;
     private final TimeOffValidation _timeOffValidation;
 
 
     @Inject
-    public TimeTrackingServiceImpl(TimeTrackingRepository repository, TimeTrackingValidation validation, TimeOffValidation timeOffValidation, NotificationSender notificationSender, InternalUserManagement userRepository) {
+    public TimeTrackingServiceImpl(TimeTrackingRepository repository, TimeTrackingValidation validation, TimeOffValidation timeOffValidation, InternalNotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _notificationSender = notificationSender;
         _userManagement = userRepository;

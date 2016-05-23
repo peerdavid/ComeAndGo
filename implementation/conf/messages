@@ -2,6 +2,7 @@
 
 
 views.btn.close = Close
+views.btn.request = Request
 
 
 views.login.title = Login
@@ -114,7 +115,11 @@ views.report.workshould = Work should [h]
 views.report.workis = Work is [h]
 views.report.break = Break [min]
 views.report.difference = Difference
-views.report.requestpayout = Request Holiday Payout
+views.report.request.holidaypayout = Request Holiday Payout
+views.report.request.overtimepayout = Request Overtime Payouts
+views.report.request.comment = Comment
+views.report.request.hours = Hours
+views.report.request.days = Days
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
@@ -191,6 +196,8 @@ notifications.deleted_timetrack = Personnel Manager deleted a timetrack
 notifications.educational_leave_request = Employee requested a educational leave
 notifications.educational_leave_accept = Boss accepted educational leave
 notifications.educational_leave_reject = Boss rejected educational leave
+notifications.parental_leave_request = Employee requested parental leave
+notifications.information_timeoffinvalid = TimeOff was removed by the user
 
 notifications.holiday = Holiday
 notifications.holidaypayout = Holiday Payout

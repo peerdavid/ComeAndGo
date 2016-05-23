@@ -1,6 +1,6 @@
 package business.reporting;
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.timetracking.InternalTimeTracking;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.SecurityRole;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
  */
 public class ReportingServiceImplTest {
 
-    NotificationSender _notificationSenderMock;
+    InternalNotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _internalUserManagement;
     User _testUser;
@@ -44,7 +44,7 @@ public class ReportingServiceImplTest {
     public void SetUp() throws Exception {
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null, 1200);
 
-        _notificationSenderMock = mock(NotificationSender.class);
+        _notificationSenderMock = mock(InternalNotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _internalUserManagement = mock(InternalUserManagement.class);
         _internalTimeTrack = mock(InternalTimeTracking.class);

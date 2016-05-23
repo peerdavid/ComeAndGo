@@ -21,7 +21,7 @@
             </thead>
             <tbody>
 
-                <!-- User reports -->
+                    <!-- User reports -->
                 @for(userReport <- report.getUserReports) {
                     <tr>
                         <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
@@ -39,103 +39,109 @@
                     </tr>
                 }
 
-                <!-- If there is only 1 entry, we don't need a summary...-->
+                    <!-- If there is only 1 entry, we don't need a summary...-->
                 @if(report.getUserReports().size() > 1) {
                     <!-- Summary -->
-                    <tr>
-                        <td class="result">SUMMARY</td>
-                        <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
-                        <td class="result">@report.getSummary().getNumOfUnusedHolidays</td>
-                        <td class="result">@report.getSummary().getNumOfSickDays</td>
-                        <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
-                        <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
-                        <td class="result">@(report.getSummary().getBreakMinutes())</td>
-                        <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
-                    </tr>
-                }
+                <tr>
+                    <td class="result">SUMMARY</td>
+                    <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
+                    <td class="result">@report.getSummary().getNumOfUnusedHolidays</td>
+                    <td class="result">@report.getSummary().getNumOfSickDays</td>
+                    <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
+                    <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
+                    <td class="result">@(report.getSummary().getBreakMinutes())</td>
+                    <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
+                </tr>
+            }
             </tbody>
         </table>
 
-        <form>
-            <button data-target="modal-request-holiday-payout" class="btn modal-trigger right secondary-btn">@Messages("views.report.requestpayout")
+        <div class="row">
+
+            <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
+                @Messages("views.report.request.overtimepayout")
                 <i class="material-icons right">monetization_on</i>
             </button>
 
-            <button data-target="modal-request-overtime-payout" class="btn modal-trigger right secondary-btn">request overtime payout
+            <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
+                @Messages("views.report.request.holidaypayout")
                 <i class="material-icons right">monetization_on</i>
             </button>
 
-            <div id="modal-request-holiday-payout" class="modal">
-                    <!-- header of modal -->
-                <header class="modal-content">
-                    <h4>Request Holiday Payout</h4>
-                </header>
+        </div>
 
-                <form action="..." method="POST">
-                        <!-- Content of modal -->
-                    <div class="modal-content">
+        <div id="modal-request-holiday-payout" class="modal">
+                <!-- header of modal -->
+            <header class="modal-content">
+                <h4>@Messages("views.report.request.holidaypayout")</h4>
+            </header>
 
-                        <div class="row">
-                            <div class="input-field col s6 m5">
-                                <input name="numberOfDays" required="required" type="text">
-                                <label for="numberOfDays">Days</label>
-                            </div>
-                            <div class="input-field col s6 m5">
-                                <input name="comment" required="required" type="text">
-                                <label for="comment">Comment</label>
-                            </div>
+            <form action="@routes.ReportingController.requestHolidayPayout()" method="POST">
+                    <!-- Content of modal -->
+                <div class="modal-content">
+
+                    <div class="row">
+                        <div class="input-field col s6 m5">
+                            <input name="numofhours" required="required" type="text">
+                            <label for="numofhours">@Messages("views.report.request.days")</label>
+                        </div>
+                        <div class="input-field col s6 m5">
+                            <input name="comment" required="required" type="text">
+                            <label for="comment">@Messages("views.report.request.comment")</label>
                         </div>
                     </div>
+                </div>
 
-                        <!-- Modal footer -->
-                    <footer class="modal-footer">
-                        <button class="waves-effect modal-close waves-light btn right primary-btn"
-                        style="float : right">request
-                            <i class="material-icons right">add</i>
-                        </button>
-
-                        <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                    <!-- Modal footer -->
+                <footer class="modal-footer">
+                    <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn" name="action">
                         @Messages("views.btn.close")
-                        </button>
-                    </footer>
-                </form>
-            </div>
+                    </button>
 
-            <div id="modal-request-overtime-payout" class="modal">
-                    <!-- header of modal -->
-                <header class="modal-content">
-                    <h4>Request Overtime Payout</h4>
-                </header>
+                    <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit">
+                        @Messages("views.btn.request")
+                        <i class="material-icons right">add</i>
+                    </button>
 
-                <form action="..." method="POST">
-                        <!-- Content of modal -->
-                    <div class="modal-content">
+                </footer>
+            </form>
+        </div>
 
-                        <div class="row">
-                            <div class="input-field col s6 m5">
-                                <input name="numberOfDays" required="required" type="text">
-                                <label for="numberOfDays">Hours</label>
-                            </div>
-                            <div class="input-field col s6 m5">
-                                <input name="comment" required="required" type="text">
-                                <label for="comment">Comment</label>
-                            </div>
+        <div id="modal-request-overtime-payout" class="modal">
+                <!-- header of modal -->
+            <header class="modal-content">
+                <h4>@Messages("views.report.request.overtimepayout")</h4>
+            </header>
+
+            <form action="@routes.ReportingController.requestOvertimePayout()" method="POST">
+                    <!-- Content of modal -->
+                <div class="modal-content">
+
+                    <div class="row">
+                        <div class="input-field col s6 m5">
+                            <input name="numofhours" required="required" type="text">
+                            <label for="numofhours">@Messages("views.report.request.hours")</label>
+                        </div>
+                        <div class="input-field col s6 m5">
+                            <input name="comment" required="required" type="text">
+                            <label for="comment">@Messages("views.report.request.comment")</label>
                         </div>
                     </div>
+                </div>
 
-                        <!-- Modal footer -->
-                    <footer class="modal-footer">
-                        <button class="waves-effect modal-close waves-light btn right primary-btn"
-                        style="float : right">request
-                            <i class="material-icons right">add</i>
-                        </button>
-
-                        <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn"type="submit" name="action">
+                    <!-- Modal footer -->
+                <footer class="modal-footer">
+                    <button class="waves-effect modal-action modal-close waves-light btn left secondary-btn" name="action">
                         @Messages("views.btn.close")
-                        </button>
-                    </footer>
-                </form>
-            </div>
-        </form >
+                    </button>
+
+                    <button class="waves-effect modal-close waves-light btn right primary-btn" type="submit">
+                        @Messages("views.btn.request")
+                        <i class="material-icons right">add</i>
+                    </button>
+
+                </footer>
+            </form>
+        </div>
     }
 }

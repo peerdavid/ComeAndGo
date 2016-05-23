@@ -1,7 +1,7 @@
 package business.usermanagement;
 
+import business.notification.InternalNotificationSender;
 import business.notification.NotificationException;
-import business.notification.NotificationSender;
 import business.notification.NotificationType;
 import com.google.inject.Inject;
 import infrastructure.UserRepository;
@@ -21,11 +21,11 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
 
     private UserRepository _userRepository;
-    private NotificationSender _notificationSender;
+    private InternalNotificationSender _notificationSender;
 
 
     @Inject
-    public UserServiceImpl(UserRepository userRepository, NotificationSender notificationSender) {
+    public UserServiceImpl(UserRepository userRepository, InternalNotificationSender notificationSender) {
         _userRepository = userRepository;
         _notificationSender = notificationSender;
     }

@@ -32,7 +32,7 @@ public class NotificationViewModelFactory {
             case HOLIDAY_REQUEST: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -54,14 +54,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case HOLIDAY_ACCEPT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -75,14 +75,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case HOLIDAY_REJECT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -96,17 +96,23 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             // Holiday-Payout-Cases
             case HOLIDAY_PAYOUT_REQUEST: {
 
+                String message = notification.getMessage();
+
+                if(notification.getMessage().isEmpty()){
+                    message = Messages.get("notifications.holiday_payout_request");
+                }
+
                 return new HolidayPayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
-                    Messages.get("notifications.holiday_payout_request"),
+                    message,
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -135,10 +141,16 @@ public class NotificationViewModelFactory {
             // Overtime-Payout-Cases
             case OVERTIME_PAYOUT_REQUEST: {
 
+                String message = notification.getMessage();
+
+                if(notification.getMessage().isEmpty()){
+                    message = Messages.get("notifications.overtime_payout_request");
+                }
+
                 return new OvertimePayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
-                    Messages.get("notifications.overtime_payout_request"),
+                    message,
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -168,7 +180,7 @@ public class NotificationViewModelFactory {
             case EDUCATIONAL_LEAVE_REQUEST: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -189,14 +201,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case EDUCATIONAL_LEAVE_ACCEPT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -209,14 +221,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case EDUCATIONAL_LEAVE_REJECT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -229,7 +241,7 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
@@ -237,7 +249,7 @@ public class NotificationViewModelFactory {
             case SPECIAL_HOLIDAY_REQUEST: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -259,14 +271,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case SPECIAL_HOLIDAY_ACCEPT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -280,14 +292,14 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case SPECIAL_HOLIDAY_REJECT: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -301,7 +313,7 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
@@ -309,7 +321,7 @@ public class NotificationViewModelFactory {
             case SICK_LEAVE_INFORMATION: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
@@ -331,49 +343,61 @@ public class NotificationViewModelFactory {
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case PARENTAL_LEAVE_REQUEST: {
+
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
+
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
+                    String message = notification.getMessage();
+
+                    if(message.isEmpty()){
+                        message = Messages.get("notifications.parental_leave_request");
+                    }
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
                         + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
 
                     return new ParentalLeaveViewModel(
                         notification.getId(),
-                        notification.getMessage(),
+                        message,
                         notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                         date,
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
             case BUSINESS_TRIP_INFORMATION: {
                 int timeOffId = notification.getReferenceId();
 
-                if(timeOffValid(timeOffId)) {
+                if(isTimeOffValid(timeOffId)) {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
+                    String message = notification.getMessage();
+
+                    if(message.isEmpty()){
+                        message = Messages.get("notifications.business_trip_information");
+                    }
 
                     String date = DateTimeUtils.dateTimeToDateString(timeOff.getFrom())
                         + " - " + DateTimeUtils.dateTimeToDateString(timeOff.getTo());
 
                     return new BusinessTripInformationViewModel(
                         notification.getId(),
-                        notification.getMessage(),
+                        message,
                         notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                         date,
                         _timeTracking
                     );
                 } else {
-                    return null;
+                    return timeOffInvalidInformation(notification);
                 }
             }
 
@@ -452,7 +476,7 @@ public class NotificationViewModelFactory {
         return result;
     }
 
-    private boolean timeOffValid(int timeOffId) throws Exception {
+    private boolean isTimeOffValid(int timeOffId) throws Exception {
         boolean result = true;
 
         try {
@@ -462,5 +486,14 @@ public class NotificationViewModelFactory {
         }
 
         return result;
+    }
+
+    private InformationViewModel timeOffInvalidInformation(Notification notification){
+        return new InformationViewModel(
+            notification.getId(),
+            Messages.get("notifications.information_timeoffinvalid"),
+            notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
+            _timeTracking
+        );
     }
 }

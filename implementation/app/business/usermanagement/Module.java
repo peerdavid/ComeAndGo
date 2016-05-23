@@ -1,7 +1,7 @@
 package business.usermanagement;
 
 import business.notification.ModuleInternal;
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -28,7 +28,7 @@ public class Module extends AbstractModule {
                 new infrastructure.Module(),
                 new ModuleInternal());
         UserRepository userRepository = injector.getInstance(UserRepository.class);
-        NotificationSender notificationSender = null;//injector.getInstance(NotificationSender.class);
+        InternalNotificationSender notificationSender = injector.getInstance(InternalNotificationSender.class);
 
         UserService userService = new UserServiceImpl(userRepository, notificationSender);
         final FormClient client = new FormClient("/login", userService);

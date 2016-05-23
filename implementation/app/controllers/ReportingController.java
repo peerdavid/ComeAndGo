@@ -5,7 +5,6 @@ import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import models.Payout;
 import models.Report;
-import models.User;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -73,8 +72,8 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         );
 
         _timeTracking.requestHolidayPayout(userId, amountOfHours, comment);
-        Report report = _reporting.createEmployeeReport(userId);
-        return ok(views.html.reporting.render(profile, report));
+
+        return redirect(routes.ReportingController.employeeReport());
     }
 
     @RequiresAuthentication(clientName = "default")
@@ -89,8 +88,8 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         );
 
         _timeTracking.requestOvertimePayout(userId, amountOfHours, comment);
-        Report report = _reporting.createEmployeeReport(userId);
-        return ok(views.html.reporting.render(profile, report));
+
+        return redirect(routes.ReportingController.employeeReport());
     }
 
 

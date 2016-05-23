@@ -9,6 +9,6 @@ public class ModuleInternal extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(NotificationSender.class).to(NotificationService.class);
+        bind(InternalNotificationSender.class).to(NotificationService.class);
     }
 }
