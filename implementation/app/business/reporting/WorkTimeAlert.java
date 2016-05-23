@@ -9,7 +9,7 @@ import java.util.List;
 public class WorkTimeAlert {
    private String _message;
    private Type _type;
-   private List<String> _arguments = new ArrayList<>();
+   private String[] _arguments;
 
    public WorkTimeAlert(String message, Type type) {
       _message = message;
@@ -23,9 +23,7 @@ public class WorkTimeAlert {
    }
 
    public void addArguments(String... arguments) {
-      for(String s : arguments) {
-         _arguments.add(s);
-      }
+      _arguments = arguments;
    }
 
    public String getMessage() {
@@ -36,7 +34,7 @@ public class WorkTimeAlert {
       return _type;
    }
 
-   public List<String> getArguments() {
+   public String[] getArguments() {
       return _arguments;
    }
 }

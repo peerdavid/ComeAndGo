@@ -10,6 +10,5 @@ import java.util.List;
  */
 interface WorkTimeCheckService {
     List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception;
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception;
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
+    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception;
 }

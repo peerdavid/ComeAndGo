@@ -162,5 +162,28 @@
                 </footer>
             </form>
         </div>
+
+
+        @if(workTimeAlerts != null) {
+            <table class="striped responsive-table">
+                <thead>
+                    <tr>
+                        <th data-field="id">WorkTimeAlerts</th>
+                    </tr>
+                </thead>
+                <tbody>
+                        <!-- alert list -->
+                    @for(alert <- workTimeAlerts) {
+                        <tr>
+                        @if(alert.getType == WorkTimeAlert.Type.URGENT) {
+                            <td style="color: darkred; font-weight: bold;">@Messages.apply(alert.getMessage, alert.getArguments)</td>
+                        } else {
+                            <td style="color: darkgreen">@Messages.apply(alert.getMessage, alert.getArguments)</td>
+                        }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     }
 }

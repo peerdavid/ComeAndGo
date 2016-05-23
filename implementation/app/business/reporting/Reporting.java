@@ -18,15 +18,9 @@ public interface Reporting {
 
     Report createBossReport(int userId, DateTime from, DateTime to) throws Exception;
 
-   /**
-    * starts calculation from begin where timeTracks exist, ends at to.
-    * @param to
-    * @return List of ForbiddenWorkTimeAlerts
-    * @throws Exception
-    */
+
     List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception;
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception;
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
+    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception;
 
     double readHoursWorked(int userId, DateTime when) throws Exception;
 

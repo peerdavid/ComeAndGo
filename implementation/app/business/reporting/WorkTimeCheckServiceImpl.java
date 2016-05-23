@@ -29,27 +29,28 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
     }
 
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
-        User user = _userManagement.readUser(userId);
-        return readForbiddenWorkTimeAlerts(userId, user.getEntryDate(), DateTime.now());
-    }
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+        validateDate(from, to);
 
-    @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        User user = _userManagement.readUser(userId);
-        return readForbiddenWorkTimeAlerts(userId, user.getEntryDate(), to);
+        List<WorkTimeAlert> alertList = new ArrayList<>();
+        for(User user : userList) {
+            from = (from == null) ? user.getEntryDate() : from;
+            to = (to == null) ? DateTime.now() : to;
+
+            Report report = _reporting.createEmployeeReport(user.getId(), from, to);
+            alertList.addAll(readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to));
+        }
+        return alertList;
     }
 
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
-        if (from.isAfter(to)) {
-            throw new UserException("");
-        }
-        List<WorkTimeAlert> alertList = new ArrayList<>();
-        Report report = _reporting.createEmployeeReport(userId, from, to);
-        alertList.addAll(readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to));
+        validateDate(from, to);
+        from = (from == null) ? _userManagement.readUser(userId).getEntryDate() : from;
+        to = (to == null) ? DateTime.now() : to;
 
-        return alertList;
+        Report report = _reporting.createEmployeeReport(userId, from, to);
+        return readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to);
     }
 
     private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
@@ -60,8 +61,8 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         _collectiveAgreement.createForbiddenWorkTimeAlerts(entry, alertList);
 
         // check for exceeded work time per day
-        DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
-        while(actualDate.isBefore(to)) {
+        DateTime startDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
+        for(DateTime actualDate = startDate; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {
             double hoursWorked = _reporting.readHoursWorked(user.getId(), actualDate);
             _collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate, alertList);
 
@@ -74,13 +75,13 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
                     DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNextDays, alertList);
             _collectiveAgreement.checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(user, actualDate,
                     hoursWorked, hoursWorkedNextDays, alertList);
-            actualDate = actualDate.plusDays(1);
         }
         return alertList;
     }
 
-
-
-
-
+    private void validateDate(DateTime from, DateTime to) throws UserException {
+        if(from != null && to != null && from.isAfter(to)) {
+            throw new UserException("forbidden_worktime.error_in_date_from_or_to");
+        }
+    }
 }

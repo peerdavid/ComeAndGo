@@ -142,7 +142,6 @@ exceptions.usermanagement.invalid_hours_per_day = Negative hours per day is not 
 exceptions.timetracking.could_not_update_break = Could not update TimeTrack and insert break
 exceptions.timetracking.could_not_find_timetrack = Timetrack was not found
 exceptions.timetracking.could_not_find_break = Break was not found
-exceptions.timetracking.from_to_error = There was some error in given date from and to
 exceptions.timetracking.no_user = No User found
 exceptions.timetracking.user_timetrack_error = There was an error with specified times of timetrack
 exceptions.timetracking.user_break_error = There was an error with specified times of break
@@ -168,10 +167,11 @@ exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 
+forbidden_worktime.error_in_date_from_or_to = There was some error in given date from and to
 forbidden_worktime.more_holiday_used_than_available = User "{0}" has already used "{1}" holiday days but only has "{2}"
 forbidden_worktime.too_many_unused_holiday_available = User "{0}" seems not to like holiday, has "{1}" days off.
 forbidden_worktime.flextime_saldo_over_specified_percent = User "{0}" has exceeded "{1}"% of plus hours overtime tolerated in specified timeSpan.
-forbidden_worktime.flextime_saldo_under_specified_percent = User "{0}" has undershot "{1}"% of minus hours overtime tolerated in specified timeSpan.
+forbidden_worktime.flextime_saldo_under_specified_percent = User {0} has undershot "{1}"% of minus hours overtime tolerated in specified timeSpan.
 forbidden_worktime.freetime_undershoot = User "{0}" has undershot freetime at "{1}" about "{2}" hours.
 forbidden_worktime.freetime_undershoot_with_next_days_no_balance = User "{0}" has undershot freetime at "{1}" about "{2}" hours and next 10 days it's not balanced.
 forbidden_worktime.too_many_workdays_per_week = User "{0}" has worked "{1}" days instead of tolerated "{2}" in week "{3}"

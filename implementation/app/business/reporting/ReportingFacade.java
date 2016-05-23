@@ -41,21 +41,18 @@ class ReportingFacade implements Reporting {
         return _reportingService.createBossReport(userId, from, to);
     }
 
+    @NoLogging
+    @NoTransaction
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
         return _workTimeCheck.readForbiddenWorkTimeAlerts(userId, from, to);
     }
 
-    @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        return _workTimeCheck.readForbiddenWorkTimeAlerts(userId, to);
-    }
-
     @NoLogging
     @NoTransaction
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
-        return _workTimeCheck.readForbiddenWorkTimeAlerts(userId);
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+        return _workTimeCheck.readForbiddenWorkTimeAlerts(userList, from, to);
     }
 
     @Override
