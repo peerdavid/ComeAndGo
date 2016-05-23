@@ -2,7 +2,7 @@ package business.timetracking;
 
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.usermanagement.SecurityRole;
 import infrastructure.TimeOffRepository;
 import infrastructure.TimeTrackingRepository;
@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
  * Created by Stefan on 19.04.2016.
  */
 public class TimeTrackingValidationImplTest {
-    NotificationSender _notificationSenderMock;
+    InternalNotificationSender _notificationSenderMock;
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _userRepository;
     TimeTrackingService _timeTrackService;

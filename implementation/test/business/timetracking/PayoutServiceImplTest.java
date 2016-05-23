@@ -1,19 +1,15 @@
 package business.timetracking;
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.usermanagement.InternalUserManagement;
-import business.usermanagement.UserException;
-import business.usermanagement.UserManagement;
 import infrastructure.PayoutRepository;
 import models.Notification;
 import models.Payout;
 import models.User;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.internal.exceptions.ExceptionIncludingMockitoWarnings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +27,7 @@ public class PayoutServiceImplTest {
    private PayoutServiceImpl _testee;
 
    private PayoutRepository _repository;
-   private NotificationSender _notificationSenderMock;
+   private InternalNotificationSender _notificationSenderMock;
    private InternalUserManagement _internalUserManagementMock;
    private User _testEmployeeMock;
    private int _testEmployeeId = 7;
@@ -45,7 +41,7 @@ public class PayoutServiceImplTest {
    @Before
    public void setUp() throws Exception {
       // init notification sender
-      _notificationSenderMock = mock(NotificationSender.class);
+      _notificationSenderMock = mock(InternalNotificationSender.class);
 
       // init boss mock
       _testBossMock = mock(User.class);

@@ -1,6 +1,6 @@
 package business.timetracking;
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.NotAuthorizedException;
 import business.usermanagement.UserException;
@@ -25,7 +25,7 @@ public class TimeOffServiceImplTest {
 
     private TimeOffRepository _timeOffRepositoryMock;
     private TimeOffValidation _timeOffValidationMock;
-    private NotificationSender _notificationSenderMock;
+    private InternalNotificationSender _notificationSenderMock;
     private InternalUserManagement _internalUserManagementMock;
     private TimeOffService _testee;
     private User _testEmployeeMock;
@@ -42,7 +42,7 @@ public class TimeOffServiceImplTest {
     public void setUp() throws Exception {
 
         _timeOffValidationMock = mock(TimeOffValidation.class);
-        _notificationSenderMock = mock(NotificationSender.class);
+        _notificationSenderMock = mock(InternalNotificationSender.class);
 
         _testBossMock = mock(User.class);
         when(_testBossMock.getId()).thenReturn(_testBossId);

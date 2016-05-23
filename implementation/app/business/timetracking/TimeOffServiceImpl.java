@@ -1,6 +1,6 @@
 package business.timetracking;
 
-import business.notification.NotificationSender;
+import business.notification.InternalNotificationSender;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.NotAuthorizedException;
@@ -22,12 +22,12 @@ class TimeOffServiceImpl implements TimeOffService {
 
     private final TimeOffRepository _repository;
     private final TimeOffValidation _timeOffValidation;
-    private final NotificationSender _notificationSender;
+    private final InternalNotificationSender _notificationSender;
     private final InternalUserManagement _userManagement;
 
 
     @Inject
-    public TimeOffServiceImpl(TimeOffRepository repository, TimeOffValidation validation, NotificationSender notificationSender, InternalUserManagement userRepository) {
+    public TimeOffServiceImpl(TimeOffRepository repository, TimeOffValidation validation, InternalNotificationSender notificationSender, InternalUserManagement userRepository) {
         _repository = repository;
         _timeOffValidation = validation;
         _notificationSender = notificationSender;
