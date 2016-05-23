@@ -12,11 +12,11 @@ import java.util.List;
  * Created by david on 02.05.16.
  */
 public interface Reporting {
-    Report createCompanyReport() throws Exception;
+    Report createCompanyReport(DateTime from, DateTime to) throws Exception;
 
-    Report createEmployeeReport(int userId) throws Exception;
+    Report createEmployeeReport(int userId, DateTime from, DateTime to) throws Exception;
 
-    Report createBossReport(int userId) throws Exception;
+    Report createBossReport(int userId, DateTime from, DateTime to) throws Exception;
 
    /**
     * starts calculation from begin where timeTracks exist, ends at to.
@@ -24,7 +24,7 @@ public interface Reporting {
     * @return List of ForbiddenWorkTimeAlerts
     * @throws Exception
     */
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception;
+    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception;
     List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception;
     List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception;
 

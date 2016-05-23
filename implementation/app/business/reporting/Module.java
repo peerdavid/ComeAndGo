@@ -12,5 +12,6 @@ public class Module extends AbstractModule {
         bind(CollectiveAgreement.class).to(CollectiveAgreementImpl.class);
         bind(ReportingService.class).to(ReportingServiceImpl.class);
         bind(Reporting.class).to(ReportingFacade.class);
+        bind(WorkTimeCheckService.class).to(WorkTimeCheckServiceImpl.class);
     }
 }

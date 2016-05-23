@@ -1,10 +1,23 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, report: Report)
+@import business.reporting.WorkTimeAlert
+@import play.api.Play
+@import business.usermanagement.SecurityRole
+@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert], from : String, to : String)
 
 @main(Messages("views.report.title")) {
 
     @navigation(Messages("views.report.title"), profile) {
+
+        @{
+            if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+                datechooser(routes.ReportingController.companyReport().url, Messages("views.report.loadreport"), from, to)
+            } else if(profile.getRoles().contains(SecurityRole.ROLE_BOSS)) {
+                datechooser(routes.ReportingController.bossReport().url, Messages("views.report.loadreport"), from, to)
+            } else {
+                datechooser(routes.ReportingController.employeeReport().url, Messages("views.report.loadreport"), from, to)
+            }
+        }
 
         <table class="striped responsive-table">
             <thead>
@@ -42,33 +55,35 @@
                     <!-- If there is only 1 entry, we don't need a summary...-->
                 @if(report.getUserReports().size() > 1) {
                     <!-- Summary -->
-                <tr>
-                    <td class="result">SUMMARY</td>
-                    <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
-                    <td class="result">@report.getSummary().getNumOfUnusedHolidays</td>
-                    <td class="result">@report.getSummary().getNumOfSickDays</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
-                    <td class="result">@(report.getSummary().getBreakMinutes())</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
-                </tr>
-            }
+                    <tr>
+                        <td class="result">SUMMARY</td>
+                        <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
+                        <td class="result">@("%.2f".format(report.getSummary().getNumOfUnusedHolidays))</td>
+                        <td class="result">@report.getSummary().getNumOfSickDays</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
+                        <td class="result">@(report.getSummary().getBreakMinutes())</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
+                    </tr>
+                }
             </tbody>
         </table>
 
-        <div class="row" id="request-buttons">
+        @if(report.getUserReports().size() <= 1) {
+            <div class="row" id="request-buttons">
 
-            <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
-                @Messages("views.report.request.overtimepayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
+                    @Messages("views.report.request.overtimepayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-            <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
-                @Messages("views.report.request.holidaypayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
+                    @Messages("views.report.request.holidaypayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-        </div>
+            </div>
+        }
 
         <div id="modal-request-holiday-payout" class="modal">
                 <!-- header of modal -->
@@ -80,7 +95,7 @@
                     <!-- Content of modal -->
                 <div class="modal-content">
                     <div class="row">
-                        <p>@Messages("views.report.request.unusedholiday")&nbsp;&nbsp;&nbsp;@report.getSummary.getNumOfUnusedHolidays<p>
+                        <p>@Messages("views.report.request.unusedholiday") &nbsp;&nbsp;&nbsp; @("%.2f".format(report.getSummary.getNumOfUnusedHolidays))<p>
                     </div>
                     <div class="row">
                         <div class="input-field col s6 m5">

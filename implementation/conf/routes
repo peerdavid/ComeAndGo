@@ -33,9 +33,9 @@ GET     /timeoff/details/:id                       @controllers.TimeOffControlle
 GET     /timeoff/delete/:id                        @controllers.TimeOffController.deleteTimeOff(id: Int)
 
 # Reporting
-GET     /reporting/company                         @controllers.ReportingController.companyReport
-GET     /reporting/boss                            @controllers.ReportingController.bossReport
-GET     /reporting/employee                        @controllers.ReportingController.employeeReport
+GET     /reporting/company                         @controllers.ReportingController.companyReport(userId ?= null, from ?= null, to ?= null)
+GET     /reporting/boss                            @controllers.ReportingController.bossReport(userId ?= null, from ?= null, to ?= null)
+GET     /reporting/employee                        @controllers.ReportingController.employeeReport(userId ?= null, from ?= null, to ?= null)
 
 # Payout Requests
 POST    /reporting/holidaypayout                   @controllers.ReportingController.requestHolidayPayout

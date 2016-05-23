@@ -122,6 +122,7 @@ views.report.request.hours = Hours
 views.report.request.days = Days
 views.report.request.unusedholiday = Unused Holiday [days]:
 views.report.request.overtime = Overtime [h]:
+views.report.loadreport = generate report
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
@@ -161,6 +162,9 @@ exceptions.timetracking.error_user_not_started_work = You are currently not work
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:
 exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
 exceptions.timeoff.error_timeoff_type_unknown = Unknown Timeoff type
+exceptions.reporting.field_comment_empty = Please enter a valid comment
+exceptions.reporting.field_numofhours_empty = Please enter a number
+exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 
@@ -170,6 +174,8 @@ forbidden_worktime.flextime_saldo_over_specified_percent = User "{0}" has exceed
 forbidden_worktime.flextime_saldo_under_specified_percent = User "{0}" has undershot "{1}"% of minus hours overtime tolerated in specified timeSpan.
 forbidden_worktime.freetime_undershoot = User "{0}" has undershot freetime at "{1}" about "{2}" hours.
 forbidden_worktime.freetime_undershoot_with_next_days_no_balance = User "{0}" has undershot freetime at "{1}" about "{2}" hours and next 10 days it's not balanced.
+forbidden_worktime.too_many_workdays_per_week = User "{0}" has worked "{1}" days instead of tolerated "{2}" in week "{3}"
+forbidden_worktime.worked_on_both_christmas_and_newyear_eve = User "{0}" has worked on both christmas and New Years Eve in year "{1}"
 forbidden_worktime.user_overuses_breaks_regularly = User "{0}" seems to like breaks. In "{1}"% of work time breaks are consumed.
 forbidden_worktime.user_underuses_breaks_regularly = User "{0}" seems not to like breaks. In "{1}"% of work time breaks are consumed.
 forbidden_worktime.user_has_many_sick_leaves = User "{0}" often seems to be ill. Suggest him something for his defenses.

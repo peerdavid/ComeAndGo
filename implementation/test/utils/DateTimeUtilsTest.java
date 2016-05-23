@@ -2,6 +2,7 @@ package utils;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -186,6 +187,36 @@ public class DateTimeUtilsTest {
          Assert.assertEquals(999, result.getMillisOfSecond());
       }
    }
+
+   @Test
+   public void getStartOfWeek_WithDifferentStartDates_ShouldSucceed() {
+      DateTime now = DateTime.now();
+
+      for(int i = 0; i < 10; ++i) {
+         DateTime startOfWeek = DateTimeUtils.startOfWeek(now.plusHours(i * 10).plusWeeks(i));
+         Assert.assertEquals(DateTimeConstants.MONDAY, startOfWeek.getDayOfWeek());
+         Assert.assertEquals(0, startOfWeek.getHourOfDay());
+         Assert.assertEquals(0, startOfWeek.getMinuteOfHour());
+         Assert.assertEquals(0, startOfWeek.getSecondOfMinute());
+         Assert.assertEquals(0, startOfWeek.getMillisOfSecond());
+      }
+   }
+
+   @Test
+   public void getEndOfWeek_WithDifferentStartDates_ShouldSucceed() {
+      DateTime now = DateTime.now();
+
+      for(int i = 0; i < 15; ++i) {
+         DateTime startOfWeek = DateTimeUtils.endOfWeek(now.plusHours(i * 5).plusWeeks(i * 2));
+
+         Assert.assertEquals(DateTimeConstants.SUNDAY, startOfWeek.getDayOfWeek());
+         Assert.assertEquals(23, startOfWeek.getHourOfDay());
+         Assert.assertEquals(59, startOfWeek.getMinuteOfHour());
+         Assert.assertEquals(59, startOfWeek.getSecondOfMinute());
+         Assert.assertEquals(999, startOfWeek.getMillisOfSecond());
+      }
+   }
+
 
    private boolean isLeapYear(int year) {
       if(year % 4 == 0) {
