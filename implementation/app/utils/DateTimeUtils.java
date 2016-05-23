@@ -4,6 +4,7 @@ import models.TimeOff;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -43,6 +44,10 @@ public class DateTimeUtils {
             time.getHourOfDay(),
             time.getMinuteOfHour()
         );
+    }
+
+    public static String weekToString(DateTime when) {
+        return dateTimeToDateString(startOfWeek(when)) + " - " + dateTimeToDateString(endOfWeek(when));
     }
 
     public static DateTime stringToDateTime(String date) {
@@ -89,6 +94,18 @@ public class DateTimeUtils {
 
     public static DateTime endOfDay(DateTime day) {
         return startOfDay(day).minusMillis(1).plusDays(1);
+    }
+
+    public static DateTime startOfWeek(DateTime week) {
+        week = week.minusDays(week.getDayOfWeek() - 1);
+        week = startOfDay(week);
+        return week;
+    }
+
+    public static DateTime endOfWeek(DateTime week) {
+        week = startOfWeek(week);
+        week = week.minusMillis(1).plusDays(7);
+        return week;
     }
 
     public static DateTime stringToDateTime(String dateString, DateTime time) {
@@ -143,7 +160,8 @@ public class DateTimeUtils {
     // This function only counts real work days, not the weekend
     public static int getWorkdaysOfTimeInterval(DateTime from, DateTime to) {
         int workdays = 0;
-        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
+        int dayDifference = Days.daysBetween(from.toLocalDate(), to.toLocalDate()).getDays();
+        for (int i = 0; i <= dayDifference; i++) {
             if (from.plusDays(i).getDayOfWeek() != 6 && from.plusDays(i).getDayOfWeek() != 7) {
                 workdays++;
             }
@@ -153,10 +171,7 @@ public class DateTimeUtils {
 
     public static double getAliquoteHolidayDays(DateTime from, DateTime to, double holidayDaysPerYear) {
         double aliquoteHolidayPerDay = holidayDaysPerYear/365;
-        int dayDifference = 0;
-        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
-            dayDifference++;
-        }
+        int dayDifference = Days.daysBetween(from.toLocalDate(), to.toLocalDate()).getDays();
         return dayDifference * aliquoteHolidayPerDay;
     }
 

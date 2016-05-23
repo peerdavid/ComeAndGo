@@ -16,44 +16,46 @@ import java.util.List;
 class ReportingFacade implements Reporting {
 
     private ReportingService _reportingService;
+    private WorkTimeCheckService _workTimeCheck;
 
 
     @Inject
-    public ReportingFacade(ReportingService reportingService){
+    public ReportingFacade(ReportingService reportingService, WorkTimeCheckService workTimeCheck){
         _reportingService = reportingService;
+        _workTimeCheck = workTimeCheck;
     }
 
 
     @Override
-    public Report createCompanyReport() throws Exception {
-        return _reportingService.getCompanyReport();
+    public Report createCompanyReport(DateTime from, DateTime to) throws Exception {
+        return _reportingService.createCompanyReport(from, to);
     }
 
     @Override
-    public Report createEmployeeReport(int userId) throws Exception {
-        return _reportingService.createEmployeeReport(userId);
+    public Report createEmployeeReport(int userId, DateTime from, DateTime to) throws Exception {
+        return _reportingService.createEmployeeReport(userId, from, to);
     }
 
     @Override
-    public Report createBossReport(int userId) throws Exception {
-        return _reportingService.createBossReport(userId);
+    public Report createBossReport(int userId, DateTime from, DateTime to) throws Exception {
+        return _reportingService.createBossReport(userId, from, to);
     }
 
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
-        return _reportingService.readForbiddenWorkTimeAlerts(userList, from, to);
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
+        return _workTimeCheck.readForbiddenWorkTimeAlerts(userId, from, to);
     }
 
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime to) throws Exception {
-        return _reportingService.readForbiddenWorkTimeAlerts(userId, to);
+        return _workTimeCheck.readForbiddenWorkTimeAlerts(userId, to);
     }
 
     @NoLogging
     @NoTransaction
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
-        return _reportingService.readForbiddenWorkTimeAlerts(userId);
+        return _workTimeCheck.readForbiddenWorkTimeAlerts(userId);
     }
 
     @Override

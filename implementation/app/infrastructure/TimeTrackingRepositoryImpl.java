@@ -60,11 +60,18 @@ class TimeTrackingRepositoryImpl implements TimeTrackingRepository {
                )
            ).setOrderBy("start").findList();
 
-        // if we have the case that there was nothing found
        if(_timeTracks == null) {
            _timeTracks = Collections.emptyList();
        }
-
+        // also include actual timeTrack, if it is in given timeRange
+       try {
+           TimeTrack activeTimeTrack = readActiveTimeTrack(user);
+           if(from.isBefore(activeTimeTrack.getFrom()) && to.isAfter(activeTimeTrack.getFrom())) {
+               _timeTracks.add(activeTimeTrack);
+           }
+       } catch (Exception e) {
+           // do anything if no actual timeTrack is available...
+       }
        return _timeTracks;
     }
 

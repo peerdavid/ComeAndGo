@@ -48,6 +48,7 @@ public class TimeTrack extends Model {
    public TimeTrack(User user) {
       this.user = user;
       from = DateTime.now();
+      to = null;
    }
 
     public TimeTrack(User user, DateTime from, DateTime to, List<Break> breaks) throws UserException {
