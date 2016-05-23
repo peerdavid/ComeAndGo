@@ -199,7 +199,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         }
     }
 
-    private static String timeOffToString(TimeOffType type){
+    public static String timeOffToString(TimeOffType type) {
         String result = null;
 
         switch (type) {

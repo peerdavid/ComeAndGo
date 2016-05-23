@@ -8,15 +8,18 @@ public class ReportEntry {
     private User user;
     private double hoursPerDay;
     private int numOfUsedHolidays;
-    private int numOfUnusedHolidays;
+    private double numOfUnusedHolidays;
     private int numOfSickDays;
     private long workMinutesShould;
     private long workMinutesIs;
     private long breakMinutes;
-    private long workDaysRespected;
+    private long holidayPayoutHours;
+    private long overtimePayoutHours;
+    private int workdaysOfReport;
 
-    public ReportEntry(User user, double hoursPerDay, int numOfUsedHolidays, int numOfUnusedHolidays, int numOfSickDays,
-                       long workMinutesShould, long workMinutesIs, long breakMinutes, long workDaysRespected) {
+    public ReportEntry(User user, double hoursPerDay, int numOfUsedHolidays, double numOfUnusedHolidays, int numOfSickDays,
+                       long workMinutesShould, long workMinutesIs, long breakMinutes, long holidayPayoutHours,
+                       long overtimePayoutHours, int workdaysOfReport) {
         this.user = user;
         this.hoursPerDay = hoursPerDay;
         this.numOfUsedHolidays = numOfUsedHolidays;
@@ -25,7 +28,9 @@ public class ReportEntry {
         this.workMinutesShould = workMinutesShould;
         this.workMinutesIs = workMinutesIs;
         this.breakMinutes = breakMinutes;
-        this.workDaysRespected = workDaysRespected;
+        this.holidayPayoutHours = holidayPayoutHours;
+        this.overtimePayoutHours = overtimePayoutHours;
+        this.workdaysOfReport = workdaysOfReport;
     }
 
 
@@ -41,7 +46,7 @@ public class ReportEntry {
         return numOfUsedHolidays;
     }
 
-    public int getNumOfUnusedHolidays() {
+    public double getNumOfUnusedHolidays() {
         return numOfUnusedHolidays;
     }
 
@@ -65,7 +70,15 @@ public class ReportEntry {
         return breakMinutes;
     }
 
-    public long getWorkDaysRespected() {
-        return workDaysRespected;
+    public long getHolidayPayoutHours() {
+        return holidayPayoutHours;
+    }
+
+    public long getOvertimePayoutHours() {
+        return overtimePayoutHours;
+    }
+
+    public int getWorkdaysOfReport() {
+        return workdaysOfReport;
     }
 }

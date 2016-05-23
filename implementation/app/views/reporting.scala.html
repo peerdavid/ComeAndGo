@@ -1,6 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, report: Report)
+@import business.reporting.WorkTimeAlert
+@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert])
 
 @main(Messages("views.report.title")) {
 
@@ -26,7 +27,7 @@
                     <tr>
                         <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
                         <td>@userReport.getNumOfUsedHolidays</td>
-                        <td>@userReport.getNumOfUnusedHolidays</td>
+                        <td>@("%.2f".format(userReport.getNumOfUnusedHolidays))</td>
                         <td>@userReport.getNumOfSickDays</td>
                         <td>@(userReport.getWorkMinutesShould() / 60)</td>
                         <td>@(userReport.getWorkMinutesIs() / 60)</td>
@@ -56,19 +57,21 @@
             </tbody>
         </table>
 
-        <div class="row">
+        @if(report.getUserReports().size() <= 1) {
+            <div class="row">
 
-            <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
-                @Messages("views.report.request.overtimepayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
+                    @Messages("views.report.request.overtimepayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-            <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
-                @Messages("views.report.request.holidaypayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
+                    @Messages("views.report.request.holidaypayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-        </div>
+            </div>
+        }
 
         <div id="modal-request-holiday-payout" class="modal">
                 <!-- header of modal -->
@@ -79,7 +82,9 @@
             <form action="@routes.ReportingController.requestHolidayPayout()" method="POST">
                     <!-- Content of modal -->
                 <div class="modal-content">
-
+                    <div class="row">
+                        <p>@Messages("views.report.request.unusedholiday")&nbsp;&nbsp;&nbsp;@report.getSummary.getNumOfUnusedHolidays<p>
+                    </div>
                     <div class="row">
                         <div class="input-field col s6 m5">
                             <input name="numofhours" required="required" type="text">
@@ -116,7 +121,9 @@
             <form action="@routes.ReportingController.requestOvertimePayout()" method="POST">
                     <!-- Content of modal -->
                 <div class="modal-content">
-
+                    <div class="row">
+                        <p>@Messages("views.report.request.overtime") &nbsp;&nbsp;&nbsp; @(report.getSummary.getWorkMinutesDifference / 60)</p>
+                    </div>
                     <div class="row">
                         <div class="input-field col s6 m5">
                             <input name="numofhours" required="required" type="text">

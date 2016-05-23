@@ -108,18 +108,20 @@ views.report.company.title = Company Report
 views.report.employee.title = My Report
 views.report.boss.title = Boss Report
 views.report.username = Name
-views.report.usedholiday = Used Holiday
-views.report.unusedholiday = Unused Holiday
-views.report.sickdays = Sickdays
+views.report.usedholiday = Used Holiday [days]
+views.report.unusedholiday = Unused Holiday [days]
+views.report.sickdays = Sickdays [days]
 views.report.workshould = Work should [h]
 views.report.workis = Work is [h]
 views.report.break = Break [min]
-views.report.difference = Difference
+views.report.difference = Difference [h]
 views.report.request.holidaypayout = Request Holiday Payout
 views.report.request.overtimepayout = Request Overtime Payouts
 views.report.request.comment = Comment
 views.report.request.hours = Hours
 views.report.request.days = Days
+views.report.request.unusedholiday = Unused Holiday [days]:
+views.report.request.overtime = Overtime [h]:
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
@@ -159,6 +161,9 @@ exceptions.timetracking.error_user_not_started_work = You are currently not work
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:
 exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
 exceptions.timeoff.error_timeoff_type_unknown = Unknown Timeoff type
+exceptions.reporting.field_comment_empty = Please enter a valid comment
+exceptions.reporting.field_numofhours_empty = Please enter a number
+exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 

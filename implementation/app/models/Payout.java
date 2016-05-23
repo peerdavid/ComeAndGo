@@ -44,6 +44,9 @@ public class Payout {
     @ManyToOne
     private User reviewedBy;
 
+    @Column(name = "created", columnDefinition = "datetime")
+    private DateTime createdOn;
+
     public Payout(User user, PayoutType type, int amount, RequestState state, String comment) throws TimeTrackException {
         setAmount(amount);
 
@@ -61,6 +64,7 @@ public class Payout {
         this.type = type;
         this.state = state;
         this.comment = comment;
+        this.createdOn = DateTime.now();
     }
 
     public void setAmount(int amount) throws TimeTrackException {
@@ -111,4 +115,7 @@ public class Payout {
         this.reviewedBy = reviewedBy;
     }
 
+    public DateTime getCreatedOn() {
+        return createdOn;
+    }
 }
