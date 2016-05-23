@@ -41,13 +41,13 @@
                         <td>@userReport.getNumOfUsedHolidays</td>
                         <td>@("%.2f".format(userReport.getNumOfUnusedHolidays))</td>
                         <td>@userReport.getNumOfSickDays</td>
-                        <td>@(userReport.getWorkMinutesShould() / 60)</td>
-                        <td>@(userReport.getWorkMinutesIs() / 60)</td>
+                        <td>@("%.0f".format(userReport.getWorkMinutesShould().toDouble / 60))</td>
+                        <td>@("%.0f".format(userReport.getWorkMinutesIs().toDouble / 60))</td>
                         <td>@(userReport.getBreakMinutes())</td>
                         @if(userReport.getWorkMinutesDifference < 0) {
-                            <td style="color: darkred"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
+                            <td style="color: darkred"><b>@("%.0f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
                         } else {
-                            <td style="color: darkgreen"><b>@(userReport.getWorkMinutesDifference() / 60)</b></td>
+                            <td style="color: darkgreen"><b>@("%.0f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
                         }
                     </tr>
                 }

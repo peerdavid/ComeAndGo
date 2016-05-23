@@ -44,7 +44,6 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         // TimeOff calculation
         int usedHolidayDays = 0;
-        int acceptedHolidayDays = 0;
         int sickDays = 0;
         int businessTripDays = 0;
         int specialHolidayDays = 0;
@@ -67,7 +66,6 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
             }
             if ((t.getType() == TimeOffType.HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
                 usedHolidayDays += getWorkdaysOfTimeOff(t, upperBound);
-                acceptedHolidayDays += DateTimeUtils.getWorkdaysOfTimeInterval(t.getFrom(), t.getTo());
             }
             if ((t.getType() == TimeOffType.SPECIAL_HOLIDAY) && (t.getState() == RequestState.REQUEST_ACCEPTED)) {
                 specialHolidayDays += getWorkdaysOfTimeOff(t, upperBound);
@@ -110,9 +108,8 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 - educationalLeaveDays)
                 + payoutMinutes;
 
-        double unusedHolidayDays = DateTimeUtils.getAliquoteHolidayDays(user.getEntryDate(), upperBound, user.getHolidays())
-                - acceptedHolidayDays
-                - (holidayPayoutHours / user.getHoursPerDay());
+        double aliqouteHolidayDays = DateTimeUtils.getAliquoteHolidayDays(user.getEntryDate(), upperBound, user.getHolidays());
+        double unusedHolidayDays = aliqouteHolidayDays - usedHolidayDays - (holidayPayoutHours / user.getHoursPerDay());
 
 
         return new ReportEntry(
