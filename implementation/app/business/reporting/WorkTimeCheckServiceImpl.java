@@ -29,10 +29,8 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
 
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId) throws Exception {
-        List<User> userList = new ArrayList<>();
         User user = _userManagement.readUser(userId);
-        userList.add(user);
-        return readForbiddenWorkTimeAlerts(userList, user.getEntryDate(), DateTime.now());
+        return readForbiddenWorkTimeAlerts(userId, user.getEntryDate(), DateTime.now());
     }
 
     @Override
@@ -49,6 +47,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
             throw new UserException("");
         }
         List<WorkTimeAlert> alertList = new ArrayList<>();
+
 
         // TODO: add connection to method in _reporting created by paz, which gives me the difference of two reports
 
