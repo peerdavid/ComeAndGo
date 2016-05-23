@@ -42,17 +42,17 @@
                     <!-- If there is only 1 entry, we don't need a summary...-->
                 @if(report.getUserReports().size() > 1) {
                     <!-- Summary -->
-                <tr>
-                    <td class="result">SUMMARY</td>
-                    <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
-                    <td class="result">@report.getSummary().getNumOfUnusedHolidays</td>
-                    <td class="result">@report.getSummary().getNumOfSickDays</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
-                    <td class="result">@(report.getSummary().getBreakMinutes())</td>
-                    <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
-                </tr>
-            }
+                    <tr>
+                        <td class="result">SUMMARY</td>
+                        <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
+                        <td class="result">@("%.2f".format(report.getSummary().getNumOfUnusedHolidays))</td>
+                        <td class="result">@report.getSummary().getNumOfSickDays</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesShould() / 60)</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesIs() / 60)</td>
+                        <td class="result">@(report.getSummary().getBreakMinutes())</td>
+                        <td class="result">@(report.getSummary().getWorkMinutesDifference() / 60)</td>
+                    </tr>
+                }
             </tbody>
         </table>
 
@@ -80,7 +80,7 @@
                     <!-- Content of modal -->
                 <div class="modal-content">
                     <div class="row">
-                        <p>@Messages("views.report.request.unusedholiday")&nbsp;&nbsp;&nbsp;@report.getSummary.getNumOfUnusedHolidays<p>
+                        <p>@Messages("views.report.request.unusedholiday") &nbsp;&nbsp;&nbsp; @("%.2f".format(report.getSummary.getNumOfUnusedHolidays))<p>
                     </div>
                     <div class="row">
                         <div class="input-field col s6 m5">
