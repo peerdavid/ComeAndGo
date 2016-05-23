@@ -116,7 +116,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return new ReportEntry(
                 user,
                 user.getHoursPerDay(),
-                acceptedHolidayDays,
+                usedHolidayDays,
                 unusedHolidayDays,
                 sickDays,
                 workMinutesShould,

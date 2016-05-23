@@ -181,7 +181,7 @@ class ReportingServiceImpl implements ReportingService {
                 numOfOvertimePayoutHours, workDaysRespected);
     }
     
-    public static ReportEntry subtractReports(ReportEntry from, ReportEntry to) {
+    private static ReportEntry subtractReports(ReportEntry from, ReportEntry to) {
         return new ReportEntry(
                 from.getUser(), from.getUser().getHoursPerDay(),
                 to.getNumOfUsedHolidays() - from.getNumOfUsedHolidays(),
