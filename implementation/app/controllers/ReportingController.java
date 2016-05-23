@@ -2,6 +2,7 @@ package controllers;
 
 import business.reporting.Reporting;
 import business.timetracking.TimeTracking;
+import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Payout;
 import models.Report;
@@ -9,6 +10,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Result;
 
 
@@ -23,7 +25,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
     private final Form<Payout> FORM = Form.form(Payout.class);
 
     @Inject
-    public ReportingController(Reporting reporting, TimeTracking timeTracking){
+    public ReportingController(Reporting reporting, TimeTracking timeTracking) {
         _reporting = reporting;
         _timeTracking = timeTracking;
     }
@@ -63,15 +65,15 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        // todo: add cases for comment or amountOfHours can't be read (also in requestOverTimePayout)
-        // todo: check return render scene (also in requestOverTimePayout)
         Form<Payout> form = FORM.bindFromRequest();
         String comment = form.data().get("comment");
-        int amountOfHours = Integer.parseInt(
+        int amountOfDays = Integer.parseInt(
                 form.data().get("numofhours")
         );
 
-        _timeTracking.requestHolidayPayout(userId, amountOfHours, comment);
+        checkPayoutParameters(amountOfDays,comment);
+
+        _timeTracking.requestHolidayPayout(userId, amountOfDays, comment);
 
         return redirect(routes.ReportingController.employeeReport());
     }
@@ -87,10 +89,20 @@ public class ReportingController extends UserProfileController<CommonProfile> {
                 form.data().get("numofhours")
         );
 
+        checkPayoutParameters(amountOfHours,comment);
+
         _timeTracking.requestOvertimePayout(userId, amountOfHours, comment);
 
         return redirect(routes.ReportingController.employeeReport());
     }
 
-
+    private void checkPayoutParameters(int amount, String comment) throws Exception {
+        if(amount < 0) {
+            throw new UserException(Messages.get("exceptions.reporting.field_numofhours_negative"));
+        } else if(amount == 0) {
+            throw new UserException(Messages.get("exceptions.reporting.field_numofhours_empty"));
+        } else if(comment.length() == 0) {
+            throw new UserException(Messages.get("exceptions.reporting.field_comment_empty"));
+        }
+    }
 }

@@ -159,6 +159,9 @@ exceptions.timetracking.error_user_not_started_work = You are currently not work
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:
 exceptions.timeoff.error_delete_timoff_in_past = You could not delete a time off which is in the past
 exceptions.timeoff.error_timeoff_type_unknown = Unknown Timeoff type
+exceptions.reporting.field_comment_empty = Please enter a valid comment
+exceptions.reporting.field_numofhours_empty = Please enter a number
+exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 

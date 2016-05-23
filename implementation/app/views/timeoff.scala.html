@@ -114,7 +114,7 @@
                 <div class="modal-content">
                     <h5>@Messages("views.timeoff.modal.details.infos")</h5>
                     <p>
-                        @timeOffToDelete.getType <br />
+                        @TimeOffController.timeOffToString(timeOffToDelete.getType) <br />
                         @timeOffToDelete.getFrom().toString("dd.MM.yyyy") - @timeOffToDelete.getTo().toString("dd.MM.yyyy") <br />
                         @timeOffToDelete.getComment                       <br />
                     </p>
