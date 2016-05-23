@@ -58,6 +58,10 @@ class ReportingServiceImpl implements ReportingService {
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId(), user.getEntryDate(), to);
             List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId(), user.getEntryDate(), to);
             List<Payout> payouts = _internalTimeTracking.readPayouts(user.getId());
+
+            if (from.isBefore(user.getEntryDate())) {
+                from = user.getEntryDate();
+            }
             userReports.add(subtractReports(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts, from),
                     _collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts, to)));
         }
