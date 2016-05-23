@@ -83,13 +83,12 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         // Payout calculation
         for (Payout p : payouts) {
-            if (p.getState() == RequestState.REQUEST_ACCEPTED) {
+            if ((p.getState() == RequestState.REQUEST_ACCEPTED) && (p.getCreatedOn().isBefore(upperBound))) {
                 switch (p.getType()) {
                     case HOLIDAY_PAYOUT:
                         holidayPayoutHours += p.getAmount();
                         break;
                     case OVERTIME_PAYOUT:
-                        overtimePayoutHours += p.getAmount();
                         break;
                 }
             }
