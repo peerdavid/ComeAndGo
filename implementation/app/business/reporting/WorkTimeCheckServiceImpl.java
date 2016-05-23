@@ -63,23 +63,23 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         User user = entry.getUser();
 
         // check for standard alerts
-        alertList.addAll(_collectiveAgreement.createForbiddenWorkTimeAlerts(entry));
+        _collectiveAgreement.createForbiddenWorkTimeAlerts(entry, alertList);
 
         // check for exceeded work time per day
         DateTime actualDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
         while(actualDate.isBefore(to)) {
             double hoursWorked = _reporting.readHoursWorked(user.getId(), actualDate);
-            alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate));
+            _collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate, alertList);
 
             DateTime startDay = actualDate;
             List<Double> hoursWorkedNextDays = new ArrayList<>();
             for(int i = 1; i <= 10; ++i) {
                 hoursWorkedNextDays.add(_reporting.readHoursWorked(user.getId(), startDay.plusDays(i)));
             }
-            alertList.addAll(_collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
-                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNextDays));
-            alertList.addAll(_collectiveAgreement.checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(user, actualDate,
-                    hoursWorked, hoursWorkedNextDays));
+            _collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
+                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNextDays, alertList);
+            _collectiveAgreement.checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(user, actualDate,
+                    hoursWorked, hoursWorkedNextDays, alertList);
             actualDate = actualDate.plusDays(1);
         }
         return alertList;

@@ -12,8 +12,8 @@ interface CollectiveAgreement {
 
     ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound);
 
-    List<WorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry);
-    List<WorkTimeAlert> checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when);
-    List<WorkTimeAlert> checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> durationWorkTimeNextDays);
-    List<WorkTimeAlert> checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double hoursWorkedActualDay, List<Double> workedHoursNextDays);
+    void createForbiddenWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList);
+    void checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList);
+    void checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> durationWorkTimeNextDays, List<WorkTimeAlert> alertList);
+    void checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double hoursWorkedActualDay, List<Double> workedHoursNextDays, List<WorkTimeAlert> alertList);
 }
