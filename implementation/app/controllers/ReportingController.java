@@ -18,6 +18,7 @@ import play.i18n.Messages;
 import play.libs.F;
 import play.mvc.Result;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -43,16 +44,11 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        List<WorkTimeAlert> workTimeAlerts;
+        DateTime fromDate = (from == null || from.isEmpty()) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
-        if ( requestedId != null ) {
-            workTimeAlerts = getWorkTimeAlerts(userId,Integer.parseInt(requestedId),from,to);
-        } else {
-            workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
-        }
-
-        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
-        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
+        // ToDo: Get all workTimeAlerts for all employees of boss
+        List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
 
         Report report = _reporting.createCompanyReport(fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
@@ -64,10 +60,10 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
-        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
+        DateTime fromDate = (from == null || from.isEmpty()) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
-        List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, userId, from, to);
+        List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, fromDate, toDate);
 
         Report report = _reporting.createEmployeeReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
@@ -79,16 +75,11 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        List<WorkTimeAlert> workTimeAlerts;
+        DateTime fromDate = (from == null || from.isEmpty()) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
-        if ( requestedId != null ) {
-            workTimeAlerts = getWorkTimeAlerts(userId,Integer.parseInt(requestedId),from,to);
-        } else {
-            workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
-        }
-
-        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
-        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
+        // ToDo: Get all workTimeAlerts for all employees of boss
+        List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
 
         Report report = _reporting.createBossReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
@@ -141,19 +132,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         }
     }
 
-    private List<WorkTimeAlert> getWorkTimeAlerts(int userId, int requestedId, String from, String to) {
-        DateTime fromDateTime = utils.DateTimeUtils.startOfActualYear();
-        DateTime toDateTime = utils.DateTimeUtils.endOfMonth(DateTime.now());
-
-        if(from != null) {
-            fromDateTime = utils.DateTimeUtils.stringToDateTime(from,0,0);
-        }
-
-        if(to != null) {
-            toDateTime = utils.DateTimeUtils.stringToDateTime(to,0,0);
-        }
-        // return _reporting.readForbiddenWorkTimeAlerts(userId,requestedId,fromDateTime,toDateTime);
-
-        return null;
+    private List<WorkTimeAlert> getWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
+        return _reporting.readForbiddenWorkTimeAlerts(userId, from, to);
     }
 }
