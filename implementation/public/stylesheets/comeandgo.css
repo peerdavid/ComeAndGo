@@ -129,6 +129,12 @@ nav .navbar-buttons a {
     font-size: 24pt;
 }
 
+#request-buttons{
+    margin-left: 0rem;
+    margin-right: 0rem;
+    margin-top: 1rem;
+}
+
 /* listings */
 .listing li .collapsible-body {
     padding: 1em;

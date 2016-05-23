@@ -27,18 +27,18 @@ class ReportingFacade implements Reporting {
 
 
     @Override
-    public Report createCompanyReport() throws Exception {
-        return _reportingService.getCompanyReport();
+    public Report createCompanyReport(DateTime from, DateTime to) throws Exception {
+        return _reportingService.createCompanyReport(from, to);
     }
 
     @Override
-    public Report createEmployeeReport(int userId) throws Exception {
-        return _reportingService.createEmployeeReport(userId);
+    public Report createEmployeeReport(int userId, DateTime from, DateTime to) throws Exception {
+        return _reportingService.createEmployeeReport(userId, from, to);
     }
 
     @Override
-    public Report createBossReport(int userId) throws Exception {
-        return _reportingService.createBossReport(userId);
+    public Report createBossReport(int userId, DateTime from, DateTime to) throws Exception {
+        return _reportingService.createBossReport(userId, from, to);
     }
 
     @Override

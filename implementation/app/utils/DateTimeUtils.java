@@ -138,6 +138,7 @@ public class DateTimeUtils {
         return getWorkdaysOfTimeInterval(january1st, DateTime.now());
     }
 
+
     public static int getWorkdaysOfThisYearUpToSpecificDate(DateTime entryDate, DateTime limit) {
         DateTime january1st = DateTimeUtils.startOfActualYear();
 
@@ -164,6 +165,15 @@ public class DateTimeUtils {
             }
         }
         return workdays;
+    }
+
+    public static double getAliquoteHolidayDays(DateTime from, DateTime to, double holidayDaysPerYear) {
+        double aliquoteHolidayPerDay = holidayDaysPerYear/365;
+        int dayDifference = 0;
+        for (int i = 0; i <= to.getDayOfYear() - from.getDayOfYear(); i++) {
+            dayDifference++;
+        }
+        return dayDifference * aliquoteHolidayPerDay;
     }
 
 }

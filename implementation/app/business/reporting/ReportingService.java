@@ -12,11 +12,11 @@ import java.util.List;
  */
 interface ReportingService {
 
-    Report getCompanyReport() throws Exception;
+    Report createCompanyReport(DateTime from, DateTime to) throws Exception;
 
-    Report createEmployeeReport(int userId) throws Exception;
+    Report createEmployeeReport(int userId, DateTime from, DateTime to) throws Exception;
 
-    Report createBossReport(int userId) throws Exception;
+    Report createBossReport(int userId, DateTime from, DateTime to) throws Exception;
 
     double readHoursWorked(int userId, DateTime when) throws Exception;
 
