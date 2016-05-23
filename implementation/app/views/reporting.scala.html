@@ -79,7 +79,9 @@
             <form action="@routes.ReportingController.requestHolidayPayout()" method="POST">
                     <!-- Content of modal -->
                 <div class="modal-content">
-
+                    <div class="row">
+                        <p>@Messages("views.report.request.unusedholiday")&nbsp;&nbsp;&nbsp;@report.getSummary.getNumOfUnusedHolidays<p>
+                    </div>
                     <div class="row">
                         <div class="input-field col s6 m5">
                             <input name="numofhours" required="required" type="text">
@@ -116,7 +118,9 @@
             <form action="@routes.ReportingController.requestOvertimePayout()" method="POST">
                     <!-- Content of modal -->
                 <div class="modal-content">
-
+                    <div class="row">
+                        <p>@Messages("views.report.request.overtime") &nbsp;&nbsp;&nbsp; @(report.getSummary.getWorkMinutesDifference / 60)</p>
+                    </div>
                     <div class="row">
                         <div class="input-field col s6 m5">
                             <input name="numofhours" required="required" type="text">
