@@ -137,13 +137,15 @@ class ReportingServiceImpl implements ReportingService {
             double hoursWorked = readHoursWorked(user.getId(), actualDate);
             alertList.addAll(_collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate));
 
-            double hoursWorkedNext10Days = 0;
             DateTime startDay = actualDate;
+            List<Double> hoursWorkedNextDays = new ArrayList<>();
             for(int i = 1; i <= 10; ++i) {
-                hoursWorkedNext10Days += readHoursWorked(user.getId(), startDay.plusDays(i));
+                hoursWorkedNextDays.add(readHoursWorked(user.getId(), startDay.plusDays(i)));
             }
             alertList.addAll(_collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
-                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNext10Days));
+                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNextDays));
+            alertList.addAll(_collectiveAgreement.checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(user,
+                    actualDate, hoursWorkedNextDays));
             actualDate = actualDate.plusDays(1);
         }
         return alertList;

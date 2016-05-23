@@ -14,5 +14,6 @@ interface CollectiveAgreement {
 
     List<WorkTimeAlert> createForbiddenWorkTimeAlerts(ReportEntry entry);
     List<WorkTimeAlert> checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when);
-    List<WorkTimeAlert> checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, double durationFreeTimeNext10DaysInH);
+    List<WorkTimeAlert> checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> durationWorkTimeNextDays);
+    List<WorkTimeAlert> checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> workedHoursNextDays);
 }
