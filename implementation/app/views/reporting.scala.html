@@ -1,11 +1,23 @@
 @import org.pac4j.core.profile.CommonProfile
 
 @import business.reporting.WorkTimeAlert
-@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert])
+@import play.api.Play
+@import business.usermanagement.SecurityRole
+@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert], from : String, to : String)
 
 @main(Messages("views.report.title")) {
 
     @navigation(Messages("views.report.title"), profile) {
+
+        @{
+            if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+                datechooser(routes.ReportingController.companyReport().url, Messages("views.report.loadreport"), from, to)
+            } else if(profile.getRoles().contains(SecurityRole.ROLE_BOSS)) {
+                datechooser(routes.ReportingController.bossReport().url, Messages("views.report.loadreport"), from, to)
+            } else {
+                datechooser(routes.ReportingController.employeeReport().url, Messages("views.report.loadreport"), from, to)
+            }
+        }
 
         <table class="striped responsive-table">
             <thead>
