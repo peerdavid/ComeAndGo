@@ -1,6 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, report: Report)
+@import business.reporting.WorkTimeAlert
+@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert])
 
 @main(Messages("views.report.title")) {
 
@@ -56,19 +57,21 @@
             </tbody>
         </table>
 
-        <div class="row" id="request-buttons">
+        @if(report.getUserReports().size() <= 1) {
+            <div class="row">
 
-            <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
-                @Messages("views.report.request.overtimepayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
+                    @Messages("views.report.request.overtimepayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-            <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
-                @Messages("views.report.request.holidaypayout")
-                <i class="material-icons right">monetization_on</i>
-            </button>
+                <button data-target="modal-request-holiday-payout" class="col btn modal-trigger secondary-btn offset-l4 l4 s12">
+                    @Messages("views.report.request.holidaypayout")
+                    <i class="material-icons right">monetization_on</i>
+                </button>
 
-        </div>
+            </div>
+        }
 
         <div id="modal-request-holiday-payout" class="modal">
                 <!-- header of modal -->
