@@ -355,7 +355,7 @@ td.result{
 /* tablets */
 @media (min-width: 600px) and (max-width: 991px) {
     nav.top-nav .page-title {
-        left: 190px;
+        left: 34%;
     }
 
     nav.top-nav .page-title {

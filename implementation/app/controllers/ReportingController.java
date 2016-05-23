@@ -51,7 +51,9 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
 
         Report report = _reporting.createCompanyReport(fromDate, toDate);
-        return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
+        return ok(views.html.reporting.render(profile, report, workTimeAlerts,
+            from == null ? utils.DateTimeUtils.dateTimeToDateString(fromDate) : from,
+            to == null ? utils.DateTimeUtils.dateTimeToDateString(toDate) : to));
     }
 
 
@@ -66,7 +68,9 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, fromDate, toDate);
 
         Report report = _reporting.createEmployeeReport(userId, fromDate, toDate);
-        return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
+        return ok(views.html.reporting.render(profile, report, workTimeAlerts,
+            from == null ? utils.DateTimeUtils.dateTimeToDateString(fromDate) : from,
+            to == null ? utils.DateTimeUtils.dateTimeToDateString(toDate) : to));
     }
 
 
@@ -82,7 +86,9 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
 
         Report report = _reporting.createBossReport(userId, fromDate, toDate);
-        return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
+        return ok(views.html.reporting.render(profile, report, workTimeAlerts,
+            from == null ? utils.DateTimeUtils.dateTimeToDateString(fromDate) : from,
+            to == null ? utils.DateTimeUtils.dateTimeToDateString(toDate) : to));
     }
 
 
