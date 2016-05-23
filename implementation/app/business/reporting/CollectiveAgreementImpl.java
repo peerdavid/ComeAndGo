@@ -78,11 +78,10 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
         }
 
-
+        // Payout calculation
         int holidayPayoutHours = 0;
         int overtimePayoutHours = 0;
 
-        // Payout calculation
         for (Payout p : payouts) {
             if ((p.getState() == RequestState.REQUEST_ACCEPTED) && (p.getCreatedOn().isBefore(upperBound))) {
                 switch (p.getType()) {
@@ -90,6 +89,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                         holidayPayoutHours += p.getAmount();
                         break;
                     case OVERTIME_PAYOUT:
+                        overtimePayoutHours += p.getAmount();
                         break;
                 }
             }
@@ -97,6 +97,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
         long payoutMinutes = 60 * (holidayPayoutHours + overtimePayoutHours);
 
+        // Should-Calculation
         long workMinutesPerDay =  60 * (long) user.getHoursPerDay();
         int workDaysFromEntryToUpperBound = DateTimeUtils.getWorkdaysOfTimeInterval(user.getEntryDate(), upperBound);
         long workMinutesShould = workMinutesPerDay * (workDaysFromEntryToUpperBound
