@@ -7,6 +7,7 @@ import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Payout;
 import models.Report;
+import org.apache.commons.lang3.tuple.Pair;
 import org.h2.util.DateTimeUtils;
 import org.joda.time.DateTime;
 import org.pac4j.core.profile.CommonProfile;
@@ -14,6 +15,7 @@ import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
 import play.i18n.Messages;
+import play.libs.F;
 import play.mvc.Result;
 
 import java.util.List;
@@ -49,7 +51,17 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        Report report = _reporting.createCompanyReport(utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
+        DateTime fromDate;
+        DateTime toDate;
+        if (from == null || to == null) {
+            fromDate = utils.DateTimeUtils.startOfActualYear();
+            toDate = DateTime.now();
+        } else {
+            fromDate = utils.DateTimeUtils.stringToDateTime(from);
+            toDate = utils.DateTimeUtils.stringToDateTime(to);
+        }
+
+        Report report = _reporting.createCompanyReport(fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
@@ -59,9 +71,19 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
+        DateTime fromDate;
+        DateTime toDate;
+        if (from == null || to == null) {
+            fromDate = utils.DateTimeUtils.startOfActualYear();
+            toDate = DateTime.now();
+        } else {
+            fromDate = utils.DateTimeUtils.stringToDateTime(from);
+            toDate = utils.DateTimeUtils.stringToDateTime(to);
+        }
 
-        Report report = _reporting.createEmployeeReport(userId, utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
+        List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, userId, from, to);
+
+        Report report = _reporting.createEmployeeReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
@@ -79,7 +101,17 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        Report report = _reporting.createBossReport(userId, utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
+        DateTime fromDate;
+        DateTime toDate;
+        if (from == null || to == null) {
+            fromDate = utils.DateTimeUtils.startOfActualYear();
+            toDate = DateTime.now();
+        } else {
+            fromDate = utils.DateTimeUtils.stringToDateTime(from);
+            toDate = utils.DateTimeUtils.stringToDateTime(to);
+        }
+
+        Report report = _reporting.createBossReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
