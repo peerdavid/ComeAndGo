@@ -107,10 +107,11 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 - usedHolidayDays
                 - specialHolidayDays
                 - educationalLeaveDays)
-                - payoutMinutes;
+                + payoutMinutes;
 
         double unusedHolidayDays = DateTimeUtils.getAliquoteHolidayDays(user.getEntryDate(), upperBound, user.getHolidays())
-                - acceptedHolidayDays;
+                - acceptedHolidayDays
+                - (holidayPayoutHours / user.getHoursPerDay());
 
 
         return new ReportEntry(
