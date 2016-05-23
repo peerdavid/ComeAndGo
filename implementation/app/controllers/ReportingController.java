@@ -51,15 +51,8 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        DateTime fromDate;
-        DateTime toDate;
-        if (from == null || to == null) {
-            fromDate = utils.DateTimeUtils.startOfActualYear();
-            toDate = DateTime.now();
-        } else {
-            fromDate = utils.DateTimeUtils.stringToDateTime(from);
-            toDate = utils.DateTimeUtils.stringToDateTime(to);
-        }
+        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
         Report report = _reporting.createCompanyReport(fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
@@ -71,15 +64,8 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         CommonProfile profile = getUserProfile();
         int userId = Integer.parseInt(profile.getId());
 
-        DateTime fromDate;
-        DateTime toDate;
-        if (from == null || to == null) {
-            fromDate = utils.DateTimeUtils.startOfActualYear();
-            toDate = DateTime.now();
-        } else {
-            fromDate = utils.DateTimeUtils.stringToDateTime(from);
-            toDate = utils.DateTimeUtils.stringToDateTime(to);
-        }
+        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
         List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, userId, from, to);
 
@@ -101,15 +87,8 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        DateTime fromDate;
-        DateTime toDate;
-        if (from == null || to == null) {
-            fromDate = utils.DateTimeUtils.startOfActualYear();
-            toDate = DateTime.now();
-        } else {
-            fromDate = utils.DateTimeUtils.stringToDateTime(from);
-            toDate = utils.DateTimeUtils.stringToDateTime(to);
-        }
+        DateTime fromDate = (from == null) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
+        DateTime toDate = (to == null) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
         Report report = _reporting.createBossReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
