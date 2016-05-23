@@ -1,22 +1,22 @@
-@(actionUrl : String, buttonMessage : String, from : String, to : String) {
-    <div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
-        <form action="@actionUrl" type="GET">
-            <div class="row">
-                <div class="input-field col s6 m6 l3">
-                    <input id="date-from" value="@from" name="from" type="text" class="datepicker">
-                    <label for="date-from">@Messages("views.admin.updatetimetracks.from")</label>
-                </div>
-                <div class="input-field col s6 m6 offset-l1 l3">
-                    <input id="date-to" value="@to" name="to" type="text" class="datepicker">
-                    <label for="date-from">@Messages("views.admin.updatetimetracks.to")</label>
-                </div>
-                <div class="input-field col s12 m12 l5">
-                    <button class="btn waves-effect waves-light right cyan" type="submit">
-                        @buttonMessage
-                    <i class="material-icons right">send</i>
-                    </button>
-                </div>
+@(actionUrl : String, buttonMessage : String, from : String, to : String)
+
+<div id="date-chooser-card" class="card" xmlns="http://www.w3.org/1999/html">
+    <form action="@actionUrl" type="GET">
+        <div class="row">
+            <div class="input-field col s6 m6 l3">
+                <input id="date-from" value="@from" name="from" type="text" class="datepicker">
+                <label for="date-from">@Messages("views.admin.updatetimetracks.from")</label>
             </div>
-        </form>
-    </div>
-}
+            <div class="input-field col s6 m6 offset-l1 l3">
+                <input id="date-to" value="@to" name="to" type="text" class="datepicker">
+                <label for="date-from">@Messages("views.admin.updatetimetracks.to")</label>
+            </div>
+            <div class="input-field col s12 m12 l5">
+                <button class="btn waves-effect waves-light right cyan" type="submit">
+                    @buttonMessage
+                <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
