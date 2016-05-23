@@ -58,7 +58,7 @@
         </table>
 
         @if(report.getUserReports().size() <= 1) {
-            <div class="row">
+            <div class="row" id="request-buttons">
 
                 <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
                     @Messages("views.report.request.overtimepayout")
