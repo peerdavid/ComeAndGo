@@ -1,6 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 
-@(profile: CommonProfile, report: Report)
+@import business.reporting.WorkTimeAlert
+@(profile: CommonProfile, report: Report, workTimeAlerts: java.util.List[WorkTimeAlert])
 
 @main(Messages("views.report.title")) {
 
