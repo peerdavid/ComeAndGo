@@ -49,7 +49,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        Report report = _reporting.createCompanyReport();
+        Report report = _reporting.createCompanyReport(utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
@@ -61,7 +61,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
 
         List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
 
-        Report report = _reporting.createEmployeeReport(userId);
+        Report report = _reporting.createEmployeeReport(userId, utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
@@ -79,7 +79,7 @@ public class ReportingController extends UserProfileController<CommonProfile> {
             workTimeAlerts = getWorkTimeAlerts(userId,userId,from,to);
         }
 
-        Report report = _reporting.createBossReport(userId);
+        Report report = _reporting.createBossReport(userId, utils.DateTimeUtils.stringToDateTime(from), utils.DateTimeUtils.stringToDateTime(to));
         return ok(views.html.reporting.render(profile, report, workTimeAlerts, from, to));
     }
 
