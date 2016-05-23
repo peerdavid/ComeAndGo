@@ -7,7 +7,6 @@ import com.google.inject.Inject;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -87,10 +86,11 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int progress = (int) (_reporting.readHoursWorkedProgress(userId) * 100);
         double overtime = 0.0;
 
-        if(progress >= 100)
+        if (progress >= 100)
             overtime = _reporting.calculateOvertime(userId, DateTime.now());
 
-        return ok("{ \"progress\": \"" + progress + "\", \"overtime\": \"" + overtime + "\" }");
+        return ok("{ \"progress\": \"" + progress + "\", \"overtime\": \""
+            + String.format("%.1f", overtime) + "\" }");
     }
 
     @RequiresAuthentication(clientName = "default")

@@ -26,7 +26,7 @@
                     <tr>
                         <td>@userReport.getUser.getLastName @userReport.getUser.getFirstName</td>
                         <td>@userReport.getNumOfUsedHolidays</td>
-                        <td>@userReport.getNumOfUnusedHolidays</td>
+                        <td>@("%.2f".format(userReport.getNumOfUnusedHolidays))</td>
                         <td>@userReport.getNumOfSickDays</td>
                         <td>@(userReport.getWorkMinutesShould() / 60)</td>
                         <td>@(userReport.getWorkMinutesIs() / 60)</td>
