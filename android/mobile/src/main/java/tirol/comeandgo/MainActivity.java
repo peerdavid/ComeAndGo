@@ -1,11 +1,6 @@
 package tirol.comeandgo;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.util.Pair;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
-
 import tirol.comeandgo.business.CommunicationWrapper;
 
 public class MainActivity extends AppCompatActivity
@@ -27,6 +18,7 @@ public class MainActivity extends AppCompatActivity
 
 
     private Button mBtnCome;
+    private Button mBtnGo;
     private CommunicationWrapper mCommunicationWrapper;
 
     @Override
@@ -45,12 +37,23 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        mCommunicationWrapper = new CommunicationWrapper("192.168.10.116:9000");
         mBtnCome = (Button) findViewById(R.id.btnCome);
         mBtnCome.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mCommunicationWrapper.come();
+                    }
+                }
+        );
+
+        mBtnGo = (Button) findViewById(R.id.btnGo);
+        mBtnGo.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mCommunicationWrapper.go();
                     }
                 }
         );
