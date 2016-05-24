@@ -106,14 +106,6 @@ nav .navbar-buttons a {
     margin: 6px 0 16px;
 }
 
-#index-time-track-buttons {
-    text-align: center;
-}
-
-#index-welcome-status {
-    text-align: center;
-}
-
 #active_progress {
     height: 32px;
     background: #ff5722;
