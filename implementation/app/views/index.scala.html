@@ -59,17 +59,7 @@
         <!-- Title -->
         <div id = "index-welcome-status" class="row">
             <div class="s12">
-                <h3>@(Messages("views.index.welcomeMessage") + " : " + profile.getUsername)</h3>
-
-                @if(userState == TimeTrackState.INACTIVE) {
-                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.inactive"))</h4>
-                }
-                @if(userState == TimeTrackState.ACTIVE) {
-                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.active"))</h4>
-                }
-                @if(userState == TimeTrackState.PAUSE) {
-                    <h4>@(Messages("views.index.state") + " : " + Messages("views.index.state.pause"))</h4>
-                }
+                <h3>@Messages("views.index.welcomeMessage") @profile.getFirstName!</h3>
             </div>
         </div>
 
