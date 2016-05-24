@@ -37,17 +37,21 @@ public class Client {
     private String mHost;
     private String mApiVersion;
     private String mUrl;
+    private String mUserName;
+    private String mPassword;
 
     /**
      *
      * @param host Ex.: 192.168.10.12:9000
      */
-    public Client(String host, String apiVersion){
+    public Client(String host, String apiVersion, String userName, String password){
         mHost = host;
         mCookieManager = new java.net.CookieManager();
         mApiVersion = apiVersion;
         mUrl = String.format("http://%s/api/%s/", mHost, mApiVersion);
         mListener = new ArrayList<>();
+        mUserName = userName;
+        mPassword = password;
     }
 
 
@@ -91,7 +95,7 @@ public class Client {
             @Override
             public void run() {
                 try {
-                    int response = login("admin", "admin");
+                    int response = login();
                     Log.d("tirol.comeandgo.app", "The login response is: " + response);
 
                     response = sendHttpRequest(method, useCase);
@@ -114,7 +118,7 @@ public class Client {
     }
 
 
-    private int login(String username, String password) throws IOException {
+    private int login() throws IOException {
         URL url = new URL(String.format("http://%s/login?client_name=default", mHost));
         HttpURLConnection conn  = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(10000);
@@ -123,7 +127,7 @@ public class Client {
         conn.setDoOutput(true);
         conn.setInstanceFollowRedirects(false);
 
-        byte[] postData = ("username=" + username + "&password=" + password).getBytes( StandardCharsets.UTF_8 );
+        byte[] postData = ("username=" + mUserName + "&password=" + mPassword).getBytes( StandardCharsets.UTF_8 );
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         conn.setRequestProperty("charset", "utf-8");
         conn.setRequestProperty("Content-Length", Integer.toString(postData.length));
