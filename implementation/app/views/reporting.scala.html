@@ -15,7 +15,17 @@
     </script>
 }
 
-@url = { }
+@worktimeAlertModalTriggerUrl(userId : Int) = {
+        @if(request().uri.contains(routes.ReportingController.companyReport().url)) {
+            @routes.ReportingController.companyReport(userId.toString, from, to).url
+        } else {
+            @if(request().uri.contains(routes.ReportingController.bossReport().url)) {
+                @routes.ReportingController.bossReport(userId.toString, from, to).url
+            } else {
+                @routes.ReportingController.employeeReport(userId.toString, from, to).url
+            }
+        }
+}
 
 @main(Messages("views.report.title"), scripts) {
 
@@ -49,15 +59,7 @@
                 @for(userReport <- report.getUserReports) {
                     <tr>
                         <td>
-                            @if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
-                                <a class="user-work-timing-request" href="@routes.ReportingController.companyReport(userReport.getUser.getId.toString, from, to)">
-                            } else {
-                                @if(profile.getRoles().contains(SecurityRole.ROLE_BOSS)) {
-                                    <a class="user-work-timing-request" href="@routes.ReportingController.bossReport(userReport.getUser.getId.toString, from, to)">
-                                } else {
-                                    <a class="user-work-timing-request" href="@routes.ReportingController.employeeReport(userReport.getUser.getId.toString, from, to)">
-                                }
-                            }
+                            <a class="user-work-timing-request" href="@worktimeAlertModalTriggerUrl(userReport.getUser.getId)" >
                                 @userReport.getUser.getLastName @userReport.getUser.getFirstName
                             </a>
                         </td>
