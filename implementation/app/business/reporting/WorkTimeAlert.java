@@ -1,6 +1,10 @@
 package business.reporting;
 
+import play.Logger;
+import play.i18n.Messages;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,12 +18,6 @@ public class WorkTimeAlert {
    public WorkTimeAlert(String message, Type type) {
       _message = message;
       _type = type;
-   }
-
-   public enum Type {
-      INFORMATION,
-      WARNING,
-      URGENT
    }
 
    public void addArguments(String... arguments) {
@@ -36,5 +34,17 @@ public class WorkTimeAlert {
 
    public String[] getArguments() {
       return _arguments;
+   }
+
+    @Override
+    public String toString(){
+        return Messages.get(getMessage(), getArguments());
+    }
+
+
+   public enum Type {
+      INFORMATION,
+      WARNING,
+      URGENT
    }
 }

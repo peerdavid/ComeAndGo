@@ -240,9 +240,9 @@
                     @for(alert <- workTimeAlerts) {
                         <tr>
                         @if(alert.getType == WorkTimeAlert.Type.URGENT) {
-                            <td style="color: darkred; font-weight: bold;">@Messages.apply(alert.getMessage, alert.getArguments)</td>
+                            <td style="color: darkred; font-weight: bold;">@alert.toString</td>
                         } else {
-                            <td style="color: darkgreen">@Messages.apply(alert.getMessage, alert.getArguments)</td>
+                            <td style="color: darkgreen">@alert.toString</td>
                         }
                         </tr>
                     }
