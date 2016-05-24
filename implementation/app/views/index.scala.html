@@ -3,7 +3,7 @@
 @import utils.DateTimeUtils
 @(profile: CommonProfile, userState: TimeTrackState, timeTracks: java.util.List[TimeTrack])
 
-@script = {
+@scripts = {
     <!-- JS for updating progress -->
     <script>
             /*
@@ -40,11 +40,19 @@
                 updateProgress();
                 // update progress every minute
                 setInterval(updateProgress, 60000);
+
+                // load off time calender
+                $('#timeoff-calendar').monthly({
+                    weekStart: 'Mon',
+                    mode: 'event',
+                    xmlUrl: '@routes.TimeOffController.readTimeOffCalendar()'
+                });
             });
+
     </script>
 }
 
-@main(Messages("views.index.title"), script) {
+@main(Messages("views.index.title"), scripts) {
 
     @navigation(Messages("views.index.title"), profile) {
 
@@ -160,8 +168,14 @@
 
                 }
             </table>
-
         }
+
+                <!-- Calendar for off time -->
+                <div class="row">
+                    <div id="timeoff-calendar" class="monthly card col m12 l8"></div>
+                </div>
+
+
             </div>
         </div>
     }
