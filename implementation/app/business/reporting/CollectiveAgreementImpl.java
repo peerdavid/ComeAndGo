@@ -292,9 +292,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
     private WorkTimeAlert createAlert(String message, WorkTimeAlert.Type type, String... arguments) {
         WorkTimeAlert alert = new WorkTimeAlert(message, type);
-        for(String arg : arguments) {
-            alert.addArguments(arg);
-        }
+        alert.addArguments(arguments);
         return alert;
     }
 

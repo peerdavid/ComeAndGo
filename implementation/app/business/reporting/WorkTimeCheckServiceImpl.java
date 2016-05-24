@@ -45,7 +45,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to, int actualUserId) throws Exception {
         validateDate(from, to);
-        validateUser(userId, actualUserId);
+        //validateUser(userId, actualUserId);
 
         from = (from == null) ? _userManagement.readUser(userId).getEntryDate() : from;
         to = (to == null) ? DateTime.now() : to;
