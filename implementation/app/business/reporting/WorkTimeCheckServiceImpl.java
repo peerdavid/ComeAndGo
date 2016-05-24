@@ -29,7 +29,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
     }
 
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to, int actualUserId) throws Exception {
         validateDate(from, to);
 
         List<WorkTimeAlert> alertList = new ArrayList<>();
@@ -37,15 +37,16 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
             from = (from == null) ? user.getEntryDate() : from;
             to = (to == null) ? DateTime.now() : to;
 
-            Report report = _reporting.createEmployeeReport(user.getId(), from, to);
-            alertList.addAll(readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to));
+            alertList.addAll(readForbiddenWorkTimeAlerts(user.getId(), from, to, actualUserId));
         }
         return alertList;
     }
 
     @Override
-    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
+    public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to, int actualUserId) throws Exception {
         validateDate(from, to);
+        validateUser(userId, actualUserId);
+
         from = (from == null) ? _userManagement.readUser(userId).getEntryDate() : from;
         to = (to == null) ? DateTime.now() : to;
 
@@ -83,5 +84,36 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         if(from != null && to != null && from.isAfter(to)) {
             throw new UserException("forbidden_worktime.error_in_date_from_or_to");
         }
+    }
+
+    private void validateUser(int userIdRequested, int userIdActual) throws UserException {
+        // if user requests his own workTimeAlerts
+        if(userIdRequested == userIdActual) {
+            return;
+        }
+        // if requester is personnell manager he is allowed to see all alerts
+        User user = _userManagement.readUser(userIdActual);
+        if(user.getRole().equals("")) {
+            return;
+        }
+        // if requester is in any way a boss of requested employee he is allowed to see alerts
+        if(isABossOfUser(userIdRequested, userIdActual)) {
+            return;
+        }
+        throw new UserException("exceptions.forbidden_worktime.no_permission_to_read");
+    }
+
+    private boolean isABossOfUser(int userId, int potentialBossId) throws UserException {
+        boolean isBoss = false;
+        User requestedUser = _userManagement.readUser(userId);
+        User bossOfUser = requestedUser.getBoss();
+        while(requestedUser.getId() != bossOfUser.getId()) {
+            if(bossOfUser.getId() == potentialBossId) {
+                isBoss = true;
+            }
+            requestedUser = bossOfUser;
+            bossOfUser = requestedUser.getBoss();
+        }
+        return isBoss;
     }
 }

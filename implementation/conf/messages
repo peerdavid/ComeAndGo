@@ -167,6 +167,7 @@ exceptions.reporting.field_numofhours_empty = Please enter a number
 exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
+exceptions.forbidden_worktime.no_permission_to_read = Sorry, you are not allowed to work time alerts.
 
 forbidden_worktime.error_in_date_from_or_to = There was some error in given date from and to
 forbidden_worktime.more_holiday_used_than_available = User "{0}" has already used "{1}" holiday days but only has "{2}"
