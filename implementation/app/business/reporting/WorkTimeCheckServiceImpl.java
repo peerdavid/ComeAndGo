@@ -9,7 +9,6 @@ import models.ReportEntry;
 import models.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
-import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,14 +52,15 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         validateDate(from, to);
         validateUser(userId, actualUserId);
 
-        from = (from == null) ? _userManagement.readUser(userId).getEntryDate() : from;
+        DateTime entryDate = _userManagement.readUser(userId).getEntryDate();
+        from = (from == null || from.isBefore(entryDate)) ? entryDate : from;
         to = (to == null) ? DateTime.now() : to;
 
         Report report = _reporting.createEmployeeReport(userId, from, to);
         return readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to);
     }
 
-    private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
+    protected List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
         List<WorkTimeAlert> alertList = new ArrayList<>();
         User user = entry.getUser();
 
@@ -117,6 +117,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         while(requestedUser.getId() != bossOfUser.getId()) {
             if(bossOfUser.getId() == potentialBossId) {
                 isBoss = true;
+                break;
             }
             requestedUser = bossOfUser;
             bossOfUser = requestedUser.getBoss();
