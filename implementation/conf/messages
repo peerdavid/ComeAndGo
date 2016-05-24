@@ -168,8 +168,8 @@ exceptions.reporting.field_numofhours_negative = Please enter a positive number
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 exceptions.forbidden_worktime.no_permission_to_read = Sorry, you are not allowed to see work time alerts for this user.
+exceptions.forbidden_worktime.error_in_date_from_or_to = There was some error in given date from and to
 
-forbidden_worktime.error_in_date_from_or_to = There was some error in given date from and to
 forbidden_worktime.more_holiday_used_than_available = User {0} has already used {1} holiday days but only has {2}
 forbidden_worktime.too_many_unused_holiday_available = User {0} seems not to like holiday, has {1} days off.
 forbidden_worktime.flextime_saldo_over_specified_percent = User {0} has exceeded {1} of plus hours overtime tolerated in specified timeSpan.
@@ -182,6 +182,7 @@ forbidden_worktime.user_overuses_breaks_regularly = User {0} seems to like break
 forbidden_worktime.user_underuses_breaks_regularly = User {0} seems not to like breaks. In {1} of work time breaks are consumed.
 forbidden_worktime.user_has_many_sick_leaves = User {0} often seems to be ill. Suggest him something for his defenses.
 forbidden_worktime.user_exceeded_daily_worktime = User {0} has exceeded worktime on {1} about {2} hours
+forbidden_worktime.error_in_reading_alerts_from_user = WorkTimeAlerts from {0} could not be read.
 
 
 
