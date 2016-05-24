@@ -1,6 +1,9 @@
 package tirol.comeandgo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -25,6 +28,7 @@ public class MainActivity extends AppCompatActivity
     private Button mBtnGo;
     private Button mBtnBreak;
     private Client mClient;
+    private FloatingActionButton mBtnRefresh;
 
     private String mTimeTrackState;
 
@@ -88,6 +92,14 @@ public class MainActivity extends AppCompatActivity
                 }
         );
 
+        mBtnRefresh = (FloatingActionButton) findViewById(R.id.btnRefresh);
+        mBtnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClient.readState();
+            }
+        });
+
         mClient.readState();
     }
 
@@ -109,11 +121,11 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
             mClient.readState();
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_open_in_browser) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.10.116:9000/"));
+            startActivity(browserIntent);
 
         } else if (id == R.id.nav_settings) {
 

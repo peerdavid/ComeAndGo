@@ -39,4 +39,18 @@
         android:text="Go"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnRefresh"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        android:src="@drawable/ic_refresh_white"
+        app:layout_anchorGravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="8dp" />
+
 </RelativeLayout>
