@@ -135,6 +135,12 @@ nav .navbar-buttons a {
     margin-top: 1rem;
 }
 
+#index-buttons{
+    margin-left: 0.18rem;
+    margin-right: 1.5rem;
+
+}
+
 /* listings */
 .listing li .collapsible-body {
     padding: 1em;
