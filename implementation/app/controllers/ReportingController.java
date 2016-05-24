@@ -48,7 +48,10 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
         // ToDo: Get all workTimeAlerts for all employees of boss
-        List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
+        List<WorkTimeAlert> workTimeAlerts = null;
+        if(requestedId != null) {
+            workTimeAlerts = _reporting.readForbiddenWorkTimeAlerts(Integer.parseInt(requestedId), fromDate, toDate, userId);
+        }
 
         Report report = _reporting.createCompanyReport(fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts,
@@ -65,7 +68,10 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         DateTime fromDate = (from == null || from.isEmpty()) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
         DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
-        List<WorkTimeAlert> workTimeAlerts = getWorkTimeAlerts(userId, fromDate, toDate);
+        List<WorkTimeAlert> workTimeAlerts = null;
+        if(requestedId != null) {
+            workTimeAlerts = _reporting.readForbiddenWorkTimeAlerts(Integer.parseInt(requestedId), fromDate, toDate, userId);
+        }
 
         Report report = _reporting.createEmployeeReport(userId, fromDate, toDate);
         return ok(views.html.reporting.render(profile, report, workTimeAlerts,
@@ -83,10 +89,14 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         DateTime toDate = (to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to);
 
         // ToDo: Get all workTimeAlerts for all employees of boss
-        List<WorkTimeAlert> workTimeAlerts = Collections.emptyList();
+        List<WorkTimeAlert> workTimeAlerts = null;
+        if(requestedId != null) {
+            workTimeAlerts = _reporting.readForbiddenWorkTimeAlerts(Integer.parseInt(requestedId), fromDate, toDate, userId);
+        }
 
         Report report = _reporting.createBossReport(userId, fromDate, toDate);
-        return ok(views.html.reporting.render(profile, report, workTimeAlerts,
+        return ok(views.html.reporting.render(profile, report,
+            workTimeAlerts,
             from == null ? utils.DateTimeUtils.dateTimeToDateString(fromDate) : from,
             to == null ? utils.DateTimeUtils.dateTimeToDateString(toDate) : to));
     }
