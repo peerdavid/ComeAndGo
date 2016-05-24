@@ -35,7 +35,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
 
         List<WorkTimeAlert> alertList = new ArrayList<>();
         userList.forEach(user -> {
-            final DateTime start = (from == null) ? user.getEntryDate() : from;
+            final DateTime start = (from == null || from.isBefore(user.getEntryDate())) ? user.getEntryDate() : from;
             final DateTime end = (to == null) ? DateTime.now() : to;
             try {
                 alertList.addAll(readForbiddenWorkTimeAlerts(user.getId(), start, end, actualUserId));
