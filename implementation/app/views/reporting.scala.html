@@ -34,13 +34,13 @@
             <thead>
                 <tr>
                     <th data-field="id">@Messages("views.report.username")</th>
-                    <th data-field="price">@Messages("views.report.usedholiday")</th>
-                    <th data-field="price">@Messages("views.report.unusedholiday")</th>
-                    <th data-field="price">@Messages("views.report.sickdays")</th>
-                    <th data-field="price">@Messages("views.report.workshould")</th>
-                    <th data-field="price">@Messages("views.report.workis")</th>
-                    <th data-field="price">@Messages("views.report.break")</th>
-                    <th data-field="price">@Messages("views.report.difference")</th>
+                    <th>@Messages("views.report.usedholiday")</th>
+                    <th>@Messages("views.report.unusedholiday")</th>
+                    <th>@Messages("views.report.sickdays")</th>
+                    <th>@Messages("views.report.workshould")</th>
+                    <th>@Messages("views.report.workis")</th>
+                    <th>@Messages("views.report.break")</th>
+                    <th>@Messages("views.report.difference")</th>
                 </tr>
             </thead>
             <tbody>
@@ -160,7 +160,7 @@
                                 @for(alert <- workTimeAlerts) {
                                     <tr>
                                         <td>
-                                            <i class="material-icons" >
+                                            <i class="material-icons right" >
                                             @{
                                                 alert.getType match {
                                                     case WorkTimeAlert.Type.INFORMATION => "info_outline"
