@@ -7,6 +7,7 @@ import models.TimeOff;
 import models.User;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import utils.DateTimeUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -25,8 +26,8 @@ class TimeOffValidationImpl implements TimeOffValidation {
     @Override
     public void validateComeForDate(User user, DateTime date) throws UserException {
         // initialize from with midnight
-        DateTime from = date.minusSeconds(DateTimeConstants.SECONDS_PER_DAY - date.getSecondOfDay());
-        DateTime to = from.plusSeconds(DateTimeConstants.SECONDS_PER_DAY - 1);
+        DateTime from = DateTimeUtils.startOfDay(date);
+        DateTime to = DateTimeUtils.endOfDay(date);
         validateTimeOff(user, from, to);
     }
 

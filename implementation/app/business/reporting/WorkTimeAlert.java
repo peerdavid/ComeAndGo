@@ -1,46 +1,50 @@
 package business.reporting;
 
-import play.Logger;
 import play.i18n.Messages;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by stefan on 14.05.16.
  */
-public class WorkTimeAlert {
+public class WorkTimeAlert implements Comparable{
    private String _message;
    private Type _type;
    private String[] _arguments;
 
-   public WorkTimeAlert(String message, Type type) {
+   public WorkTimeAlert(String message, Type type, String... arguments) {
       _message = message;
       _type = type;
+      _arguments = arguments;
    }
 
    public void addArguments(String... arguments) {
       _arguments = arguments;
    }
 
-   public String getMessage() {
-      return _message;
-   }
-
    public Type getType() {
       return _type;
    }
 
-   public String[] getArguments() {
-      return _arguments;
+   @Override
+   public int compareTo(Object o) {
+      if(this.getType() == Type.URGENT) {
+         return -1;
+      }
+      if(this.getType() == Type.WARNING && ((WorkTimeAlert)o).getType() == Type.URGENT) {
+         return 1;
+      }
+      if(this.getType() == Type.WARNING && ((WorkTimeAlert)o).getType() == Type.INFORMATION) {
+         return -1;
+      }
+      if(this.getType() == Type.INFORMATION) {
+         return 1;
+      }
+      return 0;
    }
 
-    @Override
-    public String toString(){
-        return Messages.get(getMessage(), getArguments());
+   @Override
+   public String toString(){
+        return Messages.get(_message, _arguments);
     }
-
 
    public enum Type {
       INFORMATION,

@@ -4,12 +4,11 @@ package business.reporting;
  * Created by stefan on 14.05.16.
  */
 class CollectiveConstants {
-   // TODO: fill in correct constants!
    protected static final int MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR = 120;
    protected static final int MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR = 40;
 
    protected static final int MIN_HOURS_FREETIME_BETWEEN_WORKTIMES = 11;
-   protected static final int MIN_HOURS_FREETIMG_WHEN_NEXT_10_DAYS_BALANCE = 10;
+   protected static final int MIN_HOURS_FREETIME_WHEN_NEXT_10_DAYS_BALANCE = 10;
    protected static final int MAX_DAYS_OF_WORK_PER_WEEK = 5;
 
    // holiday consumption
