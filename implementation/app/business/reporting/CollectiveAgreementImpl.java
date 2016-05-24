@@ -170,13 +170,13 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
             alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
-                    String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
+                    percentageToString(100 * breakMinutesIs / workMinutesIs)));
         } else if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
                 < workMinutesIs * (1 - CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
-                    String.valueOf(breakMinutesIs * 100 / workMinutesIs)));
+                    percentageToString(100 * breakMinutesIs / workMinutesIs)));
         }
     }
 
@@ -192,11 +192,11 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         // check for work time overshoot
         if(flexTimeSaldoInHoursScaledToYear > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR * 7.75) {
             typeToInsert = WorkTimeAlert.Type.WARNING;
-            valueToInsert = "75";
+            valueToInsert = percentageToString(75);
 
             if(flexTimeSaldoInHoursScaledToYear > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR) {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
-                valueToInsert = "100";
+                valueToInsert = percentageToString(100);
             }
 
             alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
@@ -206,10 +206,10 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         // check for work time undershoot
         if(flexTimeSaldoInHoursScaledToYear < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
             typeToInsert = WorkTimeAlert.Type.WARNING;
-            valueToInsert = "75";
+            valueToInsert = percentageToString(75);
             if(flexTimeSaldoInHoursScaledToYear < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR) {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
-                valueToInsert = "100";
+                valueToInsert = percentageToString(100);
             }
 
             alertList.add(createAlert("forbidden_worktime.flextime_saldo_under_specified_percent",
@@ -224,7 +224,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                     WorkTimeAlert.Type.WARNING,
                     user.getFirstName() + " " + user.getLastName(),
                     DateTimeUtils.dateTimeToDateString(when),
-                    String.valueOf(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay)));
+                    toString(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay)));
         }
     }
 
@@ -296,6 +296,14 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         return alert;
     }
 
+    private String percentageToString(double percentage) {
+        return String.format("%.0f", percentage) + "%";
+    }
+
+    // just removes floating numbers
+    private String toString(double value) {
+        return String.format("%.1f", value);
+    }
 
 
     private static int getWorkdaysOfTimeOff(TimeOff timeoff, DateTime upperBound) {
