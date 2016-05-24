@@ -4,7 +4,6 @@ package business.reporting;
  * Created by stefan on 14.05.16.
  */
 class CollectiveConstants {
-   // TODO: fill in correct constants!
    protected static final int MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR = 120;
    protected static final int MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR = 40;
 
