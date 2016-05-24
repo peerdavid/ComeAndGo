@@ -130,7 +130,32 @@ nav .navbar-buttons a {
 #index-buttons{
     margin-left: 0.18rem;
     margin-right: 1.5rem;
+}
 
+#timetrack-list {
+    height: 50px;
+    padding-top: 100%;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+.timetrack-item {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 50px;
+    padding: 14px 6px;
+    border-radius: 25px;
+}
+
+.timetracklist-hline {
+    display: inline;
+    position: absolute;
+    border: solid #000000 3px;
+    right: 22px;
+    top: 0;
+    height: 100%;
 }
 
 /* listings */

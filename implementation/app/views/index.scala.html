@@ -1,6 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 @import business.timetracking.TimeTrackState
 @import utils.DateTimeUtils
+@import org.joda.time.DateTime
 @(profile: CommonProfile, userState: TimeTrackState, timeTracks: java.util.List[TimeTrack])
 
 @scripts = {
@@ -52,6 +53,14 @@
     </script>
 }
 
+@positionInTimetracksList(minutesOfDay : Int) = {
+    @if(timeTracks.get(timeTracks.size - 1).getTo != null) {
+        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (timeTracks.get(timeTracks.size - 1).getTo.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay)}
+    } else {
+        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (DateTime.now.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay)}
+    }
+}
+
 @main(Messages("views.index.title"), scripts) {
 
     @navigation(Messages("views.index.title"), profile) {
@@ -100,73 +109,39 @@
             </div>
         </div>
 
-        <!-- Todays time trackings -->
         <div class="row">
-            <div class="s12">
-        @if(!timeTracks.isEmpty) {
-            <table>
-                <tr>
-                    <th>
-                        @Messages("views.index.timetrack.tablehead.action")
-                    </th>
-                    <th>
-                        @Messages("views.index.timetrack.tablehead.time")
-                    </th>
-                </tr>
-                @for(timeTrack: TimeTrack <- timeTracks) {
-                    <tr>
-                        <td>
-                            @Messages("views.index.timetrack.tablebody.start")
-                        </td>
-                        <td>
-                            @(DateTimeUtils.dateTimeToTimeString(timeTrack.getFrom))
-                        </td>
-                    </tr>
+            <!-- Calendar for off time -->
+            <div id="timeoff-calendar" class="monthly card col m12 l8"></div>
 
-                    @for(b: Break <- timeTrack.getBreaks) {
-                        <tr>
-                            <td>
-                                @Messages("views.index.timetrack.tablebody.breakstart")
-                            </td>
-                            <td>
-                                @(DateTimeUtils.dateTimeToTimeString(b.getFrom))
-                            </td>
-                        </tr>
-
-                        @if(b.getTo() != null) {
-                            <tr>
-                                <td>
-                                    @Messages("views.index.timetrack.tablebody.breakend")
-                                </td>
-                                <td>
-                                    @(DateTimeUtils.dateTimeToTimeString(b.getTo))
-                                </td>
-                            </tr>
+            <!-- list of events -->
+            @if(!timeTracks.isEmpty) {
+                <div class="col s12 m6 l4">
+                    <ul id="timetrack-list">
+                        <li class="timetracklist-hline"></li>
+                    @for(timeTrack <- timeTracks) {
+                        <li class="timetrack-item come green" style="top:@(positionInTimetracksList(timeTrack.getFrom.getMinuteOfDay).toString.trim))%">
+                            @DateTimeUtils.dateTimeToTimeString(timeTrack.getFrom)
+                        </li>
+                        @for(break <- timeTrack.getBreaks) {
+                            <li class="timetrack-item start break cyan" style="top:@(positionInTimetracksList(break.getFrom.getMinuteOfDay).toString.trim)%">
+                                @DateTimeUtils.dateTimeToTimeString(break.getFrom)
+                            </li>
+                            @if(break.getTo != null) {
+                                <li class="timetrack-item stop break cyan" style="top:@(positionInTimetracksList(break.getTo.getMinuteOfDay).toString.trim)%">
+                                    @DateTimeUtils.dateTimeToTimeString(break.getTo)
+                                </li>
+                            }
+                        }
+                        @if(timeTrack.getTo != null) {
+                            <li class="timetrack-item go green" style="top:@(positionInTimetracksList(timeTrack.getTo.getMinuteOfDay).toString.trim)%">
+                                @DateTimeUtils.dateTimeToTimeString(timeTrack.getTo)
+                            </li>
                         }
                     }
-
-                    @if(timeTrack.getTo() != null) {
-                        <tr>
-                            <td>
-                                @Messages("views.index.timetrack.tablebody.end")
-                            </td>
-                            <td>
-                                @(DateTimeUtils.dateTimeToTimeString(timeTrack.getTo))
-                            </td>
-                        </tr>
-                    }
-
-                }
-            </table>
-        }
-
-                <!-- Calendar for off time -->
-                <div class="row">
-                    <div id="timeoff-calendar" class="monthly card col m12 l8"></div>
+                    </ul>
                 </div>
 
-
-            </div>
+            }
         </div>
     }
 
