@@ -15,25 +15,42 @@
     <Button android:id="@+id/btnCome"
         android:text="Come"
         android:textColor="@color/textColor"
-        android:background="@color/colorAccent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <Button android:id="@+id/btnGo"
-        android:layout_below="@+id/btnCome"
-        android:layout_marginTop="10dp"
-        android:text="Go"
-        android:background="@color/colorAccent"
-        android:textColor="@color/textColor"
+        android:background="@drawable/custom_button"
+        android:enabled="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <Button android:id="@+id/btnBreak"
-        android:layout_below="@+id/btnGo"
-        android:layout_marginTop="10dp"
-        android:text="Toggle Break"
-        android:background="@color/colorAccent"
+        android:enabled="false"
         android:textColor="@color/textColor"
+        android:background="@drawable/custom_button"
+        android:layout_below="@+id/btnCome"
+        android:layout_marginTop="10dp"
+        android:text="Start break"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button android:id="@+id/btnGo"
+        android:enabled="false"
+        android:textColor="@color/textColor"
+        android:background="@drawable/custom_button"
+        android:layout_below="@+id/btnBreak"
+        android:layout_marginTop="10dp"
+        android:text="Go"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnRefresh"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:clickable="true"
+        android:src="@drawable/ic_refresh_white"
+        app:layout_anchorGravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="8dp" />
+
 </RelativeLayout>

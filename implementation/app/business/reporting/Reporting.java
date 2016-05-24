@@ -19,8 +19,8 @@ public interface Reporting {
     Report createBossReport(int userId, DateTime from, DateTime to) throws Exception;
 
 
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception;
-    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to) throws Exception;
+    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to, int actualUserId) throws Exception;
+    List<WorkTimeAlert> readForbiddenWorkTimeAlerts(List<User> userList, DateTime from, DateTime to, int actualUserId) throws Exception;
 
     double readHoursWorked(int userId, DateTime when) throws Exception;
 

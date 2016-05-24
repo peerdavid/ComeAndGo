@@ -139,6 +139,6 @@ public class ReportingController extends UserProfileController<CommonProfile> {
     }
 
     private List<WorkTimeAlert> getWorkTimeAlerts(int userId, DateTime from, DateTime to) throws Exception {
-        return _reporting.readForbiddenWorkTimeAlerts(userId, from, to);
+        return _reporting.readForbiddenWorkTimeAlerts(userId, from, to, 0);
     }
 }

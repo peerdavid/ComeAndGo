@@ -1,6 +1,10 @@
 package tirol.comeandgo;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,16 +15,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import tirol.comeandgo.business.CommunicationWrapper;
+import tirol.comeandgo.business.api.Client;
+import tirol.comeandgo.business.api.ClientResult;
+import tirol.comeandgo.business.api.ClientResultListener;
+import tirol.comeandgo.business.api.TimeTrackState;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ClientResultListener {
 
 
     private Button mBtnCome;
     private Button mBtnGo;
     private Button mBtnBreak;
-    private CommunicationWrapper mCommunicationWrapper;
+    private Client mClient;
+    private FloatingActionButton mBtnRefresh;
+
+    private String mTimeTrackState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +48,18 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mCommunicationWrapper = new CommunicationWrapper("192.168.10.116:9000");
+        mClient = new Client("192.168.10.116:9000", "v1");
+        mClient.setOnResultListener(this);
         mBtnCome = (Button) findViewById(R.id.btnCome);
         mBtnCome.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCommunicationWrapper.come();
+                        if(!mTimeTrackState.equals(TimeTrackState.INACTIVE)){
+                            return;
+                        }
+
+                        mClient.come();
                     }
                 }
         );
@@ -54,7 +69,11 @@ public class MainActivity extends AppCompatActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCommunicationWrapper.go();
+                        if(!mTimeTrackState.equals(TimeTrackState.ACTIVE)){
+                            return;
+                        }
+
+                        mClient.go();
                     }
                 }
         );
@@ -64,10 +83,24 @@ public class MainActivity extends AppCompatActivity
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mCommunicationWrapper.toggleBreak();
+                        if(mTimeTrackState.equals(TimeTrackState.ACTIVE)){
+                            mClient.startBreak();
+                        } else if (mTimeTrackState.equals(TimeTrackState.BREAK)){
+                            mClient.endBreak();
+                        }
                     }
                 }
         );
+
+        mBtnRefresh = (FloatingActionButton) findViewById(R.id.btnRefresh);
+        mBtnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mClient.readState();
+            }
+        });
+
+        mClient.readState();
     }
 
 
@@ -82,18 +115,17 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_home) {
+            mClient.readState();
+        } else if (id == R.id.nav_open_in_browser) {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.10.116:9000/"));
+            startActivity(browserIntent);
 
         } else if (id == R.id.nav_settings) {
 
@@ -102,5 +134,51 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    public void onResult(final ClientResult result) {
+        Log.d("tirol.comeandgo.app", result.getUseCase() + "=" + result.getStatusCode() + " | " + result.getMessage());
+
+        if(result.getUseCase().equals(Client.READ_STATE)){
+            mTimeTrackState = result.getMessage();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    resetTimeTrackState();
+                }
+            });
+        }
+    }
+
+    private void resetTimeTrackState() {
+        Log.d("tirol.comeandgo.app", "STATE=" + mTimeTrackState);
+        switch(mTimeTrackState){
+            case TimeTrackState.ACTIVE:
+                mBtnCome.setEnabled(false);
+                mBtnGo.setEnabled(true);
+                mBtnBreak.setEnabled(true);
+                mBtnBreak.setText("Start break");
+                break;
+
+            case TimeTrackState.INACTIVE:
+                mBtnCome.setEnabled(true);
+                mBtnGo.setEnabled(false);
+                mBtnBreak.setEnabled(false);
+                mBtnBreak.setText("Start break");
+                break;
+
+            case TimeTrackState.BREAK:
+                mBtnCome.setEnabled(false);
+                mBtnGo.setEnabled(true);
+                mBtnBreak.setEnabled(true);
+                mBtnBreak.setText("End break");
+                break;
+
+            default:
+            Log.e("tirol.comeandgo.app", "STATE=" + mTimeTrackState);
+        }
     }
 }

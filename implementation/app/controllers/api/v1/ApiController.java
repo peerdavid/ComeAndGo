@@ -1,5 +1,6 @@
 package controllers.api.v1;
 
+import business.timetracking.TimeTrackState;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
 import org.pac4j.core.profile.CommonProfile;
@@ -49,5 +50,13 @@ public class ApiController extends UserProfileController {
         CommonProfile profile = getUserProfile();
         _timeTracking.endBreak(Integer.parseInt(profile.getId()));
         return ok("1");
+    }
+
+
+    @RequiresAuthentication(clientName = "default")
+    public Result readState() throws Exception {
+        CommonProfile profile = getUserProfile();
+        TimeTrackState state = _timeTracking.readState(Integer.parseInt(profile.getId()));
+        return ok(state.toString());
     }
 }

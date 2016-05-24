@@ -44,21 +44,22 @@ POST    /reporting/overtimepayout                  @controllers.ReportingControl
 # Notifications
 GET     /notification                              @controllers.NotificationController.index
 GET     /notification/accept                       @controllers.NotificationController.acceptNotification(notifId : Int)
-GET     /notification/reject        @controllers.NotificationController.rejectNotification(notifId : Int)
-GET     /notification/number        @controllers.NotificationController.readNumberNewNotifications()
+GET     /notification/reject                       @controllers.NotificationController.rejectNotification(notifId : Int)
+GET     /notification/number                       @controllers.NotificationController.readNumberNewNotifications()
 
 # Come & Go
-GET     /come                       @controllers.TimeTrackController.come
-GET     /go                         @controllers.TimeTrackController.go
-GET     /pause                      @controllers.TimeTrackController.pause
-GET     /progress                   @controllers.TimeTrackController.readProgress
+GET     /come                                      @controllers.TimeTrackController.come
+GET     /go                                        @controllers.TimeTrackController.go
+GET     /pause                                     @controllers.TimeTrackController.pause
+GET     /progress                                  @controllers.TimeTrackController.readProgress
 
 # API
-GET     /api/v1/come                @controllers.api.v1.ApiController.come
-GET     /api/v1/go                  @controllers.api.v1.ApiController.go
-GET     /api/v1/startBreak          @controllers.api.v1.ApiController.startBreak
-GET     /api/v1/endBreak            @controllers.api.v1.ApiController.endBreak
+POST    /api/v1/come                               @controllers.api.v1.ApiController.come
+POST    /api/v1/go                                 @controllers.api.v1.ApiController.go
+POST    /api/v1/startBreak                         @controllers.api.v1.ApiController.startBreak
+POST    /api/v1/endBreak                           @controllers.api.v1.ApiController.endBreak
+GET     /api/v1/readState                          @controllers.api.v1.ApiController.readState
 
 # Map static resources _from the /public folder _to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file                              controllers.Assets.at(path="/public", file)
 
