@@ -144,16 +144,20 @@ nav .navbar-buttons a {
     top: 0;
     right: 0;
     height: 50px;
-    width: 50px;
-    padding: 14px 6px;
+    width: 120px;
+    padding: 25px;
     border-radius: 25px;
+}
+
+.timetrack-item > i {
+    margin-right: 8px;
 }
 
 .timetracklist-hline {
     display: inline;
     position: absolute;
     border: solid #000000 3px;
-    right: 22px;
+    right: 57px;
     top: 0;
     height: 100%;
 }

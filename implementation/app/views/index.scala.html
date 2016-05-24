@@ -119,22 +119,26 @@
                     <ul id="timetrack-list">
                         <li class="timetracklist-hline"></li>
                     @for(timeTrack <- timeTracks) {
-                        <li class="timetrack-item come green" style="top:@(positionInTimetracksList(timeTrack.getFrom.getMinuteOfDay).toString.trim))%">
-                            @DateTimeUtils.dateTimeToTimeString(timeTrack.getFrom)
+                        <li class="timetrack-item come green valign-wrapper white-text" style="top:@(positionInTimetracksList(timeTrack.getFrom.getMinuteOfDay).toString.trim))%">
+                            <i class="material-icons center-align">play_circle_filled</i>
+                            <span class="valign">@DateTimeUtils.dateTimeToTimeString(timeTrack.getFrom)</span>
                         </li>
                         @for(break <- timeTrack.getBreaks) {
-                            <li class="timetrack-item start break cyan" style="top:@(positionInTimetracksList(break.getFrom.getMinuteOfDay).toString.trim)%">
-                                @DateTimeUtils.dateTimeToTimeString(break.getFrom)
+                            <li class="timetrack-item start break cyan valign-wrapper white-text" style="top:@(positionInTimetracksList(break.getFrom.getMinuteOfDay).toString.trim)%">
+                                <i class="material-icons valign">pause_circle_outline</i>
+                                <span class="valign">@DateTimeUtils.dateTimeToTimeString(break.getFrom)</span>
                             </li>
                             @if(break.getTo != null) {
-                                <li class="timetrack-item stop break cyan" style="top:@(positionInTimetracksList(break.getTo.getMinuteOfDay).toString.trim)%">
-                                    @DateTimeUtils.dateTimeToTimeString(break.getTo)
+                                <li class="timetrack-item stop break cyan valign-wrapper white-text" style="top:@(positionInTimetracksList(break.getTo.getMinuteOfDay).toString.trim)%">
+                                    <i class="material-icons valign">play_circle_outline</i>
+                                    <span class="valign">@DateTimeUtils.dateTimeToTimeString(break.getTo)</span>
                                 </li>
                             }
                         }
                         @if(timeTrack.getTo != null) {
-                            <li class="timetrack-item go green" style="top:@(positionInTimetracksList(timeTrack.getTo.getMinuteOfDay).toString.trim)%">
-                                @DateTimeUtils.dateTimeToTimeString(timeTrack.getTo)
+                            <li class="timetrack-item go green valign-wrapper white-text" style="top:@(positionInTimetracksList(timeTrack.getTo.getMinuteOfDay).toString.trim)%">
+                                <i class="material-icons valign">pause_circle_filled</i>
+                                <span class="valign">@DateTimeUtils.dateTimeToTimeString(timeTrack.getTo)</span>
                             </li>
                         }
                     }
