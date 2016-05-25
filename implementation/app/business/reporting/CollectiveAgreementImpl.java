@@ -7,8 +7,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import utils.DateTimeUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -126,42 +124,41 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 workDaysFromEntryToUpperBound);
     }
 
-
     @Override
     public void createForbiddenWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
-        checkFlexTimeAlerts(entry, alertList);
-        checkBreakOverAndUnderConsumptionAlerts(entry, alertList);
-        checkHolidayAlerts(entry, alertList);
-        checkSickDayAlerts(entry, alertList);
+        createFlexTimeAlerts(entry, alertList);
+        createBreakOverAndUnderConsumptionAlerts(entry, alertList);
+        createHolidayAlerts(entry, alertList);
+        createSickDayAlerts(entry, alertList);
     }
 
-    private void checkSickDayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
-        if(entry.getNumOfSickDays()
-                > (entry.getWorkMinutesIs() * CollectiveConstants.TOLERATED_WORKTIME_TO_SICKLEAVE_RATIO) / (60 * entry.getHoursPerDay())) {
+    private void createSickDayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+        if(entry.getNumOfSickDays() * (CollectiveConstants.AVERAGE_AMOUNT_WORK_DAYS_PER_MONTH / entry.getWorkdaysOfReport())
+                > CollectiveConstants.TOLERATED_SICKLEAVE_DAYS_PER_MONTH) {
             alertList.add(createAlert("forbidden_worktime.user_has_many_sick_leaves",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser())));
         }
     }
 
-    private void checkHolidayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+    private void createHolidayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         User user = entry.getUser();
         if(entry.getNumOfUsedHolidays() > user.getHolidays()) {
             alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(user),
-                    String.valueOf(entry.getNumOfUsedHolidays()),
-                    String.valueOf(user.getHolidays())));
+                    valueToString(entry.getNumOfUsedHolidays(), 1),
+                    valueToString(user.getHolidays(), 1)));
         }
         if(entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY) {
             alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(user),
-                    String.valueOf(entry.getNumOfUnusedHolidays())));
+                    valueToString(entry.getNumOfUnusedHolidays(), 1)));
         }
     }
 
-    private void checkBreakOverAndUnderConsumptionAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+    private void createBreakOverAndUnderConsumptionAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         double workMinutesIs = entry.getWorkMinutesIs();
         double breakMinutesIs = entry.getBreakMinutes();
 
@@ -180,7 +177,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
     }
 
-    private void checkFlexTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+    private void createFlexTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         WorkTimeAlert.Type typeToInsert;
         String valueToInsert;
 
@@ -218,42 +215,56 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     @Override
-    public void checkWorkHoursOfDay(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList) {
+    public void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList) {
         if(workedHoursOfDay > CollectiveConstants.MAX_HOURS_PER_DAY) {
             alertList.add(createAlert("forbidden_worktime.user_exceeded_daily_worktime",
                     WorkTimeAlert.Type.WARNING,
                     user.getFirstName() + " " + user.getLastName(),
                     DateTimeUtils.dateTimeToDateString(when),
-                    toString(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay)));
+                    valueToString(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay, 0)));
         }
     }
 
     @Override
-    public void checkFreeTimeHoursOfDay(User user, DateTime when, double durationFreeTimeOfActualDayInH, List<Double> durationWorkTimeNextDays, List<WorkTimeAlert> alertList) {
-        // first check the times between the timeTracks if user keeps the defined times of freeTime defined in law
-        double durationFreeTimeNext10DaysInH = 0d;
-        for(Double workTimeAtDay : durationWorkTimeNextDays) {
-            durationFreeTimeNext10DaysInH += DateTimeConstants.HOURS_PER_DAY - workTimeAtDay;
+    public void createFreeTimeHoursOfDayAlerts(User user, DateTime when, List<Double> durationWorkTimeNextDays, List<WorkTimeAlert> alertList) {
+        if(durationWorkTimeNextDays == null || durationWorkTimeNextDays.isEmpty()) {
+            alertList.add(createAlert("forbidden_worktime.error_in_checking_freetime_and_christmas_clause",
+                    WorkTimeAlert.Type.WARNING, userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when)));
+            return;
         }
-        long hoursBetweenTimeTracks = CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES;
+
+        // first check the times between the timeTracks if user keeps the defined times of freeTime defined in law
+        double durationFreeTimeOfActualDayInH = DateTimeConstants.HOURS_PER_DAY - durationWorkTimeNextDays.get(0);
+        double durationFreeTimeNext10DaysInH = 0d;
+        // following loop sums up all freeTime hours starting tomorrow and ending at 10th day
+        for(int i = 1; i < 11 && i < durationWorkTimeNextDays.size(); ++i) {
+            durationFreeTimeNext10DaysInH += DateTimeConstants.HOURS_PER_DAY - durationWorkTimeNextDays.get(i);
+        }
+        int hoursBetweenTimeTracks = CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES;
         if(durationFreeTimeOfActualDayInH < hoursBetweenTimeTracks
-                && durationFreeTimeNext10DaysInH / 10 < CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES) {
+                && durationFreeTimeNext10DaysInH / 10 < hoursBetweenTimeTracks) {
             alertList.add(createAlert("forbidden_worktime.freetime_undershoot_with_next_days_no_balance",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when),
-                    String.valueOf(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH)));
+                    valueToString(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH, 1)));
         }
-        else if(durationFreeTimeOfActualDayInH < CollectiveConstants.MIN_HOURS_FREETIME_BETWEEN_WORKTIMES) {
+        else if(durationFreeTimeOfActualDayInH < hoursBetweenTimeTracks) {
             alertList.add(createAlert("forbidden_worktime.freetime_undershoot", WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when),
-                    String.valueOf(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH)));
+                    valueToString(hoursBetweenTimeTracks - durationFreeTimeOfActualDayInH, 1)));
         }
     }
 
     @Override
-    public void checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(User user, DateTime when, double hoursWorkedActualDay, List<Double> workedHoursNextDays, List<WorkTimeAlert> alertList) {
-        // check if user does only work on 5 days per week
-        //      (but only check once a week to avoid multiple workTimeAlerts per week)
+    public void createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(User user, DateTime when, List<Double> workedHoursNextDays, List<WorkTimeAlert> alertList) {
+        if(workedHoursNextDays == null || workedHoursNextDays.isEmpty()) {
+            // do not add a alert here, because in previous check it would be already added...
+            return;
+        }
+
+        /* check if user does only work on 5 days per week
+         *    (but only check once a week to avoid multiple workTimeAlerts per week)
+         */
         if(when.getDayOfWeek() == 1) {
             int daysWorked = 0;
             for(int i = 0; i < 7; ++i) {
@@ -266,22 +277,24 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 alertList.add(createAlert("forbidden_worktime.too_many_workdays_per_week",
                         WorkTimeAlert.Type.WARNING,
                         userFirstAndLastName(user),
-                        String.valueOf(daysWorked),
-                        String.valueOf(CollectiveConstants.MAX_DAYS_OF_WORK_PER_WEEK),
+                        valueToString(daysWorked, 0),
+                        valueToString(CollectiveConstants.MAX_DAYS_OF_WORK_PER_WEEK, 0),
                         DateTimeUtils.weekToString(when)));
             }
         }
 
-        // if we have christmas... check if user has not worked on new years eve
-        //  important note: ordering in workedHoursNextDays is sequential as it was inserted (so it is day for day)
+        /* if we have christmas... check if user has not worked on new years eve
+         *     important note: ordering in workedHoursNextDays is sequential as it was inserted (so it is day for day)
+         */
         if(when.getDayOfMonth() == 24 && when.getMonthOfYear() == DateTimeConstants.DECEMBER) {
-            double hoursWorkedOnNewYearsEve = workedHoursNextDays.get(6);
-            if((hoursWorkedActualDay >= user.getHoursPerDay() && hoursWorkedOnNewYearsEve > 0)
-                    || (hoursWorkedActualDay > 0 && hoursWorkedOnNewYearsEve >= user.getHoursPerDay())) {
+            double hoursWorkedActualDay = workedHoursNextDays.get(0);
+            double hoursWorkedOnNewYearsEve = workedHoursNextDays.get(7);
+
+            if(hoursWorkedActualDay > 0 && hoursWorkedOnNewYearsEve > 0) {
                 alertList.add(createAlert("forbidden_worktime.worked_on_both_christmas_and_newyear_eve",
                         WorkTimeAlert.Type.WARNING,
                         userFirstAndLastName(user),
-                        String.valueOf(when.getYear())));
+                        valueToString(when.getYear(), 0)));
             }
         }
     }
@@ -291,20 +304,16 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     private WorkTimeAlert createAlert(String message, WorkTimeAlert.Type type, String... arguments) {
-        WorkTimeAlert alert = new WorkTimeAlert(message, type);
-        alert.addArguments(arguments);
-        return alert;
+        return new WorkTimeAlert(message, type, arguments);
     }
 
     private String percentageToString(double percentage) {
         return String.format("%.0f", percentage) + "%";
     }
 
-    // just removes floating numbers
-    private String toString(double value) {
-        return String.format("%.1f", value);
+    private String valueToString(double value, int amountFloatingNumbers) {
+        return String.format("%." + String.valueOf(amountFloatingNumbers) + "f", value);
     }
-
 
     private static int getWorkdaysOfTimeOff(TimeOff timeoff, DateTime upperBound) {
         // TimeOff is already complete in history

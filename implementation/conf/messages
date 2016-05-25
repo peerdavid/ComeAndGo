@@ -183,9 +183,7 @@ forbidden_worktime.user_underuses_breaks_regularly = User {0} seems not to like 
 forbidden_worktime.user_has_many_sick_leaves = User {0} often seems to be ill. Suggest him something for his defenses.
 forbidden_worktime.user_exceeded_daily_worktime = User {0} has exceeded worktime on {1} about {2} hours
 forbidden_worktime.error_in_reading_alerts_from_user = WorkTimeAlerts from {0} could not be read.
-
-
-
+forbidden_worktime.error_in_checking_freetime_and_christmas_clause = FreeTimeCheck for user {0} from {1} could not be read because no further work timings for next days are given.
 
 notifications.holiday_request = Holiday request from employee
 notifications.special_holiday_request = Special-holiday request from employee

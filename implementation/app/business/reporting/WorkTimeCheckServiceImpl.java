@@ -8,7 +8,6 @@ import models.Report;
 import models.ReportEntry;
 import models.User;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,8 +33,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         validateDate(from, to);
 
         List<WorkTimeAlert> alertList = new ArrayList<>();
-        //userList.forEach(user -> {
-        for(User user : userList) {
+        userList.forEach(user -> {
             final DateTime start = (from == null || from.isBefore(user.getEntryDate())) ? user.getEntryDate() : from;
             final DateTime end = (to == null) ? DateTime.now() : to;
             try {
@@ -44,7 +42,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
                 alertList.add(new WorkTimeAlert("forbidden_worktime.error_in_reading_alerts_from_user",
                         WorkTimeAlert.Type.INFORMATION, user.getFirstName() + " " + user.getLastName()));
             }
-        }
+        });
         return alertList;
     }
 
@@ -71,17 +69,18 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         // check for exceeded work time per day
         for(DateTime actualDate = from; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {
             double hoursWorked = _reporting.readHoursWorked(user.getId(), actualDate);
-            _collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate, alertList);
+            _collectiveAgreement.createWorkHoursOfDayAlerts(user, hoursWorked, actualDate, alertList);
 
             DateTime startDay = actualDate;
             List<Double> hoursWorkedNextDays = new ArrayList<>();
+            hoursWorkedNextDays.add(hoursWorked);
             for(int i = 1; i <= 10; ++i) {
                 hoursWorkedNextDays.add(_reporting.readHoursWorked(user.getId(), startDay.plusDays(i)));
             }
-            _collectiveAgreement.checkFreeTimeHoursOfDay(user, actualDate,
-                    DateTimeConstants.HOURS_PER_DAY - hoursWorked, hoursWorkedNextDays, alertList);
-            _collectiveAgreement.checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(user, actualDate,
-                    hoursWorked, hoursWorkedNextDays, alertList);
+            _collectiveAgreement.createFreeTimeHoursOfDayAlerts(user, actualDate,
+                    hoursWorkedNextDays, alertList);
+            _collectiveAgreement.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(user, actualDate,
+                    hoursWorkedNextDays, alertList);
         }
         Collections.sort(alertList);
         return alertList;
