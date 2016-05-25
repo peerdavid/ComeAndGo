@@ -142,19 +142,22 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     private void createHolidayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+        // scale numOfUsedHoliday up to a year
         User user = entry.getUser();
-        if(entry.getNumOfUsedHolidays() > user.getHolidays()) {
-            alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
-                    WorkTimeAlert.Type.WARNING,
-                    userFirstAndLastName(user),
-                    valueToString(entry.getNumOfUsedHolidays(), 1),
-                    valueToString(user.getHolidays(), 1)));
-        }
-        if(entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY) {
-            alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
-                    WorkTimeAlert.Type.WARNING,
-                    userFirstAndLastName(user),
-                    valueToString(entry.getNumOfUnusedHolidays(), 1)));
+        if(entry.getWorkdaysOfReport() >= CollectiveConstants.WORK_DAYS_PER_YEAR) {
+            if (entry.getNumOfUsedHolidays() > user.getHolidays()) {
+                alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
+                        WorkTimeAlert.Type.URGENT,
+                        userFirstAndLastName(user),
+                        valueToString(entry.getNumOfUsedHolidays(), 1),
+                        valueToString(user.getHolidays(), 1)));
+            }
+            if (entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY_PER_YEAR) {
+                alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
+                        WorkTimeAlert.Type.WARNING,
+                        userFirstAndLastName(user),
+                        valueToString(entry.getNumOfUnusedHolidays(), 1)));
+            }
         }
     }
 
@@ -187,7 +190,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         long flexTimeSaldoInHoursScaledToYear = (entry.getWorkMinutesDifference() / 60) * workDaysInYear / workDaysRespected;
 
         // check for work time overshoot
-        if(flexTimeSaldoInHoursScaledToYear > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR * 7.75) {
+        if(flexTimeSaldoInHoursScaledToYear > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
             typeToInsert = WorkTimeAlert.Type.WARNING;
             valueToInsert = percentageToString(75);
 
