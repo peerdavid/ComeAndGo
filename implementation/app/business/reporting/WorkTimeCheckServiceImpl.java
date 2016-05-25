@@ -60,7 +60,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         return readForbiddenWorkTimeAlerts(report.getUserReports().get(0), from, to);
     }
 
-    protected List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
+    private List<WorkTimeAlert> readForbiddenWorkTimeAlerts(ReportEntry entry, DateTime from, DateTime to) throws Exception {
         List<WorkTimeAlert> alertList = new ArrayList<>();
         User user = entry.getUser();
 
@@ -68,8 +68,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         _collectiveAgreement.createForbiddenWorkTimeAlerts(entry, alertList);
 
         // check for exceeded work time per day
-        DateTime startDate = user.getEntryDate().isBefore(from) ? from : user.getEntryDate();
-        for(DateTime actualDate = startDate; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {
+        for(DateTime actualDate = from; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {
             double hoursWorked = _reporting.readHoursWorked(user.getId(), actualDate);
             _collectiveAgreement.checkWorkHoursOfDay(user, hoursWorked, actualDate, alertList);
 

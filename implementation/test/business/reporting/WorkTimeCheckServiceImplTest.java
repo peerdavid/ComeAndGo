@@ -74,7 +74,10 @@ public class WorkTimeCheckServiceImplTest {
         _userList.add(_testEmployee);
         _userList.add(_testBoss);
 
-
+        _reportEntry = new ReportEntry(_testEmployee, 38.5 / 5, 0, 0, 0, (long)(4 * 38.5 * 60), (long)(4 * 38.5 * 55), 10, 0, 0, 20);
+        List<ReportEntry> _entryList = new ArrayList<>();
+        _entryList.add(_reportEntry);
+        _report = new Report(_entryList, _reportEntry);
 
         _reportingService = mock(ReportingService.class);
         _collectiveAgreement = mock(CollectiveAgreement.class);
@@ -174,5 +177,20 @@ public class WorkTimeCheckServiceImplTest {
             throw new Exception("test failed");
         } catch (InvalidArgumentException e) {}
         Mockito.verify(_reportingService, times(1)).createEmployeeReport(_testEmployee.getId(), _startOfActualYear, to);
+    }
+
+    @Test
+    public void readWorkTimeAlertsFromUser_WithValidParameters_ShouldCallCollectiveAgreement() throws Exception {
+        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(_report);
+        final int NUM_OF_DAYS = 15;
+
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(NUM_OF_DAYS), _testBoss.getId());
+        Mockito.verify(_collectiveAgreement, times(1)).createForbiddenWorkTimeAlerts(any(ReportEntry.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).checkFreeTimeHoursOfDay(any(User.class), any(DateTime.class),
+                any(Double.class), any(List.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(any(User.class),
+                any(DateTime.class), any(Double.class), any(List.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).checkWorkHoursOfDay(any(User.class), any(Double.class),
+                any(DateTime.class), any(List.class));
     }
 }
