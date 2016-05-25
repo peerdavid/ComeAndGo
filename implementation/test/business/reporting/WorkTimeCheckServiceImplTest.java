@@ -4,19 +4,16 @@ import business.timetracking.InternalTimeTracking;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserException;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import models.Report;
 import models.ReportEntry;
 import models.User;
 import org.joda.time.DateTime;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -65,6 +62,7 @@ public class WorkTimeCheckServiceImplTest {
         when(_testPersonnellManager.getBoss()).thenReturn(_testPersonnellManager);
         when(_testOutstandingPerson.getBoss()).thenReturn(_testOutstandingPerson);
         when(_testEmployee.getEntryDate()).thenReturn(_startOfActualYear);
+        when(_testBoss.getEntryDate()).thenReturn(_startOfActualYear);
         when(_testEmployee.getRole()).thenReturn(SecurityRole.ROLE_USER);
         when(_testBoss.getRole()).thenReturn(SecurityRole.ROLE_BOSS);
         when(_testBossOfBoss.getRole()).thenReturn(SecurityRole.ROLE_BOSS);
@@ -86,6 +84,8 @@ public class WorkTimeCheckServiceImplTest {
         _service = new WorkTimeCheckServiceImpl(_reportingService, _collectiveAgreement, _internalUserManagement);
 
         when(_reportingService.readHoursWorked(any(Integer.class), any(DateTime.class))).thenReturn(8.5);
+        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class)))
+                .thenReturn(_report);
         when(_internalUserManagement.readUser(1)).thenReturn(_testEmployee);
         when(_internalUserManagement.readUser(2)).thenReturn(_testBoss);
         when(_internalUserManagement.readUser(3)).thenReturn(_testBossOfBoss);
@@ -116,72 +116,42 @@ public class WorkTimeCheckServiceImplTest {
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfEmployee_ShouldSucceed() throws Exception {
-        // dirty solution but no other possibility to avoid mocking 10.000 things...
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
-
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBoss.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBoss.getId());
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfBossOfUser_ShouldSucceed() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
-
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBossOfBoss.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBossOfBoss.getId());
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsPersonnelManager_ShouldSucced() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
-
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testPersonnellManager.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testPersonnellManager.getId());
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsUserItself_ShouldSucceed() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
-
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testBoss.getId(), _now, _now.plusDays(2), _testBoss.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testEmployee.getId());
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereFromDateIsBeforeEntryDate_ShouldCallReportingServiceWithEntryDate() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
         DateTime to = _now.plusDays(2);
 
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now.minusYears(2), to, _testBossOfBoss.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now.minusYears(2), to, _testBossOfBoss.getId());
         Mockito.verify(_reportingService, times(1)).createEmployeeReport(_testEmployee.getId(), _startOfActualYear, to);
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereFromDateIsNull_ShouldCallReportingServiceWithEntryDate() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenThrow(InvalidArgumentException.class);
         DateTime to = _now.plusDays(2);
 
-        try {
-            _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), null, to, _testBossOfBoss.getId());
-            throw new Exception("test failed");
-        } catch (InvalidArgumentException e) {}
+        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), null, to, _testBossOfBoss.getId());
         Mockito.verify(_reportingService, times(1)).createEmployeeReport(_testEmployee.getId(), _startOfActualYear, to);
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WithValidParameters_ShouldCallCollectiveAgreement() throws Exception {
-        when(_reportingService.createEmployeeReport(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(_report);
         final int NUM_OF_DAYS = 15;
 
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(NUM_OF_DAYS), _testBoss.getId());
@@ -191,6 +161,20 @@ public class WorkTimeCheckServiceImplTest {
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(any(User.class),
                 any(DateTime.class), any(Double.class), any(List.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).checkWorkHoursOfDay(any(User.class), any(Double.class),
+                any(DateTime.class), any(List.class));
+    }
+
+    @Test
+    public void readWorkTimeAlertsFromTwoUsers_WithValidParameters_ShouldCallCollectiveAgreementMultipleTimes() throws Exception {
+        final int NUM_OF_DAYS = 15;
+
+        _service.readForbiddenWorkTimeAlerts(_userList, _now, _now.plusDays(NUM_OF_DAYS), _testBossOfBoss.getId());
+        Mockito.verify(_collectiveAgreement, times(2)).createForbiddenWorkTimeAlerts(any(ReportEntry.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).checkFreeTimeHoursOfDay(any(User.class), any(DateTime.class),
+                any(Double.class), any(List.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).checkFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClause(any(User.class),
+                any(DateTime.class), any(Double.class), any(List.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).checkWorkHoursOfDay(any(User.class), any(Double.class),
                 any(DateTime.class), any(List.class));
     }
 }

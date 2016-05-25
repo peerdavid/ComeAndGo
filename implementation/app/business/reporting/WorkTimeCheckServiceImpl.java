@@ -34,7 +34,8 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         validateDate(from, to);
 
         List<WorkTimeAlert> alertList = new ArrayList<>();
-        userList.forEach(user -> {
+        //userList.forEach(user -> {
+        for(User user : userList) {
             final DateTime start = (from == null || from.isBefore(user.getEntryDate())) ? user.getEntryDate() : from;
             final DateTime end = (to == null) ? DateTime.now() : to;
             try {
@@ -43,7 +44,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
                 alertList.add(new WorkTimeAlert("forbidden_worktime.error_in_reading_alerts_from_user",
                         WorkTimeAlert.Type.INFORMATION, user.getFirstName() + " " + user.getLastName()));
             }
-        });
+        }
         return alertList;
     }
 
