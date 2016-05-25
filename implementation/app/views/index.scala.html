@@ -55,9 +55,9 @@
 
 @positionInTimetracksList(minutesOfDay : Int) = {
     @if(timeTracks.get(timeTracks.size - 1).getTo != null) {
-        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (timeTracks.get(timeTracks.size - 1).getTo.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay)}
+        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (timeTracks.get(timeTracks.size - 1).getTo.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay + 1)}
     } else {
-        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (DateTime.now.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay)}
+        @{(minutesOfDay - timeTracks.get(0).getFrom.getMinuteOfDay) * 100 / (DateTime.now.getMinuteOfDay - timeTracks.get(0).getFrom.getMinuteOfDay + 1)}
     }
 }
 
