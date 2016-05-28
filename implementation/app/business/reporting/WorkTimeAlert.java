@@ -23,6 +23,7 @@ public class WorkTimeAlert implements Comparable{
    public Type getType() {
       return _type;
    }
+   public String getMessage() { return _message; }
 
    @Override
    public int compareTo(Object o) {

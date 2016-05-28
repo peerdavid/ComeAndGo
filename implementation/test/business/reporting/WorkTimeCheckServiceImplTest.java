@@ -155,7 +155,7 @@ public class WorkTimeCheckServiceImplTest {
         final int NUM_OF_DAYS = 15;
 
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(NUM_OF_DAYS), _testBoss.getId());
-        Mockito.verify(_collectiveAgreement, times(1)).createForbiddenWorkTimeAlerts(any(ReportEntry.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(1)).createGeneralWorkTimeAlerts(any(ReportEntry.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).createFreeTimeHoursOfDayAlerts(any(User.class), any(DateTime.class),
                 any(List.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(any(User.class),
@@ -169,7 +169,7 @@ public class WorkTimeCheckServiceImplTest {
         final int NUM_OF_DAYS = 15;
 
         _service.readForbiddenWorkTimeAlerts(_userList, _now, _now.plusDays(NUM_OF_DAYS), _testBossOfBoss.getId());
-        Mockito.verify(_collectiveAgreement, times(2)).createForbiddenWorkTimeAlerts(any(ReportEntry.class), any(List.class));
+        Mockito.verify(_collectiveAgreement, times(2)).createGeneralWorkTimeAlerts(any(ReportEntry.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).createFreeTimeHoursOfDayAlerts(any(User.class), any(DateTime.class),
                 any(List.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(any(User.class),

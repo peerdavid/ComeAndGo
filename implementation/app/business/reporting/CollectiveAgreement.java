@@ -26,7 +26,7 @@ interface CollectiveAgreement {
      * @param entry the reportEntry to check
      * @param alertList the list to add resulting workTimeAlerts
      */
-    void createForbiddenWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList);
+    void createGeneralWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList);
 
     /**
      *

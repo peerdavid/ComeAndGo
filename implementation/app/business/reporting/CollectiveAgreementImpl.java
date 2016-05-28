@@ -125,7 +125,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     @Override
-    public void createForbiddenWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+    public void createGeneralWorkTimeAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         createFlexTimeAlerts(entry, alertList);
         createBreakOverAndUnderConsumptionAlerts(entry, alertList);
         createHolidayAlerts(entry, alertList);
@@ -194,7 +194,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
             typeToInsert = WorkTimeAlert.Type.WARNING;
             valueToInsert = percentageToString(75);
 
-            if(flexTimeSaldoInHoursScaledToYear > CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR) {
+            if(flexTimeSaldoInHoursScaledToYear >= CollectiveConstants.MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR) {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
                 valueToInsert = percentageToString(100);
             }
@@ -207,7 +207,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         if(flexTimeSaldoInHoursScaledToYear < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR * 0.75) {
             typeToInsert = WorkTimeAlert.Type.WARNING;
             valueToInsert = percentageToString(75);
-            if(flexTimeSaldoInHoursScaledToYear < CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR) {
+            if(flexTimeSaldoInHoursScaledToYear <= CollectiveConstants.MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR) {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
                 valueToInsert = percentageToString(100);
             }

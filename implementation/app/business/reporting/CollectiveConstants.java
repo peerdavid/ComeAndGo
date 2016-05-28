@@ -5,7 +5,7 @@ package business.reporting;
  */
 class CollectiveConstants {
    protected static final double MAX_PLUS_SALDO_OF_FLEXTIME_PER_YEAR = 154;
-   protected static final double MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR = 38.5 / 2;
+   protected static final double MAX_MINUS_SALDO_OF_FLEXTIME_PER_YEAR = -38.5 / 2;
 
    protected static final int WORK_DAYS_PER_YEAR = 320;
 

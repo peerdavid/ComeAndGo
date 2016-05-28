@@ -64,7 +64,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         User user = entry.getUser();
 
         // standard alerts
-        _collectiveAgreement.createForbiddenWorkTimeAlerts(entry, alertList);
+        _collectiveAgreement.createGeneralWorkTimeAlerts(entry, alertList);
 
         // check for alerts which have to be observed daily (overtime, ...)
         for(DateTime actualDate = from; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {

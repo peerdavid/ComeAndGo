@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Created by paz on 09.05.16.
@@ -26,15 +27,20 @@ public class CollectiveAgreementImplTest {
     CollectiveAgreement _testee;
     List<TimeOff> _timeoffs;
     List<TimeTrack> _timetracks;
+    List<WorkTimeAlert> _alert;
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, null, 8.0);
-        _testUser.setEntryDate(new DateTime(2016, 1, 10, 0, 0));
-        _testUser.setHolidays(25);
+        _testUser = mock(User.class);
+        when(_testUser.getFirstName()).thenReturn("Klaus");
+        when(_testUser.getLastName()).thenReturn("Kleber");
+        when(_testUser.getHoursPerDay()).thenReturn(8.0);
+        when(_testUser.getEntryDate()).thenReturn(new DateTime(2016, 1, 10, 0, 0));
+        when(_testUser.getHolidays()).thenReturn(25);
         _testee = new CollectiveAgreementImpl();
         _timeoffs = new ArrayList<>();
         _timetracks = new ArrayList<>();
+        _alert = new ArrayList<>();
     }
 
     @Test
@@ -143,7 +149,34 @@ public class CollectiveAgreementImplTest {
 
         int expectedWorkMinutesIs = date2.getMinuteOfDay() - date1.getMinuteOfDay() + (date4.getMinuteOfDay() - date3.getMinuteOfDay());
         Assert.assertEquals(expectedWorkMinutesIs, actual.getWorkMinutesIs());
+    }
 
+    @Test
+    public void createGeneralWorkTimeAlert_WithUserExceededAnnualFlextimeTolerance_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithFlextimeExceedingForUser(_testUser), _alert);
+        Assert.assertEquals(1, _alert.size());
+        Assert.assertEquals(WorkTimeAlert.Type.URGENT, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithUserNearlyExceededFlextimeTolerance_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithNearlyExceededFlextimeForUser(_testUser), _alert);
+        Assert.assertEquals(1, _alert.size());
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithUserTooManyMinusHours_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithTooManyMinusHours(_testUser), _alert);
+        Assert.assertEquals(1, _alert.size());
+        Assert.assertEquals(WorkTimeAlert.Type.URGENT, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithUserNearlyTooManyMinusHours_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithNearlyTooManyMinusHours(_testUser), _alert);
+        Assert.assertEquals(1, _alert.size());
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
     }
 
 }
