@@ -8,9 +8,9 @@ import play.i18n.Messages;
  */
 public class HolidayPayoutAcceptViewModel extends BasicViewModel {
 
-    public HolidayPayoutAcceptViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public HolidayPayoutAcceptViewModel(int notificationId, String message, String additionalInfo, String sender, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, "", timeTracking);
+        super(notificationId, message, sender, additionalInfo, timeTracking);
 
     }
 
