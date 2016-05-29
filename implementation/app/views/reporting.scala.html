@@ -27,18 +27,24 @@
         }
 }
 
+@dateChooserActionUrl = {
+    @if(request().uri.contains(routes.ReportingController.companyReport().url)) {
+        @routes.ReportingController.companyReport().url
+    } else {
+        @if(request().uri.contains(routes.ReportingController.bossReport().url)) {
+            @routes.ReportingController.bossReport().url
+        } else {
+            @routes.ReportingController.employeeReport().url
+        }
+    }
+}
+
+
 @main(Messages("views.report.title"), scripts) {
 
     @navigation(Messages("views.report.title"), profile) {
 
-        @{
-            if(profile.getRoles().contains(SecurityRole.ROLE_PERSONNEL_MANAGER))
-                datechooser(routes.ReportingController.companyReport().url, Messages("views.report.loadreport"), from, to)
-            else if(profile.getRoles().contains(SecurityRole.ROLE_BOSS))
-                datechooser(routes.ReportingController.bossReport().url, Messages("views.report.loadreport"), from, to)
-            else
-                datechooser(routes.ReportingController.employeeReport().url, Messages("views.report.loadreport"), from, to)
-        }
+        @{datechooser(dateChooserActionUrl.toString(), Messages("views.report.loadreport"), from, to)}
 
         <table class="striped responsive-table">
             <thead>
