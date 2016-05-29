@@ -36,7 +36,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // send notification
       User boss = employee.getBoss();
-      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REQUEST, employee, boss, id);
+      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REQUEST, comment, employee, boss, id);
       _notification.sendNotification(notification);
    }
 
@@ -49,7 +49,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // send notification
       User boss = employee.getBoss();
-      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_REQUEST, employee, boss, id);
+      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_REQUEST, comment, employee, boss, id);
       _notification.sendNotification(notification);
    }
 
@@ -63,7 +63,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // sends notification to employee
       User boss = _userManagement.readUser(bossId);
-      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_ACCEPT, boss, requestedPayout.getUser());
+      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_ACCEPT, requestedPayout.getComment(), boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
    }
 
@@ -76,7 +76,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // notify employee about rejected payout
       User boss = _userManagement.readUser(bossId);
-      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_REJECT, boss, requestedPayout.getUser());
+      Notification notification = new Notification(NotificationType.HOLIDAY_PAYOUT_REJECT, requestedPayout.getComment(), boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
    }
 
@@ -90,7 +90,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // sends notification to employee
       User boss = _userManagement.readUser(bossId);
-      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_ACCEPT, boss, requestedPayout.getUser());
+      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_ACCEPT, requestedPayout.getComment(), boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
    }
 
@@ -103,7 +103,7 @@ class PayoutServiceImpl implements PayoutService {
 
       // notify employee about rejected payout
       User boss = _userManagement.readUser(bossId);
-      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REJECT, boss, requestedPayout.getUser());
+      Notification notification = new Notification(NotificationType.OVERTIME_PAYOUT_REJECT, requestedPayout.getComment(), boss, requestedPayout.getUser());
       _notification.sendNotification(notification);
    }
 

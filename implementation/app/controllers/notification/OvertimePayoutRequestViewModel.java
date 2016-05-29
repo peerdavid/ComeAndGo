@@ -10,9 +10,9 @@ public class OvertimePayoutRequestViewModel extends BasicViewModel {
 
     private int _payoutId;
 
-    public OvertimePayoutRequestViewModel(int notificationId, int payoutId, String message, String sender, TimeTracking timeTracking) {
+    public OvertimePayoutRequestViewModel(int notificationId, int payoutId, String message, String additionalInfo, String sender, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, "", timeTracking);
+        super(notificationId, message, sender, additionalInfo, timeTracking);
 
         _payoutId = payoutId;
 

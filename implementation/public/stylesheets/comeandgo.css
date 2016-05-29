@@ -106,14 +106,6 @@ nav .navbar-buttons a {
     margin: 6px 0 16px;
 }
 
-#index-time-track-buttons{
-    text-align: center;
-}
-
-#index-welcome-status{
-    text-align: center;
-}
-
 #active_progress {
     height: 32px;
     background: #ff5722;
@@ -138,7 +130,36 @@ nav .navbar-buttons a {
 #index-buttons{
     margin-left: 0.18rem;
     margin-right: 1.5rem;
+}
 
+#timetrack-list {
+    height: 50px;
+    padding-top: 100%;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+.timetrack-item {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 50px;
+    width: 120px;
+    padding: 25px;
+    border-radius: 25px;
+}
+
+.timetrack-item > i {
+    margin-right: 8px;
+}
+
+.timetracklist-hline {
+    display: inline;
+    position: absolute;
+    border: solid #000000 3px;
+    right: 57px;
+    top: 0;
+    height: 100%;
 }
 
 /* listings */

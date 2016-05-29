@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import java.util.Collections;
 import java.util.List;
 import com.google.inject.Inject;
+import play.i18n.Messages;
 
 
 /**
@@ -159,7 +160,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         int id = _repository.createTimeTrack(timeTrack);
 
-        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was created";
+        String comment = Messages.get("notifications.created_timetrack", dateToString(timeTrack.getFrom()));
         Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser(), id);
         _notificationSender.sendNotification(notification);
@@ -168,7 +169,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException {
-        String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was deleted";
+        String comment = Messages.get("notifications.deleted_timetrack", dateToString(timeTrack.getFrom()));
         Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser());
         _notificationSender.sendNotification(notification);
@@ -184,7 +185,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         _repository.updateTimeTrack(timeTrack);
 
 
-           String comment = "Your TimeTrack from " + dateToString(timeTrack.getFrom()) + " was updated";
+           String comment = Messages.get("notifications.changed_timetrack", dateToString(timeTrack.getFrom()));
            Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
                timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
            _notificationSender.sendNotification(notification);
