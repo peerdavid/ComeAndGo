@@ -165,6 +165,7 @@ exceptions.timeoff.error_timeoff_type_unknown = Unknown Timeoff type
 exceptions.reporting.field_comment_empty = Please enter a valid comment
 exceptions.reporting.field_numofhours_empty = Please enter a number
 exceptions.reporting.field_numofhours_negative = Please enter a positive number
+exceptions.reporting.to_before_from = To-Date can not be before From-Date
 
 exceptions.notificationfactory.notification_type_not_found = Notification Type unknown
 exceptions.forbidden_worktime.no_permission_to_read = Sorry, you are not allowed to see work time alerts for this user.
