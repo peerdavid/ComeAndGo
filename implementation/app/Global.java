@@ -8,11 +8,9 @@ import business.usermanagement.UserManagement;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import infrastructure.NotificationRepository;
+import infrastructure.TimeOffRepository;
 import infrastructure.TimeTrackingRepository;
-import models.Break;
-import models.Notification;
-import models.TimeTrack;
-import models.User;
+import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import play.Application;
@@ -57,17 +55,18 @@ public class Global extends GlobalSettings {
             UserManagement userManagement = injector.getInstance(UserManagement.class);
             TimeTracking timeTracking = injector.getInstance(TimeTracking.class);
             NotificationRepository notificationRepository = injector.getInstance(NotificationRepository.class);
+            TimeOffRepository timeOffRepository = injector.getInstance(TimeOffRepository.class);
 
             // Create test users
             List<User> users = new ArrayList<>();
-            User admin = userManagement.readUser("sebastian");
-            User david = new User("david", "test1234", SecurityRole.ROLE_BOSS, "David", "Peer", "peer@comego.at", true, admin, 8.0);
-            User patrick = new User("patrick", "test1234", SecurityRole.ROLE_USER, "Patrick", "Summerer", "summerer@comego.at", true, admin, 8.0);
-            User stefan = new User("stefan", "test1234", SecurityRole.ROLE_PERSONNEL_MANAGER, "Stefan", "Haberl", "haberl@comego.at", true, admin, 8.0);
-            User leo = new User("leonhard", "test1234", SecurityRole.ROLE_USER, "Leonhard", "Haas", "haas@comego.at", true, admin, 8.0);
-            User martin = new User("martin", "test1234", SecurityRole.ROLE_USER, "Martin", "Brunner", "brunner@comego.at", true, admin, 8.0);
+            User sebastian = userManagement.readUser("sebastian");
+            User david = new User("david", "test1234", SecurityRole.ROLE_BOSS, "David", "Peer", "peer@comego.at", true, sebastian, 8.0);
+            User patrick = new User("patrick", "test1234", SecurityRole.ROLE_USER, "Patrick", "Summerer", "summerer@comego.at", true, sebastian, 8.0);
+            User stefan = new User("stefan", "test1234", SecurityRole.ROLE_PERSONNEL_MANAGER, "Stefan", "Haberl", "haberl@comego.at", true, sebastian, 8.0);
+            User leo = new User("leonhard", "test1234", SecurityRole.ROLE_USER, "Leonhard", "Haas", "haas@comego.at", true, sebastian, 8.0);
+            User martin = new User("martin", "test1234", SecurityRole.ROLE_USER, "Martin", "Brunner", "brunner@comego.at", true, sebastian, 8.0);
 
-            users.add(admin);
+            users.add(sebastian);
             users.add(david);
             users.add(patrick);
             users.add(stefan);
@@ -82,7 +81,8 @@ public class Global extends GlobalSettings {
                     userManagement.updateUser(u.getUsername(), u);
                 }
             }
-
+            sebastian.setBoss(david);
+            userManagement.updateUser(sebastian.getUsername(), sebastian);
 
             // Create timetracks upto today for all users
             // Only from Monday to Friday 08:00 - 17:00 and break from 12:00 to 13:00
@@ -110,11 +110,35 @@ public class Global extends GlobalSettings {
 
                 // Delete unnecessary generated Notifications
                 List<Notification> unseen = notificationRepository.readUnseenNotifications(u);
-                List<Notification> sent = notificationRepository.readSentNotifications(u);
                 unseen.forEach(notificationRepository::deleteNotification);
-                sent.forEach(notificationRepository::deleteNotification);
             }
 
+            // Create some holidays, etc.
+            timeTracking.requestHoliday(patrick.getId(), new DateTime(2016, 7, 15, 0, 0), new DateTime(2016, 7, 29, 23, 59), "Summer holiday");
+            timeTracking.requestHoliday(sebastian.getId(), new DateTime(2016, 8, 1, 0, 0), new DateTime(2016, 8, 21, 23, 59), "Italy");
+            timeTracking.requestHoliday(leo.getId(), new DateTime(2016, 7, 2, 0, 0), new DateTime(2016, 7, 12, 23, 59), "I need holiday");
+
+            List<TimeOff> waldiHoliday = timeOffRepository.readTimeOffs(sebastian);
+            int waldiTimeOffid = 0;
+            for (TimeOff t : waldiHoliday) {
+                waldiTimeOffid = t.getId();
+                timeTracking.acceptHoliday(waldiTimeOffid, sebastian.getBoss().getId());
+            }
+
+            List<TimeOff> leoHoliday = timeOffRepository.readTimeOffs(leo);
+            int leoTimeOffid = 0;
+            for (TimeOff t : leoHoliday) {
+                leoTimeOffid = t.getId();
+                timeTracking.acceptHoliday(leoTimeOffid, leo.getBoss().getId());
+            }
+
+            // Alter Notifications for boss david
+            List<Notification> unseen = notificationRepository.readUnseenNotifications(david);
+            for (Notification n : unseen) {
+                if (n.getReferenceId().equals(waldiTimeOffid) || n.getReferenceId().equals(leoTimeOffid)) {
+                    notificationRepository.markAsRead(n);
+                }
+            }
 
 
         } catch (Exception e) {
