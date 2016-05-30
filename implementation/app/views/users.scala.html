@@ -28,8 +28,9 @@
                 @for(u: User <- userlist) {
                     <li>
                         @if(u.getRole == SecurityRole.ROLE_USER) {
-                            <div class="collapsible-header"><i class="material-icons">perm_identity</i><b>
-                                (u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.createuser.form.roles.user") + ")")</b></div>
+                            <div class="collapsible-header"><i class="material-icons">perm_identity</i>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.user") + ")") </b>
+                            </div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_PERSONNEL_MANAGER) {
                             <div class="collapsible-header">

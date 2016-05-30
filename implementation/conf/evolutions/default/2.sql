@@ -1,9 +1,9 @@
 # --- !Ups
 
 insert into user values (1, 'david', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_BOSS', true, 'David', 'Peer', 'david@comego.at', 1, 8.30, 25, '2016-01-01');
-insert into user values (2, 'stefan', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_EMPLOYEE', true, 'Stefan', 'Haberl', 'stefan@comego.at', 1, 8.30, 25, '2016-01-01');
-insert into user values (3, 'leo', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_EMPLOYEE', true, 'Leo', 'Haas', 'leo@comego.at', 1, 8.30, 25, '2016-01-01');
-insert into user values (4, 'martin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_EMPLOYEE', true, 'Martin', 'Brunner', 'martin@comego.at', 1, 5.30, 25, '2016-01-01');
+insert into user values (2, 'stefan', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_USER', true, 'Stefan', 'Haberl', 'stefan@comego.at', 1, 8.30, 25, '2016-01-01');
+insert into user values (3, 'leo', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_USER', true, 'Leo', 'Haas', 'leo@comego.at', 1, 8.30, 25, '2016-01-01');
+insert into user values (4, 'martin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_USER', true, 'Martin', 'Brunner', 'martin@comego.at', 1, 5.30, 25, '2016-01-01');
 insert into user values (5, 'admin', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_ADMIN', true, 'admin', 'admin', 'admin@comego.at', 1, 5.00, 25, '2016-01-01');
 insert into user values (6, 'pers', '$2a$10$x5hq8cYHsF2UOCElx7v29.FAleENAZ//oHgii6DdAyarcBe514KtS', 'ROLE_PERSONNEL_MANAGER', true, 'pers', 'pers', 'pers@comego.at', 1, 8.30, 25, '2016-01-01');
 
