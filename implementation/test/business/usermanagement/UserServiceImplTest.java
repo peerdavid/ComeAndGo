@@ -93,4 +93,30 @@ public class UserServiceImplTest {
     public void validateBossOfUser_WhereEmployeeRequestsAlertsFromPersonnellManager_ShouldFail() throws Exception {
         _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestPersonnellManager.getId(), _mockedTestBoss.getId());
     }
+
+    @Test(expected = UserException.class)
+    public void validateAllowedUserForEditTimeTrackTask_WhereRequesterIsUserItselfAndEmployee_ShouldFail() throws Exception {
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestUser.getId(), _mockedTestUser.getId());
+    }
+
+    @Test(expected = UserException.class)
+    public void validateAllowedUserForEditTimeTrackTask_WhereRequesterIsUserItselfAndBoss_ShouldFail() throws Exception {
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestBoss.getId(), _mockedTestBoss.getId());
+    }
+
+    @Test
+    public void validateAllowedUserForEditTimeTrackTask_WhereRequesterIsPersonnelManager_ShouldSucceed() throws Exception {
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestUser.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestBoss.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestAdmin.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestPersonnellManager.getId(), _mockedTestPersonnellManager.getId());
+    }
+
+    @Test
+    public void validateAllowedUserForEditTimeTrackTask_WhereRequesterIsAdministrator_ShouldSucceed() throws Exception {
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestUser.getId(), _mockedTestAdmin.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestBoss.getId(), _mockedTestAdmin.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestAdmin.getId(), _mockedTestAdmin.getId());
+        _service.validateBossOfUserOrPersonnelManager(_mockedTestPersonnellManager.getId(), _mockedTestAdmin.getId());
+    }
 }
