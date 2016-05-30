@@ -167,6 +167,4 @@ public class UserServiceTest {
         // Check if a User is deleted in repo
         Mockito.verify(_notificationSenderMock, times(1)).sendNotification(any());
     }
-
-
 }

@@ -35,7 +35,6 @@ public class TimeTrackingServiceImplTest {
     TimeOffValidation _timeOffValidation;
     InternalUserManagement _internalUserManagement;
     TimeTrackingService _timeTrackService;
-    Messages _messages;
     User _testUser;
     Break _testBreak;
 
@@ -50,8 +49,6 @@ public class TimeTrackingServiceImplTest {
         _internalUserManagement = mock(InternalUserManagement.class);
         _validation = mock(TimeTrackingValidation.class);
         _timeOffValidation = mock(TimeOffValidation.class);
-        //_messages = mock(Messages.class);
-        //when(Messages.get(any(String.class), any(String.class))).thenReturn("");
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _internalUserManagement);
     }

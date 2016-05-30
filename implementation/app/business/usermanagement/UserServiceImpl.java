@@ -208,13 +208,9 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
     @Override
     public void validateBossOfUserOrPersonnellManager(int userId, int toTestBossId) throws Exception {
-        // if user requests his own workTimeAlerts
-        if(userId == toTestBossId) {
-            return;
-        }
-        // if requester is personal manager he is allowed to see all alerts
-        User user = readUser(userId);
-        if(user.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+        // if user requests his own workTimeAlerts or is personal manager
+        User user = readUser(toTestBossId);
+        if(userId == toTestBossId || user.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
             return;
         }
         // if requester is in any way a boss of requested employee he is allowed to see alerts

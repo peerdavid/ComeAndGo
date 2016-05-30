@@ -103,36 +103,28 @@ public class WorkTimeCheckServiceImplTest {
         _service.readForbiddenWorkTimeAlerts(_userList, _now, _now.minusMillis(2), _testBoss.getId());
     }
 
-    @Test(expected = UserException.class)
-    public void readWorkTimeAlertsFromUser_WhereRequesterIsNoBossOrPersonellManager_ShouldFail() throws Exception {
-        _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testOutstandingPerson.getId());
-    }
-
-    @Test(expected = UserException.class)
-    public void readWorkTimeAlertsFromUser_WhereRequesterIsEmployeeOfUser_ShouldFail() throws Exception {
-        when(_internalUserManagement.validateBossOfUserOrPersonnellManager(any(Object.class), any(Object.class)))
-            .thenThrow(UserException.class);
-        _service.readForbiddenWorkTimeAlerts(_testBoss.getId(), _now, _now.plusDays(2), _testEmployee.getId());
-    }
-
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfEmployee_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBoss.getId());
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfBossOfUser_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBossOfBoss.getId());
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsPersonnelManager_ShouldSucced() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testPersonnellManager.getId());
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsUserItself_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testEmployee.getId());
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
     }
 
     @Test
