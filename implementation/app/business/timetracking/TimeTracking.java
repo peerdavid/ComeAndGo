@@ -29,11 +29,11 @@ public interface TimeTracking extends UseCases {
 
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws Exception;
 
-    void createTimeTrack(int userId, DateTime from, DateTime to) throws Exception;
+    void createTimeTrack(int userId, DateTime from, DateTime to, int currentUserId, String message) throws Exception;
 
-    void deleteTimeTrack(TimeTrack timeTrack) throws Exception;
+    void deleteTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception;
 
-    void updateTimeTrack(TimeTrack timeTrack) throws Exception;
+    void updateTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception;
 
     TimeOff readTimeOffById(int timeOffId) throws Exception;
 

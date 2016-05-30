@@ -31,7 +31,7 @@ class UserRepositoryImpl implements UserRepository {
         }
 
         // We should never return null
-        throw new UserNotFoundException("exceptions.usermanagement.could_not_find_timetrack");
+        throw new UserNotFoundException("exceptions.usermanagement.could_not_find_user");
     }
 
 

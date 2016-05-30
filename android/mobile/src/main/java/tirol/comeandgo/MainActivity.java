@@ -19,6 +19,7 @@ import tirol.comeandgo.business.api.Client;
 import tirol.comeandgo.business.api.ClientResult;
 import tirol.comeandgo.business.api.ClientResultListener;
 import tirol.comeandgo.business.api.TimeTrackState;
+import tirol.comeandgo.business.settings.Settings;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, ClientResultListener {
@@ -31,6 +32,9 @@ public class MainActivity extends AppCompatActivity
     private FloatingActionButton mBtnRefresh;
 
     private String mTimeTrackState;
+
+    private Settings mSettings;
+    private String mUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +52,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        mClient = new Client("192.168.10.116:9000", "v1");
+        mSettings = new Settings(this);
+        mUrl = String.format("%s:%d", mSettings.getHost(), mSettings.getPort());
+
+        mClient = new Client(mUrl, "v1", mSettings.getUserName(), mSettings.getPassword());
         mClient.setOnResultListener(this);
         mBtnCome = (Button) findViewById(R.id.btnCome);
         mBtnCome.setOnClickListener(
@@ -124,11 +131,13 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             mClient.readState();
         } else if (id == R.id.nav_open_in_browser) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.10.116:9000/"));
+            String browserUrl = String.format("http://%s/", mUrl);
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(browserUrl));
             startActivity(browserIntent);
 
         } else if (id == R.id.nav_settings) {
-
+            Intent myIntent = new Intent(this, SettingsActivity.class);
+            this.startActivity(myIntent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
