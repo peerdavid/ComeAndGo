@@ -62,35 +62,35 @@ public class UserServiceImplTest {
 
     @Test
     public void validateBossOfUser_WhereRequesterIsUserItself_ShouldSucceed() throws Exception {
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestUser.getId(), _mockedTestUser.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestBossOfBoss.getId(), _mockedTestBossOfBoss.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestAdmin.getId(), _mockedTestAdmin.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestUser.getId(), _mockedTestUser.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestBossOfBoss.getId(), _mockedTestBossOfBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestAdmin.getId(), _mockedTestAdmin.getId());
     }
 
     @Test
     public void validateBossOfUser_WhereRequesterIsOneOfTheBossesOfUser_ShouldSucceed() throws Exception {
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestUser.getId(), _mockedTestBoss.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestUser.getId(), _mockedTestBossOfBoss.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestBoss.getId(), _mockedTestBossOfBoss.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestAdmin.getId(), _mockedTestBossOfBoss.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestPersonnellManager.getId(), _mockedTestBossOfBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestUser.getId(), _mockedTestBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestUser.getId(), _mockedTestBossOfBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestBoss.getId(), _mockedTestBossOfBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestAdmin.getId(), _mockedTestBossOfBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestPersonnellManager.getId(), _mockedTestBossOfBoss.getId());
     }
 
     @Test
     public void validateBossOfUser_WhereRequesterIsPersonnellManager_ShouldSucceedForAnyRequestedUser() throws Exception {
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestUser.getId(), _mockedTestPersonnellManager.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestBoss.getId(), _mockedTestPersonnellManager.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestBossOfBoss.getId(), _mockedTestPersonnellManager.getId());
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestAdmin.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestUser.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestBoss.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestBossOfBoss.getId(), _mockedTestPersonnellManager.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestAdmin.getId(), _mockedTestPersonnellManager.getId());
     }
 
     @Test(expected = UserException.class)
     public void validateBossOfUser_WhereRequesterIsEmployeeOfBoss_ShouldFail() throws Exception {
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestBoss.getId(), _mockedTestUser.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestBoss.getId(), _mockedTestUser.getId());
     }
 
     @Test(expected = UserException.class)
     public void validateBossOfUser_WhereEmployeeRequestsAlertsFromPersonnellManager_ShouldFail() throws Exception {
-        _service.validateBossOfUserOrPersonnellManager(_mockedTestPersonnellManager.getId(), _mockedTestBoss.getId());
+        _service.validateBossOfUserOrPersonnelManagerOrUserItself(_mockedTestPersonnellManager.getId(), _mockedTestBoss.getId());
     }
 }

@@ -15,7 +15,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import play.i18n.Messages;
 
 import java.util.Collections;
 
@@ -432,7 +431,7 @@ public class TimeTrackingServiceImplTest {
         // init
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(23), DateTime.now().plusHours(50), null);
 
-        _timeTrackService.createTimeTrack(timeTrackToInsert, 0);
+        _timeTrackService.createTimeTrack(timeTrackToInsert, 0, );
         Mockito.verify(_validation, times(1)).validateTimeTrackInsert(any(TimeTrack.class));
     }
 
@@ -445,7 +444,7 @@ public class TimeTrackingServiceImplTest {
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(Collections.emptyList());
         when(_internalUserManagement.readUser(8)).thenReturn(_testUser);
 
-        _timeTrackService.createTimeTrack(timeTrackToInsert, 0);
+        _timeTrackService.createTimeTrack(timeTrackToInsert, 0, );
         Mockito.verify(_timeTrackingRepository, times(1)).createTimeTrack(timeTrackToInsert);
     }
 
@@ -464,7 +463,7 @@ public class TimeTrackingServiceImplTest {
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
         timeTrack.setId(1);
 
-        _timeTrackService.updateTimeTrack(timeTrack, 0);
+        _timeTrackService.updateTimeTrack(timeTrack, 0, );
         Mockito.verify(_validation, times(1)).validateTimeTrackUpdate(any(TimeTrack.class));
     }
 }

@@ -207,7 +207,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
     }
 
     @Override
-    public void validateBossOfUserOrPersonnellManager(int userId, int toTestBossId) throws Exception {
+    public void validateBossOfUserOrPersonnelManagerOrUserItself(int userId, int toTestBossId) throws Exception {
         // if user requests his own workTimeAlerts or is personal manager
         User user = readUser(toTestBossId);
         if(userId == toTestBossId || user.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
@@ -223,7 +223,17 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
             requestedUser = bossOfUser;
             bossOfUser = requestedUser.getBoss();
         }
-        throw new UserException("exceptions.forbidden_worktime.no_permission_to_read");
+        throw new UserException("exceptions.usermanagement.no_permission_to_read_requested_task");
+    }
+
+    @Override
+    public void validateBossOfUserOrPersonnelManager(int userId, int toTestBossId) throws Exception {
+        // only administrators and personnel managers are allowed to update / delete / create timeTracks
+        User actualUser = readUser(toTestBossId);
+        if(actualUser.getRole().equals(SecurityRole.ROLE_ADMIN) || actualUser.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            return;
+        }
+        throw new UserException("exceptions.usermanagement.no_permission_to_read_requested_task");
     }
 
     private void notifyBossAboutDelete(String currentUserName, User userToDelete) throws UserNotFoundException, NotificationException {

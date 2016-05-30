@@ -1,7 +1,6 @@
 package business.reporting;
 
 import business.usermanagement.InternalUserManagement;
-import business.usermanagement.SecurityRole;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
 import models.Report;
@@ -49,7 +48,7 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
     @Override
     public List<WorkTimeAlert> readForbiddenWorkTimeAlerts(int userId, DateTime from, DateTime to, int actualUserId) throws Exception {
         validateDate(from, to);
-        _userManagement.validateBossOfUserOrPersonnellManager(userId, actualUserId);
+        _userManagement.validateBossOfUserOrPersonnelManagerOrUserItself(userId, actualUserId);
 
         DateTime entryDate = _userManagement.readUser(userId).getEntryDate();
         from = (from == null || from.isBefore(entryDate)) ? entryDate : from;

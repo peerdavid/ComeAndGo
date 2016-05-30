@@ -16,5 +16,6 @@ public interface InternalUserManagement {
 
     List<User> readUsersOfBoss(int userId) throws Exception;
 
-    void validateBossOfUserOrPersonnellManager(int userId, int toTestBossId) throws Exception;
+    void validateBossOfUserOrPersonnelManagerOrUserItself(int userId, int toTestBossId) throws Exception;
+    void validateBossOfUserOrPersonnelManager(int userId, int toTestBossId) throws Exception;
 }

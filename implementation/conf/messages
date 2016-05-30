@@ -141,6 +141,7 @@ exceptions.usermanagement.invalid_role = Invalid User role
 exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
 exceptions.usermanagement.invalid_hours_per_day = Negative hours per day is not allowed
+exceptions.usermanagement.no_permission_to_read_requested_task = Your user has no permission to read the requested task.
 exceptions.timetracking.could_not_update_break = Could not update TimeTrack and insert break
 exceptions.timetracking.could_not_find_timetrack = Timetrack was not found
 exceptions.timetracking.could_not_find_break = Break was not found

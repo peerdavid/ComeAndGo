@@ -106,25 +106,25 @@ public class WorkTimeCheckServiceImplTest {
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfEmployee_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBoss.getId());
-        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManagerOrUserItself(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsBossOfBossOfUser_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testBossOfBoss.getId());
-        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManagerOrUserItself(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsPersonnelManager_ShouldSucced() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testPersonnellManager.getId());
-        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManagerOrUserItself(any(Integer.class), any(Integer.class));
     }
 
     @Test
     public void readWorkTimeAlertsFromUser_WhereRequesterIsUserItself_ShouldSucceed() throws Exception {
         _service.readForbiddenWorkTimeAlerts(_testEmployee.getId(), _now, _now.plusDays(2), _testEmployee.getId());
-        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnellManager(any(Integer.class), any(Integer.class));
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManagerOrUserItself(any(Integer.class), any(Integer.class));
     }
 
     @Test

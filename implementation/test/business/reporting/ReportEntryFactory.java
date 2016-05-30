@@ -55,6 +55,6 @@ public class ReportEntryFactory {
         double hoursPerDay = 38.5 / 5;
         long workMinutesShould = (long)(hoursPerDay * dayInYear * 60);
         return new ReportEntry(user, hoursPerDay, 25, 0, 4, workMinutesShould, workMinutesShould,
-                dayInYear * 30, 0, 0, dayInYear);
+                (long)(dayInYear * 30 * (1 + CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)), 0, 0, dayInYear);
     }
 }

@@ -2,7 +2,6 @@ package business.timetracking;
 
 
 import business.notification.InternalNotificationSender;
-import business.notification.NotificationException;
 import business.notification.NotificationType;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
@@ -17,7 +16,6 @@ import org.joda.time.DateTime;
 import java.util.Collections;
 import java.util.List;
 import com.google.inject.Inject;
-import play.i18n.Messages;
 
 
 /**
@@ -47,7 +45,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         if(isActive(userId)) {
             throw new UserException("exceptions.timetracking.error_user_already_working");
         }
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
 
         _timeOffValidation.validateComeForDate(user, DateTime.now());
         TimeTrack newTimeTrack = new TimeTrack(user);
@@ -61,7 +59,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
             throw new UserException("exceptions.timetracking.error_user_not_started_work");
         }
 
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
         TimeTrack timeTrack = _repository.readActiveTimeTrack(user);
         timeTrack.setTo(DateTime.now());
         _repository.updateTimeTrack(timeTrack);
@@ -70,7 +68,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public boolean isActive(int userId) throws UserException {
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
 
         // _repository throws exception, if there is no TimeTrack available
         try {
@@ -85,7 +83,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public boolean takesBreak(int userId) throws UserException {
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
 
         try {
             _repository.readActiveBreak(user);
@@ -104,7 +102,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
             throw new UserException("exceptions.timetracking.user_not_working_and_break");
         }
 
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
         TimeTrack activeTimeTrack = _repository.readActiveTimeTrack(user);
         activeTimeTrack.addBreak(new Break(DateTime.now()));
         _repository.updateTimeTrack(activeTimeTrack);
@@ -120,7 +118,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
             throw new UserException("exceptions.timetracking.user_not_working_and_break");
         }
 
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
         Break activeBreak = _repository.readActiveBreak(user);
         activeBreak.setTo(DateTime.now());
         _repository.updateBreak(activeBreak);
@@ -129,7 +127,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public List<TimeTrack> readTimeTracks(int userId) throws UserException {
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
 
         return _repository.readTimeTracks(user);
     }
@@ -141,37 +139,41 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
     @Override
     public List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException {
-        User user = loadUserById(userId);
+        User user = _userManagement.readUser(userId);
        return _repository.readTimeTracks(user, from, to);
     }
 
 
     @Override
-    public void createTimeTrack(int userId, DateTime from, DateTime to, int currentUserId) throws UserException, NotificationException {
-        User user = loadUserById(userId);
+    public void createTimeTrack(int userId, DateTime from, DateTime to, int currentUserId, String message) throws Exception {
+        User user = _userManagement.readUser(userId);
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
-        createTimeTrack(timeTrack, currentUserId);
+        createTimeTrack(timeTrack, currentUserId, message);
     }
 
 
     @Override
-    public void createTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException {
+    public void createTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
+        _userManagement.validateBossOfUserOrPersonnelManagerOrUserItself(timeTrack.getUser().getId(), currentUserId);
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
+
         int id = _repository.createTimeTrack(timeTrack);
 
-        String comment = "";
-        Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
-            timeTrack.getUser().getBoss(), timeTrack.getUser(), id);
+        User executingUser = _userManagement.readUser(currentUserId);
+        Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, message,
+            executingUser, timeTrack.getUser(), id);
         _notificationSender.sendNotification(notification);
     }
 
 
     @Override
-    public void deleteTimeTrack(TimeTrack timeTrack, int currentUserId) throws NotificationException {
-        String comment = "";
-        Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
-            timeTrack.getUser().getBoss(), timeTrack.getUser());
+    public void deleteTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
+        _userManagement.validateBossOfUserOrPersonnelManagerOrUserItself(timeTrack.getUser().getId(), currentUserId);
+
+        User executingUser = _userManagement.readUser(currentUserId);
+        Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, message,
+            executingUser, timeTrack.getUser());
         _notificationSender.sendNotification(notification);
 
         _repository.deleteTimeTrack(timeTrack);
@@ -179,44 +181,15 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException {
+    public void updateTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
+        _userManagement.validateBossOfUserOrPersonnelManagerOrUserItself(timeTrack.getUser().getId(), currentUserId);
         _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
+
         _repository.updateTimeTrack(timeTrack);
 
-       String comment = "";
-       Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
-           timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
+       Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, message,
+           _userManagement.readUser(currentUserId), timeTrack.getUser(), timeTrack.getId());
        _notificationSender.sendNotification(notification);
-    }
-
-    private String dateToString(DateTime date) {
-        try {
-            StringBuilder sb = new StringBuilder();
-            int value;
-            if ((value = date.getDayOfMonth()) < 10) {
-                sb.append("0");
-            }
-            sb.append(value + ".");
-            if ((value = date.getMonthOfYear()) < 10) {
-                sb.append("0");
-            }
-            sb.append(value + ".");
-            sb.append(date.getYear());
-            return sb.toString();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    private User loadUserById(int userId) throws UserException {
-        User user;
-
-        try {
-            user = _userManagement.readUser(userId);
-        } catch (Exception e) {
-            throw new UserException("exceptions.usermanagement.no_such_user");
-        }
-        return user;
     }
 }

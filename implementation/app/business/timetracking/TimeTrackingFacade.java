@@ -83,17 +83,17 @@ class TimeTrackingFacade implements TimeTracking {
 
     @Override
     public void createTimeTrack(int userId, DateTime from, DateTime to,int currentUserId, String message) throws Exception {
-        _timeTrackingService.createTimeTrack(userId, from, to, currentUserId);
+        _timeTrackingService.createTimeTrack(userId, from, to, currentUserId, message);
     }
 
     @Override
     public void deleteTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
-        _timeTrackingService.deleteTimeTrack(timeTrack, currentUserId);
+        _timeTrackingService.deleteTimeTrack(timeTrack, currentUserId, message);
     }
 
     @Override
     public void updateTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
-        _timeTrackingService.updateTimeTrack(timeTrack, currentUserId);
+        _timeTrackingService.updateTimeTrack(timeTrack, currentUserId, message);
     }
 
     @Override

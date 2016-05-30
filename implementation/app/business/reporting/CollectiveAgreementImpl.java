@@ -140,7 +140,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
     private void createSickDayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         if(entry.getNumOfSickDays() * (CollectiveConstants.AVERAGE_AMOUNT_WORK_DAYS_PER_MONTH / entry.getWorkdaysOfReport())
-                > CollectiveConstants.TOLERATED_SICKLEAVE_DAYS_PER_MONTH) {
+                >= CollectiveConstants.TOLERATED_SICKLEAVE_DAYS_PER_MONTH) {
             alertList.add(createAlert("forbidden_worktime.user_has_many_sick_leaves",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser())));
@@ -150,7 +150,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     private void createHolidayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
         // scale numOfUsedHoliday up to a year
         User user = entry.getUser();
-        if(entry.getWorkdaysOfReport() >= CollectiveConstants.WORK_DAYS_PER_YEAR) {
+        if(entry.getWorkdaysOfReport() >= DateTimeUtils.getWorkdaysOfThisYear()) {
             if (entry.getNumOfUsedHolidays() > user.getHolidays()) {
                 alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
                         WorkTimeAlert.Type.URGENT,
@@ -173,13 +173,13 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         double breakMinutesIs = entry.getBreakMinutes();
 
         if(breakMinutesIs / entry.getWorkdaysOfReport()
-                > CollectiveConstants.BREAKMINUTES_PER_DAY * CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE) {
+                >= CollectiveConstants.BREAKMINUTES_PER_DAY * (1 + CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
                     percentageToString(100 * breakMinutesIs / workMinutesIs)));
         } else if(breakMinutesIs * entry.getWorkdaysOfReport()
-                < CollectiveConstants.BREAKMINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
+                <= CollectiveConstants.BREAKMINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
@@ -205,7 +205,6 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
                 valueToInsert = percentageToString(100);
             }
-
             alertList.add(createAlert("forbidden_worktime.flextime_saldo_over_specified_percent",
                     typeToInsert, userFirstAndLastName(entry.getUser()), valueToInsert));
         }
@@ -218,7 +217,6 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 typeToInsert = WorkTimeAlert.Type.URGENT;
                 valueToInsert = percentageToString(100);
             }
-
             alertList.add(createAlert("forbidden_worktime.flextime_saldo_under_specified_percent",
                     typeToInsert, userFirstAndLastName(entry.getUser()), valueToInsert));
         }
