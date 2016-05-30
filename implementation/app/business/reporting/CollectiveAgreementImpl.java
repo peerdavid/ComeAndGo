@@ -162,17 +162,18 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     private void createBreakOverAndUnderConsumptionAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
+        // takes average value of break per day to ensure user does not overuse...
         double workMinutesIs = entry.getWorkMinutesIs();
         double breakMinutesIs = entry.getBreakMinutes();
 
-        if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
-                > workMinutesIs * (1 + CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
+        if(breakMinutesIs / entry.getWorkdaysOfReport()
+                > CollectiveConstants.BREAKMINUTES_PER_DAY * CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE) {
             alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
                     percentageToString(100 * breakMinutesIs / workMinutesIs)));
-        } else if(breakMinutesIs * CollectiveConstants.WORKTIME_TO_BREAK_RATIO
-                < workMinutesIs * (1 - CollectiveConstants.TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE)) {
+        } else if(breakMinutesIs * entry.getWorkdaysOfReport()
+                < CollectiveConstants.BREAKMINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),

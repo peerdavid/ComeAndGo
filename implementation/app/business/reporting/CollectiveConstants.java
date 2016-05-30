@@ -18,8 +18,8 @@ class CollectiveConstants {
    protected static final double TOLERATED_SICKLEAVE_DAYS_PER_MONTH = 2.5;   // ratio of sick days and work days tolerated
 
    // percentage a user can over and under use his breaks
-   protected static final double TOLERATED_BREAK_UNDEROVERUSE_PERCENTAGE = 0.1;
-   protected static final int WORKTIME_TO_BREAK_RATIO = 16;             // hours per day / break per day
+   protected static final double TOLERATED_BREAK_MISSUSE_PERCENTAGE = 0.1;    // 0.1 is 10%
+   protected static final int BREAKMINUTES_PER_DAY = 30;
 
    protected static final int MAX_HOURS_PER_DAY = 10;
 

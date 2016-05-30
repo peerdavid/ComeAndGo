@@ -179,4 +179,11 @@ public class CollectiveAgreementImplTest {
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
     }
 
+    @Test
+    public void createGeneralWorkTimeAlert_WithBreakOverUser_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithBreakOverUser(_testUser), _alert);
+        Assert.assertEquals(1, _alert.size());
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
 }

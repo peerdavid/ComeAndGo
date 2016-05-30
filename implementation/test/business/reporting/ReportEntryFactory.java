@@ -49,4 +49,12 @@ public class ReportEntryFactory {
                 daysInYear * 30, 0, 0, daysInYear);
         return entry;
     }
+
+    public static ReportEntry createAnnualReportWithBreakOverUser(User user) {
+        int dayInYear = DateTimeUtils.getWorkdaysOfThisYear();
+        double hoursPerDay = 38.5 / 5;
+        long workMinutesShould = (long)(hoursPerDay * dayInYear * 60);
+        return new ReportEntry(user, hoursPerDay, 25, 0, 4, workMinutesShould, workMinutesShould,
+                dayInYear * 30, 0, 0, dayInYear);
+    }
 }
