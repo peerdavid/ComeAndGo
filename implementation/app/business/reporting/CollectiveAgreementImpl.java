@@ -2,6 +2,7 @@ package business.reporting;
 
 import business.timetracking.RequestState;
 import business.timetracking.TimeOffType;
+import business.usermanagement.UserException;
 import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -15,12 +16,17 @@ import java.util.List;
 class CollectiveAgreementImpl implements CollectiveAgreement {
 
     @Override
-    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound) {
+    public ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound) throws Exception {
 
         // TimeTrack calculation
         long workMinutesIs = 0;
         long breakMinutes = 0;
         for (TimeTrack t : timeTracks) {
+            // If Timetrack has no To date
+            if (t.getTo() == null) {
+                    t.setTo(DateTime.now());
+            }
+
             // TimeTrack is already in history
             if (t.getTo().isBefore(upperBound)) {
                 workMinutesIs += (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60);
