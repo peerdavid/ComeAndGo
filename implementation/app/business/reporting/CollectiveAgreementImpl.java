@@ -2,7 +2,6 @@ package business.reporting;
 
 import business.timetracking.RequestState;
 import business.timetracking.TimeOffType;
-import business.usermanagement.UserException;
 import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
@@ -139,31 +138,40 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     private void createSickDayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
-        if(entry.getNumOfSickDays() * (CollectiveConstants.AVERAGE_AMOUNT_WORK_DAYS_PER_MONTH / entry.getWorkdaysOfReport())
-                >= CollectiveConstants.TOLERATED_SICKLEAVE_DAYS_PER_MONTH) {
+        // this check finds out if user has exceeded the tolerated number of sick days per month
+        //      for calculation we use average amount of sick days per month and compare with constant
+        //      we get allowed sick days for X-day-report as follows:
+        //      allowed = (daysObserved / (daysPerYear / 12)) * toleratedPerMonth
+        double allowedNumbOfSickDaysForObservedReport =
+                ((12 * entry.getWorkdaysOfReport()) / DateTimeUtils.getWorkdaysOfThisYear()) * CollectiveConstants.TOLERATED_SICKLEAVE_DAYS_PER_MONTH;
+        if(entry.getNumOfSickDays() > allowedNumbOfSickDaysForObservedReport) {
             alertList.add(createAlert("forbidden_worktime.user_has_many_sick_leaves",
-                    WorkTimeAlert.Type.WARNING,
+                    WorkTimeAlert.Type.URGENT,
                     userFirstAndLastName(entry.getUser())));
         }
     }
 
     private void createHolidayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
-        // scale numOfUsedHoliday up to a year
+        // first holiday observation checks, if user uses more holiday than he is owning
+        //   for a specific timeSpan, it is relevant to check the user's holiday he gets aliquot for that timeSpan
+        //   AND how many holiday he has collected before timeSpan!
         User user = entry.getUser();
-        if(entry.getWorkdaysOfReport() >= DateTimeUtils.getWorkdaysOfThisYear()) {
-            if (entry.getNumOfUsedHolidays() > user.getHolidays()) {
-                alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
-                        WorkTimeAlert.Type.URGENT,
-                        userFirstAndLastName(user),
-                        valueToString(entry.getNumOfUsedHolidays(), 1),
-                        valueToString(user.getHolidays(), 1)));
-            }
-            if (entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY_PER_YEAR) {
-                alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
-                        WorkTimeAlert.Type.WARNING,
-                        userFirstAndLastName(user),
-                        valueToString(entry.getNumOfUnusedHolidays(), 1)));
-            }
+        double holidayAliquotForObservedAmountOfReportDays =
+                (entry.getWorkdaysOfReport() / DateTimeUtils.getWorkdaysOfThisYear()) * user.getHolidays();
+        if (entry.getNumOfUsedHolidays() > holidayAliquotForObservedAmountOfReportDays + entry.getNumOfUnusedHolidays()) {
+            alertList.add(createAlert("forbidden_worktime.more_holiday_used_than_available",
+                    WorkTimeAlert.Type.URGENT,
+                    userFirstAndLastName(user),
+                    valueToString(entry.getNumOfUsedHolidays(), 1),
+                    valueToString(user.getHolidays(), 1)));
+        }
+        // second holiday observation checks if user has too many unused holiday left
+        //      for that we only have to check if the holiday collected is exceeding a constant, independent on the timeSpan observed
+        if (entry.getNumOfUnusedHolidays() > CollectiveConstants.MAX_NUMBER_OF_UNUSED_HOLIDAY_PER_YEAR) {
+            alertList.add(createAlert("forbidden_worktime.too_many_unused_holiday_available",
+                    WorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user),
+                    valueToString(entry.getNumOfUnusedHolidays(), 1)));
         }
     }
 
@@ -173,13 +181,14 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         double breakMinutesIs = entry.getBreakMinutes();
 
         if(breakMinutesIs / entry.getWorkdaysOfReport()
-                >= CollectiveConstants.BREAKMINUTES_PER_DAY * (1 + CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
+                >= CollectiveConstants.BREAK_MINUTES_PER_DAY * (1 + CollectiveConstants.TOLERATED_BREAK_OVERUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_overuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),
                     percentageToString(100 * breakMinutesIs / workMinutesIs)));
-        } else if(breakMinutesIs * entry.getWorkdaysOfReport()
-                <= CollectiveConstants.BREAKMINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_MISSUSE_PERCENTAGE)) {
+        }
+        if(breakMinutesIs / entry.getWorkdaysOfReport()
+                < CollectiveConstants.BREAK_MINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_UNDERUSE_PERCENTAGE)) {
             alertList.add(createAlert("forbidden_worktime.user_underuses_breaks_regularly",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(entry.getUser()),

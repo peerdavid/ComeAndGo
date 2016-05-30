@@ -34,7 +34,7 @@ public class CollectiveAgreementImplTest {
         _testUser = mock(User.class);
         when(_testUser.getFirstName()).thenReturn("Klaus");
         when(_testUser.getLastName()).thenReturn("Kleber");
-        when(_testUser.getHoursPerDay()).thenReturn(8.0);
+        when(_testUser.getHoursPerDay()).thenReturn(38.5 / 5);
         when(_testUser.getEntryDate()).thenReturn(new DateTime(2016, 1, 10, 0, 0));
         when(_testUser.getHolidays()).thenReturn(25);
         _testee = new CollectiveAgreementImpl();
@@ -154,36 +154,83 @@ public class CollectiveAgreementImplTest {
     @Test
     public void createGeneralWorkTimeAlert_WithUserExceededAnnualFlextimeTolerance_ShouldResultInAlert() throws Exception {
         _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithFlextimeExceedingForUser(_testUser), _alert);
-        Assert.assertEquals(1, _alert.size());
+        testForStringMembers(_alert, "forbidden_worktime.flextime_saldo_over_specified_percent");
         Assert.assertEquals(WorkTimeAlert.Type.URGENT, _alert.get(0).getType());
     }
 
     @Test
     public void createGeneralWorkTimeAlert_WithUserNearlyExceededFlextimeTolerance_ShouldResultInAlert() throws Exception {
         _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithNearlyExceededFlextimeForUser(_testUser), _alert);
-        Assert.assertEquals(1, _alert.size());
+        testForStringMembers(_alert, "forbidden_worktime.flextime_saldo_over_specified_percent");
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
     }
 
     @Test
     public void createGeneralWorkTimeAlert_WithUserTooManyMinusHours_ShouldResultInAlert() throws Exception {
         _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithTooManyMinusHours(_testUser), _alert);
-        Assert.assertEquals(1, _alert.size());
+        testForStringMembers(_alert, "forbidden_worktime.flextime_saldo_under_specified_percent");
         Assert.assertEquals(WorkTimeAlert.Type.URGENT, _alert.get(0).getType());
     }
 
     @Test
     public void createGeneralWorkTimeAlert_WithUserNearlyTooManyMinusHours_ShouldResultInAlert() throws Exception {
         _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithNearlyTooManyMinusHours(_testUser), _alert);
-        Assert.assertEquals(1, _alert.size());
+        testForStringMembers(_alert, "forbidden_worktime.flextime_saldo_under_specified_percent");
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
     }
 
     @Test
-    public void createGeneralWorkTimeAlert_WithBreakOverUser_ShouldResultInAlert() throws Exception {
-        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithBreakOverUser(_testUser), _alert);
-        Assert.assertEquals(1, _alert.size());
+    public void createGeneralWorkTimeAlert_WithRegularlyBreakOverUser_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithBreakOverUse(_testUser), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.user_overuses_breaks_regularly");
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
     }
 
+    @Test
+    public void createGeneralWorkTimeAlert_WithRegularlyBreakUnderUse_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithBreakUnderUse(_testUser), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.user_underuses_breaks_regularly");
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithHolidayOverUse_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithHolidayOverConsumption(_testUser), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.more_holiday_used_than_available");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.URGENT);
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithTooManyUnusedHoliday_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithTooManyUnusedHoliday(_testUser), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.too_many_unused_holiday_available");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.WARNING);
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlert_WithTooManySickDays_ShouldResultInAlert() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createAnnualReportWithTooManySickDays(_testUser), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.user_has_many_sick_leaves");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.URGENT);
+    }
+
+    @Test
+    public void createGeneralWorkTimeAlerts_WithValidReportAsInput_ShouldResultInEmptyAlertsList() throws Exception {
+        _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createValidReport(_testUser), _alert);
+        Assert.assertEquals(_alert.size(), 0);
+    }
+
+    private void testForStringMembers(List<WorkTimeAlert> alertList, String... expectedMembers) throws Exception {
+        if(alertList.size() != expectedMembers.length)
+            throw new Exception("not the same amount of members in alertList (" + alertList.size()
+                    + ") and expectedMembers (" + expectedMembers.length + ")");
+
+        List<String> alertStrings = new ArrayList<>();
+        alertList.forEach(alert -> alertStrings.add(alert.getMessage()));
+
+        for(String member : expectedMembers) {
+            if(!alertStrings.contains(member))
+                throw new Exception("expected member not found in alertList \"" + member + "\"");
+        }
+    }
 }
