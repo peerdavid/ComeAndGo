@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
+import play.Logger;
 
 import java.util.List;
 
@@ -82,7 +83,6 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         }
 
         _userRepository.createUser(newUser);
-
     }
 
 

@@ -28,24 +28,28 @@
                 @for(u: User <- userlist) {
                     <li>
                         @if(u.getRole == SecurityRole.ROLE_USER) {
-                            <div class="collapsible-header"><i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.user") + ")") </b>
+                            <div class="collapsible-header">
+                                <i class="material-icons">perm_identity</i>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.user") + ")")</b>
                             </div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_PERSONNEL_MANAGER) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.persman") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.persman") + ")") </b>
+                            </div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_BOSS) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.boss") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.boss") + ")") </b>
+                            </div>
                         }
                         @if(u.getRole == SecurityRole.ROLE_ADMIN) {
                             <div class="collapsible-header">
                                 <i class="material-icons">perm_identity</i>
-                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.admin") + ")") </b></div>
+                                <b>@(u.getFirstName + " " + u.getLastName + " (" + Messages("views.admin.usermanagement.form.roles.admin") + ")") </b>
+                            </div>
                         }
                     <div class="collapsible-body">
                         <div class="row">

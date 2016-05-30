@@ -35,6 +35,4 @@ public enum NotificationType {
     CREATED_TIMETRACK,
     CHANGED_TIMETRACK,
     DELETED_TIMETRACK
-
-
 }

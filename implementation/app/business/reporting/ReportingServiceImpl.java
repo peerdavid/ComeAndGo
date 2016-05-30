@@ -29,6 +29,19 @@ class ReportingServiceImpl implements ReportingService {
         _internalTimeTracking = internalTimeTracking;
     }
 
+    private static ReportEntry subtractReports(ReportEntry from, ReportEntry to) {
+        return new ReportEntry(
+                from.getUser(), from.getUser().getHoursPerDay(),
+                to.getNumOfUsedHolidays() - from.getNumOfUsedHolidays(),
+                to.getNumOfUnusedHolidays() - from.getNumOfUnusedHolidays(),
+                to.getNumOfSickDays() - from.getNumOfSickDays(),
+                to.getWorkMinutesShould() - from.getWorkMinutesShould(),
+                to.getWorkMinutesIs() - from.getWorkMinutesIs(),
+                to.getBreakMinutes() - from.getBreakMinutes(),
+                to.getHolidayPayoutHours() - from.getHolidayPayoutHours(),
+                to.getOvertimePayoutHours() - from.getOvertimePayoutHours(),
+                to.getWorkdaysOfReport() - from.getWorkdaysOfReport());
+    }
 
     @Override
     public Report createCompanyReport(DateTime from, DateTime to) throws Exception {
@@ -36,14 +49,12 @@ class ReportingServiceImpl implements ReportingService {
         return createReport(users, from, to);
     }
 
-
     @Override
     public Report createEmployeeReport(int userId, DateTime from, DateTime to) throws Exception {
         List<User> users = new ArrayList<>();
         users.add(_userManagement.readUser(userId));
         return createReport(users, from, to);
     }
-
 
     @Override
     public Report createBossReport(int userId, DateTime from, DateTime to) throws Exception {
@@ -54,7 +65,7 @@ class ReportingServiceImpl implements ReportingService {
     private Report createReport(List<User> users, DateTime from, DateTime to) throws Exception {
         List<ReportEntry> userReports = new ArrayList<>();
 
-        if (to.isBefore(from)) {
+        if (to.isBefore(from) && !to.isEqual(from)) {
             throw new UserException("exceptions.reporting.to_before_from");
         }
 
@@ -120,8 +131,7 @@ class ReportingServiceImpl implements ReportingService {
 
         return result <= 0 ? 0 : result;
     }
-
-
+    
     private ReportEntry createCompanySummary(List<ReportEntry> userReports) {
         double hoursPerDay = userReports.stream().mapToDouble(d -> d.getHoursPerDay()).sum();
         int numOfUsedHolidays = userReports.stream().mapToInt(d -> d.getNumOfUsedHolidays()).sum();
@@ -137,20 +147,6 @@ class ReportingServiceImpl implements ReportingService {
         return new ReportEntry(null, hoursPerDay, numOfUsedHolidays, numOfUnusedHolidays, numOfSickDays,
                 numOfWorkMinutesShould, numOfWorkMinutesIs, numOfBreakMinutes, numOfHolidayPayoutHours,
                 numOfOvertimePayoutHours, workDaysRespected);
-    }
-    
-    private static ReportEntry subtractReports(ReportEntry from, ReportEntry to) {
-        return new ReportEntry(
-                from.getUser(), from.getUser().getHoursPerDay(),
-                to.getNumOfUsedHolidays() - from.getNumOfUsedHolidays(),
-                to.getNumOfUnusedHolidays() - from.getNumOfUnusedHolidays(),
-                to.getNumOfSickDays() - from.getNumOfSickDays(),
-                to.getWorkMinutesShould() - from.getWorkMinutesShould(),
-                to.getWorkMinutesIs() - from.getWorkMinutesIs(),
-                to.getBreakMinutes() - from.getBreakMinutes(),
-                to.getHolidayPayoutHours() - from.getHolidayPayoutHours(),
-                to.getOvertimePayoutHours() - from.getOvertimePayoutHours(),
-                to.getWorkdaysOfReport() - from.getWorkdaysOfReport());
     }
 
 
