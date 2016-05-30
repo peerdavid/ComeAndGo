@@ -20,6 +20,8 @@ interface ReportingService {
 
     double readHoursWorked(int userId, DateTime when) throws Exception;
 
+    double readHoursOfBreak(int userId, DateTime when) throws Exception;
+
     double readHoursWorkedProgress(int userId) throws Exception;
 
     double calculateOvertime(int userId, DateTime when) throws Exception;

@@ -385,4 +385,51 @@ public class ReportingServiceImplTest {
         _reporting.readHoursWorked(userId, _now);
     }
 
+    @Test
+    public void getHoursOfBreaks_ForGivenDateTime_ShouldSucceed() throws Exception {
+        DateTime startOfDay = DateTimeUtils.startOfDay(_now);
+        DateTime endOfDay = DateTimeUtils.endOfDay(_now);
+
+        DateTime startOfBigBang = DateTimeUtils.endOfDay(DateTimeUtils.BIG_BANG).plusMillis(1);
+
+        // this test contains 3 timeTracks with each one break (night work has break over midnight)
+        //  NOTE: dates of breaks are senseless, since we only store times in our database
+        //  we test also that breaks with no valid date should work exactly as it should...
+
+        // timeTrack from 8pm the previous day until 4am actual day
+        // break from 23.47 - 00.09
+        // resulting breaks --> 9min
+        Break firstMidnightBreak = new Break(startOfBigBang.minusMinutes(13), startOfBigBang.plusMinutes(9));
+        List<Break> firstBreaksOverMidnight = new ArrayList<>();
+        firstBreaksOverMidnight.add(firstMidnightBreak);
+        TimeTrack _timeTrackOverFirstNight = new TimeTrack(_testUser, startOfDay.minusHours(4), startOfDay.plusHours(4), firstBreaksOverMidnight);
+
+        // timeTrack from 8am to 4pm
+        // break from 12.00 - 12.30
+        // resulting breaks --> 30min
+        Break breakOverDay = new Break(startOfBigBang.plusHours(12), startOfBigBang.plusHours(12).plusMinutes(30));
+        List<Break> breaksOverDay = new ArrayList<>();
+        breaksOverDay.add(breakOverDay);
+        TimeTrack _timeTrackOverDay = new TimeTrack(_testUser, startOfDay.plusHours(8), startOfDay.plusHours(16), breaksOverDay);
+
+        // timeTrack from 8pm until 0.40am
+        // break from 23.43 - 00.00
+        // resulting break --> 17min
+        Break secondMidnightBreak = new Break(startOfBigBang.minusMinutes(17), startOfBigBang);
+        List<Break> secondBreaksOverMidnight = new ArrayList<>();
+        secondBreaksOverMidnight.add(secondMidnightBreak);
+        TimeTrack _timeTrackOverSecondMidnight = new TimeTrack(_testUser, endOfDay.minusHours(4), endOfDay.plusMinutes(40), secondBreaksOverMidnight);
+
+        List<TimeTrack> listToReturn = new ArrayList<>();
+        listToReturn.add(_timeTrackOverFirstNight);
+        listToReturn.add(_timeTrackOverDay);
+        listToReturn.add(_timeTrackOverSecondMidnight);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(listToReturn);
+
+        // we have 9 + 30 + 17 min of breaks = 56min
+        double hoursOfBreakExpected = 56f / 60f;
+        double resultingHoursOfBreak = _reporting.readHoursOfBreak(8, _now);
+        Assert.assertEquals(hoursOfBreakExpected, resultingHoursOfBreak, 0.05);
+    }
+
 }

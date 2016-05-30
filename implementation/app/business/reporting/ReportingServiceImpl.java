@@ -98,6 +98,10 @@ class ReportingServiceImpl implements ReportingService {
      * @throws Exception
      */
     public double readHoursWorked(int userId, DateTime when) throws Exception {
+        return readHoursWorked(userId, when, true);
+    }
+
+    private double readHoursWorked(int userId, DateTime when, boolean subtractBreaks) throws Exception {
         DateTime startOfDay = DateTimeUtils.startOfDay(when);
         DateTime endOfDay = DateTimeUtils.endOfDay(when);
 
@@ -108,19 +112,33 @@ class ReportingServiceImpl implements ReportingService {
             DateTime from = timeTrack.getFrom().isBefore(startOfDay) ? startOfDay : timeTrack.getFrom();
             DateTime to = timeTrack.getTo() == null ? DateTime.now() : (timeTrack.getTo().isAfter(endOfDay) ? endOfDay : timeTrack.getTo());
             result += to.getMinuteOfDay() - from.getMinuteOfDay();
-            for (Break b : timeTrack.getBreaks()) {
-                boolean breakOverMidnight = b.getFrom().toLocalTime().isAfter(b.getTo().toLocalTime());
-                if(breakOverMidnight) {
-                    // if we know we have a break over midnight, there is a difference if break is over 0.00 or it is over 23.59 midnight
-                    boolean breakOverFirstMidnight = timeTrack.getTo().isAfter(startOfDay) && timeTrack.getTo().isBefore(endOfDay);
-                    boolean breakOverSecondMidnight = timeTrack.getFrom().isAfter(startOfDay) && timeTrack.getFrom().isBefore(endOfDay);
-                    from = breakOverFirstMidnight ? DateTimeUtils.startOfDay(b.getFrom()) : b.getFrom();
-                    to = breakOverSecondMidnight ? DateTimeUtils.endOfDay(b.getTo()) : b.getTo();
-                } else {
-                    from = b.getFrom();
-                    to = b.getTo();
+            if(subtractBreaks) {
+                for (Break b : timeTrack.getBreaks()) {
+                    /* for breaks we need to make a special calculation, because only time (no date) is stored in database
+                     * for that we need to make sure which of the breaks is inside the observed day
+                     * we have several cases (note that only timeTracks should be respected,
+                     * which are between startOfDay [0.00] and endOfDay [23.59]:
+                     * C1: break is over firstMidnight
+                     * C2: break is over second midnight
+                     * C3 break is over day
+                     *
+                     *  |____________actualDay____________|
+                     * |C1|         |C3|                 |C2|
+                     *|_t1__|      |__________t2___|   |_____________t3______|
+                     */
+                    boolean breakOverMidnight = b.getFrom().toLocalTime().isAfter(b.getTo().toLocalTime());
+                    if (breakOverMidnight) {
+                        // if we know we have a break over midnight, there is a difference if break is over 0.00 or it is over 23.59 midnight
+                        boolean breakOverFirstMidnight = timeTrack.getTo().isAfter(startOfDay) && timeTrack.getTo().isBefore(endOfDay);
+                        boolean breakOverSecondMidnight = timeTrack.getFrom().isAfter(startOfDay) && timeTrack.getFrom().isBefore(endOfDay);
+                        from = breakOverFirstMidnight ? DateTimeUtils.startOfDay(b.getFrom()) : b.getFrom();
+                        to = breakOverSecondMidnight ? DateTimeUtils.endOfDay(b.getTo()) : b.getTo();
+                    } else {
+                        from = b.getFrom();
+                        to = b.getTo();
+                    }
+                    result -= to.getMinuteOfDay() - from.getMinuteOfDay();
                 }
-                result -= to.getMinuteOfDay() - from.getMinuteOfDay();
             }
         }
         return result / 60;
@@ -131,6 +149,12 @@ class ReportingServiceImpl implements ReportingService {
         User user = _userManagement.readUser(userId);
         double result = readHoursWorked(userId, DateTime.now()) / user.getHoursPerDay();
         return result < 0 ? 0 : result > 1 ? 1 : result;
+    }
+
+    @Override
+    public double readHoursOfBreak(int userId, DateTime when) throws Exception {
+        // the amount of breaks is give by amount of hours worked (without subtracting breaks) - hours worked (with subtracted breaks)
+        return readHoursWorked(userId, when, false) - readHoursWorked(userId, when, true);
     }
 
     @Override
