@@ -91,7 +91,6 @@ public class WorkTimeCheckServiceImplTest {
         when(_internalUserManagement.readUser(3)).thenReturn(_testBossOfBoss);
         when(_internalUserManagement.readUser(4)).thenReturn(_testPersonnellManager);
         when(_internalUserManagement.readUser(5)).thenReturn(_testOutstandingPerson);
-
     }
 
     @Test(expected = UserException.class)
@@ -111,6 +110,8 @@ public class WorkTimeCheckServiceImplTest {
 
     @Test(expected = UserException.class)
     public void readWorkTimeAlertsFromUser_WhereRequesterIsEmployeeOfUser_ShouldFail() throws Exception {
+        when(_internalUserManagement.validateBossOfUserOrPersonnellManager(any(Object.class), any(Object.class)))
+            .thenThrow(UserException.class);
         _service.readForbiddenWorkTimeAlerts(_testBoss.getId(), _now, _now.plusDays(2), _testEmployee.getId());
     }
 

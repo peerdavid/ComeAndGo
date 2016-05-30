@@ -206,6 +206,29 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         _userRepository.deleteUser(userToDelete);
     }
 
+    @Override
+    public void validateBossOfUserOrPersonnellManager(int userId, int toTestBossId) throws Exception {
+        // if user requests his own workTimeAlerts
+        if(userId == toTestBossId) {
+            return;
+        }
+        // if requester is personal manager he is allowed to see all alerts
+        User user = readUser(userId);
+        if(user.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
+            return;
+        }
+        // if requester is in any way a boss of requested employee he is allowed to see alerts
+        User requestedUser = readUser(userId);
+        User bossOfUser = requestedUser.getBoss();
+        while(requestedUser.getId() != bossOfUser.getId()) {
+            if(bossOfUser.getId() == toTestBossId) {
+                return;
+            }
+            requestedUser = bossOfUser;
+            bossOfUser = requestedUser.getBoss();
+        }
+        throw new UserException("exceptions.forbidden_worktime.no_permission_to_read");
+    }
 
     private void notifyBossAboutDelete(String currentUserName, User userToDelete) throws UserNotFoundException, NotificationException {
         User admin = _userRepository.readUser(currentUserName);
