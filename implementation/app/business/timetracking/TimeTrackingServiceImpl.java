@@ -147,20 +147,20 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException, NotificationException {
+    public void createTimeTrack(int userId, DateTime from, DateTime to, int currentUserId) throws UserException, NotificationException {
         User user = loadUserById(userId);
         TimeTrack timeTrack = new TimeTrack(user, from, to, Collections.emptyList());
-        createTimeTrack(timeTrack);
+        createTimeTrack(timeTrack, currentUserId);
     }
 
 
     @Override
-    public void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
+    public void createTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         int id = _repository.createTimeTrack(timeTrack);
 
-        String comment = Messages.get("notifications.created_timetrack", dateToString(timeTrack.getFrom()));
+        String comment = "";
         Notification notification = new Notification(NotificationType.CREATED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser(), id);
         _notificationSender.sendNotification(notification);
@@ -168,8 +168,8 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException {
-        String comment = Messages.get("notifications.deleted_timetrack", dateToString(timeTrack.getFrom()));
+    public void deleteTimeTrack(TimeTrack timeTrack, int currentUserId) throws NotificationException {
+        String comment = "";
         Notification notification = new Notification(NotificationType.DELETED_TIMETRACK, comment,
             timeTrack.getUser().getBoss(), timeTrack.getUser());
         _notificationSender.sendNotification(notification);
@@ -179,16 +179,15 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
 
 
     @Override
-    public void updateTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException {
+    public void updateTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException {
         _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
         _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
         _repository.updateTimeTrack(timeTrack);
 
-
-           String comment = Messages.get("notifications.changed_timetrack", dateToString(timeTrack.getFrom()));
-           Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
-               timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
-           _notificationSender.sendNotification(notification);
+       String comment = "";
+       Notification notification = new Notification(NotificationType.CHANGED_TIMETRACK, comment,
+           timeTrack.getUser().getBoss(), timeTrack.getUser(), timeTrack.getId());
+       _notificationSender.sendNotification(notification);
     }
 
     private String dateToString(DateTime date) {

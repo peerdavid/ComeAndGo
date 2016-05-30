@@ -65,7 +65,7 @@ $('.enable-editing-switch').click(function () {
 var enableEditing = function(enable, toggle) {
     if(toggle == null) toggle = $('.enable-editing-switch');
     var li = $(toggle).closest('li');
-    li.find('form input').prop('disabled', !toggle.checked);
+    li.find('form input').not('.modal-break input').prop('disabled', !toggle.checked);
     li.find('form button.ghost').css('display', (toggle.checked ? 'inline' : 'none'));
 };
 
