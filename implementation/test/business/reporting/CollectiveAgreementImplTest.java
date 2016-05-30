@@ -28,6 +28,7 @@ public class CollectiveAgreementImplTest {
     List<TimeOff> _timeoffs;
     List<TimeTrack> _timetracks;
     List<WorkTimeAlert> _alert;
+    DateTime _now;
 
     @Before
     public void SetUp() throws Exception {
@@ -41,6 +42,7 @@ public class CollectiveAgreementImplTest {
         _timeoffs = new ArrayList<>();
         _timetracks = new ArrayList<>();
         _alert = new ArrayList<>();
+        _now = DateTime.now();
     }
 
     @Test
@@ -218,6 +220,134 @@ public class CollectiveAgreementImplTest {
     public void createGeneralWorkTimeAlerts_WithValidReportAsInput_ShouldResultInEmptyAlertsList() throws Exception {
         _testee.createGeneralWorkTimeAlerts(ReportEntryFactory.createValidReport(_testUser), _alert);
         Assert.assertEquals(_alert.size(), 0);
+    }
+
+    @Test
+    public void createDailyWorkTimeAlerts_WithWorkTimeExceeding_ShouldResultInAlert() throws Exception {
+        _testee.createWorkHoursOfDayAlerts(_testUser, CollectiveConstants.MAX_HOURS_PER_DAY, 0.5, _now, _alert);
+        testForStringMembers(_alert, "forbidden_worktime.user_exceeded_daily_worktime");
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createDailyWorkTimeAlerts_WithTooLessBreak_ShouldResultInAlert() throws Exception {
+        _testee.createWorkHoursOfDayAlerts(_testUser, 8, 0.25, _now, _alert);
+        testForStringMembers(_alert, "forbidden_worktime.user_underused_break_on_date");
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createDailyWorkTimeAlerts_WithValidRequest_ShouldResultInEmptyAlertList() throws Exception {
+        _testee.createWorkHoursOfDayAlerts(_testUser, 8, 0.5, _now, _alert);
+        Assert.assertEquals(0, _alert.size());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WithWorkedOn6Days_ShouldResultInAlert() throws Exception {
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, DateTimeUtils.startOfWeek(_now),
+                workTimeListNextDays(), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.too_many_workdays_per_week");
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WorkedOnChristmasAndNewYearsEve_ShouldResultInAlert() throws Exception {
+        List<Double> workHoursNextDays = new ArrayList<>();
+        workHoursNextDays.add(8.);  // work time on christmas eve
+        workHoursNextDays.add(0.);  // 25.12.
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(6.);  // new years eve
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        DateTime christmas = DateTimeUtils.endOfActualYear().minusDays(7);
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, christmas, workHoursNextDays, _alert);
+        testForStringMembers(_alert, "forbidden_worktime.worked_on_both_christmas_and_newyear_eve");
+        Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WorkedLegalTimes_ShouldResultInEmptyAlertList() throws Exception {
+        List<Double> workHoursNextDays = new ArrayList<>();
+        for(int i = 0; i < 10; ++i) {
+            workHoursNextDays.add(0.);
+        }
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, DateTimeUtils.startOfWeek(_now),
+                workHoursNextDays, _alert);
+        Assert.assertEquals(0, _alert.size());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WithEmptyHoursNextDaysOrNull_ShouldReturn() throws Exception {
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, _now, null, _alert);
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, _now, new ArrayList<>(), _alert);
+        Assert.assertEquals(0, _alert.size());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WithHoursWorkedListSmallerThan10_ShouldSucceed() throws Exception {
+        List<Double> workedHours = new ArrayList<>();
+        workedHours.add(3.);
+        workedHours.add(5.);
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, DateTimeUtils.startOfWeek(_now),
+                workedHours, _alert);
+        Assert.assertEquals(0, _alert.size());
+    }
+
+    @Test
+    public void createFreetimeAlerts_WithNoListGiven_ShouldReturnInformationAlert() throws Exception {
+        _testee.createFreeTimeHoursOfDayAlerts(_testUser, _now, null, _alert);
+        _testee.createFreeTimeHoursOfDayAlerts(_testUser, _now, Collections.emptyList(), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.error_in_checking_freetime_and_christmas_clause",
+                "forbidden_worktime.error_in_checking_freetime_and_christmas_clause");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.INFORMATION);
+        Assert.assertEquals(_alert.get(1).getType(), WorkTimeAlert.Type.INFORMATION);
+    }
+
+    @Test
+    public void createFreeTimeAlerts_WithTooLessFreeTimeNextDays_ShouldResultInAlert() throws Exception {
+        List<Double> workTimeListNextDays = new ArrayList<>();
+        for(int i = 0; i < 10; ++i) {
+            workTimeListNextDays.add(15.);
+        }
+        _testee.createFreeTimeHoursOfDayAlerts(_testUser, _now, workTimeListNextDays, _alert);
+        testForStringMembers(_alert, "forbidden_worktime.freetime_undershoot_with_next_days_no_balance");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.WARNING);
+    }
+
+    @Test
+    public void createFreeTimeAlerts_WithTooLessFreeTimeOnActualDay_ShouldResultInAlert() throws Exception {
+        _testee.createFreeTimeHoursOfDayAlerts(_testUser, _now, workTimeListNextDays(), _alert);
+        testForStringMembers(_alert, "forbidden_worktime.freetime_undershoot");
+        Assert.assertEquals(_alert.get(0).getType(), WorkTimeAlert.Type.WARNING);
+    }
+
+    @Test
+    public void createFreeTimeAlerts_WithValidUserWorkTimes_ShouldResultInEmptyList() throws Exception {
+        List<Double> doubleList = new ArrayList<>();
+        for(int i = 0; i < 10; ++i) {
+            doubleList.add(0.);
+        }
+        _testee.createFreeTimeHoursOfDayAlerts(_testUser, _now, doubleList, _alert);
+        Assert.assertEquals(0, _alert.size());
+    }
+
+    private List<Double> workTimeListNextDays() {
+        List<Double> workHoursNextDays = new ArrayList<>();
+        workHoursNextDays.add(15.);
+        workHoursNextDays.add(10.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(9.);
+        workHoursNextDays.add(10.);
+        workHoursNextDays.add(15.);
+        workHoursNextDays.add(13.);
+        workHoursNextDays.add(8.);
+        workHoursNextDays.add(7.);
+        workHoursNextDays.add(7.);
+        return workHoursNextDays;
     }
 
     private void testForStringMembers(List<WorkTimeAlert> alertList, String... expectedMembers) throws Exception {

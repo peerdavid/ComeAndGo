@@ -154,7 +154,7 @@ public class WorkTimeCheckServiceImplTest {
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(any(User.class),
                 any(DateTime.class), any(List.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(NUM_OF_DAYS)).createWorkHoursOfDayAlerts(any(User.class), any(Double.class),
-                any(DateTime.class), any(List.class));
+                any(Double.class), any(DateTime.class), any(List.class));
     }
 
     @Test
@@ -168,6 +168,6 @@ public class WorkTimeCheckServiceImplTest {
         Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(any(User.class),
                 any(DateTime.class), any(List.class), any(List.class));
         Mockito.verify(_collectiveAgreement, times(2 * NUM_OF_DAYS)).createWorkHoursOfDayAlerts(any(User.class), any(Double.class),
-                any(DateTime.class), any(List.class));
+                any(Double.class), any(DateTime.class), any(List.class));
     }
 }

@@ -257,7 +257,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     public void createFreeTimeHoursOfDayAlerts(User user, DateTime when, List<Double> durationWorkTimeNextDays, List<WorkTimeAlert> alertList) {
         if(durationWorkTimeNextDays == null || durationWorkTimeNextDays.isEmpty()) {
             alertList.add(createAlert("forbidden_worktime.error_in_checking_freetime_and_christmas_clause",
-                    WorkTimeAlert.Type.WARNING, userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when)));
+                    WorkTimeAlert.Type.INFORMATION, userFirstAndLastName(user), DateTimeUtils.dateTimeToDateString(when)));
             return;
         }
 
@@ -295,7 +295,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
          */
         if(when.getDayOfWeek() == 1) {
             int daysWorked = 0;
-            for(int i = 0; i < 7; ++i) {
+            for(int i = 0; i < 7 && i < workedHoursNextDays.size(); ++i) {
                 if(workedHoursNextDays.get(i) != 0) {
                     ++daysWorked;
                 }
