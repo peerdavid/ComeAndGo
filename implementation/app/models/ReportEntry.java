@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Comparator;
+
 /**
  * Created by david on 02.05.16.
  */
@@ -80,5 +82,9 @@ public class ReportEntry {
 
     public int getWorkdaysOfReport() {
         return workdaysOfReport;
+    }
+
+    public static class Comparators {
+        public static final Comparator<ReportEntry> NAME = (ReportEntry o1, ReportEntry o2) -> o1.getUser().getLastName().compareTo(o2.getUser().getLastName());
     }
 }

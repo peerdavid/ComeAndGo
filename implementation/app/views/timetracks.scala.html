@@ -1,5 +1,6 @@
 @import org.pac4j.core.profile.CommonProfile
 @import utils.DateTimeUtils
+@import org.joda.time.DateTime
 @(profile: CommonProfile, userId :Int, from: String, to: String, timetracklist: java.util.List[TimeTrack])
 
 @main(Messages("views.admin.title")) {
@@ -178,7 +179,7 @@
                 <form action="@routes.TimeTrackController.createTimeTrack(userId, from, to)" method="POST">
                     <div class="row">
                         <div class="input-field col s6 m3">
-                            <input name="startdate" type="text" class="datepicker">
+                            <input name="startdate" type="text" value="@DateTimeUtils.dateTimeToDateString(DateTime.now())" class="datepicker">
                             <label for="startdate">@Messages("views.admin.updatetimetracks.startdate")</label>
                         </div>
                         <div class="input-field col s6 m3">

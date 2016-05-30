@@ -11,6 +11,7 @@ import org.joda.time.LocalDate;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -81,6 +82,8 @@ class ReportingServiceImpl implements ReportingService {
             userReports.add(subtractReports(_collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts, from),
                     _collectiveAgreement.createUserReport(user, timeTracks, timeOffs, payouts, to)));
         }
+
+        userReports.sort(ReportEntry.Comparators.NAME);
 
         ReportEntry summary = createCompanySummary(userReports);
         return new Report(userReports, summary);

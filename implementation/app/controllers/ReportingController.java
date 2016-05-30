@@ -61,7 +61,6 @@ public class ReportingController extends UserProfileController<CommonProfile> {
         DateTime fromDate = (from == null || from.isEmpty()) ? utils.DateTimeUtils.startOfActualYear() : utils.DateTimeUtils.stringToDateTime(from);
         DateTime toDate = DateTimeUtils.endOfDay((to == null || to.isEmpty()) ? DateTime.now() : utils.DateTimeUtils.stringToDateTime(to));
 
-        // ToDo: Get all workTimeAlerts for all employees of boss
         List<WorkTimeAlert> workTimeAlerts = null;
         if(requestedId != null) {
             workTimeAlerts = _reporting.readForbiddenWorkTimeAlerts(Integer.parseInt(requestedId), fromDate, toDate, userId);

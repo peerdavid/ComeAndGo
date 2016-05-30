@@ -125,6 +125,7 @@ views.report.request.unusedholiday = Unused Holiday [days]:
 views.report.request.overtime = Overtime [h]:
 views.report.loadreport = generate report
 views.report.userworktimings = User work timings
+views.report.summary = SUMMARY
 
 exceptions.unexpected = Sorry, an error occured.
 exceptions.usermanagement.invalid_credentials = Invalid Credentials
