@@ -1,5 +1,6 @@
 package controllers.notification;
 
+import business.notification.NotificationType;
 import business.timetracking.TimeTrackException;
 import business.timetracking.TimeTracking;
 import com.google.inject.Inject;
@@ -105,14 +106,11 @@ public class NotificationViewModelFactory {
 
                 String message = notification.getMessage();
 
-                if(notification.getMessage().isEmpty()){
-                    message = Messages.get("notifications.holiday_payout_request");
-                }
-
                 return new HolidayPayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
                     message,
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -123,6 +121,7 @@ public class NotificationViewModelFactory {
                 return new HolidayPayoutAcceptViewModel(
                     notification.getId(),
                     Messages.get("notifications.holiday_payout_accept"),
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -133,6 +132,7 @@ public class NotificationViewModelFactory {
                 return new HolidayPayoutRejectViewModel(
                     notification.getId(),
                     Messages.get("notifications.holiday_payout_reject"),
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -143,14 +143,11 @@ public class NotificationViewModelFactory {
 
                 String message = notification.getMessage();
 
-                if(notification.getMessage().isEmpty()){
-                    message = Messages.get("notifications.overtime_payout_request");
-                }
-
                 return new OvertimePayoutRequestViewModel(
                     notification.getId(),
                     notification.getReferenceId(),
                     message,
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -161,6 +158,7 @@ public class NotificationViewModelFactory {
                 return new OvertimePayoutAcceptViewModel(
                     notification.getId(),
                     Messages.get("notifications.overtime_payout_accept"),
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -171,6 +169,7 @@ public class NotificationViewModelFactory {
                 return new OvertimePayoutRejectViewModel(
                     notification.getId(),
                     Messages.get("notifications.overtime_payout_reject"),
+                    getPayoutAdditionalInfo(notification),
                     notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
                     _timeTracking
                 );
@@ -495,5 +494,46 @@ public class NotificationViewModelFactory {
             notification.getSender().getFirstName() + " " + notification.getSender().getLastName(),
             _timeTracking
         );
+    }
+
+    private String getPayoutAdditionalInfo(Notification notification) throws Exception {
+
+        String additionalInfo = null;
+
+        switch (notification.getType()){
+            case HOLIDAY_PAYOUT_REQUEST:
+            case HOLIDAY_PAYOUT_ACCEPT:
+            case HOLIDAY_PAYOUT_REJECT:
+
+                try {
+                    int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
+                    additionalInfo = Messages.get(
+                        "notifications.holiday_payout_request",
+                        notification.getSender().getFirstName(),
+                        amount
+                    );
+                } catch (TimeTrackException e){
+                    additionalInfo = Messages.get("notifications.payout_entry_not_found");
+                }
+                break;
+
+            case OVERTIME_PAYOUT_REQUEST:
+            case OVERTIME_PAYOUT_ACCEPT:
+            case OVERTIME_PAYOUT_REJECT:
+
+                try {
+                    int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
+                    additionalInfo = Messages.get(
+                        "notifications.overtime_payout_request",
+                        notification.getSender().getFirstName(),
+                        amount
+                    );
+                } catch (TimeTrackException e){
+                    additionalInfo = Messages.get("notifications.payout_entry_not_found");
+                }
+                break;
+        }
+
+        return additionalInfo;
     }
 }

@@ -8,9 +8,9 @@ import play.i18n.Messages;
  */
 public class OvertimePayoutRejectViewModel extends BasicViewModel {
 
-    public OvertimePayoutRejectViewModel(int notificationId, String message, String sender, TimeTracking timeTracking) {
+    public OvertimePayoutRejectViewModel(int notificationId, String message, String additionalInfo, String sender, TimeTracking timeTracking) {
 
-        super(notificationId, message, sender, "", timeTracking);
+        super(notificationId, message, sender, additionalInfo, timeTracking);
 
     }
 

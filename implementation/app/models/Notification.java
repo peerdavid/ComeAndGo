@@ -91,10 +91,14 @@ public class Notification extends Model {
     }
 
     public void setMessage(String message) throws NotificationException {
-        if (message.length() > 150) {
-            throw new NotificationException("exceptions.notification.message_length");
+        if(message == null) {
+            this.message = "";
+        } else {
+            if (message.length() > 150) {
+                throw new NotificationException("exceptions.notification.message_length");
+            }
+            this.message = message;
         }
-        this.message = message;
     }
 
     public User getSender() {
