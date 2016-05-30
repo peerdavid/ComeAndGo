@@ -35,7 +35,7 @@ interface CollectiveAgreement {
      * @param when day of check
      * @param alertList list to add resulting workTimeAlerts
      */
-    void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList);
+    void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, double hoursOfBreaksTaken, DateTime when, List<WorkTimeAlert> alertList);
 
     /** checks if user has had enough freeTime between his workDays.
      *  @param user user to check

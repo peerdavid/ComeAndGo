@@ -232,13 +232,24 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
     }
 
     @Override
-    public void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList) {
+    public void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, double hoursOfBreaksTaken, DateTime when, List<WorkTimeAlert> alertList) {
+        // first check if user has exceeded the daily maximum of working hours
         if(workedHoursOfDay >= CollectiveConstants.MAX_HOURS_PER_DAY) {
             alertList.add(createAlert("forbidden_worktime.user_exceeded_daily_worktime",
                     WorkTimeAlert.Type.WARNING,
                     user.getFirstName() + " " + user.getLastName(),
                     DateTimeUtils.dateTimeToDateString(when),
                     valueToString(CollectiveConstants.MAX_HOURS_PER_DAY - workedHoursOfDay, 0)));
+        }
+        // then check if user is underneath the daily break consume:
+        double minutesOfBreakExpected = CollectiveConstants.BREAK_MINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_UNDERUSE_PERCENTAGE);
+        if(hoursOfBreaksTaken * 60 < minutesOfBreakExpected) {
+            alertList.add(createAlert("forbidden_worktime.user_underused_break_on_date",
+                    WorkTimeAlert.Type.WARNING,
+                    userFirstAndLastName(user),
+                    valueToString(hoursOfBreaksTaken * 60, 0),
+                    valueToString(minutesOfBreakExpected, 0),
+                    DateTimeUtils.dateTimeToDateString(when)));
         }
     }
 

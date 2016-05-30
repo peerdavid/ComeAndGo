@@ -68,14 +68,14 @@ class WorkTimeCheckServiceImpl implements WorkTimeCheckService {
         // check for alerts which have to be observed daily (overtime, ...)
         for(DateTime actualDate = from; actualDate.isBefore(to); actualDate = actualDate.plusDays(1)) {
             double hoursWorkedWithoutBreaks = _reporting.readHoursWorked(user.getId(), actualDate);
-            double hoursOfBreaksTaken = _reporting.readHoursWorked(user.getId(), actualDate);
+            double hoursOfBreaksTaken = _reporting.readHoursOfBreak(user.getId(), actualDate);
 
             List<Double> hoursWorkedNextDays = new ArrayList<>();
             hoursWorkedNextDays.add(hoursWorkedWithoutBreaks);
             for(int i = 1; i <= 10; ++i) {
                 hoursWorkedNextDays.add(_reporting.readHoursWorked(user.getId(), actualDate.plusDays(i)));
             }
-            _collectiveAgreement.createWorkHoursOfDayAlerts(user, hoursWorkedWithoutBreaks, actualDate, alertList);
+            _collectiveAgreement.createWorkHoursOfDayAlerts(user, hoursWorkedWithoutBreaks, hoursOfBreaksTaken, actualDate, alertList);
             _collectiveAgreement.createFreeTimeHoursOfDayAlerts(user, actualDate, hoursWorkedNextDays, alertList);
             _collectiveAgreement.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(user, actualDate, hoursWorkedNextDays, alertList);
         }

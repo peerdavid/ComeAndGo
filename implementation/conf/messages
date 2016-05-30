@@ -183,6 +183,7 @@ forbidden_worktime.too_many_workdays_per_week = User {0} has worked {1} days ins
 forbidden_worktime.worked_on_both_christmas_and_newyear_eve = User {0} has worked on both christmas and New Years Eve in year {1}
 forbidden_worktime.user_overuses_breaks_regularly = User {0} seems to like breaks. In {1} of work time breaks are consumed.
 forbidden_worktime.user_underuses_breaks_regularly = User {0} seems not to like breaks. In {1} of work time breaks are consumed.
+forbidden_worktime.user_underused_break_on_date = User {0} has only made {1} minutes break instead of {2} on {3}.
 forbidden_worktime.user_has_many_sick_leaves = User {0} often seems to be ill. Suggest him something for his defenses.
 forbidden_worktime.user_exceeded_daily_worktime = User {0} has exceeded worktime on {1} about {2} hours
 forbidden_worktime.error_in_reading_alerts_from_user = WorkTimeAlerts from {0} could not be read.
