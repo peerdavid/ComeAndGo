@@ -51,9 +51,10 @@ public class AuthenticationController extends UserProfileController<CommonProfil
             role = SecurityRole.ROLE_USER;
         }
 
-        if (userNameBoss.isEmpty()) {
+        if (userNameBoss == null || userNameBoss.isEmpty()) {
             userNameBoss = "admin";
         }
+
         User boss = _userManagement.readUser(userNameBoss);
 
         User userToRegister = new User(userName, password, role, firstName, lastName, email, true, boss, hoursPerDay);
