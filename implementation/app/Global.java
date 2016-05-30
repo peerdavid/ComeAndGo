@@ -7,8 +7,10 @@ import business.usermanagement.UserException;
 import business.usermanagement.UserManagement;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import infrastructure.NotificationRepository;
 import infrastructure.TimeTrackingRepository;
 import models.Break;
+import models.Notification;
 import models.TimeTrack;
 import models.User;
 import org.joda.time.DateTime;
@@ -54,6 +56,7 @@ public class Global extends GlobalSettings {
                     new business.Module());
             UserManagement userManagement = injector.getInstance(UserManagement.class);
             TimeTracking timeTracking = injector.getInstance(TimeTracking.class);
+            NotificationRepository notificationRepository = injector.getInstance(NotificationRepository.class);
 
             // Create test users
             List<User> users = new ArrayList<>();
@@ -104,6 +107,12 @@ public class Global extends GlobalSettings {
                     t.addBreak(new Break(from, to));
                     timeTracking.updateTimeTrack(t, u.getId(), Messages.get("notifications.changed_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
                 }
+
+                // Delete unnecessary generated Notifications
+                List<Notification> unseen = notificationRepository.readUnseenNotifications(u);
+                List<Notification> sent = notificationRepository.readSentNotifications(u);
+                unseen.forEach(notificationRepository::deleteNotification);
+                sent.forEach(notificationRepository::deleteNotification);
             }
 
 

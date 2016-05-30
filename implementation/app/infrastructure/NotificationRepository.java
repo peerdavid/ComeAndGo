@@ -27,4 +27,6 @@ public interface NotificationRepository {
     List<Notification> readSeenNotifications(User user, int amount) throws NotificationException;
 
     List<Notification> readSentNotifications(User user, int amount) throws NotificationException;
+
+    List<Notification> readSentNotifications(User user) throws NotificationException;
 }

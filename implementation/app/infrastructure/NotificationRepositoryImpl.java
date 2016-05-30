@@ -33,7 +33,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
 
     @Override
     public void deleteNotification(Notification toDelete) {
-        Ebean.delete(Notification.class, toDelete);
+        Ebean.delete(toDelete);
     }
 
     @Override
@@ -64,6 +64,21 @@ public class NotificationRepositoryImpl implements NotificationRepository {
                         .orderBy("created desc")
                         .setMaxRows(amount)
                         .findList();
+        if(result != null) {
+            return result;
+        }
+        // We should never return null
+        throw new NotificationException("exceptions.notification.could_not_find_notification");
+    }
+
+    @Override
+    public List<Notification> readSentNotifications(User user) throws NotificationException {
+        List<Notification> result =
+                Ebean.find(Notification.class)
+                        .where().eq("sender_id", user.getId())
+                        .orderBy("created desc")
+                        .findList();
+
         if(result != null) {
             return result;
         }
