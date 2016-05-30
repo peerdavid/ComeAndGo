@@ -355,7 +355,7 @@ public class NotificationViewModelFactory {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
                     String message = notification.getMessage();
 
-                    if(message.isEmpty()){
+                    if(message.isEmpty()) {
                         message = Messages.get("notifications.parental_leave_request");
                     }
 
@@ -381,7 +381,7 @@ public class NotificationViewModelFactory {
                     TimeOff timeOff = _timeTracking.readTimeOffById(timeOffId);
                     String message = notification.getMessage();
 
-                    if(message.isEmpty()){
+                    if(message.isEmpty()) {
                         message = Messages.get("notifications.business_trip_information");
                     }
 
@@ -487,7 +487,7 @@ public class NotificationViewModelFactory {
         return result;
     }
 
-    private InformationViewModel timeOffInvalidInformation(Notification notification){
+    private InformationViewModel timeOffInvalidInformation(Notification notification) {
         return new InformationViewModel(
             notification.getId(),
             Messages.get("notifications.information_timeoffinvalid"),
@@ -500,7 +500,7 @@ public class NotificationViewModelFactory {
 
         String additionalInfo = null;
 
-        switch (notification.getType()){
+        switch (notification.getType()) {
             case HOLIDAY_PAYOUT_REQUEST:
             case HOLIDAY_PAYOUT_ACCEPT:
             case HOLIDAY_PAYOUT_REJECT:
@@ -512,7 +512,7 @@ public class NotificationViewModelFactory {
                         notification.getSender().getFirstName(),
                         amount
                     );
-                } catch (TimeTrackException e){
+                } catch (TimeTrackException e) {
                     additionalInfo = Messages.get("notifications.payout_entry_not_found");
                 }
                 break;
@@ -528,7 +528,7 @@ public class NotificationViewModelFactory {
                         notification.getSender().getFirstName(),
                         amount
                     );
-                } catch (TimeTrackException e){
+                } catch (TimeTrackException e) {
                     additionalInfo = Messages.get("notifications.payout_entry_not_found");
                 }
                 break;
