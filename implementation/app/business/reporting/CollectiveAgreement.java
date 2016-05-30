@@ -19,7 +19,7 @@ interface CollectiveAgreement {
      * @param upperBound date to specify end of calculation (always starting at users entry date)
      * @return the reportEntry requested
      */
-    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound);
+    ReportEntry createUserReport(User user, List<TimeTrack> timeTracks, List<TimeOff> timeOffs, List<Payout> payouts, DateTime upperBound) throws Exception;
 
     /**
      * takes entry and checks for all possible workTimeAlerts like e.g. break overuse (under-use), sickLeave, holiday, flextime hours
