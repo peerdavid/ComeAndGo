@@ -226,7 +226,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
 
     @Override
     public void createWorkHoursOfDayAlerts(User user, double workedHoursOfDay, DateTime when, List<WorkTimeAlert> alertList) {
-        if(workedHoursOfDay > CollectiveConstants.MAX_HOURS_PER_DAY) {
+        if(workedHoursOfDay >= CollectiveConstants.MAX_HOURS_PER_DAY) {
             alertList.add(createAlert("forbidden_worktime.user_exceeded_daily_worktime",
                     WorkTimeAlert.Type.WARNING,
                     user.getFirstName() + " " + user.getLastName(),

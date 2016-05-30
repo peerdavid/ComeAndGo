@@ -306,6 +306,32 @@ public class ReportingServiceImplTest {
     }
 
     @Test
+    public void getHoursWorked_ForTwoDaysWithBreakOverMidnight_ShouldSucceedAndCallRepository() throws Exception {
+        TimeTrack toTest = mock(TimeTrack.class);
+        List<Break> breakList = new ArrayList<>();
+        // break start at BIG BANG (23.40)
+        DateTime breakStart = DateTimeUtils.endOfDay(DateTimeUtils.BIG_BANG).minusMinutes(20);
+        // break end at one day after BIG BANG (00.15)
+        DateTime breakEnd = DateTimeUtils.endOfDay(DateTimeUtils.BIG_BANG).plusMinutes(15);
+        breakList.add(new Break(breakStart, breakEnd));
+        // timeTrack starts yesterday at 20.00 and ends today at 06.00
+        when(toTest.getBreaks()).thenReturn(breakList);
+        when(toTest.getFrom()).thenReturn(DateTimeUtils.startOfDay(DateTime.now()).minusHours(4));
+        when(toTest.getTo()).thenReturn(DateTimeUtils.startOfDay(DateTime.now()).plusHours(6));
+
+        List<TimeTrack> timeTrackList = new ArrayList<>();
+        timeTrackList.add(toTest);
+
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(timeTrackList);
+
+        double hoursWorkedDayBefore = _reporting.readHoursWorked(8, DateTime.now().minusDays(1));
+        double hoursWorkedActualDay = _reporting.readHoursWorked(8, DateTime.now());
+
+        Assert.assertEquals(hoursWorkedDayBefore, 3.67, 0.1);
+        Assert.assertEquals(hoursWorkedActualDay, 5.75, 0.1);
+    }
+
+    @Test
     public void getHoursWorkedProgress_WithMultipleTimeTracksAndBreaks_ShouldSucceedAndCallRepository() throws Exception {
         // Prepare
         TimeTrack t1 = Mockito.mock(TimeTrack.class);

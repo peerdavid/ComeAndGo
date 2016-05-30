@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
@@ -97,8 +98,17 @@ class ReportingServiceImpl implements ReportingService {
             DateTime to = timeTrack.getTo() == null ? DateTime.now() : (timeTrack.getTo().isAfter(endOfDay) ? endOfDay : timeTrack.getTo());
             result += to.getMinuteOfDay() - from.getMinuteOfDay();
             for (Break b : timeTrack.getBreaks()) {
-                from = b.getFrom().isBefore(startOfDay) ? startOfDay : b.getFrom();
-                to = b.getTo() == null ? DateTime.now() : (b.getTo().isAfter(endOfDay) ? endOfDay : b.getTo());
+                boolean breakOverMidnight = b.getFrom().toLocalTime().isAfter(b.getTo().toLocalTime());
+                if(breakOverMidnight) {
+                    // if we know we have a break over midnight, there is a difference if break is over 0.00 or it is over 23.59 midnight
+                    boolean breakOverFirstMidnight = timeTrack.getTo().isAfter(startOfDay) && timeTrack.getTo().isBefore(endOfDay);
+                    boolean breakOverSecondMidnight = timeTrack.getFrom().isAfter(startOfDay) && timeTrack.getFrom().isBefore(endOfDay);
+                    from = breakOverFirstMidnight ? DateTimeUtils.startOfDay(b.getFrom()) : b.getFrom();
+                    to = breakOverSecondMidnight ? DateTimeUtils.endOfDay(b.getTo()) : b.getTo();
+                } else {
+                    from = b.getFrom();
+                    to = b.getTo();
+                }
                 result -= to.getMinuteOfDay() - from.getMinuteOfDay();
             }
         }
