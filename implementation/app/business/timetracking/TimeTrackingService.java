@@ -31,10 +31,10 @@ interface TimeTrackingService {
     List<TimeTrack> readTimeTracks(int userId, DateTime from, DateTime to) throws UserException;
 
     /*  EDIT / DELETE / ADD TIMETRACKS AND BREAKS  */
-    void createTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException;
-    void createTimeTrack(int userId, DateTime from, DateTime to) throws UserException, NotificationException;
+    void createTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException;
+    void createTimeTrack(int userId, DateTime from, DateTime to, int currentUserId) throws UserException, NotificationException;
 
-    void deleteTimeTrack(TimeTrack timeTrack) throws NotificationException;
+    void deleteTimeTrack(TimeTrack timeTrack, int currentUserId) throws NotificationException;
 
-    void updateTimeTrack(TimeTrack timeTrack) throws UserException, NotificationException;
+    void updateTimeTrack(TimeTrack timeTrack, int currentUserId) throws UserException, NotificationException;
 }

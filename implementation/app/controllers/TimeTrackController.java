@@ -4,6 +4,7 @@ import business.reporting.Reporting;
 import business.timetracking.TimeTracking;
 import business.usermanagement.UserException;
 import com.google.inject.Inject;
+import com.google.inject.spi.Message;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
@@ -11,6 +12,7 @@ import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
 import play.data.Form;
+import play.i18n.Messages;
 import play.mvc.Result;
 import utils.DateTimeUtils;
 
@@ -132,6 +134,8 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result updateTimeTrack(int userId, String from, String to) throws Exception {
+        CommonProfile profile = getUserProfile();
+        int currentUserId = Integer.parseInt(profile.getId());
         Map<String, String> formData = Form.form().bindFromRequest(
             "startdate",
             "enddate",
@@ -184,13 +188,20 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             b.setFromAndTo(start, end);
         }
 
-        _timeTracking.updateTimeTrack(timeTrack);
+        String message = Messages.get("notifications.changed_timetrack",
+                profile.getFirstName() + " " + profile.getFamilyName(),
+                DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
+                );
+
+        _timeTracking.updateTimeTrack(timeTrack, currentUserId, message);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result deleteBreak(int breakId, int timetrackId, int userId, String from, String to) throws Exception {
+        CommonProfile profile = getUserProfile();
+        int currentUserId = Integer.parseInt(profile.getId());
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
         for (int i = 0; i < timeTrack.getBreaks().size(); ++i) {
@@ -200,13 +211,20 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             }
         }
 
-        _timeTracking.updateTimeTrack(timeTrack);
+        String message = Messages.get("notifications.changed_timetrack",
+                profile.getFirstName() + " " + profile.getFamilyName(),
+                DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
+        );
+
+        _timeTracking.updateTimeTrack(timeTrack, currentUserId, message);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result createBreak(int timetrackId, int userId, String from, String to) throws Exception {
+        CommonProfile profile = getUserProfile();
+        int currentUserId = Integer.parseInt(profile.getId());
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
         Map<String, String> formData = Form.form().bindFromRequest(
@@ -234,13 +252,20 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         timeTrack.addBreak(new Break(fromDate, toDate));
 
-        _timeTracking.updateTimeTrack(timeTrack);
+        String message = Messages.get("notifications.changed_timetrack",
+                profile.getFirstName() + " " + profile.getFamilyName(),
+                DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
+        );
+
+        _timeTracking.updateTimeTrack(timeTrack, currentUserId, message);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result createTimeTrack(int userId, String from, String to) throws Exception {
+        CommonProfile profile = getUserProfile();
+        int currentUserId = Integer.parseInt(profile.getId());
         Map<String, String> formData = Form.form().bindFromRequest(
             "startdate",
             "enddate",
@@ -272,8 +297,12 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
             throw new UserException("exceptions.timetracking.error_in_timetrack_form");
         }
 
+        String message = Messages.get("notifications.created_timetrack",
+                profile.getFirstName() + " " + profile.getFamilyName(),
+                DateTimeUtils.dateTimeToDateString(fromDate)
+        );
 
-        _timeTracking.createTimeTrack(userId, fromDate, toDate);
+        _timeTracking.createTimeTrack(userId, fromDate, toDate, currentUserId, message);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
@@ -281,9 +310,16 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
     @RequiresAuthentication(clientName = "default", authorizerName = "admin")
     public Result deleteTimeTrack(int timetrackId, int userId, String from, String to) throws Exception {
+        CommonProfile profile = getUserProfile();
+        int currentUserId = Integer.parseInt(profile.getId());
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
-        _timeTracking.deleteTimeTrack(timeTrack);
+        String message = Messages.get("notifications.created_timetrack",
+                profile.getFirstName() + " " + profile.getFamilyName(),
+                DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
+        );
+
+        _timeTracking.deleteTimeTrack(timeTrack, currentUserId, message);
 
         return redirect(routes.TimeTrackController.readTimeTracks(userId, from, to));
     }
