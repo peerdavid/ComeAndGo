@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.pac4j.core.exception.CredentialsException;
 import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
-import play.Logger;
 
 import java.util.List;
 
@@ -227,9 +226,9 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
     }
 
     @Override
-    public void validateBossOfUserOrPersonnelManager(int userId, int toTestBossId) throws Exception {
+    public void validateBossOfUserOrPersonnelManager(int toTestAdminOrPersonnelManagerId) throws Exception {
         // only administrators and personnel managers are allowed to update / delete / create timeTracks
-        User actualUser = readUser(toTestBossId);
+        User actualUser = readUser(toTestAdminOrPersonnelManagerId);
         if(actualUser.getRole().equals(SecurityRole.ROLE_ADMIN) || actualUser.getRole().equals(SecurityRole.ROLE_PERSONNEL_MANAGER)) {
             return;
         }

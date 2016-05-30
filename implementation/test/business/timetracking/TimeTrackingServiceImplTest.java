@@ -1,6 +1,5 @@
 package business.timetracking;
 
-import business.notification.NotificationException;
 import business.usermanagement.InternalUserManagement;
 import business.usermanagement.UserException;
 import business.notification.InternalNotificationSender;
@@ -35,6 +34,9 @@ public class TimeTrackingServiceImplTest {
     InternalUserManagement _internalUserManagement;
     TimeTrackingService _timeTrackService;
     User _testUser;
+    User _testAdmin;
+    User _testBoss;
+    TimeTrack _testTimeTrack;
     Break _testBreak;
 
 
@@ -44,11 +46,23 @@ public class TimeTrackingServiceImplTest {
         _testUser.setId(1);
         _testBreak = new Break(DateTime.now());
 
+        _testTimeTrack = mock(TimeTrack.class);
+
+        _testAdmin = mock(User.class);
+        when(_testAdmin.getRole()).thenReturn(SecurityRole.ROLE_ADMIN);
+        when(_testAdmin.getId()).thenReturn(10);
+        _testBoss = mock(User.class);
+        when(_testBoss.getRole()).thenReturn(SecurityRole.ROLE_BOSS);
+        when(_testBoss.getId()).thenReturn(20);
+
         _notificationSenderMock = mock(InternalNotificationSender.class);
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _internalUserManagement = mock(InternalUserManagement.class);
         _validation = mock(TimeTrackingValidation.class);
         _timeOffValidation = mock(TimeOffValidation.class);
+
+        when(_internalUserManagement.readUser(10)).thenReturn(_testAdmin);
+        when(_internalUserManagement.readUser(20)).thenReturn(_testBoss);
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _internalUserManagement);
     }
@@ -428,7 +442,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void addTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws Exception {
+    public void createTimeTrack_withTimeTrackWeDontCareAbout_ShouldCallValidation() throws Exception {
         // init
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(23), DateTime.now().plusHours(50), null);
 
@@ -437,7 +451,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void addTimeTrack_whichDoesNotOverlayToAnother_ShouldSucceedAndCallRepository() throws Exception {
+    public void createTimeTrack_whichDoesNotOverlayToAnother_ShouldSucceedAndCallRepository() throws Exception {
         // init
         TimeTrack timeTrackToInsert = new TimeTrack(_testUser, DateTime.now().plusHours(6), DateTime.now().plusHours(20), null);
 
@@ -450,7 +464,7 @@ public class TimeTrackingServiceImplTest {
     }
 
     @Test
-    public void addTimeTrack_withExactly8HoursBetweenFromAndTo_ShouldSucceedAndCallRepository() throws UserException {
+    public void createTimeTrack_withExactly8HoursBetweenFromAndTo_ShouldSucceedAndCallRepository() throws UserException {
         // init
         TimeTrack timeTrack = new TimeTrack(_testUser, DateTime.now(), DateTime.now().plusHours(8), null);
         when(_timeTrackingRepository.readTimeTracksOverlay(_testUser, timeTrack)).thenReturn(Collections.emptyList());
@@ -466,5 +480,29 @@ public class TimeTrackingServiceImplTest {
 
         _timeTrackService.updateTimeTrack(timeTrack, 0, "");
         Mockito.verify(_validation, times(1)).validateTimeTrackUpdate(any(TimeTrack.class));
+    }
+
+    @Test
+    public void deleteTimeTrack_ExecutedByUserWeDoNotCare_ShouldCallUserValidation() throws Exception {
+        _timeTrackService.deleteTimeTrack(_testTimeTrack, 0, "");
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManager(0);
+    }
+
+    @Test
+    public void createTimeTrack_ExecutedByUserWeDoNotCare_ShouldCallUserValidation() throws Exception {
+        _timeTrackService.createTimeTrack(_testTimeTrack, 0, "");
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManager(0);
+    }
+
+    @Test
+    public void creatsdfeTimeTrack_ExecutedByUserWeDoNotCare_ShouldCallUserValidation() throws Exception {
+        _timeTrackService.createTimeTrack(_testBoss.getId(), DateTime.now(), DateTime.now().plusHours(10), 0, "");
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManager(0);
+    }
+
+    @Test
+    public void updateTimeTrack_ExecutedByUserWeDoNotCare_ShouldCallUserValidation() throws Exception {
+        _timeTrackService.updateTimeTrack(_testTimeTrack, 0, "");
+        Mockito.verify(_internalUserManagement, times(1)).validateBossOfUserOrPersonnelManager(0);
     }
 }
