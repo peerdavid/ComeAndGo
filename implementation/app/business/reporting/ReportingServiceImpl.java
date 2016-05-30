@@ -54,6 +54,10 @@ class ReportingServiceImpl implements ReportingService {
     private Report createReport(List<User> users, DateTime from, DateTime to) throws Exception {
         List<ReportEntry> userReports = new ArrayList<>();
 
+        if (to.isBefore(from)) {
+            throw new UserException("exceptions.reporting.to_before_from");
+        }
+
         for(User user : users) {
             List<TimeTrack> timeTracks = _internalTimeTracking.readTimeTracks(user.getId(), user.getEntryDate(), to);
             List<TimeOff> timeOffs = _internalTimeTracking.readTimeOffs(user.getId(), user.getEntryDate(), to);

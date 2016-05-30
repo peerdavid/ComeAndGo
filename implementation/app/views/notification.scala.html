@@ -61,7 +61,9 @@
                                     @if(notification.getAdditionalInformation != "") {
                                         <p>@notification.getAdditionalInformation</p>
                                     }
-                                <p>@notification.getMessage</p>
+                                    @if(notification.getMessage != ""){
+                                        <p>@notification.getMessage</p>
+                                    }
 
                                 <div class="row button-container">
 
@@ -77,7 +79,7 @@
                                 } else {
 
                                     <a class="btn waves-effect waves-light primary-btn col s12 l5 offset-l7" href="@(routes.NotificationController.acceptNotification(notification.getNotificationId))">
-                                    @Messages("views.notification.buttonaccept")
+                                    @Messages("views.notification.buttonneutral")
                                     </a>
                                 }
 
@@ -117,7 +119,9 @@
                                     @if(notification.getAdditionalInformation != "") {
                                         <p>@notification.getAdditionalInformation</p>
                                     }
-                                <p>@notification.getMessage</p>
+                                    @if(notification.getMessage != "") {
+                                        <p>@notification.getMessage</p>
+                                    }
                                 </div>
                             </li>
                         }
@@ -153,7 +157,9 @@
                                     @if(notification.getAdditionalInformation != "") {
                                         <p>@notification.getAdditionalInformation</p>
                                     }
-                                <p>@notification.getMessage</p>
+                                    @if(notification.getMessage != "") {
+                                        <p>@notification.getMessage</p>
+                                    }
                                 </div>
                             </li>
                         }
