@@ -9,6 +9,7 @@ class CollectiveConstants {
 
    protected static final int MIN_HOURS_FREETIME_BETWEEN_WORKTIMES = 11;
    protected static final int MAX_DAYS_OF_WORK_PER_WEEK = 5;
+   protected static final int NUMBER_OF_HOURS_TO_TAKE_BREAK = 6;
    // holiday consumption
    protected static final int MAX_NUMBER_OF_UNUSED_HOLIDAY_PER_YEAR = 20;
    // sick leave

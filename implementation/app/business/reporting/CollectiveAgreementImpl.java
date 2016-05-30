@@ -243,7 +243,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         }
         // then check if user is underneath the daily break consume:
         double minutesOfBreakExpected = CollectiveConstants.BREAK_MINUTES_PER_DAY * (1 - CollectiveConstants.TOLERATED_BREAK_UNDERUSE_PERCENTAGE);
-        if(hoursOfBreaksTaken * 60 < minutesOfBreakExpected) {
+        if(workedHoursOfDay > CollectiveConstants.NUMBER_OF_HOURS_TO_TAKE_BREAK && hoursOfBreaksTaken * 60 < minutesOfBreakExpected) {
             alertList.add(createAlert("forbidden_worktime.user_underused_break_on_date",
                     WorkTimeAlert.Type.WARNING,
                     userFirstAndLastName(user),

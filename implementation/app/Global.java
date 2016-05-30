@@ -95,7 +95,7 @@ public class Global extends GlobalSettings {
                     if (entry.plusDays(i).getDayOfWeek() != 6 && entry.plusDays(i).getDayOfWeek() != 7) {
                         DateTime from = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 8, 0);
                         DateTime to = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 16, 59, 59);
-                        timeTracking.createTimeTrack(u.getId(), from, to, u.getId(), Messages.get("notifications.created_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
+                        timeTracking.createTimeTrack(u.getId(), from, to, stefan.getId(), Messages.get("notifications.created_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
 
                     }
                 }
@@ -105,7 +105,7 @@ public class Global extends GlobalSettings {
                     DateTime from = new DateTime(t.getFrom().getYear(), t.getFrom().getMonthOfYear(), t.getFrom().getDayOfMonth(), 12, 0);
                     DateTime to = new DateTime(t.getFrom().getYear(), t.getFrom().getMonthOfYear(), t.getFrom().getDayOfMonth(), 12, 59, 59);
                     t.addBreak(new Break(from, to));
-                    timeTracking.updateTimeTrack(t, u.getId(), Messages.get("notifications.changed_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
+                    timeTracking.updateTimeTrack(t, stefan.getId(), Messages.get("notifications.changed_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
                 }
 
                 // Delete unnecessary generated Notifications
