@@ -230,10 +230,16 @@ public class CollectiveAgreementImplTest {
     }
 
     @Test
-    public void createDailyWorkTimeAlerts_WithTooLessBreak_ShouldResultInAlert() throws Exception {
+    public void createDailyWorkTimeAlerts_WithTooLessBreakOver6hWorkTime_ShouldResultInAlert() throws Exception {
         _testee.createWorkHoursOfDayAlerts(_testUser, 8, 0.25, _now, _alert);
         testForStringMembers(_alert, "forbidden_worktime.user_underused_break_on_date");
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createDailyWorkTimeAlerts_WithTooLessBreakUnder6hWorkTime_ShouldResultInEmptyAlertList() throws Exception {
+        _testee.createWorkHoursOfDayAlerts(_testUser, 5, 0, _now, _alert);
+        Assert.assertEquals(_alert.size(), 0);
     }
 
     @Test
@@ -267,6 +273,42 @@ public class CollectiveAgreementImplTest {
         _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, christmas, workHoursNextDays, _alert);
         testForStringMembers(_alert, "forbidden_worktime.worked_on_both_christmas_and_newyear_eve");
         Assert.assertEquals(WorkTimeAlert.Type.WARNING, _alert.get(0).getType());
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WorkedOnChristmasButNotAtNewYearsEve_ShouldResultInEmptyAlert() throws Exception {
+        List<Double> workHoursNextDays = new ArrayList<>();
+        workHoursNextDays.add(8.);  // work time on christmas eve
+        workHoursNextDays.add(0.);  // 25.12.
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);  // new years eve
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        DateTime christmas = DateTimeUtils.endOfActualYear().minusDays(7);
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, christmas, workHoursNextDays, _alert);
+        Assert.assertEquals(_alert.size(), 0);
+    }
+
+    @Test
+    public void createFreeTimeWorkdaysPerWeekAlerts_WorkedOnNewYearsEveButNotOnChristmas_ShouldResultInEmptyAlert() throws Exception {
+        List<Double> workHoursNextDays = new ArrayList<>();
+        workHoursNextDays.add(0.);  // work time on christmas eve
+        workHoursNextDays.add(0.);  // 25.12.
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(9.);  // new years eve
+        workHoursNextDays.add(0.);
+        workHoursNextDays.add(0.);
+        DateTime christmas = DateTimeUtils.endOfActualYear().minusDays(7);
+        _testee.createFreeTimeWorkdaysPerWeekAndChristmasAndNewYearClauseAlerts(_testUser, christmas, workHoursNextDays, _alert);
+        Assert.assertEquals(_alert.size(), 0);
     }
 
     @Test
