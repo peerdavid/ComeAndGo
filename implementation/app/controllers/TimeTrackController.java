@@ -91,8 +91,9 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         if (progress >= 100)
             overtime = _reporting.calculateOvertime(userId, DateTime.now());
 
-        return ok("{ \"progress\": \"" + progress + "\", \"overtime\": \""
-            + String.format("%.1f", overtime) + "\" }");
+        return ok(
+            String.format("{ \"progress\": \"%d\", \"overtime\": \"%.1f\" }", progress, overtime)
+        );
     }
 
     @RequiresAuthentication(clientName = "default")
