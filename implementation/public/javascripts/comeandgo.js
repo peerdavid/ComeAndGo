@@ -14,8 +14,11 @@ $( document ).ready(function() {
     });
 
     // Poll new notifications every second
-    updateNewNotificationBadge()    // Do it immediately
+    updateNewNotificationBadge();   // Do it immediately
     setInterval(updateNewNotificationBadge, 1000);
+
+    updateUserSate();
+    setInterval(updateUserSate, 10000);
 
     $('.enable-editing-switch').prop( "checked", false );
 
@@ -32,6 +35,29 @@ $( document ).ready(function() {
     enableEditing(false, null);
 
 });
+
+/*
+ * get current state of user by ajax call
+ */
+var updateUserSate = function(){
+    $.ajax({
+        type:  'GET',
+        contentType: 'application/json',
+        data: '',
+        url: '/state',
+        success: function(data, textStatus, jqXHR) {
+            if(data <= 0){
+                return;
+            }
+
+            var json = JSON.parse(data);
+            $('#state-message').text(json.state);
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+            console.log("State update failed " + textStatus);
+        }
+    });
+};
 
 /*
  * get notification count by ajax call

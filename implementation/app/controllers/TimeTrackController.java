@@ -97,6 +97,24 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
     }
 
     @RequiresAuthentication(clientName = "default")
+    public Result readState() throws Exception {
+        int userId = Integer.parseInt(getUserProfile().getId());
+
+        String response = "{ \"state\" : \"%s\" }";
+
+        switch (_timeTracking.readState(userId)) {
+            case ACTIVE:
+                return ok(String.format(response, Messages.get("views.navigation.state.active")));
+            case INACTIVE:
+                return ok(String.format(response, Messages.get("views.navigation.state.inactive")));
+            case PAUSE:
+                return ok(String.format(response, Messages.get("views.navigation.state.pause")));
+            default:
+                return internalServerError(String.format(response, "unknown state"));
+        }
+    }
+
+    @RequiresAuthentication(clientName = "default")
     public Result go() throws Exception {
         CommonProfile profile = getUserProfile();
         _timeTracking.go(Integer.parseInt(profile.getId()));

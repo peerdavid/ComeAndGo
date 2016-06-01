@@ -52,6 +52,7 @@ GET     /come                                      @controllers.TimeTrackControl
 GET     /go                                        @controllers.TimeTrackController.go
 GET     /pause                                     @controllers.TimeTrackController.pause
 GET     /progress                                  @controllers.TimeTrackController.readProgress
+GET     /state                                     @controllers.TimeTrackController.readState
 
 # API
 POST    /api/v1/come                               @controllers.api.v1.ApiController.come
