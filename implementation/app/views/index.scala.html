@@ -27,7 +27,7 @@
 
                         $('#active_progress .determinate').css("width", progress + "%");
                         if(overtime > 0) {
-                            $('#overtime-badge').css('visibility', 'visible');
+                            $('#overtime-badge').css('display', '');
                             $('#overtime-count').text(overtime);
                         }
                     },
@@ -75,7 +75,7 @@
         <!-- Progress bar -->
         <div id="active_progress" class="progress row">
             <div class="determinate green col s12 l12" style="width: 0%"></div>
-            <span id="overtime-badge" class="badge green white-text valign-wrapper z-depth-1" style="visibility: hidden">
+            <span id="overtime-badge" class="badge green white-text valign-wrapper z-depth-1" style="display: none">
                 <i class="material-icons valign">add</i><span id="overtime-count" class="valign">1.2</span>
             </span>
         </div>
