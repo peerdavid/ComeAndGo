@@ -51,7 +51,37 @@ var updateUserSate = function(){
             }
 
             var json = JSON.parse(data);
-            $('#state-message').text(json.state);
+            $('#state-message').text(json.message);
+
+            var buttonCome = $('#button-come');
+            var buttonGo = $('#button-go');
+            var buttonStartBreak = $('#button-start-break');
+            var buttonStopBreak = $('#button-stop-break');
+
+            if(json.state === "active") {
+                buttonGo.prop("disabled", false);
+                buttonStartBreak.prop("disabled", false);
+                buttonStartBreak.css("display", "inherit");
+                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.css("display", "none");
+                buttonCome.prop("disabled", true);
+            }
+            else if(json.state === "inactive") {
+                buttonGo.prop("disabled", true);
+                buttonStartBreak.prop("disabled", true);
+                buttonStartBreak.css("display", "inherit");
+                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.css("display", "none");
+                buttonCome.prop("disabled", false);
+            }
+            else if(json.state === "pause") {
+                buttonGo.prop("disabled", true);
+                buttonStartBreak.prop("disabled", true);
+                buttonStartBreak.css("display", "none");
+                buttonStopBreak.prop("disabled", false);
+                buttonStopBreak.css("display", "inherit");
+                buttonCome.prop("disabled", true);
+            }
         },
         error:function(jqXHR, textStatus, errorThrown) {
             console.log("State update failed " + textStatus);
