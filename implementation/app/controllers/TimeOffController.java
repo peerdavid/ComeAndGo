@@ -89,7 +89,7 @@ public class TimeOffController extends UserProfileController<CommonProfile> {
         TimeOffType type = TimeOffType.valueOf(form.get("type"));
 
         DateTime from = DateTimeUtils.stringToDateTime(form.get("from"));
-        DateTime to = DateTimeUtils.stringToDateTime(form.get("to"));
+        DateTime to = DateTimeUtils.endOfDay(DateTimeUtils.stringToDateTime(form.get("to")));
 
         // Call business logic
         createTimeOffForGivenType(userId, type, from, to, comment);

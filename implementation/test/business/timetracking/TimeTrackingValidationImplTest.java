@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,14 +45,19 @@ public class TimeTrackingValidationImplTest {
 
     @Before
     public void SetUp() throws Exception {
-        _testUser = new User("testuser", "asdfasdf", SecurityRole.ROLE_USER, "Hans", "Wurst", "hans@wurst.at", true, null, 1200);
+        _testUser = mock(User.class);
+        when(_testUser.getFirstName()).thenReturn("Stefan");
+        when(_testUser.getLastName()).thenReturn("TesterStefan");
+        when(_testUser.getId()).thenReturn(1);
+        when(_testUser.getEntryDate()).thenReturn(DateTimeUtils.BIG_BANG);
+        when(_testUser.getRole()).thenReturn(SecurityRole.ROLE_USER);
         _testBreak = new Break(DateTime.now());
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
         _validation = new TimeTrackingValidationImpl(_timeTrackingRepository);
         _timeOffRepository = mock(TimeOffRepository.class);
-        _timeOffValidation = new TimeOffValidationImpl(_timeOffRepository);
+        _timeOffValidation = new TimeOffValidationImpl(_timeOffRepository, _timeTrackingRepository);
 
         _timeTrackService = new TimeTrackingServiceImpl(_timeTrackingRepository, _validation, _timeOffValidation, _notificationSenderMock, _userRepository);
 
@@ -387,6 +393,13 @@ public class TimeTrackingValidationImplTest {
         when(_timeTrackingRepository.readTimeTracksOverlay(any(User.class), any(TimeTrack.class))).thenReturn(_testList);
 
         _validation.validateTimeTrackUpdate(_testTimeTrack);
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeTrackUpdate_WithInsertedTimeTrackBeforeUsersEntry_ShouldFail() throws Exception {
+        TimeTrack toInsert = new TimeTrack(_testUser, DateTimeUtils.BIG_BANG, DateTimeUtils.BIG_BANG.plusHours(18), null);
+        when(_testUser.getEntryDate()).thenReturn(DateTime.now());
+        _validation.validateTimeTrackInsert(toInsert);
     }
 
 }

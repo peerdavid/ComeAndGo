@@ -13,5 +13,6 @@ import java.util.Date;
  */
 interface TimeOffValidation {
     void validateTimeOff(User user, DateTime from, DateTime to) throws UserException;
+    void validateTimeOffForTimeTrackInsert(User user, DateTime from, DateTime to) throws UserException;
     void validateComeForDate(User user, DateTime date) throws UserException;
 }

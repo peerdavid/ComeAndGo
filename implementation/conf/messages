@@ -153,7 +153,7 @@ exceptions.timetracking.user_break_error = There was an error with specified tim
 exceptions.timetracking.user_not_working_and_break = You have no permissions to manipulate your break without working state ACTIVE
 exceptions.notification.message_length = Message is too long for Notification
 exceptions.notifications.invalid_action = Action not specified for this object
-exceptions.timetracking.validate_clashing_timetracks = This timetrack is clashing with another one
+exceptions.timetracking.validate_clashing_timetracks = Your input is clashing with other timetracks
 exceptions.timetracking.validate_clashing_breaks = There are some breaks clashing
 exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to be inside a timetrack
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
@@ -162,6 +162,7 @@ exceptions.timetracking.error_user_already_working = You are currently working a
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
 exceptions.timetracking.error_too_long_timeTrack = Times of TimeTrack are longer than 24h. Don't play a trick on me...
 exceptions.timetracking.error_timeTrack_in_future = You can't create time track in future
+exceptions.timetracking.error_timeTrack_before_users_entry = Your specified date and time is before the user started his work in company
 
 
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:

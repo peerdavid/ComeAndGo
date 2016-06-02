@@ -156,7 +156,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void createTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
         _userManagement.validateBossOfUserOrPersonnelManager(currentUserId);
         _timeTrackValidation.validateTimeTrackInsert(timeTrack);
-        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
+        _timeOffValidation.validateTimeOffForTimeTrackInsert(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
 
         int id = _repository.createTimeTrack(timeTrack);
 
@@ -182,7 +182,7 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
     public void updateTimeTrack(TimeTrack timeTrack, int currentUserId, String message) throws Exception {
         _userManagement.validateBossOfUserOrPersonnelManager(currentUserId);
         _timeTrackValidation.validateTimeTrackUpdate(timeTrack);
-        _timeOffValidation.validateTimeOff(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
+        _timeOffValidation.validateTimeOffForTimeTrackInsert(timeTrack.getUser(), timeTrack.getFrom(), timeTrack.getTo());
 
         _repository.updateTimeTrack(timeTrack);
 

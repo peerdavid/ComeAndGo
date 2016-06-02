@@ -41,6 +41,7 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          throwClashingTimeTrackException();
       }
 
+      validateTimeTrackNotBeforeUsersEntry(timeTrack);
       validateTimeTrackNotInFuture(timeTrack);
       validateTimeTrackDuration(timeTrack);
       validateBreaks(breakList, timeTrack);
@@ -64,8 +65,16 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          }
       }
 
+      validateTimeTrackNotBeforeUsersEntry(timeTrack);
+      validateTimeTrackNotInFuture(timeTrack);
       validateTimeTrackDuration(timeTrack);
       validateBreaks(breakList, timeTrack);
+   }
+
+   private void validateTimeTrackNotBeforeUsersEntry(TimeTrack timeTrack) throws UserException {
+      if(timeTrack.getFrom().isBefore(DateTimeUtils.startOfDay(timeTrack.getUser().getEntryDate()))) {
+         throwTimeTrackBeforeEntryDateException();
+      }
    }
 
    private void validateTimeTrackNotInFuture(TimeTrack timeTrack) throws UserException {
@@ -246,5 +255,9 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
    private void throwTimeTrackInFutureException() throws UserException {
       throw new UserException("exceptions.timetracking.error_timeTrack_in_future");
+   }
+
+   private void throwTimeTrackBeforeEntryDateException() throws UserException {
+      throw new UserException("exceptions.timetracking.error_timeTrack_before_users_entry");
    }
 }

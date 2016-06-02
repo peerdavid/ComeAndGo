@@ -13,6 +13,7 @@ import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,26 +29,27 @@ import static org.mockito.Mockito.when;
 public class TimeOffValidationImplTest {
     TimeTrackingRepository _timeTrackingRepository;
     InternalUserManagement _userRepository;
-    TimeTrackingService _timeTrackService;
     TimeOffRepository _timeOffRepository;
     User _testUser;
-    TimeTrack _testTimeTrack;
     Break _testBreak;
     TimeOffValidationImpl _validation;
-    TimeOffValidation _timeOffValidation;
-    List<TimeTrack> _testList;
     DateTime _MIDNIGHT;
     DateTime _MIDDAY;
 
     @Before
     public void setUp() throws UserException {
-        _testUser = new User("Stefan", "TesterStefan", SecurityRole.ROLE_USER, "Stefan", "Tester", "stefan@tester.at", true, null, 2000);
+        _testUser = mock(User.class);
+        when(_testUser.getFirstName()).thenReturn("Stefan");
+        when(_testUser.getLastName()).thenReturn("TesterStefan");
+        when(_testUser.getId()).thenReturn(1);
+        when(_testUser.getEntryDate()).thenReturn(DateTimeUtils.BIG_BANG);
+        when(_testUser.getRole()).thenReturn(SecurityRole.ROLE_USER);
         _testBreak = new Break(DateTime.now());
 
         _timeTrackingRepository = mock(TimeTrackingRepository.class);
         _userRepository = mock(InternalUserManagement.class);
         _timeOffRepository = mock(TimeOffRepository.class);
-        _validation = new TimeOffValidationImpl(_timeOffRepository);
+        _validation = new TimeOffValidationImpl(_timeOffRepository, _timeTrackingRepository);
 
         _MIDNIGHT  = new DateTime(2016, 5, 3, 0, 0, 0);
         _MIDDAY = _MIDNIGHT.plusHours(12);
@@ -110,6 +112,12 @@ public class TimeOffValidationImplTest {
     public void validateCome_WhileNoTimeOffIsTaken_ShouldSucceed() throws Exception {
         DateTime now = DateTime.now();
         _validation.validateComeForDate(_testUser, now);
+    }
+
+    @Test(expected = UserException.class)
+    public void validateTimeOff_WhichIsBeforeUsersEntry_ShouldFail() throws Exception {
+        when(_testUser.getEntryDate()).thenReturn(DateTime.now());
+        _validation.validateTimeOff(_testUser, DateTimeUtils.BIG_BANG, DateTimeUtils.BIG_BANG.plusHours(18));
     }
 
 
