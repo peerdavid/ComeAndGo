@@ -228,7 +228,7 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
 
         List<User> userList = _userRepository.readUsers();
         for (User u : userList) {
-            if (u.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
+            if (u.getId() != admin.getId() && u.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
         }
         return true;
     }

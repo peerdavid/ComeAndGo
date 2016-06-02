@@ -84,6 +84,24 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
+    public void updateUser_ChangeRoleOfLastRemainingAdmin_ShouldFail() throws Exception {
+        //Prepare
+        User modifiedAdmin = new User(_testAdmin.getUsername(), _testAdmin.getPassword(),
+            _testAdmin.getRole(), _testAdmin.getFirstName(), _testAdmin.getLastName(),
+            _testAdmin.getEmail(), _testAdmin.getActive(), _testAdmin.getBoss(),
+            _testAdmin.getHoursPerDay());
+        modifiedAdmin.setId(_testAdmin.getId());
+        List<User> userList = new ArrayList<User>();
+        userList.add(_testAdmin);
+        when(_userRepositoryMock.readUser(_testAdmin.getUsername())).thenReturn(_testAdmin);
+        when(_userRepositoryMock.readUsers()).thenReturn(userList);
+
+        modifiedAdmin.setRole(SecurityRole.ROLE_USER);
+
+        _testee.updateUser(_testAdmin.getUsername(), modifiedAdmin);
+    }
+
+    @Test(expected = UserException.class)
     public void readUser_ForNotExistingUser_ShouldFail() throws UserException {
         // Prepare
         String notExistingUsername = "abc";
