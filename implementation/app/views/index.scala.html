@@ -83,14 +83,14 @@
         <!-- Come & Go Buttons -->
         <div class="row" id="index-buttons">
             <form action="@routes.TimeTrackController.come()">
-                <button id="button-come" class="waves-effect waves-light btn secondary-btn col s12 m2 l2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
+                <button id="button-come" class="waves-effect waves-light btn col s12 m2 l2" disabled="disabled" style="float : left"> @Messages("views.index.come")</button>
             </form>
             <form action="@routes.TimeTrackController.pause()">
-                <button id="button-start-break" class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3 offset-m1" disabled="disabled">@Messages("views.index.startbreak")</button>
-                <button id="button-stop-break" class="waves-effect waves-light btn secondary-btn col s12 m4 l2 offset-l3 offset-m1" disabled="disabled" style="display: none">@Messages("views.index.stopbreak")</button>
+                <button id="button-start-break" class="waves-effect waves-light btn col s12 m4 l2 offset-l3 offset-m1" disabled="disabled">@Messages("views.index.startbreak")</button>
+                <button id="button-stop-break" class="waves-effect waves-light btn col s12 m4 l2 offset-l3 offset-m1" disabled="disabled" style="display: none">@Messages("views.index.stopbreak")</button>
             </form>
             <form action="@routes.TimeTrackController.go()">
-                <button id="button-go" class="waves-effect waves-light btn secondary-btn col s12 m3 l2 offset-l3 offset-m1" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
+                <button id="button-go" class="waves-effect waves-light btn col s12 m3 l2 offset-l3 offset-m1" disabled="disabled" style="float : right">@Messages("views.index.go")</button>
             </form>
         </div>
 
