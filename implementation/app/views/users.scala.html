@@ -1,7 +1,7 @@
 @import org.pac4j.core.profile.CommonProfile
 @import business.usermanagement.SecurityRole
 
-@(profile: CommonProfile, userlist: java.util.List[User])
+@(profile: CommonProfile, userlist: java.util.List[User], bossList: java.util.List[User])
 
     @main(Messages("views.admin.title")) {
 
@@ -123,13 +123,11 @@
                                 </div>
                                 <div class="input-field col s12 m6">
                                     <select name="boss" type="text">
-                                    @for(i: User <- userlist) {
-                                        @if(i.getRole == SecurityRole.ROLE_BOSS) {
-                                            @if(u.getBoss.getUsername == i.getUsername) {
-                                                <option selected value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
-                                            } else {
-                                                <option value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
-                                            }
+                                    @for(i: User <- bossList) {
+                                        @if(u.getBoss.getUsername == i.getUsername) {
+                                            <option selected value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
+                                        } else {
+                                            <option value=@i.getUsername>@(i.getFirstName) @(i.getLastName)</option>
                                         }
                                     }
                                     </select>

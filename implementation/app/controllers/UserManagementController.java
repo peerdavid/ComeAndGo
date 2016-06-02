@@ -35,8 +35,9 @@ public class UserManagementController extends UserProfileController {
         CommonProfile profile = getUserProfile();
 
         List<User> userList = _userManagement.readUsers();
+        List<User> bossList = _userManagement.readBosses();
 
-        return ok(views.html.users.render(profile, sortUserList(userList)));
+        return ok(views.html.users.render(profile, sortUserList(userList), sortUserList(bossList)));
     }
 
     /*
