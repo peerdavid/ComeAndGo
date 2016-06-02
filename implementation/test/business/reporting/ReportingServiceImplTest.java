@@ -38,6 +38,7 @@ public class ReportingServiceImplTest {
     CollectiveAgreement _collectiveAgreement;
     InternalTimeTracking _internalTimeTrack;
     DateTime _now;
+    List<TimeTrack> _listToTest;
 
 
     @Before
@@ -52,6 +53,7 @@ public class ReportingServiceImplTest {
         _reporting = new ReportingServiceImpl(_internalUserManagement, _collectiveAgreement, _internalTimeTrack);
 
         _now = DateTime.now();
+        _listToTest = new ArrayList<>();
     }
 
     @Test
@@ -372,6 +374,43 @@ public class ReportingServiceImplTest {
         // Validate
         Mockito.verify(_internalTimeTrack, times(1)).readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class));
         Assert.assertEquals(expected, actual, 0.01);
+    }
+
+    @Test
+    public void getHoursWorked_WithNoFinishedTimeTrack_ShouldReturnDurationUntilNow() throws Exception {
+        TimeTrack timeTrackToTest = new TimeTrack(_testUser);
+        DateTime timeTrackFrom = DateTimeUtils.startOfDay(_now);
+        timeTrackToTest.setFrom(timeTrackFrom);
+        _listToTest.add(timeTrackToTest);
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class))).thenReturn(_listToTest);
+
+        double actualHoursWorked = _reporting.readHoursWorked(8, _now);
+        double expectedHoursWorked = (double)_now.getMinuteOfDay() / 60;
+        Assert.assertEquals(expectedHoursWorked, actualHoursWorked, 0.001);
+    }
+
+    @Test
+    public void getHoursWorked_WithNoFinishedTimeTrackAndNoFinishedBreak_ShouldReturnDurationUntilNow() throws Exception {
+        DateTime midnight = DateTimeUtils.startOfDay(_now);
+        int minutesDifferenceFromNowToMidnight = _now.getMinuteOfDay();
+
+        // break is always starting at 90% of timeSpan [midnight - now]
+        int breakStartMinutesDelay = (int)(0.9 * minutesDifferenceFromNowToMidnight);
+        DateTime breakStart = midnight.plusMinutes(breakStartMinutesDelay);
+
+        Break usersBreak = new Break(breakStart);
+        TimeTrack timeTrackToTest = new TimeTrack(_testUser);
+        timeTrackToTest.setFrom(midnight);
+        timeTrackToTest.addBreak(usersBreak);
+        _listToTest.add(timeTrackToTest);
+
+        when(_internalTimeTrack.readTimeTracks(any(Integer.class), any(DateTime.class), any(DateTime.class)))
+                .thenReturn(_listToTest);
+
+        double actualHoursWorked = _reporting.readHoursWorked(8, _now);
+        double expectedHoursWorked = (double)breakStartMinutesDelay / 60;
+
+        Assert.assertEquals(expectedHoursWorked, actualHoursWorked, 0.001);
     }
 
     @Test(expected = UserException.class)
