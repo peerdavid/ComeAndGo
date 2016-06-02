@@ -13,6 +13,7 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by david on 03.04.16.
@@ -64,6 +65,16 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         User userToCheck = readUser(userName);
         String hashedPassword = userToCheck.getPassword();
         return userToCheck.checkPassword(passwordCandidate, hashedPassword);
+    }
+
+    @Override
+    public List<User> readBosses() {
+        return getUserListFilteredByRole(SecurityRole.ROLE_BOSS);
+    }
+
+    @Override
+    public List<User> readAdmins() {
+        return getUserListFilteredByRole(SecurityRole.ROLE_ADMIN);
     }
 
 
@@ -226,10 +237,18 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
     private boolean isUserTheLastRemainingAdmin(User admin) {
         if(!admin.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
 
-        List<User> userList = _userRepository.readUsers();
-        for (User u : userList) {
-            if (u.getId() != admin.getId() && u.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
+        List<User> admins = readAdmins();
+        for (User a : admins) {
+            if (a.getId() != admin.getId() && a.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
         }
         return true;
+    }
+
+    private List<User> getUserListFilteredByRole(String role) {
+        List<User> userList = _userRepository.readUsers();
+
+        return userList.stream()
+            .filter((a) -> a.getRole().equals(role))
+            .collect(Collectors.toList());
     }
 }

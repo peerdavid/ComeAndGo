@@ -20,4 +20,8 @@ public interface UserManagement extends UseCases {
 
     List<User> readUsers() throws UserException;
 
+    List<User> readBosses();
+
+    List<User> readAdmins();
+
 }
