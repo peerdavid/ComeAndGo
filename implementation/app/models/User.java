@@ -187,11 +187,11 @@ public class User extends Model {
     }
 
     public void setHoursPerDay(double hoursPerDay) throws UserException {
-        if (hoursPerDay < 0) {
-            throw new UserException("exceptions.usermanagement.invalid_work_time");
+        if (hoursPerDay > 0) {
+            this.hoursPerDay = hoursPerDay;
         }
 
-        this.hoursPerDay = hoursPerDay;
+        throw new UserException("exceptions.usermanagement.invalid_work_time");
     }
 
     public int getHolidays() {
