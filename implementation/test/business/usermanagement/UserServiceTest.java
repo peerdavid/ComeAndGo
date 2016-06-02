@@ -68,14 +68,14 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void changeUser_ForUnregisteredUser_ShouldFail() throws UserException {
+    public void updateUser_ForUnregisteredUser_ShouldFail() throws UserException {
         when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(null);
 
         _testee.updateUser(_testUser.getUsername(), _testUser);
     }
 
     @Test(expected = UserException.class)
-    public void changeUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
+    public void updateUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
         when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
 
         _testUser.setPassword("test123");
