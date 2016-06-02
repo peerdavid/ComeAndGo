@@ -108,6 +108,27 @@ public class DateTimeUtils {
         return week;
     }
 
+   /**
+    * @param d2
+    * @param d1
+    * @return the difference d2-d1 in minutes
+    */
+    public static long getDateTimeDifferenceInMinutes(DateTime d2, DateTime d1) {
+      if(d2.toLocalDate().isEqual(d1.toLocalDate())) {
+          return d2.getMinuteOfDay() - d1.getMinuteOfDay();
+      }
+      else {
+        int minutesFromD1ToNextDay = DateTimeConstants.MINUTES_PER_DAY - d1.getMinuteOfDay();
+        int minutesFromD2ToPreviousDay = d2.getMinuteOfDay();
+
+        DateTime dayAfterD1 = endOfDay(d1).plusMillis(1);
+        DateTime dayBeforeD2 = startOfDay(d2);
+        int daysDifference = dayBeforeD2.getDayOfYear() - dayAfterD1.getDayOfYear()
+            + (dayBeforeD2.getYear() - dayAfterD1.getYear()) * 365;
+        return minutesFromD1ToNextDay + minutesFromD2ToPreviousDay + daysDifference * DateTimeConstants.MINUTES_PER_DAY;
+      }
+    }
+
     public static DateTime stringToDateTime(String dateString, DateTime time) {
         DateTime date = DATE_FORMATTER.parseDateTime(dateString);
         return new DateTime(

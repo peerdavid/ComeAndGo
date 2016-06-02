@@ -217,6 +217,46 @@ public class DateTimeUtilsTest {
       }
    }
 
+   @Test
+   public void getDateTimeDifference_ForAFewDays_ShouldSucceed() {
+      // MONDAY, 8am
+      DateTime observedStart = DateTimeUtils.startOfWeek(now).plusHours(8);
+      // MONDAY, 4am
+      DateTime observedEnd = DateTimeUtils.endOfWeek(now).plusHours(4).plusMillis(1);
+      // time difference is so 7days * 24h * 60min - 4h
+
+      long expectedValue = ((7 * 24) - 4) * 60;
+      long actualValue = DateTimeUtils.getDateTimeDifferenceInMinutes(observedEnd, observedStart);
+      Assert.assertEquals(expectedValue, actualValue);
+   }
+
+   @Test
+   public void getDateTimeDifference_ForAFewWeeks_ShouldSucceed() {
+      // always starts at 25.12. - 12:00
+      DateTime observedStart = DateTimeUtils.startOfActualYear().minusDays(7).plusHours(12);
+      // always ends on 3.2. - 00:00
+      DateTime observedEnd = DateTimeUtils.startOfActualYear().plusDays(33);
+      // time difference is so 39 days and 12 hours
+      long expectedValue = 39 * DateTimeConstants.MINUTES_PER_DAY + 12 * 60;
+      long actualValue = DateTimeUtils.getDateTimeDifferenceInMinutes(observedEnd, observedStart);
+      Assert.assertEquals(expectedValue, actualValue);
+   }
+
+   @Test
+   public void getDateDifference_ForSameDatesButOtherYear_ShouldSucceed() {
+      DateTime observedStart = now.minusYears(1);
+      boolean addAdditionalDayForLeapYear = (isLeapYear(now.getYear()) && now.getMonthOfYear() > 3)
+         || ((isLeapYear(now.getYear() - 1) && (now.getMonthOfYear() < 3)));
+      long expectedValue = 365 * 24 * 60 + (addAdditionalDayForLeapYear ? DateTimeConstants.MINUTES_PER_DAY : 0);
+      long actualValue = DateTimeUtils.getDateTimeDifferenceInMinutes(now, observedStart);
+      Assert.assertEquals(expectedValue, actualValue);
+   }
+
+   @Test
+   public void getDatetimeDifference_ForSameDates_ShouldResultIn0() {
+      Assert.assertEquals(0, DateTimeUtils.getDateTimeDifferenceInMinutes(now, now));
+   }
+
 
    private boolean isLeapYear(int year) {
       if(year % 4 == 0) {

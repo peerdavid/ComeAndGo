@@ -146,10 +146,8 @@ exceptions.usermanagement.invalid_boss = Invalid boss user name
 exceptions.usermanagement.at_least_one_admin = At least one Administrator has to exist
 exceptions.usermanagement.invalid_hours_per_day = Negative hours per day is not allowed
 exceptions.usermanagement.no_permission_to_read_requested_task = Your user has no permission to read the requested task.
-exceptions.timetracking.could_not_update_break = Could not update TimeTrack and insert break
 exceptions.timetracking.could_not_find_timetrack = Timetrack was not found
 exceptions.timetracking.could_not_find_break = Break was not found
-exceptions.timetracking.no_user = No User found
 exceptions.timetracking.user_timetrack_error = There was an error with specified times of timetrack
 exceptions.timetracking.user_break_error = There was an error with specified times of break
 exceptions.timetracking.user_not_working_and_break = You have no permissions to manipulate your break without working state ACTIVE
@@ -158,11 +156,12 @@ exceptions.notifications.invalid_action = Action not specified for this object
 exceptions.timetracking.validate_clashing_timetracks = This timetrack is clashing with another one
 exceptions.timetracking.validate_clashing_breaks = There are some breaks clashing
 exceptions.timetracking.validate_break_not_inside_timetrack = All breaks have to be inside a timetrack
-exceptions.timetracking.validate_break_start_end_not_plausible = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_break_form = Some breaks seem to have wrong time stamps
 exceptions.timetracking.error_in_timetrack_form = This timetrack seems to have an error
 exceptions.timetracking.error_user_already_working = You are currently working and have to go before you can come
 exceptions.timetracking.error_user_not_started_work = You are currently not working so you can't go
+exceptions.timetracking.error_too_long_timeTrack = Times of TimeTrack are longer than 24h. Don't play a trick on me...
+exceptions.timetracking.error_timeTrack_in_future = You can't create time track in future
 
 
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:

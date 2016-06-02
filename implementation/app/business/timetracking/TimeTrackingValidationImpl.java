@@ -6,7 +6,9 @@ import infrastructure.TimeTrackingRepository;
 import models.Break;
 import models.TimeTrack;
 import models.User;
+import org.joda.time.DateTime;
 import org.joda.time.LocalTime;
+import utils.DateTimeUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,8 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          throwClashingTimeTrackException();
       }
 
+      validateTimeTrackNotInFuture(timeTrack);
+      validateTimeTrackDuration(timeTrack);
       validateBreaks(breakList, timeTrack);
    }
 
@@ -60,7 +64,24 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          }
       }
 
+      validateTimeTrackDuration(timeTrack);
       validateBreaks(breakList, timeTrack);
+   }
+
+   private void validateTimeTrackNotInFuture(TimeTrack timeTrack) throws UserException {
+      if(timeTrack.getFrom().isAfter(DateTime.now())) {
+         throwTimeTrackInFutureException();
+      }
+   }
+
+   private void validateTimeTrackDuration(TimeTrack timeTrack) throws UserException {
+      // at this point from- and to-time cannot be null, because TimeTrack class validates this...
+      long minutesDifference = DateTimeUtils.getDateTimeDifferenceInMinutes(
+          timeTrack.getTo(), timeTrack.getFrom());
+      minutesDifference = minutesDifference < 0 ? -minutesDifference : minutesDifference;
+      if((double)minutesDifference / 60 > 24) {
+         throwTooLongTimeTrackException();
+      }
    }
 
    private void validateBreaks(List<Break> breakList, TimeTrack timeTrack) throws UserException {
@@ -217,5 +238,13 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
 
    private void throwClashingTimeTrackException() throws UserException {
       throw new UserException("exceptions.timetracking.validate_clashing_timetracks");
+   }
+
+   private void throwTooLongTimeTrackException() throws UserException {
+      throw new UserException("exceptions.timetracking.error_too_long_timeTrack");
+   }
+
+   private void throwTimeTrackInFutureException() throws UserException {
+      throw new UserException("exceptions.timetracking.error_timeTrack_in_future");
    }
 }
