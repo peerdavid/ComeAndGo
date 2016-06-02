@@ -23,7 +23,7 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         for (TimeTrack t : timeTracks) {
             // If Timetrack has no To date
             if (t.getTo() == null) {
-                    t.setTo(DateTime.now());
+                t.setTo(DateTime.now());
             }
 
             // TimeTrack is already in history
@@ -31,7 +31,9 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 workMinutesIs += (t.getTo().getMillis() - t.getFrom().getMillis()) / (1000 * 60);
                 List<Break> breaks = t.getBreaks();
                 for (Break b : breaks) {
-                    breakMinutes += (b.getTo().getMillis() - b.getFrom().getMillis()) / (1000 * 60);
+                    DateTime breakStart = b.getFrom();
+                    DateTime breakEnd = (breakEnd = b.getTo()) == null ? DateTime.now() : breakEnd;
+                    breakMinutes += (breakEnd.getMillis() - breakStart.getMillis()) / (1000 * 60);
                 }
             }
             // upperBound is between Timetrack from and to
