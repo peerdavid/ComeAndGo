@@ -13,6 +13,7 @@ import org.pac4j.http.credentials.UsernamePasswordCredentials;
 import org.pac4j.http.profile.HttpProfile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by david on 03.04.16.
@@ -64,6 +65,16 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         User userToCheck = readUser(userName);
         String hashedPassword = userToCheck.getPassword();
         return userToCheck.checkPassword(passwordCandidate, hashedPassword);
+    }
+
+    @Override
+    public List<User> readBosses() {
+        return getUserListFilteredByRole(SecurityRole.ROLE_BOSS);
+    }
+
+    @Override
+    public List<User> readAdmins() {
+        return getUserListFilteredByRole(SecurityRole.ROLE_ADMIN);
     }
 
 
@@ -154,19 +165,8 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
             throw new UserException("exceptions.usermanagement.different_ids");
         }
         // Check if there exists at least one user with role administrator
-        if (userToChange.getRole().equals(SecurityRole.ROLE_ADMIN) && !newUserData.getRole().equals(SecurityRole.ROLE_ADMIN)) {
-            List<User> userList = _userRepository.readUsers();
-            boolean foundAdmin = false;
-            for (User u : userList) {
-                if (u.getRole().equals(SecurityRole.ROLE_ADMIN)) {
-                    foundAdmin = true;
-                    break;
-                }
-            }
-
-            if (!foundAdmin) {
-                throw new UserException("exceptions.usermanagement.at_least_one_admin");
-            }
+        if (isUserTheLastRemainingAdmin(userToChange) && !newUserData.getRole().equals(SecurityRole.ROLE_ADMIN)) {
+            throw new UserException("exceptions.usermanagement.at_least_one_admin");
         }
         // Check if boss is valid
         try {
@@ -185,19 +185,8 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
         User userToDelete = _userRepository.readUser(userName);
 
         // Check if its not the last admin
-        if (userToDelete.getRole().equals(SecurityRole.ROLE_ADMIN)) {
-            List<User> userList = _userRepository.readUsers();
-            boolean foundAdmin = false;
-            for (User u : userList) {
-                if (u.getRole().equals(SecurityRole.ROLE_ADMIN) && !u.getUsername().equals(userToDelete.getUsername())) {
-                    foundAdmin = true;
-                    break;
-                }
-            }
-
-            if (!foundAdmin) {
-                throw new UserException("exceptions.usermanagement.at_least_one_admin");
-            }
+        if (isUserTheLastRemainingAdmin(userToDelete)) {
+            throw new UserException("exceptions.usermanagement.at_least_one_admin");
         }
 
         notifyBossAboutDelete(currentUserName, userToDelete);
@@ -243,5 +232,23 @@ class UserServiceImpl implements UserService, business.usermanagement.InternalUs
                 admin,
                 userToDelete.getBoss());
         _notificationSender.sendNotification(informBossNotification);
+    }
+
+    private boolean isUserTheLastRemainingAdmin(User admin) {
+        if(!admin.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
+
+        List<User> admins = readAdmins();
+        for (User a : admins) {
+            if (a.getId() != admin.getId() && a.getRole().equals(SecurityRole.ROLE_ADMIN)) return false;
+        }
+        return true;
+    }
+
+    private List<User> getUserListFilteredByRole(String role) {
+        List<User> userList = _userRepository.readUsers();
+
+        return userList.stream()
+            .filter((a) -> a.getRole().equals(role))
+            .collect(Collectors.toList());
     }
 }

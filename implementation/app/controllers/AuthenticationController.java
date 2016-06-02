@@ -52,7 +52,12 @@ public class AuthenticationController extends UserProfileController<CommonProfil
         }
 
         if (userNameBoss == null || userNameBoss.isEmpty()) {
-            userNameBoss = "admin";
+            List<User> bosses = _userManagement.readBosses();
+            if(bosses.size() == 0) {
+                List<User> admins = _userManagement.readAdmins();
+                if(admins.size() > 0) userName = admins.get(0).getUsername();
+                else userName = "admin";
+            }
         }
 
         User boss = _userManagement.readUser(userNameBoss);

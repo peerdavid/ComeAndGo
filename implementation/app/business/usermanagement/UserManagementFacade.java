@@ -45,4 +45,14 @@ class UserManagementFacade implements UserManagement {
     public List<User> readUsers() throws UserException {
         return _userService.readUsers();
     }
+
+    @Override
+    public List<User> readBosses() {
+        return _userService.readBosses();
+    }
+
+    @Override
+    public List<User> readAdmins() {
+        return _userService.readAdmins();
+    }
 }

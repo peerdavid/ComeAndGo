@@ -40,7 +40,9 @@ public class UserServiceTest {
         _testBoss.setBoss(_testBoss);
         _testBoss.setId(1);
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss, 1200);
+        _testUser.setId(8);
         _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, _testBoss, 1200);
+        _testAdmin.setId(3);
     }
 
 
@@ -66,19 +68,37 @@ public class UserServiceTest {
     }
 
     @Test(expected = UserException.class)
-    public void changeUser_ForUnregisteredUser_ShouldFail() throws UserException {
+    public void updateUser_ForUnregisteredUser_ShouldFail() throws UserException {
         when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(null);
 
         _testee.updateUser(_testUser.getUsername(), _testUser);
     }
 
     @Test(expected = UserException.class)
-    public void changeUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
+    public void updateUser_WithPasswordLengthTooSmall_ShouldFail() throws UserException {
         when(_userRepositoryMock.readUser(_testUser.getUsername())).thenReturn(_testUser);
 
         _testUser.setPassword("test123");
 
         _testee.updateUser(_testUser.getUsername(), _testUser);
+    }
+
+    @Test(expected = UserException.class)
+    public void updateUser_ChangeRoleOfLastRemainingAdmin_ShouldFail() throws Exception {
+        //Prepare
+        User modifiedAdmin = new User(_testAdmin.getUsername(), _testAdmin.getPassword(),
+            _testAdmin.getRole(), _testAdmin.getFirstName(), _testAdmin.getLastName(),
+            _testAdmin.getEmail(), _testAdmin.getActive(), _testAdmin.getBoss(),
+            _testAdmin.getHoursPerDay());
+        modifiedAdmin.setId(_testAdmin.getId());
+        List<User> userList = new ArrayList<User>();
+        userList.add(_testAdmin);
+        when(_userRepositoryMock.readUser(_testAdmin.getUsername())).thenReturn(_testAdmin);
+        when(_userRepositoryMock.readUsers()).thenReturn(userList);
+
+        modifiedAdmin.setRole(SecurityRole.ROLE_USER);
+
+        _testee.updateUser(_testAdmin.getUsername(), modifiedAdmin);
     }
 
     @Test(expected = UserException.class)

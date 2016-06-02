@@ -20,4 +20,8 @@ interface UserService extends UsernamePasswordAuthenticator {
     void updateUser(String userName, User newUserData) throws UserException;
 
     boolean checkUserCredentials(String userName, String password) throws UserException;
+
+    List<User> readBosses();
+
+    List<User> readAdmins();
 }

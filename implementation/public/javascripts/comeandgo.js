@@ -59,28 +59,28 @@ var updateUserSate = function(){
             var buttonStopBreak = $('#button-stop-break');
 
             if(json.state === "active") {
-                buttonGo.prop("disabled", false);
-                buttonStartBreak.prop("disabled", false);
+                buttonGo.prop("disabled", false).addClass("secondary-btn");
+                buttonStartBreak.prop("disabled", false).addClass("secondary-btn");
                 buttonStartBreak.css("display", "inherit");
-                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.prop("disabled", true).removeClass("secondary-btn");
                 buttonStopBreak.css("display", "none");
-                buttonCome.prop("disabled", true);
+                buttonCome.prop("disabled", true).removeClass("secondary-btn");
             }
             else if(json.state === "inactive") {
-                buttonGo.prop("disabled", true);
-                buttonStartBreak.prop("disabled", true);
+                buttonGo.prop("disabled", true).removeClass("secondary-btn");
+                buttonStartBreak.prop("disabled", true).removeClass("secondary-btn");
                 buttonStartBreak.css("display", "inherit");
-                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.prop("disabled", true).removeClass("secondary-btn");
                 buttonStopBreak.css("display", "none");
-                buttonCome.prop("disabled", false);
+                buttonCome.prop("disabled", false).addClass("secondary-btn");
             }
             else if(json.state === "pause") {
-                buttonGo.prop("disabled", true);
-                buttonStartBreak.prop("disabled", true);
+                buttonGo.prop("disabled", true).removeClass("secondary-btn");
+                buttonStartBreak.prop("disabled", true).removeClass("secondary-btn");
                 buttonStartBreak.css("display", "none");
-                buttonStopBreak.prop("disabled", false);
+                buttonStopBreak.prop("disabled", false).addClass("secondary-btn");
                 buttonStopBreak.css("display", "inherit");
-                buttonCome.prop("disabled", true);
+                buttonCome.prop("disabled", true).removeClass("secondary-btn");
             }
         },
         error:function(jqXHR, textStatus, errorThrown) {
