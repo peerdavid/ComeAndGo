@@ -33,7 +33,7 @@ nav .navbar-buttons a {
     overflow: auto;
     position: absolute;
     top: 240px;
-    bottom: 140px;
+    bottom: 170px;
     width: 100%;
 }
 
@@ -95,7 +95,7 @@ nav .navbar-buttons a {
     bottom: 0;
     width: 100%;
     padding: 0 12px;
-    height: 138px;
+    height: 170px;
     top: auto;
     background: #fff;
     line-height: 32px;
@@ -103,7 +103,12 @@ nav .navbar-buttons a {
 
 .userProfile_container .chip {
     width: 100%;
-    margin: 6px 0 16px;
+    margin: 6px 0 4px;
+}
+
+#state-message {
+    margin-bottom: 8px;
+    display: inline-block;
 }
 
 #active_progress {

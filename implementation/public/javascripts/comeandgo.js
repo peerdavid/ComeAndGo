@@ -14,8 +14,11 @@ $( document ).ready(function() {
     });
 
     // Poll new notifications every second
-    updateNewNotificationBadge()    // Do it immediately
+    updateNewNotificationBadge();   // Do it immediately
     setInterval(updateNewNotificationBadge, 1000);
+
+    updateUserSate();
+    setInterval(updateUserSate, 10000);
 
     $('.enable-editing-switch').prop( "checked", false );
 
@@ -32,6 +35,59 @@ $( document ).ready(function() {
     enableEditing(false, null);
 
 });
+
+/*
+ * get current state of user by ajax call
+ */
+var updateUserSate = function(){
+    $.ajax({
+        type:  'GET',
+        contentType: 'application/json',
+        data: '',
+        url: '/state',
+        success: function(data, textStatus, jqXHR) {
+            if(data <= 0){
+                return;
+            }
+
+            var json = JSON.parse(data);
+            $('#state-message').text(json.message);
+
+            var buttonCome = $('#button-come');
+            var buttonGo = $('#button-go');
+            var buttonStartBreak = $('#button-start-break');
+            var buttonStopBreak = $('#button-stop-break');
+
+            if(json.state === "active") {
+                buttonGo.prop("disabled", false);
+                buttonStartBreak.prop("disabled", false);
+                buttonStartBreak.css("display", "inherit");
+                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.css("display", "none");
+                buttonCome.prop("disabled", true);
+            }
+            else if(json.state === "inactive") {
+                buttonGo.prop("disabled", true);
+                buttonStartBreak.prop("disabled", true);
+                buttonStartBreak.css("display", "inherit");
+                buttonStopBreak.prop("disabled", true);
+                buttonStopBreak.css("display", "none");
+                buttonCome.prop("disabled", false);
+            }
+            else if(json.state === "pause") {
+                buttonGo.prop("disabled", true);
+                buttonStartBreak.prop("disabled", true);
+                buttonStartBreak.css("display", "none");
+                buttonStopBreak.prop("disabled", false);
+                buttonStopBreak.css("display", "inherit");
+                buttonCome.prop("disabled", true);
+            }
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+            console.log("State update failed " + textStatus);
+        }
+    });
+};
 
 /*
  * get notification count by ajax call

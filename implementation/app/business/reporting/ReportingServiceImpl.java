@@ -8,7 +8,6 @@ import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalTime;
 import utils.DateTimeUtils;
 
 import java.util.ArrayList;
@@ -130,20 +129,16 @@ class ReportingServiceImpl implements ReportingService {
                      * |C1|         |C3|                 |C2|
                      *|_t1__|      |__________t2___|   |_____________t3______|
                      */
-                    // make sure to is not null, which could be the case when break is actually taken
-                    DateTime breakEnd = b.getTo() == null ? DateTime.now() : b.getTo();
-                    boolean breakOverMidnight = b.getFrom().toLocalTime().isAfter(breakEnd.toLocalTime());
+                    from = b.getFrom();
+                    to = (to = b.getTo()) == null ? DateTime.now() : to;
+                    boolean breakOverMidnight = from.toLocalTime().isAfter(to.toLocalTime());
                     if (breakOverMidnight) {
                         // if we know we have a break over midnight, there is a difference if break is over 0.00 or it is over 23.59 midnight
                         boolean breakOverFirstMidnight = timeTrack.getTo().isAfter(startOfDay) && timeTrack.getTo().isBefore(endOfDay);
                         boolean breakOverSecondMidnight = timeTrack.getFrom().isAfter(startOfDay) && timeTrack.getFrom().isBefore(endOfDay);
-                        from = breakOverFirstMidnight ? DateTimeUtils.startOfDay(b.getFrom()) : b.getFrom();
-                        to = breakOverSecondMidnight ? DateTimeUtils.endOfDay(breakEnd) : b.getTo();
-                    } else {
-                        from = b.getFrom();
-                        to = breakEnd;
+                        from = breakOverFirstMidnight ? DateTimeUtils.startOfDay(from) : from;
+                        to = breakOverSecondMidnight ? DateTimeUtils.endOfDay(to) : to;
                     }
-                    // to could be null at this point
                     result -= to.getMinuteOfDay() - from.getMinuteOfDay();
                 }
             }

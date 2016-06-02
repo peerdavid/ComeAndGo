@@ -47,11 +47,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
 
         List<TimeTrack> timeTrackList = _timeTracking.readTimeTracks(userId, from, to);
 
-        return ok(views.html.index.render(
-            profile,
-            _timeTracking.readState(userId),
-            timeTrackList)
-        );
+        return ok(views.html.index.render(profile, timeTrackList));
     }
 
     @RequiresAuthentication(clientName = "default")
@@ -91,8 +87,27 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         if (progress >= 100)
             overtime = _reporting.calculateOvertime(userId, DateTime.now());
 
-        return ok("{ \"progress\": \"" + progress + "\", \"overtime\": \""
-            + String.format("%.1f", overtime) + "\" }");
+        return ok(
+            String.format("{ \"progress\": \"%d\", \"overtime\": \"%.1f\" }", progress, overtime)
+        );
+    }
+
+    @RequiresAuthentication(clientName = "default")
+    public Result readState() throws Exception {
+        int userId = Integer.parseInt(getUserProfile().getId());
+
+        String response = "{ \"state\" : \"%s\",  \"message\" : \"%s\"}";
+
+        switch (_timeTracking.readState(userId)) {
+            case ACTIVE:
+                return ok(String.format(response, "active", Messages.get("views.navigation.state.active")));
+            case INACTIVE:
+                return ok(String.format(response, "inactive", Messages.get("views.navigation.state.inactive")));
+            case PAUSE:
+                return ok(String.format(response, "pause", Messages.get("views.navigation.state.pause")));
+            default:
+                return internalServerError(String.format(response, "unknown state"));
+        }
     }
 
     @RequiresAuthentication(clientName = "default")

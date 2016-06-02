@@ -10,6 +10,9 @@ views.login.username = Username
 views.login.password = Password
 
 views.navigation.loggedinas = Logged in as:
+views.navigation.state.active = State: at work
+views.navigation.state.inactive = State: gone
+views.navigation.state.pause = State: in break
 
 views.index.home = Home
 views.index.title = Come & Go
