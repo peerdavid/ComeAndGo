@@ -40,7 +40,9 @@ public class UserServiceTest {
         _testBoss.setBoss(_testBoss);
         _testBoss.setId(1);
         _testUser = new User("testUser", "test1234", SecurityRole.ROLE_USER, "Klaus", "Kleber", "klaus@kleber.at", true, _testBoss, 1200);
+        _testUser.setId(8);
         _testAdmin = new User("testAdmin", "admin1234", SecurityRole.ROLE_ADMIN, "Ad", "Min", "admin@kleber.at", true, _testBoss, 1200);
+        _testAdmin.setId(3);
     }
 
 
