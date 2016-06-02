@@ -6,6 +6,8 @@ import models.Payout;
 import models.TimeOff;
 import models.TimeTrack;
 import org.joda.time.DateTime;
+import utils.aop.NoLogging;
+import utils.aop.NoTransaction;
 
 import java.util.List;
 
@@ -48,7 +50,8 @@ class TimeTrackingFacade implements TimeTracking {
         _timeTrackingService.endBreak(userId);
     }
 
-
+    @NoLogging
+    @NoTransaction
     @Override
     public TimeTrackState readState(int userId) throws Exception {
         TimeTrackState result = TimeTrackState.INACTIVE;
