@@ -329,7 +329,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int currentUserId = Integer.parseInt(profile.getId());
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
-        String message = Messages.get("notifications.created_timetrack",
+        String message = Messages.get("notifications.deleted_timetrack",
                 profile.getFirstName() + " " + profile.getFamilyName(),
                 DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
         );
