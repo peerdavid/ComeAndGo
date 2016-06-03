@@ -24,6 +24,7 @@ import utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 /**
@@ -88,18 +89,33 @@ public class Global extends GlobalSettings {
             // Only from Monday to Friday 08:00 - 17:00 and break from 12:00 to 13:00
             for (User u : users) {
                 DateTime entry = u.getEntryDate();
-                DateTime today = DateTime.now();
+                DateTime now = DateTime.now();
 
-                int dayDifference = Days.daysBetween(entry.toLocalDate(), today.toLocalDate()).getDays();
-                for (int i = 0; i <= dayDifference; i++) {
+                int dayDifference = Days.daysBetween(entry.toLocalDate(), now.toLocalDate()).getDays();
+                for (int i = 0; i < dayDifference; i++) {
                     if (entry.plusDays(i).getDayOfWeek() != 6 && entry.plusDays(i).getDayOfWeek() != 7) {
-                        DateTime from = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 8, 0);
+                        int randomMinuteBias = ThreadLocalRandom.current().nextInt(-30, 30 + 1);
+                        DateTime from = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 8, 0, 0);
+                        from = randomMinuteBias > 0 ? from.plusMinutes(randomMinuteBias) : from.minusMinutes(randomMinuteBias);
                         DateTime to = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 16, 59, 59);
+                        randomMinuteBias = ThreadLocalRandom.current().nextInt(-30, 30 + 1);
+                        to = randomMinuteBias > 0 ? to.plusMinutes(randomMinuteBias) : to.minusMinutes(randomMinuteBias);
                         timeTracking.createTimeTrack(u.getId(), from, to, stefan.getId(), Messages.get("notifications.created_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
-
                     }
                 }
 
+
+
+                // Timetracks for today
+                if (now.getDayOfWeek() != 6 && now.getDayOfWeek() != 7) {
+                    if (now.getHourOfDay() > 16) {
+                        DateTime from = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 8, 0, 0);
+                        DateTime to = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 16, 59, 59);
+                        timeTracking.createTimeTrack(u.getId(), from, to, stefan.getId(), Messages.get("notifications.created_timetrack", u.getFirstName() , DateTimeUtils.dateTimeToDateString(from)));
+                    }
+                }
+
+                // Add breaks
                 List<TimeTrack> timeTracks = timeTracking.readTimeTracks(u.getId());
                 for (TimeTrack t : timeTracks) {
                     DateTime from = new DateTime(t.getFrom().getYear(), t.getFrom().getMonthOfYear(), t.getFrom().getDayOfMonth(), 12, 0);

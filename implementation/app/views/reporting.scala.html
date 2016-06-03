@@ -72,13 +72,13 @@
                         <td>@userReport.getNumOfUsedHolidays</td>
                         <td>@("%.2f".format(userReport.getNumOfUnusedHolidays))</td>
                         <td>@userReport.getNumOfSickDays</td>
-                        <td>@("%.0f".format(userReport.getWorkMinutesShould().toDouble / 60))</td>
-                        <td>@("%.0f".format(userReport.getWorkMinutesIs().toDouble / 60))</td>
+                        <td>@("%.1f".format(userReport.getWorkMinutesShould().toDouble / 60))</td>
+                        <td>@("%.1f".format(userReport.getWorkMinutesIs().toDouble / 60))</td>
                         <td>@(userReport.getBreakMinutes())</td>
                         @if(userReport.getWorkMinutesDifference < 0) {
-                            <td style="color: darkred"><b>@("%.0f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
+                            <td style="color: darkred"><b>@("%.1f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
                         } else {
-                            <td style="color: darkgreen"><b>@("%.0f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
+                            <td style="color: darkgreen"><b>@("%.1f".format(userReport.getWorkMinutesDifference().toDouble / 60))</b></td>
                         }
                     </tr>
                 }
@@ -91,10 +91,10 @@
                         <td class="result">@report.getSummary().getNumOfUsedHolidays</td>
                         <td class="result">@("%.2f".format(report.getSummary().getNumOfUnusedHolidays))</td>
                         <td class="result">@report.getSummary().getNumOfSickDays</td>
-                        <td class="result">@("%.0f".format(report.getSummary().getWorkMinutesShould().toDouble / 60))</td>
-                        <td class="result">@("%.0f".format(report.getSummary().getWorkMinutesIs().toDouble / 60))</td>
+                        <td class="result">@("%.1f".format(report.getSummary().getWorkMinutesShould().toDouble / 60))</td>
+                        <td class="result">@("%.1f".format(report.getSummary().getWorkMinutesIs().toDouble / 60))</td>
                         <td class="result">@(report.getSummary().getBreakMinutes())</td>
-                        <td class="result">@("%.0f".format(report.getSummary().getWorkMinutesDifference().toDouble / 60))</td>
+                        <td class="result">@("%.1f".format(report.getSummary().getWorkMinutesDifference().toDouble / 60))</td>
                     </tr>
                 }
             </tbody>

@@ -8,6 +8,7 @@ import com.google.inject.spi.Message;
 import models.Break;
 import models.TimeTrack;
 import org.joda.time.DateTime;
+import org.joda.time.LocalTime;
 import org.pac4j.core.profile.CommonProfile;
 import org.pac4j.play.java.RequiresAuthentication;
 import org.pac4j.play.java.UserProfileController;
@@ -261,7 +262,14 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         }
 
         // in case we have a break over midnight (dates from DateTimeUtils.stringToTime() are always equal)
-        if(fromDate.isAfter(toDate)) {
+        // IMPORTANT: only add a day, when the timeTrack is also over midnight. otherwise we would accept
+        //    from after to because we would bypass from.isBefore(to) validation in Break.class.
+        //    also make sure that no wrong inputs are increased one day when
+        LocalTime timeTrackStart = timeTrack.getFrom().toLocalTime();
+        LocalTime timeTrackEnd = timeTrack.getTo().toLocalTime();
+        boolean timeTrackOverMidnight = timeTrackStart.isAfter(timeTrackEnd);
+        boolean breakOverMidnight = fromDate.toLocalTime().isAfter(timeTrackStart) && toDate.toLocalTime().isBefore(timeTrackEnd);
+        if(timeTrackOverMidnight && breakOverMidnight) {
             toDate = toDate.plusDays(1);
         }
 
@@ -329,7 +337,7 @@ public class TimeTrackController extends UserProfileController<CommonProfile> {
         int currentUserId = Integer.parseInt(profile.getId());
         TimeTrack timeTrack = _timeTracking.readTimeTrackById(timetrackId);
 
-        String message = Messages.get("notifications.created_timetrack",
+        String message = Messages.get("notifications.deleted_timetrack",
                 profile.getFirstName() + " " + profile.getFamilyName(),
                 DateTimeUtils.dateTimeToDateString(timeTrack.getFrom())
         );
