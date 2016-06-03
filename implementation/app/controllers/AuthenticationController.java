@@ -55,8 +55,8 @@ public class AuthenticationController extends UserProfileController<CommonProfil
             List<User> bosses = _userManagement.readBosses();
             if(bosses.size() == 0) {
                 List<User> admins = _userManagement.readAdmins();
-                if(admins.size() > 0) userName = admins.get(0).getUsername();
-                else userName = "admin";
+                if (admins.size() > 0) userNameBoss = admins.get(0).getUsername();
+                else userNameBoss = "admin";
             }
         }
 
