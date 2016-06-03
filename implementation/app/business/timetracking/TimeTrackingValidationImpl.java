@@ -124,7 +124,12 @@ class TimeTrackingValidationImpl implements TimeTrackingValidation {
          if(breakStart.isBefore(timeTrackEnd) && breakEnd.isBefore(timeTrackEnd)) {
             return;
          }
+         // e.g. break is over midnight
          if(breakStart.isAfter(timeTrackStart) && breakEnd.isBefore(timeTrackEnd)) {
+            return;
+         }
+         // e.g. break and timeTrack is starting or ending at same moment
+         if(breakStart.isEqual(timeTrackStart) || breakEnd.isEqual(timeTrackEnd)) {
             return;
          }
          throwBreakNotInsideTimeTrackException();
