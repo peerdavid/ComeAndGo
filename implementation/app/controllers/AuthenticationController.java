@@ -56,7 +56,7 @@ public class AuthenticationController extends UserProfileController<CommonProfil
             if(bosses.size() == 0) {
                 List<User> admins = _userManagement.readAdmins();
                 if (admins.size() > 0) userNameBoss = admins.get(0).getUsername();
-                else userNameBoss = "admin";
+                // there must always exist at least 1 admin -> no other cases needed
             }
         }
 
