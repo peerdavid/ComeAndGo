@@ -58,6 +58,9 @@ class TimeTrackingServiceImpl implements TimeTrackingService {
         if(!isActive(userId)) {
             throw new UserException("exceptions.timetracking.error_user_not_started_work");
         }
+        if(takesBreak(userId)) {
+            throw new UserException("exceptions.timetracking.go_while_taking_break_not_allowed");
+        }
 
         User user = _userManagement.readUser(userId);
         TimeTrack timeTrack = _repository.readActiveTimeTrack(user);
