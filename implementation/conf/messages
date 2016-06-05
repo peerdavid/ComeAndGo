@@ -163,6 +163,7 @@ exceptions.timetracking.error_user_not_started_work = You are currently not work
 exceptions.timetracking.error_too_long_timeTrack = Times of TimeTrack are longer than 24h. Don't play a trick on me...
 exceptions.timetracking.error_timeTrack_in_future = You can't create time track in future
 exceptions.timetracking.error_timeTrack_before_users_entry = Your specified date and time is before the user started his work in company
+exceptions.timetracking.go_while_taking_break_not_allowed = You are currently taking a break. End your break before you can go.
 
 
 exceptions.timeoff.error_clashing_timeoffs = There are some clashing time offs:

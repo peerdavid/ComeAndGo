@@ -5,6 +5,7 @@ import business.timetracking.TimeOffType;
 import models.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalTime;
 import utils.DateTimeUtils;
 
 import java.util.List;
@@ -33,6 +34,13 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
                 for (Break b : breaks) {
                     DateTime breakStart = b.getFrom();
                     DateTime breakEnd = (breakEnd = b.getTo()) == null ? DateTime.now() : breakEnd;
+
+                    //boolean breakOverMidnight = isBreakOverMidnight(t, b);
+                    //long breakMinutesDifference = breakEnd.getMillisOfDay() - breakStart.getMillisOfDay();
+                    //if(breakOverMidnight) {
+                    //    breakMinutesDifference = DateTimeConstants.MILLIS_PER_DAY
+                    //            - breakEnd.getMillisOfDay() - breakStart.getMillisOfDay();
+                    //}
                     breakMinutes += (breakEnd.getMillis() - breakStart.getMillis()) / (1000 * 60);
                 }
             }
@@ -137,6 +145,22 @@ class CollectiveAgreementImpl implements CollectiveAgreement {
         createBreakOverAndUnderConsumptionAlerts(entry, alertList);
         createHolidayAlerts(entry, alertList);
         createSickDayAlerts(entry, alertList);
+    }
+
+    private boolean isBreakOverMidnight(TimeTrack timeTrack, Break breakToCheck) {
+        // if timeTrack is not over midnight, also break can't be over midnight
+        DateTime timeTrackStart = timeTrack.getFrom();
+        DateTime timeTrackEnd = timeTrack.getTo() == null ? DateTime.now() : timeTrack.getTo();
+        if(timeTrackEnd.isBefore(DateTimeUtils.endOfDay(timeTrackStart))) {
+            return false;
+        }
+        // but if timeTrack is over midnight, we have also to check break
+        LocalTime breakStart = breakToCheck.getFrom().toLocalTime();
+        LocalTime breakEnd = breakToCheck.getTo() == null ? LocalTime.now() : breakToCheck.getTo().toLocalTime();
+        if(breakStart.isBefore(breakEnd)) {
+            return false;
+        }
+        return true;
     }
 
     private void createSickDayAlerts(ReportEntry entry, List<WorkTimeAlert> alertList) {
