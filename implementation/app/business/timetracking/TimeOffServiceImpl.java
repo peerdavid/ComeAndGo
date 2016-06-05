@@ -190,7 +190,7 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(RequestState.REQUEST_ACCEPTED);
+        requestedTimeOff.setState(RequestState.REQUEST_REJECTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
