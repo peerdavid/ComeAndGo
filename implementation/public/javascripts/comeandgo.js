@@ -206,3 +206,41 @@ function listFilter(input,list) {
 jQuery.expr[':'].Contains = function(a,i,m){
     return (a.textContent||a.innerText||"").toUpperCase().indexOf(m[3].toUpperCase())>=0;
 };
+
+var userFormValidationRules = {
+    rules: {
+        username : {
+            required: true,
+            minlength: 4
+        },
+        firstname: {
+            required: true
+        },
+        lastname: {
+            required: true
+        },
+        email: {
+            required: true,
+            email: true
+        },
+        password: {
+            required: true,
+            minlength: 8
+        },
+        repeat_password: {
+            required: true,
+            minlength: 8
+        },
+        role: {
+            required: true
+        },
+        boss: {
+            required: true
+        },
+        'hours-per-day': {
+            required: true
+        }
+    }
+};
+
+$('#create-user-form').validate(userFormValidationRules);

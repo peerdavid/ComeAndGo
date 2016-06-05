@@ -352,6 +352,14 @@ td.result{
     fill: #644CAF50 !important;
 }
 
+/* error labels for forms */
+label.error, label.error.active {
+    position: absolute;
+    top: 3.1rem;
+    font-size: 0.8rem;
+    transform: none !important;
+}
+
 /* phones */
 @media (max-width: 599px) {
     #login_container  {

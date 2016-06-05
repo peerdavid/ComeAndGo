@@ -67,7 +67,7 @@
                                 <label for="username">@Messages("views.admin.usermanagement.form.username")</label>
                             </div>
                         </div>
-                        <form action="@routes.UserManagementController.updateUser()" method="POST">
+                        <form id="update-user-form" class="user-form" action="@routes.UserManagementController.updateUser()" method="POST">
                             <input hidden="hidden" name="username" type="text" value="@u.getUsername">
                             <div class="row">
                                 <div class="input-field col s12 m6">

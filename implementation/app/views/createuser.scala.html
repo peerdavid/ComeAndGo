@@ -1,9 +1,9 @@
 @import models.User
-
 @import business.usermanagement.SecurityRole
+
 @(form: play.data.Form[User], userlist: java.util.List[User])
 
-<form action="@routes.AuthenticationController.doCreateUser()" method="POST">
+<form id="create-user-form" class="user-form" action="@routes.AuthenticationController.doCreateUser()" method="POST">
     <div class="row">
         <div class="input-field col s12 m6">
             <input name="username" type="text">
