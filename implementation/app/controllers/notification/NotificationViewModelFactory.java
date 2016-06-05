@@ -502,9 +502,6 @@ public class NotificationViewModelFactory {
 
         switch (notification.getType()) {
             case HOLIDAY_PAYOUT_REQUEST:
-            case HOLIDAY_PAYOUT_ACCEPT:
-            case HOLIDAY_PAYOUT_REJECT:
-
                 try {
                     int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
                     additionalInfo = Messages.get(
@@ -517,7 +514,34 @@ public class NotificationViewModelFactory {
                 }
                 break;
 
+            case HOLIDAY_PAYOUT_ACCEPT:
+            case HOLIDAY_PAYOUT_REJECT:
+
+                try {
+                    int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
+                    additionalInfo = Messages.get(
+                        "notifications.holiday_payout_request",
+                        notification.getReceiver().getFirstName(),
+                        amount
+                    );
+                } catch (TimeTrackException e) {
+                    additionalInfo = Messages.get("notifications.payout_entry_not_found");
+                }
+                break;
+
             case OVERTIME_PAYOUT_REQUEST:
+                try {
+                    int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
+                    additionalInfo = Messages.get(
+                        "notifications.overtime_payout_request",
+                        notification.getSender().getFirstName(),
+                        amount
+                    );
+                } catch (TimeTrackException e) {
+                    additionalInfo = Messages.get("notifications.payout_entry_not_found");
+                }
+                break;
+
             case OVERTIME_PAYOUT_ACCEPT:
             case OVERTIME_PAYOUT_REJECT:
 
@@ -525,7 +549,7 @@ public class NotificationViewModelFactory {
                     int amount = _timeTracking.readPayout(notification.getReferenceId()).getAmount();
                     additionalInfo = Messages.get(
                         "notifications.overtime_payout_request",
-                        notification.getSender().getFirstName(),
+                        notification.getReceiver().getFirstName(),
                         amount
                     );
                 } catch (TimeTrackException e) {
