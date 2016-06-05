@@ -137,7 +137,7 @@ class TimeOffServiceImpl implements TimeOffService {
 
         _timeOffValidation.validateTimeOff(employee, from, to);
 
-        TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, RequestState.REQUEST_SENT, comment);
+        TimeOff parentalLeave = new TimeOff(employee, from, to, TimeOffType.PARENTAL_LEAVE, RequestState.DONE, comment);
         int id = _repository.createTimeOff(parentalLeave);
 
         Notification answerToEmployee = new Notification(NotificationType.PARENTAL_LEAVE_REQUEST, comment, employee, boss, id);
@@ -190,7 +190,7 @@ class TimeOffServiceImpl implements TimeOffService {
             throw new NotAuthorizedException("Boss is not boss of employee.");
         }
 
-        requestedTimeOff.setState(RequestState.REQUEST_ACCEPTED);
+        requestedTimeOff.setState(RequestState.REQUEST_REJECTED);
         requestedTimeOff.setReviewedBy(boss);
         _repository.updateTimeOff(requestedTimeOff);
 
