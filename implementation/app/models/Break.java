@@ -17,10 +17,10 @@ public class Break extends Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-   @Column(name = "start", columnDefinition = "time")
+   @Column(name = "start", columnDefinition = "datetime")
    private DateTime from;
 
-   @Column(name = "end", columnDefinition = "time")
+   @Column(name = "end", columnDefinition = "datetime")
    private DateTime to;
 
 

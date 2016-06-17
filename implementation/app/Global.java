@@ -1,6 +1,8 @@
 import static play.mvc.Results.internalServerError;
 import static play.mvc.Results.ok;
 
+import business.timetracking.TimeOffType;
+import business.timetracking.TimeTrackException;
 import business.timetracking.TimeTracking;
 import business.usermanagement.SecurityRole;
 import business.usermanagement.UserException;
@@ -85,6 +87,12 @@ public class Global extends GlobalSettings {
             sebastian.setBoss(david);
             userManagement.updateUser(sebastian.getUsername(), sebastian);
 
+            // Create some bank holidays for year 2016
+            timeTracking.createBankHoliday(sebastian.getId(), new DateTime(2016, 5, 5, 8, 0), new DateTime(2016, 5, 5, 17, 0), "Christi Himmelfahrt");
+            timeTracking.createBankHoliday(sebastian.getId(), new DateTime(2016, 5, 16, 8, 0), new DateTime(2016, 5, 16, 17, 0), "Pfingstmontag");
+            timeTracking.createBankHoliday(sebastian.getId(), new DateTime(2016, 5, 26, 8, 0), new DateTime(2016, 5, 26, 17, 0), "Fronleichnam");
+            timeTracking.createBankHoliday(sebastian.getId(), new DateTime(2016, 8, 15, 8, 0), new DateTime(2016, 8, 15, 17, 0), "Mariä Himmelfahrt");
+
             // Create timetracks upto today for all users
             // Only from Monday to Friday 08:00 - 17:00 and break from 12:00 to 13:00
             for (User u : users) {
@@ -93,7 +101,7 @@ public class Global extends GlobalSettings {
 
                 int dayDifference = Days.daysBetween(entry.toLocalDate(), now.toLocalDate()).getDays();
                 for (int i = 0; i < dayDifference; i++) {
-                    if (entry.plusDays(i).getDayOfWeek() != 6 && entry.plusDays(i).getDayOfWeek() != 7) {
+                    if (entry.plusDays(i).getDayOfWeek() != 6 && entry.plusDays(i).getDayOfWeek() != 7 && !isBankHoliday(sebastian, entry.plusDays(i))) {
                         int randomMinuteBias = ThreadLocalRandom.current().nextInt(-30, 30 + 1);
                         DateTime from = new DateTime(entry.plusDays(i).getYear(), entry.plusDays(i).getMonthOfYear(), entry.plusDays(i).getDayOfMonth(), 8, 0, 0);
                         from = randomMinuteBias > 0 ? from.plusMinutes(randomMinuteBias) : from.minusMinutes(randomMinuteBias);
@@ -107,7 +115,7 @@ public class Global extends GlobalSettings {
 
 
                 // Timetracks for today
-                if (now.getDayOfWeek() != 6 && now.getDayOfWeek() != 7) {
+                if (now.getDayOfWeek() != 6 && now.getDayOfWeek() != 7 && !isBankHoliday(sebastian, now)) {
                     if (now.getHourOfDay() > 16) {
                         DateTime from = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 8, 0, 0);
                         DateTime to = new DateTime(now.getYear(), now.getMonthOfYear(), now.getDayOfMonth(), 16, 59, 59);
@@ -157,9 +165,36 @@ public class Global extends GlobalSettings {
             }
 
 
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isBankHoliday(User user, DateTime date) {
+        Injector injector = Guice.createInjector(
+                new infrastructure.Module(),
+                new business.timetracking.Module(),
+                new business.notification.Module(),
+                new business.usermanagement.Module(),
+                new business.reporting.Module(),
+                new business.Module());
+        TimeOffRepository timeOffRepository = injector.getInstance(TimeOffRepository.class);
+
+        List<TimeOff> timeoffs = null;
+        try {
+            timeoffs = timeOffRepository.readTimeOffs(user);
+        } catch (TimeTrackException e) {
+            e.printStackTrace();
+        }
+        for (TimeOff t : timeoffs) {
+            if (t.getType() == TimeOffType.BANK_HOLIDAY && t.getFrom().getYear() == date.getYear() &&
+                    t.getFrom().getMonthOfYear() == date.getMonthOfYear() &&
+                    t.getFrom().getDayOfYear() == date.getDayOfYear()) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
