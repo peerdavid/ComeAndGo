@@ -124,6 +124,7 @@ nav .navbar-buttons a {
     margin-right: 1.5rem;
 }
 
+/*
 #timetrack-list {
     height: 50px;
     padding-top: 100%;
@@ -152,7 +153,7 @@ nav .navbar-buttons a {
     right: 57px;
     top: 0;
     height: 100%;
-}
+}*/
 
 /* error page */
 #error_container {
