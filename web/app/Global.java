@@ -63,11 +63,12 @@ public class Global extends GlobalSettings {
             // Create test users
             List<User> users = new ArrayList<>();
             User sebastian = userManagement.readUser("sebastian");
-            User david = new User("david", "test1234", SecurityRole.ROLE_BOSS, "David", "Peer", "peer@comego.at", true, sebastian, 8.0);
-            User patrick = new User("patrick", "test1234", SecurityRole.ROLE_USER, "Patrick", "Summerer", "summerer@comego.at", true, sebastian, 8.0);
-            User stefan = new User("stefan", "test1234", SecurityRole.ROLE_PERSONNEL_MANAGER, "Stefan", "Haberl", "haberl@comego.at", true, sebastian, 8.0);
-            User leo = new User("leonhard", "test1234", SecurityRole.ROLE_USER, "Leonhard", "Haas", "haas@comego.at", true, sebastian, 8.0);
-            User martin = new User("martin", "test1234", SecurityRole.ROLE_USER, "Martin", "Brunner", "brunner@comego.at", true, sebastian, 8.0);
+            sebastian.setPassword("sebastian7777");
+            User david = new User("david", "david7777", SecurityRole.ROLE_BOSS, "David", "Peer", "peer@comego.at", true, sebastian, 8.0);
+            User patrick = new User("patrick", "patrick7777", SecurityRole.ROLE_USER, "Patrick", "Summerer", "summerer@comego.at", true, sebastian, 8.0);
+            User stefan = new User("stefan", "stefan7777", SecurityRole.ROLE_PERSONNEL_MANAGER, "Stefan", "Haberl", "haberl@comego.at", true, sebastian, 8.0);
+            User leo = new User("leonhard", "leonhard7777", SecurityRole.ROLE_USER, "Leonhard", "Haas", "haas@comego.at", true, sebastian, 8.0);
+            User martin = new User("martin", "martin7777", SecurityRole.ROLE_USER, "Martin", "Brunner", "brunner@comego.at", true, sebastian, 8.0);
 
             users.add(sebastian);
             users.add(david);

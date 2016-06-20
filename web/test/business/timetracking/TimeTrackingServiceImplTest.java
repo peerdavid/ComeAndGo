@@ -114,7 +114,7 @@ public class TimeTrackingServiceImplTest {
         Mockito.verify(_internalUserManagement, times(1)).readUser(userId); // Check if the function really called our repository
     }
 
-    @Test
+    @Test(expected = UserException.class)
     public void go_WithComeCalledBefore_ShouldSetToInTimeTrackAndCallRepository() throws TimeTrackException, NotFoundException, UserException {
         // prepare
         TimeTrack timeTrack = new TimeTrack(_testUser);
