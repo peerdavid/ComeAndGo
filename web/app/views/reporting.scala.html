@@ -100,7 +100,7 @@
             </tbody>
         </table>
 
-        @if(report.getUserReports().size() <= 1) {
+        @if(request().uri.contains(routes.ReportingController.employeeReport().url)) {
             <div class="row" id="request-buttons">
 
                 <button data-target="modal-request-overtime-payout" class="col btn modal-trigger secondary-btn l4 s12">
