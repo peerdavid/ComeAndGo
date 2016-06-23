@@ -4,12 +4,12 @@
 
 ## Introduction:
 
-Come & Go is a timemanagementsystem for small and middle sized companies (ca. 100 Users). The idea of this project was, to create a small sample project from scratch, to learn the process, how to create a clean software architecture. This process is developed by "Fraunhofer-Institut für Experimentelles Software Engineering IESE" (http://www.iese.fraunhofer.de/de/competencies/architecture/architekturkonstruktion.html).
+Come & Go is a timemanagementsystem for small and middle sized companies (ca. 100 Users). The idea of this project was, to create a small sample project from scratch, to learn the process, how to create a clean software architecture. The process we used is developed by <a href="http://www.iese.fraunhofer.de/de/competencies/architecture/architekturkonstruktion.html">Fraunhofer-Institut für Experimentelles Software Engineering IESE</a>.
 <br><br>
 The requirements of Come & Go are written by the University of Innsbruck during the SE&PM lecture.
 
 ## Software Architecture
-The architecture is available in /architecture/architecture.vpp. To open this file you can install https://www.visual-paradigm.com/ (Community edition is free).
+The architecture is available in /architecture/architecture.vpp. To open this file you can install <a href="https://www.visual-paradigm.com/">Visual Paradigm</a> (Free Community Edition).
 
 ## Implementation
 The web implementation can be found in /web/*.
