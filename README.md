@@ -1,10 +1,10 @@
-# Come & Go
+<img src="https://github.com/peerdavid/ComeAndGo/blob/master/documentation/logo.jpg" width="120"/>
 
-<img src="https://github.com/peerdavid/ComeAndGo/blob/master/documentation/logo.jpg" width="100"/>
+# Come & Go
 
 ## Introduction:
 
-Come & Go is a timemanagementsystem for small and middle sized companies (ca. 100 users). The idea of this project was, to create a small software from scratch, to learn the process, how to create a clean software architecture. The process we used is developed by <a href="http://www.iese.fraunhofer.de/de/competencies/architecture/architekturkonstruktion.html">Fraunhofer-Institut für Experimentelles Software Engineering IESE</a>.
+Come & Go is a timemanagementsystem for small and middle sized companies (100 users) with different user roles, such as boss, admins, personell manager or employees. The idea of this project was, to create a small software from scratch, to learn the process, how to create a clean software architecture. The process we used is developed by <a href="http://www.iese.fraunhofer.de/de/competencies/architecture/architekturkonstruktion.html">Fraunhofer-Institut für Experimentelles Software Engineering IESE</a>.
 <br><br>
 The requirements of Come & Go are written by the University of Innsbruck during the SE&PM lecture.
 
@@ -21,8 +21,11 @@ There you can find the specifications and our scenarios. The scenarios also cont
 Last but not least we ensured, that the implementation is exactly what we designed. For that we created a small cmd tool which creats a class diagram of our code (using google guice GraphvizGrapher). So we can compare the real architecture and the designed architecture.
 
 
-## Web Implementation
+## Web
 The web implementation can be found in /web/*.
+
+## Android
+The android client is a prototype to show, how an external system could access and interact with Come&Go.
 
 ## Documentation
 The developers of come & go used the following documentation during the development: <a href=https://github.com/peerdavid/ComeAndGo/wiki>Documentation</a>.
