@@ -9,6 +9,7 @@ Come & Go is a timemanagementsystem for small and middle sized companies (100 us
 The requirements of Come & Go are written by the University of Innsbruck during the SE&PM lecture.
 
 ## Run Come & Go:
+The container is available on dockerhub. So the only thing you need is docker installed and an internet connection.
 To run and test Come & Go, you can simply execute the following command on your linux machine:
 ```
 docker run -i -t -p 9000:9000 comeandgo/comeandgo:1.0
