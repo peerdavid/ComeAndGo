@@ -8,14 +8,20 @@ Come & Go is a timemanagementsystem for small and middle sized companies (ca. 10
 <br><br>
 The requirements of Come & Go are written by the University of Innsbruck during the SE&PM lecture.
 
+## Run Come & Go:
+To run and test Come & Go, you can simply execute the following command on your linux machine:
+```
+
+```
+
 ## Software Architecture
 The architecture is available in /architecture/architecture.vpp. To open this file you can install <a href="https://www.visual-paradigm.com/">Visual Paradigm</a> (Free Community Edition).
 
 There you can find the specifications and our scenarios. The scenarios also contains informations of decisions we made and decisions we discarded. You can also find how we increased our level of confidence to ensure, that the design is implementable.
-Last but not least we ensured, that the implementation is exactly, what we designed by using our self written cmd tool, which created a class diagram of our code (using google guice GraphvizGrapher).
+Last but not least we ensured, that the implementation is exactly what we designed. For that we created a small cmd tool which creats a class diagram of our code (using google guice GraphvizGrapher). So we can compare the real architecture and the designed architecture.
 
 
-## Implementation
+## Web Implementation
 The web implementation can be found in /web/*.
 
 ## Documentation
