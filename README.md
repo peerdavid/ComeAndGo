@@ -31,7 +31,7 @@ The web implementation can be found in /web/*.
 The android client is a prototype to show, how an external system could access and interact with Come&Go.
 
 ## Documentation
-The developers of come & go used the following documentation during the development: <a href=https://github.com/peerdavid/ComeAndGo/wiki>Documentation</a>.
+The developers of Come & Go used the following documentation during the development: <a href=https://github.com/peerdavid/ComeAndGo/wiki>Documentation</a>.
 
 
 ## Team
