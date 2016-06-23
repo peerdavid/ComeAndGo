@@ -14,6 +14,8 @@ To run and test Come & Go, you can simply execute the following command on your 
 ```
 docker run -i -t -p 9000:9000 comeandgo/comeandgo:1.0
 ```
+Now you can browse to http://localhost:9000 <br>
+<img src="https://github.com/peerdavid/ComeAndGo/blob/master/documentation/login_screen.png"/>
 
 ## Software Architecture
 The architecture is available in /architecture/architecture.vpp. To open this file you can install <a href="https://www.visual-paradigm.com/">Visual Paradigm</a> (Free Community Edition).
