@@ -42,7 +42,7 @@ Waldhart Sebastian (Frontend Developer)<br>
 
 ### Backend Development
 Haberl Stefan (Backend Developer)<br>
-Summerer Patrik (Backend Developer)<br>
+Summerer Patrick (Backend Developer)<br>
 
 ### Software Architecture
 Peer David (Software Architekt)<br>
