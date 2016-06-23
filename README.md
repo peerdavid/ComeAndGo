@@ -11,7 +11,7 @@ The requirements of Come & Go are written by the University of Innsbruck during 
 ## Run Come & Go:
 To run and test Come & Go, you can simply execute the following command on your linux machine:
 ```
-
+docker run -i -t -p 9000:9000 comeandgo/comeandgo:1.0
 ```
 
 ## Software Architecture
