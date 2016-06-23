@@ -14,7 +14,7 @@ To run and test Come & Go, you can simply execute the following command on your 
 ```
 docker run -i -t -p 9000:9000 comeandgo/comeandgo:1.0
 ```
-Now you can browse to http://localhost:9000 <br>
+Now you can browse to <a href="http://localhost:9000">http://localhost:9000</a> <br>
 <img src="https://github.com/peerdavid/ComeAndGo/blob/master/documentation/login_screen.png"/>
 
 ## Software Architecture
