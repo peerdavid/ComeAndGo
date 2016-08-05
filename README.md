@@ -14,6 +14,8 @@ To run and test Come & Go, you can simply execute the following command on your 
 ```
 docker run -i -t -p 9000:9000 comeandgo/comeandgo:1.0
 ```
+Now you can browse to <a href="http://localhost:9000">http://localhost:9000</a> <br>
+<img src="https://github.com/peerdavid/ComeAndGo/blob/master/documentation/login_screen.png"/>
 
 ## Software Architecture
 The architecture is available in /architecture/architecture.vpp. To open this file you can install <a href="https://www.visual-paradigm.com/">Visual Paradigm</a> (Free Community Edition).
@@ -29,7 +31,7 @@ The web implementation can be found in /web/*.
 The android client is a prototype to show, how an external system could access and interact with Come&Go.
 
 ## Documentation
-The developers of come & go used the following documentation during the development: <a href=https://github.com/peerdavid/ComeAndGo/wiki>Documentation</a>.
+The developers of Come & Go used the following documentation during the development: <a href=https://github.com/peerdavid/ComeAndGo/wiki>Documentation</a>.
 
 
 ## Team
@@ -40,7 +42,7 @@ Waldhart Sebastian (Frontend Developer)<br>
 
 ### Backend Development
 Haberl Stefan (Backend Developer)<br>
-Summerer Patrik (Backend Developer)<br>
+Summerer Patrick (Backend Developer)<br>
 
 ### Software Architecture
 Peer David (Software Architekt)<br>
