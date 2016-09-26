@@ -49,5 +49,5 @@ Haberl Stefan (Backend Developer)<br>
 Summerer Patrick (Backend Developer)<br>
 
 ### Software Architecture
-Peer David (Software Architekt)<br>
+Peer David (Software Architect)<br>
 
